@@ -4,12 +4,10 @@ import VueResource from 'vue-resource'
 import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(VueResource)
-    //vue req same as $ jquery
-Vue.http.options.emulateJSON = true;
+//     //vue req same as $ jquery
+Vue['http'].options.emulateJSON = true;
 Vue.use(ElementUI)
 import App from './app.vue'
-// import SettingPanel from './panel/Setting.vue'
-// Vue.component('SettingPanel', SettingPanel)
 new Vue({
     el: '#app',
     render: h => h(App)

@@ -11,10 +11,9 @@
 </template>
 
 <script>
-import app from './admin.js'
 export default {
     created() {
-        app.init(this)
+        window['admin'].init(this)
     }
 }
 </script>

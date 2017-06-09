@@ -11,10 +11,9 @@
 </template>
 
 <script>
-import app from './App'
 export default {
     created() {
-        app.init(this)
+        window['app'].init(this)
     }
 }
 </script>

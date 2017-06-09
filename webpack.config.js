@@ -8,8 +8,9 @@ const publicPath = ''
 
 module.exports = (options = {}) => ({
     entry: {
-        index: './src/index.js',
-        admin: './src/admin/index.js'
+        // index: './src/index.js',
+        index: './src/index.ts',
+        admin: './src/views/admin/index.ts'
     },
     output: {
         path: resolve(__dirname, 'dist'),
@@ -22,9 +23,14 @@ module.exports = (options = {}) => ({
                 test: /\.vue$/,
                 use: ['vue-loader']
             },
+            // {
+            //     test: /\.js$/,
+            //     use: ['babel-loader'],
+            //     exclude: /node_modules/
+            // },
             {
-                test: /\.js$/,
-                use: ['babel-loader'],
+                test: /\.ts$/,
+                use: ['ts-loader'],
                 exclude: /node_modules/
             },
             {
@@ -71,6 +77,7 @@ module.exports = (options = {}) => ({
         })
     ],
     resolve: {
+        extensions: ['.ts', '.js', '.vue', '.json'],
         alias: {
             '~': resolve(__dirname, 'src')
         }
