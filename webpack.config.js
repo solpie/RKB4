@@ -8,7 +8,8 @@ const publicPath = ''
 
 module.exports = (options = {}) => ({
     entry: {
-        index: './src/index.js'
+        index: './src/index.js',
+        admin: './src/admin/index.js'
     },
     output: {
         path: resolve(__dirname, 'dist'),
