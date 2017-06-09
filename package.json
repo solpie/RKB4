@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "webpack-dev-server -d --inline --hot --env.dev",
+        "start": " python src/server/RKB.py",
         "build": "rimraf ./dist && webpack -p --progress --hide-modules"
     },
     "repository": {
