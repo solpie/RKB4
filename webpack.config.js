@@ -5,7 +5,6 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
 const publicPath = ''
-
 module.exports = (options = {}) => ({
     entry: {
         // index: './src/index.js',
@@ -86,6 +85,7 @@ module.exports = (options = {}) => ({
     devServer: {
         host: '127.0.0.1',
         port: 8010,
+        overlay: true,
         proxy: {
             "http://localhost:8010/socket.io/*": { target: "http://localhost:8088", ws: true, },
             // '/socket.io/*': {
@@ -98,6 +98,9 @@ module.exports = (options = {}) => ({
             // },
         },
         historyApiFallback: {
+            rewrites: [
+                { from: /^\/admin\/?$/, to: 'src/views/admin/admin.html' }
+            ],
             index: url.parse(options.dev ? '/assets/' : publicPath).pathname
         }
     },
