@@ -34,10 +34,7 @@ if serverConf["debug"]:
                 static_url_path='/static')
 else:
     app = Flask(__name__, static_folder='./static', static_url_path='/static')
-# socketio = SocketIO(app, async_mode='eventlet')
 sio = socketio.Server()
-# app = Flask(__name__)
-
 
 @app.route('/')
 def index():
@@ -50,20 +47,8 @@ def index():
 @app.route('/<view>/')
 def onView(view):
     return '''
-    <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-</head>
-
-<body>
-    <div id="app"></div>
-<script type="text/javascript" src="/static/{0}.js"></script>
-</body>
-</html>
+<script src="/static/{0}.js"></script>
     '''.format(view)
-
 
 @sio.on('connect', namespace='/ws')
 def connect(sid, environ):
@@ -81,9 +66,12 @@ def disconnect(sid):
     print('disconnect ', sid)
 
 if __name__ == '__main__':
-    # wrap Flask application with engineio's middleware
-    app = socketio.Middleware(sio, app)
-
-    # deploy as an eventlet WSGI server
-    eventlet.wsgi.server(eventlet.listen(
-        ('', int(serverConf["port"]))), app, debug=serverConf['debug'])
+    if serverConf["debug"]:
+        devSrv = SocketIO(app, async_mode='eventlet')
+        devSrv.run(app, host='0.0.0.0', port=int(serverConf["port"]), debug=True)
+    else:
+        # wrap Flask application with engineio's middleware
+        appMiddleware = socketio.Middleware(sio, app)
+        # deploy as an eventlet WSGI server
+        eventlet.wsgi.server(eventlet.listen(
+        ('', int(serverConf["port"]))), appMiddleware, debug=False)

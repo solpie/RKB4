@@ -8,6 +8,7 @@ Vue.use(VueResource)
 Vue['http'].options.emulateJSON = true;
 Vue.use(ElementUI)
 import App from './app.vue'
+document.write(`<div id='app'></div>`)
 new Vue({
     el: '#app',
     render: h => h(App)

@@ -15,7 +15,7 @@ import Admin from './admin.vue'
 // import SettingPanel from './panel/Setting.vue'
 // Vue.component('SettingPanel', SettingPanel)
 window['admin'] = new AdminView()
-
+document.write(`<div id='app'></div>`)
 new Vue({
     el: '#app',
     render: h => h(Admin)
