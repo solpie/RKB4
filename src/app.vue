@@ -13,7 +13,7 @@
 <script>
 export default {
     created() {
-        window['app'].init(this)
+        // window['app'].init(this)
     }
 }
 </script>

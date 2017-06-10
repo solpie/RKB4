@@ -24,27 +24,25 @@ def loadConf():
 loadConf()
 
 # web server
-from flask import Flask, request, redirect
+import socketio
+import eventlet
+import eventlet.wsgi
+from flask import Flask, render_template, redirect
 from flask_socketio import SocketIO
-
-# Set this variable to "threading", "eventlet" or "gevent" to test the
-# different async modes, or leave it set to None for the application to choose
-# the best option based on installed packages.
-from engineio import async_eventlet
-async_mode = "eventlet"
 if serverConf["debug"]:
-    app = Flask(__name__, static_folder='./../../dist',
+    app = Flask(__name__, static_folder='./../../dist/static',
                 static_url_path='/static')
 else:
-    app = Flask(__name__, static_folder='./dist', static_url_path='/static')
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, async_mode=async_mode)
+    app = Flask(__name__, static_folder='./static', static_url_path='/static')
+# socketio = SocketIO(app, async_mode='eventlet')
+sio = socketio.Server()
+# app = Flask(__name__)
 
 
 @app.route('/')
 def index():
     if serverConf["index"]:
-        return redirect('/'+serverConf["index"])
+        return redirect('/' + serverConf["index"])
     else:
         return 'running'
 
@@ -66,5 +64,26 @@ def onView(view):
 </html>
     '''.format(view)
 
+
+@sio.on('connect', namespace='/ws')
+def connect(sid, environ):
+    print("connect ", sid)
+
+
+@sio.on('event', namespace='/ws')
+def message(sid, data):
+    print("event ", data)
+    sio.emit('reply', room=sid)
+
+
+@sio.on('disconnect', namespace='/ws')
+def disconnect(sid):
+    print('disconnect ', sid)
+
 if __name__ == '__main__':
-    socketio.run(app, port=int(serverConf["port"]), debug=serverConf["debug"])
+    # wrap Flask application with engineio's middleware
+    app = socketio.Middleware(sio, app)
+
+    # deploy as an eventlet WSGI server
+    eventlet.wsgi.server(eventlet.listen(
+        ('', int(serverConf["port"]))), app, debug=serverConf['debug'])

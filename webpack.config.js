@@ -10,10 +10,11 @@ module.exports = (options = {}) => ({
     entry: {
         // index: './src/index.js',
         index: './src/index.ts',
+        panel: './src/views/panel/index.ts',
         admin: './src/views/admin/index.ts'
     },
     output: {
-        path: resolve(__dirname, 'dist'),
+        path: resolve(__dirname, 'dist', 'static'),
         filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
         chunkFilename: '[id].js?[chunkhash]',
         publicPath: options.dev ? '/assets/' : publicPath
@@ -85,15 +86,17 @@ module.exports = (options = {}) => ({
     devServer: {
         host: '127.0.0.1',
         port: 8010,
-        // proxy: {
-        //     '/': {
-        //         target: 'http://127.0.0.1:3000',
-        //         changeOrigin: true,
-        //         pathRewrite: {
-        //             // '^/gui': '/gui'
-        //         }
-        //     }
-        // },
+        proxy: {
+            "http://localhost:8010/socket.io/*": { target: "http://localhost:8088", ws: true, },
+            // '/socket.io/*': {
+            //     target: 'ws://localhost:8088/',
+            //     changeOrigin: true,
+            //     pathRewrite: {
+            //         '/socket.io': '/ws'
+            //     },
+            //     // ws: true,
+            // },
+        },
         historyApiFallback: {
             index: url.parse(options.dev ? '/assets/' : publicPath).pathname
         }
