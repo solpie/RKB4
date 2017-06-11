@@ -41,7 +41,9 @@ typings/
 *.pyc
 # Optional npm cache directory
 .npm
-
+*.jpg
+*.png
+*.psd
 # Optional eslint cache
 .eslintcache
 

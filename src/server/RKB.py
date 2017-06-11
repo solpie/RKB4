@@ -47,7 +47,7 @@ def index():
 @app.route('/<view>/')
 def onView(view):
     return '''
-<script src="/static/{0}.js"></script>
+<script src="/static/views/{0}.js"></script>
     '''.format(view)
 
 @sio.on('connect', namespace='/ws')

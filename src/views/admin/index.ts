@@ -12,9 +12,10 @@ Vue.use(VueResource)
 Vue['http'].options.emulateJSON = true;
 Vue.use(ElementUI)
 import Admin from './admin.vue'
-// import SettingPanel from './panel/Setting.vue'
-// Vue.component('SettingPanel', SettingPanel)
 window['admin'] = new AdminView()
+import Home from './home.vue'
+Vue.component('Home', Home)
+
 document.write(`<div id='app'></div>`)
 new Vue({
     el: '#app',
