@@ -72,9 +72,14 @@ module.exports = (options = {}) => ({
         // new webpack.optimize.CommonsChunkPlugin({
         //     names: ['vendor', 'manifest']
         // }),
-        // new HtmlWebpackPlugin({
-        //     template: 'src/index.html'
-        // })
+        new HtmlWebpackPlugin({
+            filename: 'admin.html',
+            template: 'src/views/admin/index.html'
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'panel.html',
+            template: 'src/views/panel/index.html'
+        })
     ],
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],
@@ -97,9 +102,9 @@ module.exports = (options = {}) => ({
             //     },
             //     // ws: true,
             // },
-            '@/img/.+*': {
+            '*/img': {
                 target: 'http://localhost:8088/',
-                changeOrigin: true,
+                // changeOrigin: true,
                 // pathRewrite: {
                 //     '/socket.io': '/ws'
                 // },
@@ -108,8 +113,8 @@ module.exports = (options = {}) => ({
         },
         historyApiFallback: {
             rewrites: [
-                { from: /^\/admin\/?$/, to: 'dev/views/admin.html' },
-                { from: /^\/panel\/?$/, to: 'dev/views/panel.html' }
+                { from: /^\/admin\/?$/, to: '/assets/admin.html' },
+                { from: /^\/panel\/?$/, to: '/assets/panel.html' }
             ],
             index: url.parse(options.dev ? '/assets/' : publicPath).pathname
         }

@@ -1,17 +1,8 @@
 import { $post, proxy } from './WebJsFunc';
 declare let $;
 export let getHupuWS = (callback) => {
-    // let url = 'http://test.jrstvapi.hupu.com/zhubo/getNodeServer'
-    // $.get(proxy(url), (res) => {
-    //     var a = JSON.parse(res);
-    //     if (a && a.length) {
-    //         callback(a[0])
-    //     }
-    //     else console.error(url);
-    // })
     callback('tcp.lb.liangle.com:3081')
 }
-
 //开题延时
 export function setClientDelay(gameId, sec, callback) {
     let url = `http://pre.liangle.com/api/pbk/event/delay/` + gameId

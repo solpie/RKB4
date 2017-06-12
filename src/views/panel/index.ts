@@ -1,12 +1,6 @@
 import io from 'socket.io-client';
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
-// if (window['isDev']) {
-//     document.write(`<script src='/webpack-dev-server/dist/static/js/pixi.min.js'></script>`)
-// }
-// else {
-//     document.write(`<script src='/js/pixi.min.js'></script>`)
-// }
 document.write(`<canvas id='panel'></canvas>`)
 
 // window['PIXI'] = pixi
