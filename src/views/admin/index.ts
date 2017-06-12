@@ -1,4 +1,3 @@
-import { AdminView } from './adminView';
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import VueResource from 'vue-resource'
@@ -11,13 +10,16 @@ Vue.use(VueResource)
 //vue req same as $ jquery
 Vue['http'].options.emulateJSON = true;
 Vue.use(ElementUI)
-import Admin from './admin.vue'
+import { AdminView } from './adminView';
 window['admin'] = new AdminView()
+
+import Admin from './admin.vue'
 import Home from './home.vue'
 Vue.component('Home', Home)
 
 document.write(`<div id='app'></div>`)
-new Vue({
+let $vm = new Vue({
     el: '#app',
     render: h => h(Admin)
 })
+console.log('vue ',$vm)

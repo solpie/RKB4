@@ -23,11 +23,6 @@ module.exports = (options = {}) => ({
                 test: /\.vue$/,
                 use: ['vue-loader']
             },
-            // {
-            //     test: /\.js$/,
-            //     use: ['babel-loader'],
-            //     exclude: /node_modules/
-            // },
             {
                 test: /\.ts$/,
                 use: ['ts-loader'],
@@ -102,14 +97,6 @@ module.exports = (options = {}) => ({
             //     },
             //     // ws: true,
             // },
-            '*/img': {
-                target: 'http://localhost:8088/',
-                // changeOrigin: true,
-                // pathRewrite: {
-                //     '/socket.io': '/ws'
-                // },
-                // ws: true,
-            },
         },
         historyApiFallback: {
             rewrites: [
