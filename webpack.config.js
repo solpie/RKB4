@@ -67,14 +67,14 @@ module.exports = (options = {}) => ({
         // new webpack.optimize.CommonsChunkPlugin({
         //     names: ['vendor', 'manifest']
         // }),
-        new HtmlWebpackPlugin({
-            filename: 'admin.html',
-            template: 'src/views/admin/index.html'
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'panel.html',
-            template: 'src/views/panel/index.html'
-        })
+        // new HtmlWebpackPlugin({
+        //     filename: 'admin.html',
+        //     template: 'src/views/admin/index.html'
+        // }),
+        // new HtmlWebpackPlugin({
+        //     filename: 'panel.html',
+        //     template: 'src/views/panel/index.html'
+        // })
     ],
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],
@@ -86,11 +86,12 @@ module.exports = (options = {}) => ({
         host: '127.0.0.1',
         port: 8010,
         overlay: true,
-        contentBase: 'dist/static/',
+        // contentBase: 'dist/static/',
         proxy: {
-            "http://localhost:8010/socket.io/*": { target: "http://localhost:8088", ws: true, },
+            // "http://localhost:8010/socket.io/*": { target: "http://localhost:8088/ws", ws: true, },
+            // "*proxy*": "http://localhost:8088/proxy",
             // '/socket.io/*': {
-            //     target: 'ws://localhost:8088/',
+            //     target: 'ws://localhost:8088/ws',
             //     changeOrigin: true,
             //     pathRewrite: {
             //         '/socket.io': '/ws'
@@ -99,10 +100,10 @@ module.exports = (options = {}) => ({
             // },
         },
         historyApiFallback: {
-            rewrites: [
-                { from: /^\/admin\/?$/, to: '/assets/admin.html' },
-                { from: /^\/panel\/?$/, to: '/assets/panel.html' }
-            ],
+            // rewrites: [
+            //     { from: /^\/admin\/?$/, to: 'dev/admin.html' },
+            //     { from: /^\/panel\/?$/, to: 'dev/panel.html' }
+            // ],
             index: url.parse(options.dev ? '/assets/' : publicPath).pathname
         }
     },

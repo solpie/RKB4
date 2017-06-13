@@ -1,17 +1,17 @@
-import io from 'socket.io-client';
+import { ScoreView } from './score/ScoreView';
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
 document.write(`<canvas id='panel'></canvas>`)
-
+// import PIXI from 'pixi.js'
 // window['PIXI'] = pixi
 console.log('PIXI', window['PIXI']);
-
-// import tween from 'tween.js'
+// import tween from 'tween'
+// window['TWEEN'] = tween
 import { ViewConst } from "./const";
 import { Score2017 } from './score/Score2017';
-window['io'] = io
-// window['TWEEN'] = tween
-console.log('socket.io', io);
+// import io from 'socket.io-client';
+// window['io'] = io
+// console.log('socket.io ', io);
 
 declare let PIXI;
 declare let TWEEN;
@@ -32,5 +32,7 @@ let initPIXI = () => {
     renderer.renderStage();
     return renderer.stage;
 }
+
 window['stage'] = initPIXI()
-new Score2017(window['stage'], false)
+// new Score2017(window['stage'], false)
+new ScoreView(window['stage'])

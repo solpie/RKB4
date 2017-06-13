@@ -1,12 +1,14 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
 import VueResource from 'vue-resource'
+Vue.use(VueResource)
+
+import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css';
+
 import io from 'socket.io-client';
 window['io'] = io 
 console.log('socket.io',io);
 
-Vue.use(VueResource)
 //vue req same as $ jquery
 Vue['http'].options.emulateJSON = true;
 Vue.use(ElementUI)

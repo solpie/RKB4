@@ -1,48 +1,49 @@
 {
-    "name": "rkb4",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "dev": "webpack-dev-server -d --inline --hot --env.dev",
-        "start": "cd src/server/&&python RKB.py",
-        "pack": "pyinstaller src/server/RKB.py -F --upx-dir c:/bin/upx391w --noupx",
-        "pack2": "pyinstaller src/server/RKB.spec -F --upx-dir c:/bin/upx391w --noupx",
-        "build": "rimraf ./dist/static/views && webpack -p --progress --hide-modules"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/solpie/RKB4.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/solpie/RKB4/issues"
-    },
-    "homepage": "https://github.com/solpie/RKB4#readme",
-    "devDependencies": {
-        "@types/pixi.js": "^4.4.4",
-        "babel-core": "^6.25.0",
-        "babel-loader": "^7.0.0",
-        "babel-preset-es2015": "^6.24.1",
-        "css-loader": "^0.28.4",
-        "element-ui": "^1.3.5",
-        "file-loader": "^0.11.2",
-        "html-loader": "^0.4.5",
-        "html-webpack-plugin": "^2.28.0",
-        "pixi.js": "^4.5.2",
-        "rimraf": "^2.6.1",
-        "script-loader": "^0.7.0",
-        "socket.io": "^2.0.2",
-        "socket.io-client": "^2.0.2",
-        "style-loader": "^0.18.2",
-        "tween.js": "^16.6.0",
-        "url-loader": "^0.5.8",
-        "vue": "^2.3.4",
-        "vue-loader": "^12.2.1",
-        "vue-resource": "^1.3.4",
-        "vue-template-compiler": "^2.3.4",
-        "webpack": "^2.6.1",
-        "webpack-dev-server": "^2.4.5"
-    }
+  "name": "rkb4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server -d --inline --hot --env.dev",
+    "start": "cd src/server/&&python RKB.py",
+    "pack": "pyinstaller src/server/RKB.py -F --upx-dir c:/bin/upx391w --noupx",
+    "pack2": "pyinstaller src/server/RKB.spec -F --upx-dir c:/bin/upx391w --noupx",
+    "build": "rimraf ./dist/static/views && webpack -p --progress --hide-modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/solpie/RKB4.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solpie/RKB4/issues"
+  },
+  "homepage": "https://github.com/solpie/RKB4#readme",
+  "devDependencies": {
+    "@types/pixi.js": "^4.4.4",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "element-ui": "^1.3.5",
+    "file-loader": "^0.11.2",
+    "html-loader": "^0.4.5",
+    "html-webpack-plugin": "^2.28.0",
+    "pixi.js": "^4.5.2",
+    "rimraf": "^2.6.1",
+    "script-loader": "^0.7.0",
+    "socket.io": "^2.0.2",
+    "socket.io-client": "^2.0.2",
+    "style-loader": "^0.18.2",
+    "tween.js": "^16.6.0",
+    "url-loader": "^0.5.8",
+    "vue": "^2.3.4",
+    "vue-loader": "^12.2.1",
+    "vue-resource": "^1.3.4",
+    "vue-route": "^1.5.1",
+    "vue-template-compiler": "^2.3.4",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
+  }
 }
