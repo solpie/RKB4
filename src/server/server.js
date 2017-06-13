@@ -1,3 +1,11 @@
+//config
+var fs = require('fs'),
+    ini = require('ini')
+
+var conf = ini.parse(fs.readFileSync('./.cfg', 'utf-8'))
+console.log('config', conf)
+
+//webserver
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -19,6 +27,7 @@ app.get('/proxy', (req, res) => {
     reqProxy.onload = function(e) {
         // let t = typeof reqProxy.response
         // console.log('res type:', t)
+        
         let buf = new Buffer(new Uint8Array(reqProxy.response));
         let data = "data:image/png;base64," + buf.toString('base64');
         res.set('content-type', 'text/html; charset=utf-8');
@@ -27,6 +36,10 @@ app.get('/proxy', (req, res) => {
     reqProxy.send();
 });
 
+app.post('/proxy', (req, res) => {
+    req.params
+})
+
 let rkbIO = io.of('/rkb')
     .on('connect', () => {
         console.log('rkb')
@@ -34,6 +47,6 @@ let rkbIO = io.of('/rkb')
 
 app.post('/')
 
-server.listen(4200, () => {
-    console.log('running...')
+server.listen(Number(conf.server.port), _ => {
+    console.log('server running...')
 });
