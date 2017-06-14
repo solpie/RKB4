@@ -45,13 +45,16 @@ app.post('/proxy', (req, res) => {
 });
 app.post('/emit/:cmd', (req, res) => {
     let cmd = req.params.cmd;
-    console.log('emit ', cmd);
-    if (req.body['_']) {
-        if (req.body['prefix'])
-            rkbIO.emit(cmd.replace("cs_", req.body['prefix']))
+    let toEvent = cmd;
+    if ('_' in req.body) {
+        if ('prefix' in req.body)
+            toEvent = cmd.replace("cs_", req.body['prefix'])
         else
-            rkbIO.emit(cmd.replace("cs_", "sc_"))
+            toEvent = cmd.replace("cs_", "sc_")
+        rkbIO.emit(toEvent, req.body)
     }
+    console.log('emit ', cmd, req.body, 'to ', toEvent);
+
     res.send('ok')
 });
 var rkbIO = io.of('/rkb')

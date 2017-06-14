@@ -1,3 +1,4 @@
+import { WebDBCmd } from '../webDBCmd';
 import { Score2017 } from './Score2017';
 import { getUrlQuerys } from '../../utils/WebJsFunc';
 import { CommandId } from "./CommandId";
@@ -215,6 +216,10 @@ export class ScoreView {
                 this.eventPanel.showBd(data.v)
                 data.v ? this.scorePanel.hide()
                     : this.scorePanel.show()
+            })
+            .on(`${WebDBCmd.sc_score}`, (data) => {
+                console.log('webdbcmd', data);
+                this.scorePanel.setScoreFoul(data)
             })
     }
 }

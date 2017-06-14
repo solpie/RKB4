@@ -81,8 +81,9 @@ export let $get = (url, callback) => {
         callback(res.body, res)
     })
 }
-export let $post = (url, data, callback) => {
-    $http.post(url,data).then((res) => {
-        callback(res.body, res)
+export let $post = (url, data, callback?) => {
+    $http.post(url, data).then((res) => {
+        if (callback)
+            callback(res.body, res)
     })
 }

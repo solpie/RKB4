@@ -350,6 +350,17 @@ export class Score2017 {
         this._showWinScore()
     }
 
+    setScoreFoul(data) {
+        if ('leftScore' in data)
+            this.setLeftScore(data.leftScore)
+        if ('rightScore' in data)
+            this.setRightScore(data.rightScore)
+        if ('leftFoul' in data)
+            this.setLeftFoul(data.leftFoul)
+        if ('rightFoul' in data)
+            this.setRightFoul(data.rightFoul)
+    }
+    
     setRightScore(v) {
         this.rightScoreText.text = v + ''
         this._showWinScore()
