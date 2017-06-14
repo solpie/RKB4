@@ -1,5 +1,5 @@
 export let dynamicLoading = {
-    css: function (path) {
+    css: function(path) {
         if (!path || path.length === 0) {
             throw new Error('argument "path" is required !');
         }
@@ -10,7 +10,7 @@ export let dynamicLoading = {
         link.type = 'text/css';
         head.appendChild(link);
     },
-    js: function (path) {
+    js: function(path) {
         if (!path || path.length === 0) {
             throw new Error('argument "path" is required !');
         }
@@ -49,16 +49,16 @@ export class OpReq {
     }
 }
 declare let $;
-export let $post = (url, data, callback) => {
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-        dataType: 'json',
-        success: callback
-    });
-}
+// export let $post = (url, data, callback) => {
+//     $.ajax({
+//         url: url,
+//         type: 'post',
+//         data: JSON.stringify(data),
+//         headers: { "Content-Type": "application/json" },
+//         dataType: 'json',
+//         success: callback
+//     });
+// }
 
 export const getUrlQuerys = (sParam) => {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -74,3 +74,15 @@ export const getUrlQuerys = (sParam) => {
         }
     }
 };
+//vue-resource
+declare let $http
+export let $get = (url, callback) => {
+    $http.get(url).then((res) => {
+        callback(res.body, res)
+    })
+}
+export let $post = (url, data, callback) => {
+    $http.post(url,data).then((res) => {
+        callback(res.body, res)
+    })
+}
