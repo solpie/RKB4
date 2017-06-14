@@ -1,15 +1,4 @@
-<style>
-.preview {
-    width: 1920px;
-    height: 1080px;
-    transform: scale(0.5);
-    left: -480px;
-    top: -280px;
-    position: fixed;
-    overflow: hidden;
-    z-index: -1;
-}
-</style>
+
 <template>
     <div>
         Home link

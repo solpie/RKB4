@@ -1,3 +1,15 @@
+<style>
+.preview {
+    width: 1920px;
+    height: 1080px;
+    transform: scale(0.5);
+    left: -480px;
+    top: -280px;
+    position: fixed;
+    overflow: hidden;
+    z-index: -1;
+}
+</style>
 <template>
     <div id="app">
         <el-tabs type="border-card">
@@ -5,6 +17,7 @@
                 <span slot="label">
                     <i class="el-icon-edit"></i>Admin Home</span>
                 <LiveData></LiveData>
+                <!--<Home></Home>-->
             </el-tab-pane>
             <el-tab-pane label="月赛">
             </el-tab-pane>
@@ -14,15 +27,15 @@
 
 <script>
 import { AdminView } from './adminView';
-window['admin'] = new AdminView()
+let adminView = new AdminView()
 
 export default {
     created() {
-        window['admin'].init(this)
+        adminView.init(this)
     },
     methods: {
         onClk: (e, ...param) => {
-            window['admin'].onClk(e, param)
+            adminView.onClk(e, param)
         }
     }
 }

@@ -20,4 +20,11 @@ export default class LiveDateView {
     setRScore(score) {
         this.gameInfo.rScore = score
     }
+
+    setLFoul(f) {
+        this.gameInfo.lFoul = f
+    }
+    setRFoul(f) {
+        this.gameInfo.rFoul = f
+    }
 }
