@@ -9,10 +9,10 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 // const path = require('path')
-var static_path = '../../dist/static';
-app.use(express.static('../../dist/static'));
+var static_path = '../dist/static';
+app.use(express.static('../dist/static'));
 app.get('/', function(req, res, next) {
-    res.sendFile(static_path + '/dev/admin.html');
+    res.redirect('/dev/admin.html')
 });
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({
@@ -24,17 +24,21 @@ app.use(bodyParser.json());
 var XMLHttpRequest = require('xhr2');
 app.get('/proxy', function(req, res) {
     var url = req.query.url;
+    var type = req.query.type
     console.log('proxy url', url);
     var reqProxy = new XMLHttpRequest();
     reqProxy.open('GET', url, true);
-    reqProxy.responseType = 'arraybuffer';
+    if (type == 'image')
+        reqProxy.responseType = 'arraybuffer';
     reqProxy.onload = function(e) {
-        // let t = typeof reqProxy.response
-        // console.log('res type:', t)
-        var buf = new Buffer(new Uint8Array(reqProxy.response));
-        var data = "data:image/png;base64," + buf.toString('base64');
-        res.set('content-type', 'text/html; charset=utf-8');
-        res.send(data);
+        if (type == 'image') {
+            var buf = new Buffer(new Uint8Array(reqProxy.response));
+            var data = "data:image/png;base64," + buf.toString('base64');
+            res.set('content-type', 'text/html; charset=utf-8');
+            res.send(data);
+        } else {
+            res.send(reqProxy.response);
+        }
     };
     reqProxy.send();
 });
@@ -68,13 +72,21 @@ const db = new nedb({
     filename: './db/web.db',
     autoload: true
 });
-db.insert({ idx: 519 })
-app.post('/db/update/:idx', (req, res) => {
-
-});
+// db.insert({ idx: 519 })
 app.get('/db/find/:idx', (req, res) => {
+    let idx = Number(req.params.idx)
+    db.find({ idx: idx }, (err, docs) => {
+        if (!err) {
+            console.log('/db/find/', idx, docs);
+            res.send(docs)
+        } else {
+            res.send({})
+        }
+    })
 
 });
+app.post('/db/update/:idx', (req, res) => {});
+
 ///////////////////////
 server.listen(Number(conf.server.port), function(_) {
     console.log('server running...');

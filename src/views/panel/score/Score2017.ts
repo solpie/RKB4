@@ -7,7 +7,7 @@ import { _avatar } from '../../utils/HupuAPI';
 import { proxy } from '../../utils/WebJsFunc';
 import { TextTimer } from '../../utils/TextTimer';
 import { Direction, SpriteGroup } from '../../utils/SpriteGroup';
-import { FontName, ViewConst } from '../const';
+import { FontName, TimerState, ViewConst } from '../const';
 import { loadImg, paddy } from '../../utils/JsFunc';
 import { BitmapText, imgToTex, loadRes, newBitmap } from '../../utils/PixiEx';
 const skin = {
@@ -177,7 +177,7 @@ export class Score2017 {
         ctn.addChild(t)
         t.x = 917
         t.y = 90
-        t.setTimeBySec(0)
+        t.textInSec = 0
         this.timer = t
 
         let winScoreText = new PIXI.Text("", tts)
@@ -360,7 +360,7 @@ export class Score2017 {
         if ('rightFoul' in data)
             this.setRightFoul(data.rightFoul)
     }
-    
+
     setRightScore(v) {
         this.rightScoreText.text = v + ''
         this._showWinScore()
@@ -384,6 +384,7 @@ export class Score2017 {
         // this.rightFoul.setNum(v)
         this.rFoulText.setFoul(v)
     }
+
 
     resetTimer() {
         this.timer.resetTimer()

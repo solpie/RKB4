@@ -16,6 +16,8 @@ export const WebDBCmd = {
     sc_hideProgress: ``,
     cs_startTimer: ``,
     sc_startTimer: ``,
+    cs_setTimer: ``,
+    sc_setTimer: ``,
     cs_commit: ``,
     sc_commit: ``,
     cs_score: ``,

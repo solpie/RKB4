@@ -39,3 +39,10 @@ export function getFtId(fn) {
         }
     }
 }
+
+export const MatchType = {
+    PreGame: 1,
+    Master: 2,
+    Final: 3,
+    RawDay: 4
+};

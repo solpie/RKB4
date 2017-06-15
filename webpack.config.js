@@ -26,7 +26,7 @@ module.exports = (options = {}) => ({
             {
                 test: /\.ts$/,
                 use: ['ts-loader'],
-                exclude: /node_modules/
+                exclude: [/node_modules/, /*node_modules*/ ]
             },
             {
                 test: /\.html$/,
@@ -79,7 +79,7 @@ module.exports = (options = {}) => ({
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],
         alias: {
-            '~': resolve(__dirname, 'src')
+            '~': resolve(__dirname, 'src', 'views')
         }
     },
     devServer: {

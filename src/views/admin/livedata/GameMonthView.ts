@@ -1,5 +1,6 @@
 import { $get, $post } from '../../utils/WebJsFunc';
 import { GameInfo } from "./GameInfo";
+import { getAllPlayer } from "../../utils/HupuAPI";
 
 let gameInfo: GameInfo
 
@@ -17,9 +18,17 @@ const saveDoc = (doc, cb?) => {
             cb()
     })
 }
-export class GameMonth {
+export class GameMonthView {
+    gameInfo: any
+    recMap: any
     constructor() {
 
+    }
+    initGameMonth(gameId) {
+        getAllPlayer(gameId, (res, data) => {
+            console.log('all player ', gameId, res, data);
+            this.initGameInfo(res)
+        })
     }
     initGameInfo(res) {
         let playerIdArr = ['郝天佶', 'Beans吴', 'NGFNGN', 'zzz勇'
@@ -40,7 +49,7 @@ export class GameMonth {
         }
         getDoc((doc) => {
             if (doc) {
-                console.log('getHupuPlayer', res, playerOrderArr)
+                console.log('getHupuPlayer',doc, res, playerOrderArr)
                 gameInfo = GameInfo.create(playerOrderArr)
                 // console.log(gameInfo.gameArr);
                 // if (!doc['recMap']) {
@@ -69,5 +78,8 @@ export class GameMonth {
                 this.emitBracket()
             }
         })
+    }
+    emitBracket() {
+
     }
 }

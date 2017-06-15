@@ -1,5 +1,5 @@
 export let dynamicLoading = {
-    css: function(path) {
+    css: function (path) {
         if (!path || path.length === 0) {
             throw new Error('argument "path" is required !');
         }
@@ -10,7 +10,7 @@ export let dynamicLoading = {
         link.type = 'text/css';
         head.appendChild(link);
     },
-    js: function(path) {
+    js: function (path) {
         if (!path || path.length === 0) {
             throw new Error('argument "path" is required !');
         }
@@ -21,8 +21,8 @@ export let dynamicLoading = {
         head.appendChild(script);
     }
 };
-export let proxy: (url) => any = (url) => {
-    return "/proxy?url=" + url;
+export let proxy: (url,type?) => any = (url, type = 'image' ) => {
+    return "/proxy?url=" + url + "&type=" + type
 };
 
 export class OpReq {

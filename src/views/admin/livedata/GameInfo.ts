@@ -1,11 +1,26 @@
 import { PlayerInfo } from './PlayerInfo';
 import { firstBy } from "./thenBy";
+import { $get, $post } from "../../utils/WebJsFunc";
 export class RecData {
     gameIdx: number = -1
     player: Array<string> = ['', '']
     score: Array<number> = [0, 0]//1-2
     foul: Array<number> = [0, 0]//2-3
     time: number = -1
+}
+const getDoc = (callback) => {
+    $get('/db/find/519', (res) => {
+        if (res.length)
+            callback(res[0])
+        else
+            callback(null)
+    })
+}
+const saveDoc = (doc, cb?) => {
+    $post('/db/update/519', doc, () => {
+        if (cb)
+            cb()
+    })
 }
 export class GameInfo {
     //static

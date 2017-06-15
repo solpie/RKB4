@@ -162,20 +162,8 @@ export class ScoreView {
         localWs.on('connect', (msg) => {
             console.log('connect', window.location.host)
         })
-            .on(`${CommandId.sc_startTimer}`, (data) => {
-                this.scorePanel.toggleTimer(TimerState.RUNNING)
-            })
-            .on(`${CommandId.sc_pauseTimer}`, (data) => {
-                this.scorePanel.toggleTimer(TimerState.PAUSE)
-            })
-            .on(`${CommandId.sc_resetTimer}`, (data) => {
-                this.scorePanel.resetTimer()
-            })
             .on(`${CommandId.sc_setDelayTime}`, (data) => {
                 this.delayTimeMS = data.delayTimeMS
-            })
-            .on(`${CommandId.sc_setTimer}`, (data) => {
-                this.scorePanel.setTimer(data.time)
             })
             .on(`${CommandId.sc_toggleTheme}`, (data) => {
                 // let isDark = data.isDark
@@ -217,9 +205,30 @@ export class ScoreView {
                 data.v ? this.scorePanel.hide()
                     : this.scorePanel.show()
             })
+            //new event
+            .on(`${WebDBCmd.sc_init}`, (data) => {
+                this.scorePanel.setGameIdx(data.gameIdx,data.matchType)
+            })
             .on(`${WebDBCmd.sc_score}`, (data) => {
-                console.log('webdbcmd', data);
                 this.scorePanel.setScoreFoul(data)
+            })
+            .on(`${WebDBCmd.sc_setTimer}`, (data) => {
+                console.log('webdbcmd', data);
+                let s = data.state
+                if (s == TimerState.RUNNING) {
+                    // this.scorePanel.resetTimer()
+                    console.log('start timer');
+                    this.scorePanel.toggleTimer(Number(s))
+                }
+                else if (s == TimerState.PAUSE) {
+                    this.scorePanel.toggleTimer(s)
+                }
+                else if (s == TimerState.RESET) {
+                    this.scorePanel.resetTimer()
+                }
+                if ('sec' in data) {
+                    this.scorePanel.setTimer(data.sec)
+                }
             })
     }
 }
