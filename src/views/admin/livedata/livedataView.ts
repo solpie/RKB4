@@ -1,7 +1,6 @@
-import { BaseGameView, IBaseGameView } from './BaseGame';
+import { BaseGameView, getDoc, IBaseGameView } from './BaseGame';
 import { getAllPlayer } from '../../utils/HupuAPI';
 import { MatchType } from '../../panel/score/Com2017';
-import { GameInfo } from './GameInfo';
 import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
@@ -87,4 +86,7 @@ export default class LiveDateView {
         console.log('getGameInfo', row);
     }
 
+    buildGroup(g) {
+       gmv.showGroup(g)
+    }
 }

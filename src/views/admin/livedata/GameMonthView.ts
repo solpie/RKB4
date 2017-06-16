@@ -1,27 +1,25 @@
 import { $get, $post } from '../../utils/WebJsFunc';
-import { GameInfo } from "./GameInfo";
 import { getAllPlayer, getGameInfo } from '../../utils/HupuAPI';
 import { PlayerInfo } from "./PlayerInfo";
 import { MatchType } from "../../panel/score/Com2017";
 import { WebDBCmd } from "../../panel/webDBCmd";
-import { BaseGameView, getDoc, IBaseGameView, saveDoc } from './BaseGame';
-
-let gameInfo: GameInfo
+import { BaseGameView, getDoc, IBaseGameView, saveDoc, RecData } from './BaseGame';
+import { firstBy } from "./thenBy";
 
 
 export class GameMonthView extends BaseGameView implements IBaseGameView {
     playerArr: Array<PlayerInfo>
     nameMapHupuId: any = {}
-    gameInfo: any
+    // gameInfo: any
     recMap: any
     //for front
     gameInfoTable: Array<any> = []
+    curGroupRank: Array<any> = []
     lHupuID: string = ''
     rHupuID: string = ''
-    constructor() {
-        super()
-
-    }
+    // constructor() {
+    //     super()
+    // }
 
     initGameMonth(gameId) {
         getAllPlayer(gameId, (res, data) => {
@@ -60,8 +58,6 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             if (o.name == groupName)
                 return o.hupuID
         }
-        // if (this.nameMapHupuId[groupName])
-        //     return this.nameMapHupuId[groupName].hupuID.substr(0, 6)
         return ''
     }
 
@@ -170,13 +166,85 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
     commit() {
         getDoc(doc => {
             let gameData = doc.recMap[this.gameIdx]
-            gameData.score = [this.lScore,this.rScore]
-            gameData.player =[this.lPlayer,this.rPlayer]
+            gameData.score = [this.lScore, this.rScore]
+            gameData.player = [this.lPlayer, this.rPlayer]
             gameData.time = this.time
             gameData.gameIdx = this.gameIdx
-            doc.gameIdx = this.gameIdx+1
+            doc.gameIdx = this.gameIdx + 1
             this.initDoc(doc)
             saveDoc(doc)
         })
+    }
+
+    getPlayerInfo(groupName) {
+        if (this.nameMapHupuId[groupName])
+            return this.nameMapHupuId[groupName]
+        return {}
+    }
+
+    showGroup(group) {
+        getDoc(doc => {
+            this['actPanel'] = '2'
+            this.curGroupRank = this.getGroup(doc, group).playerArr
+        })
+    }
+
+    getGroup(doc, group) {
+        let sumMap = this.buildPlayerData(doc)
+        let playerArr = []
+        for (let i = 0; i < 4; i++) {
+            let data = sumMap[group + (i + 1)]
+            let p: PlayerInfo = this.getPlayerInfo(data.name)
+            data.name = p.hupuID
+            data.groupId = p.data.groupId
+            data.avatar = p.data.avatar
+            //头像 战团logo
+            playerArr.push(data)
+        }
+        playerArr.sort(firstBy(function (v1, v2) { return v2.win - v1.win; })
+            .thenBy(function (v1, v2) { return v2.dtScore - v1.dtScore; })
+        )
+        console.log(playerArr)
+        return { _: null, group: group, playerArr: playerArr }
+    }
+    // numFy(doc) {
+
+    // }
+    buildPlayerData(doc, isAll = false) {
+        let sumMap: any = {}
+        let sumIdx;
+        isAll ? sumIdx = 99 : sumIdx = 24;
+        for (let k in doc['recMap']) {
+            if (Number(k) < sumIdx) {
+                let r: RecData = doc['recMap'][k]
+                if (!sumMap[r.player[0]])
+                    sumMap[r.player[0]] = { name: r.player[0], win: 0, lose: 0, score: 0, dtScore: 0, beat: [], time: 0 }
+                if (!sumMap[r.player[1]])
+                    sumMap[r.player[1]] = { name: r.player[1], win: 0, lose: 0, score: 0, dtScore: 0, beat: [], time: 0 }
+                if (r.score[0] == 0 && r.score[1] == 0) {
+                    continue;
+                }
+                if (r.score[0] > r.score[1]) {
+                    sumMap[r.player[0]].win++
+                    sumMap[r.player[0]].dtScore += r.score[0] - r.score[1]
+                    sumMap[r.player[0]].beat.push(r.player[1])
+                    sumMap[r.player[0]].score += r.score[0]
+
+                    sumMap[r.player[1]].lose++
+                    sumMap[r.player[1]].score += r.score[1]
+                }
+                else {
+                    sumMap[r.player[1]].win++
+                    sumMap[r.player[1]].dtScore += r.score[1] - r.score[0]
+                    sumMap[r.player[1]].beat.push(r.player[0])
+                    sumMap[r.player[1]].score += r.score[1]
+
+                    sumMap[r.player[0]].lose++
+                    sumMap[r.player[0]].score += r.score[0]
+                }
+                console.log(r)
+            }
+        }
+        return sumMap
     }
 }

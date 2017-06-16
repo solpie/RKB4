@@ -2,7 +2,14 @@
     <div style="width:1920px">
         <el-col :span='8'>
             <el-collapse v-model="actPanel" accordion>
-                <el-collapse-item title="PlayerArr" name="1">
+                <el-collapse-item title="Group Rank" name="2">
+                    <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
+                        <el-table-column prop="name" label="name" width="140" />
+                        <el-table-column prop="win" label="胜场" width="80" />
+                        <el-table-column prop="dtScore" label="净胜分" width="120" />
+                    </el-table>
+                </el-collapse-item>
+                <el-collapse-item title="Game List" name="1">
                     <el-table stripe :data="gameInfoTable" style="width: 100%" @row-click='rowClick'>
                         <el-table-column prop="idx" label="#" width="60" />
                         <el-table-column prop="vs" label="vs" width="100" />
@@ -11,10 +18,11 @@
                         <el-table-column prop="rPlayer" label="R" />
                     </el-table>
                 </el-collapse-item>
+    
             </el-collapse>
         </el-col>
         <el-col :span='14'>
-            {{lHupuID}}  vs {{rHupuID}}
+            {{lHupuID}} vs {{rHupuID}}
             <el-row>
                 <el-col :span='4'>
                     L Score
@@ -59,6 +67,10 @@
                 <el-button @click='_("commit")'>提交比赛</el-button>
                 <hr>
                 <el-button @click='_("initGameMonth",286)'>init Game Month</el-button>
+                <el-button @click='_("buildGroup","a")'>Group A</el-button>
+                <el-button @click='_("buildGroup","b")'>Group B</el-button>
+                <el-button @click='_("buildGroup","c")'>Group C</el-button>
+                <el-button @click='_("buildGroup","d")'>Group D</el-button>
             </el-row>
         </el-col>
         <iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>

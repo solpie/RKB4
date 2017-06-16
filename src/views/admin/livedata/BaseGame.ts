@@ -10,12 +10,12 @@ export interface IBaseGameView {
     rFoul: number
     time: number
     winScore: number
-    gameType:number
+    gameType: number
     start: () => void
     pause: () => void
     commit: () => void
 }
-export class BaseGameView implements IBaseGameView{
+export class BaseGameView implements IBaseGameView {
     public gameType: number;
     public start() { };
     public pause() { };
@@ -30,7 +30,7 @@ export class BaseGameView implements IBaseGameView{
     public time: number = 0
     public winScore: number = 2
     constructor()
-    {}
+    { }
 }
 
 export class RecData {
@@ -44,8 +44,15 @@ export class RecData {
 export const getDoc = (callback) => {
     $get('/db/find/519', (res) => {
         console.log('getDoc', res);
-        if (!res.err && res.docs.length)
+        if (!res.err && res.docs.length) {
+            let doc = res.docs[0]
+            for (let idx in doc.recMap) {
+                let recData = doc.recMap[idx]
+                recData.score = [Number(recData.score[0]), Number(recData.score[1])]
+                recData.foul = [Number(recData.foul[0]), Number(recData.foul[1])]
+            }
             callback(res.docs[0])
+        }
         else
             callback(null)
     })
