@@ -1,27 +1,8 @@
+import { BaseGameView, RecData } from './BaseGame';
 import { PlayerInfo } from './PlayerInfo';
 import { firstBy } from "./thenBy";
 import { $get, $post } from "../../utils/WebJsFunc";
-export class RecData {
-    gameIdx: number = -1
-    player: Array<string> = ['', '']
-    score: Array<number> = [0, 0]//1-2
-    foul: Array<number> = [0, 0]//2-3
-    time: number = -1
-}
-const getDoc = (callback) => {
-    $get('/db/find/519', (res) => {
-        if (res.length)
-            callback(res[0])
-        else
-            callback(null)
-    })
-}
-const saveDoc = (doc, cb?) => {
-    $post('/db/update/519', doc, () => {
-        if (cb)
-            cb()
-    })
-}
+
 export class GameInfo {
     //static
     playerArr: Array<PlayerInfo>
@@ -32,18 +13,13 @@ export class GameInfo {
     status: number = 0
     winScore: number = 3
     gameIdx = 0
-    gameTime = 0
-    lScore = 0
-    rScore = 0
-    lFoul = 0
-    rFoul = 0
     //save data
     // recArray: Array<RecData>
     recData: RecData
     recMap: any
+    time: number
+
     //dyna data
-    // playerData = [{ name: '' }, { name: '' }]
-    // groupIdMap = {}
     static create(playerOrderArr) {
         //加赛 手动排名
         let gmi = new GameInfo()
@@ -61,7 +37,6 @@ export class GameInfo {
         }
         console.log(playerArr);
         gmi.playerArr = playerArr
-
         return gmi
     }
     getGameArr() {
@@ -136,7 +111,10 @@ export class GameInfo {
         }
         return data
     }
-
+    lScore: number
+    rScore: number
+    lFoul: number
+    rFoul: number
     getGameData() {
         let data: any = { _: null }
         data.winScore = 3
@@ -152,7 +130,6 @@ export class GameInfo {
         }
         data.gameIdx = this.gameIdx + 1
         data.player = this.getPlayerData()
-
         return data
     }
 
@@ -310,7 +287,7 @@ export class GameInfo {
 
         // this.gameIdx++
         this.start(this.gameIdx + 1)
-        this.gameTime = 0
+        this.time = 0
         this.lScore = 0
         this.lFoul = 0
         this.rScore = 0

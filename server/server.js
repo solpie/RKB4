@@ -10,7 +10,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 // const path = require('path')
 var static_path = '../dist/static';
-app.use(express.static('../dist/static'));
+app.use(express.static(static_path));
 app.get('/', function(req, res, next) {
     res.redirect('/dev/admin.html')
 });
@@ -72,20 +72,31 @@ const db = new nedb({
     filename: './db/web.db',
     autoload: true
 });
-// db.insert({ idx: 519 })
 app.get('/db/find/:idx', (req, res) => {
-    let idx = Number(req.params.idx)
+    let idx = req.params.idx
     db.find({ idx: idx }, (err, docs) => {
-        if (!err) {
-            console.log('/db/find/', idx, docs);
-            res.send(docs)
-        } else {
-            res.send({})
-        }
+        let ret = { err: err, docs: docs }
+        console.log('/db/find/', idx, docs);
+        if (!docs.length) {
+            let newDoc = { idx: idx }
+            db.insert(newDoc, (err2, doc) => {
+                console.log('db.insert', err2, doc);
+                ret.docs.push(newDoc)
+                res.send(ret)
+            })
+        } else
+            res.send(ret)
     })
 
 });
-app.post('/db/update/:idx', (req, res) => {});
+app.post('/db/update/:idx', (req, res) => {
+    let idx = req.params.idx
+    let doc = req.body
+    db.update({ idx: idx }, doc, {}, (err, numReplaced) => {
+        console.log(req.url, doc);
+        res.send({ err: err, numReplaced: numReplaced })
+    })
+});
 
 ///////////////////////
 server.listen(Number(conf.server.port), function(_) {

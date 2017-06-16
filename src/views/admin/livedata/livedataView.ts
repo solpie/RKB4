@@ -1,3 +1,4 @@
+import { BaseGameView, IBaseGameView } from './BaseGame';
 import { getAllPlayer } from '../../utils/HupuAPI';
 import { MatchType } from '../../panel/score/Com2017';
 import { GameInfo } from './GameInfo';
@@ -6,10 +7,15 @@ import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
 let gmv = new GameMonthView()
 export default class LiveDateView {
-    gameInfo: GameInfo
-
+    gameView: IBaseGameView
+    gmv: GameMonthView
+    timeInput: number = 0
     constructor() {
-        this.gameInfo = new GameInfo()
+        this.gameView = gmv
+        this.gmv = gmv
+
+        gmv['timeInput'] = 0
+        gmv['actPanel'] = '1'
         console.log('livedata view');
     }
 
@@ -21,19 +27,19 @@ export default class LiveDateView {
     }
 
     setLScore(score) {
-        this.gameInfo.lScore = Number(score)
+        this.gameView.lScore = Number(score)
         this.emitScore()
     }
     setRScore(score) {
-        this.gameInfo.rScore = Number(score)
+        this.gameView.rScore = Number(score)
         this.emitScore()
     }
     setLFoul(f) {
-        this.gameInfo.lFoul = Number(f)
+        this.gameView.lFoul = Number(f)
         this.emitScore()
     }
     setRFoul(f) {
-        this.gameInfo.rFoul = Number(f)
+        this.gameView.rFoul = Number(f)
         this.emitScore()
     }
 
@@ -51,10 +57,10 @@ export default class LiveDateView {
     }
     emitScore() {
         let data: any = { _: null }
-        data.leftScore = Number(this.gameInfo.lScore)
-        data.rightScore = Number(this.gameInfo.rScore)
-        data.leftFoul = Number(this.gameInfo.lFoul)
-        data.rightFoul = Number(this.gameInfo.rFoul)
+        data.leftScore = Number(this.gameView.lScore)
+        data.rightScore = Number(this.gameView.rScore)
+        data.leftFoul = Number(this.gameView.lFoul)
+        data.rightFoul = Number(this.gameView.rFoul)
         $post(`/emit/${WebDBCmd.cs_score}`, data)
     }
 
@@ -65,9 +71,20 @@ export default class LiveDateView {
 
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }
+    commit() {
+        let data: any = { _: null }
+        this.gameView.commit()
+        $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
+
+    }
     ///game month
     initGameMonth(gameId) {
         gmv.initGameMonth(gameId)
+    }
+    getGameInfo(row) {
+        let gameIdx = row.gameIdx
+        gmv.setGameInfo(gameIdx)
+        console.log('getGameInfo', row);
     }
 
 }
