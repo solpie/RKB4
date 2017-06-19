@@ -15,6 +15,7 @@ export default class LiveDateView {
 
         gmv['timeInput'] = 0
         gmv['actPanel'] = '1'
+        gmv['group'] = ''
         console.log('livedata view');
     }
 
@@ -54,6 +55,7 @@ export default class LiveDateView {
         data.matchType = MatchType.Master
         $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
+    
     emitScore() {
         let data: any = { _: null }
         data.leftScore = Number(this.gameView.lScore)
@@ -87,6 +89,8 @@ export default class LiveDateView {
     }
 
     buildGroup(g) {
-       gmv.showGroup(g)
+        gmv['actPanel'] = '2'
+        gmv['group'] = g
+        gmv.showGroup(g)
     }
 }

@@ -23,8 +23,8 @@ export class ScoreView {
 
         this.initLocalWs()
         this.initRemote()
-
     }
+    
     initDefaultPlayer() {
         let p = 'http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg'
         this.scorePanel.setLeftPlayerInfo('Player 1', p, 78, 178, '', 0)

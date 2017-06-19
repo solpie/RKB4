@@ -1,4 +1,4 @@
-import { ScoreView } from './score/ScoreView';
+
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
 document.write(`<canvas id='panel'></canvas>`)
@@ -9,6 +9,9 @@ console.log('PIXI', window['PIXI']);
 // window['TWEEN'] = tween
 import { ViewConst } from "./const";
 import { Score2017 } from './score/Score2017';
+import { BracketView } from './bracket/BracketView';
+import { getUrlQuerys } from '../utils/WebJsFunc';
+import { ScoreView } from './score/ScoreView';
 // import io from 'socket.io-client';
 // window['io'] = io
 // console.log('socket.io ', io);
@@ -35,4 +38,10 @@ let initPIXI = () => {
 
 window['stage'] = initPIXI()
 // new Score2017(window['stage'], false)
-new ScoreView(window['stage'])
+let panel = getUrlQuerys('panel')
+let gameId = getUrlQuerys('gameId')
+let isMonth = getUrlQuerys('m') == '1'
+if (panel == 'bracket')
+    new BracketView(window['stage'], gameId, isMonth)
+else
+    new ScoreView(window['stage'])

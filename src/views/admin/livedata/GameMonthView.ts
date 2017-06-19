@@ -6,7 +6,7 @@ import { WebDBCmd } from "../../panel/webDBCmd";
 import { BaseGameView, getDoc, IBaseGameView, saveDoc, RecData } from './BaseGame';
 import { firstBy } from "./thenBy";
 
-
+declare let io;
 export class GameMonthView extends BaseGameView implements IBaseGameView {
     playerArr: Array<PlayerInfo>
     nameMapHupuId: any = {}
@@ -17,15 +17,23 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
     curGroupRank: Array<any> = []
     lHupuID: string = ''
     rHupuID: string = ''
-    // constructor() {
-    //     super()
-    // }
+    constructor() {
+        super()
+        this.initWS()
+    }
 
     initGameMonth(gameId) {
         getAllPlayer(gameId, (res, data) => {
             console.log('all player ', gameId, res);
             this.initGameInfo(res)
         })
+    }
+    
+    initWS() {
+        io.connect('/rbk')
+            .on(`${WebDBCmd.sc_bracketCreated}`, _ => {
+                console.log('sc_bracketCreated');
+            })
     }
 
     initDoc(doc) {
@@ -158,7 +166,22 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
     }
 
     emitBracket() {
-
+        let data: any = { _: null }
+        for (let i = 24; i < 38; i++) {
+            let r = this.recMap[i]
+            data[i - 23] = {
+                left: {
+                    score: r.score[0],
+                    name: this.getHupuId(r.player[0])
+                },
+                right: {
+                    score: r.score[1],
+                    name: this.getHupuId(r.player[1])
+                }
+            }
+        }
+        console.log('emitBracket', data);
+        $post(`/emit/${WebDBCmd.cs_bracketInit}`, data)
     }
 
     lastWinner: any
@@ -184,7 +207,6 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
 
     showGroup(group) {
         getDoc(doc => {
-            this['actPanel'] = '2'
             this.curGroupRank = this.getGroup(doc, group).playerArr
         })
     }

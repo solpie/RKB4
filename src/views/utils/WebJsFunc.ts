@@ -21,7 +21,7 @@ export let dynamicLoading = {
         head.appendChild(script);
     }
 };
-export let proxy: (url,type?) => any = (url, type = 'image' ) => {
+export let proxy: (url, type?) => any = (url, type = 'image') => {
     return "/proxy?url=" + url + "&type=" + type
 };
 
@@ -74,16 +74,56 @@ export const getUrlQuerys = (sParam) => {
         }
     }
 };
+//
+let xhr = (url, method, data, callback) => {
+    var http = new XMLHttpRequest();
+    http.open(method, url, true);
+    //Send the proper header information along with the request
+    let d = ''
+    if (method == 'POST') {
+        data = JSON.parse(data)
+        console.log('Post data', data);
+        for (let k in data) {
+            d += (k + "=" + data[k] + "&")
+        }
+        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    }
+    http.onreadystatechange = () => {//Call a function when the state changes.
+        if (http.readyState == 4 && http.status == 200) {
+            console.log('http.response', http.response);
+            if (callback)
+                callback(JSON.parse(http.response));
+        }
+    }
+    http.send(d);
+}
+
 //vue-resource
-declare let $http
 export let $get = (url, callback) => {
-    $http.get(url).then((res) => {
-        callback(res.body, res)
-    })
+    let $http = window['$http']
+    if (!$http) {
+        xhr(url, 'GET', null, (res) => {
+            if (callback)
+                callback(res)
+        })
+    }
+    else
+        $http.get(url).then((res) => {
+            if (callback)
+                callback(res.body, res)
+        })
 }
 export let $post = (url, data, callback?) => {
-    $http.post(url, data).then((res) => {
-        if (callback)
-            callback(res.body, res)
-    })
+    let $http = window['$http']
+    if (!$http) {
+        xhr(url, 'POST', data, (res) => {
+            if (callback)
+                callback(res)
+        })
+    }
+    else
+        $http.post(url, data).then((res) => {
+            if (callback)
+                callback(res.body, res)
+        })
 }
