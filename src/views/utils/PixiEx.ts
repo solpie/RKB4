@@ -109,6 +109,11 @@ export class BitmapText extends PIXI.Container {
             digi['sp'].texture = this._tex
         }
     }
+
+    // set frameWidth(v) {
+    //     this._frameWidth = v
+    // }
+
     set text(v: string) {
         var digiIdx = 0
         var num = v.charAt(digiIdx)

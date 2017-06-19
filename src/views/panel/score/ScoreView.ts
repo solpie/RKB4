@@ -1,6 +1,7 @@
+import { ScoreM2 } from './ScoreM2';
 import { WebDBCmd } from '../webDBCmd';
 import { Score2017 } from './Score2017';
-import { getUrlQuerys } from '../../utils/WebJsFunc';
+import { getUrlQuerys, $post } from '../../utils/WebJsFunc';
 import { CommandId } from "./CommandId";
 import { TimerState } from "../const";
 import { getHupuWS } from "../../utils/HupuAPI";
@@ -18,13 +19,17 @@ export class ScoreView {
     constructor(stage: PIXI.Container) {
         let gameId = getUrlQuerys('gameId')
         let isDark = getUrlQuerys('theme') == 'dark'
+        let isMonth = getUrlQuerys('m') == '1'
         console.log(gameId, isDark)
-        this.scorePanel = new Score2017(stage, isDark)
+        if (isMonth)
+            this.scorePanel = new ScoreM2(stage, isDark)
+        else
+            this.scorePanel = new Score2017(stage, isDark)
 
         this.initLocalWs()
         this.initRemote()
     }
-    
+
     initDefaultPlayer() {
         let p = 'http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg'
         this.scorePanel.setLeftPlayerInfo('Player 1', p, 78, 178, '', 0)
@@ -161,6 +166,7 @@ export class ScoreView {
         let localWs = io.connect(`/rkb`)
         localWs.on('connect', (msg) => {
             console.log('connect', window.location.host)
+            $post(`/emit/${WebDBCmd.cs_panelCreated}`, { _: null })
         })
             .on(`${CommandId.sc_setDelayTime}`, (data) => {
                 this.delayTimeMS = data.delayTimeMS
@@ -207,7 +213,7 @@ export class ScoreView {
             })
             //new event
             .on(`${WebDBCmd.sc_init}`, (data) => {
-                this.scorePanel.setGameIdx(data.gameIdx,data.matchType)
+                this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
             })
             .on(`${WebDBCmd.sc_score}`, (data) => {
                 this.scorePanel.setScoreFoul(data)

@@ -47,16 +47,7 @@ export class BracketView {
         let srvIO = io.connect('/rbk')
             .on('connect', () => {
                 console.log('connect manmaul!')
-                let url = `/emit/${WebDBCmd.cs_bracketCreated}`
-                let param = { _: null }
-                // $.ajax({
-                //     url: url,
-                //     type: 'post',
-                //     data: JSON.stringify(param),
-                //     headers: { "Content-Type": "application/json" },
-                //     dataType: 'json'
-                // });
-                $post(url, param)
+                $post(`/emit/${WebDBCmd.cs_bracketCreated}`, { _: null })
             })
             .on(`${WebDBCmd.sc_bracketInit}`, (data) => {
                 delete data['_']

@@ -18,7 +18,6 @@ import { ScoreView } from './score/ScoreView';
 
 declare let PIXI;
 declare let TWEEN;
-document.write(`<canvas id='panel'></canvas>`)
 
 let initPIXI = () => {
     let renderer = new PIXI.autoDetectRenderer(ViewConst.STAGE_WIDTH, ViewConst.STAGE_HEIGHT,

@@ -81,18 +81,26 @@ let xhr = (url, method, data, callback) => {
     //Send the proper header information along with the request
     let d = ''
     if (method == 'POST') {
-        data = JSON.parse(data)
-        console.log('Post data', data);
-        for (let k in data) {
-            d += (k + "=" + data[k] + "&")
+        if (data) {
+
+            // if (typeof data == 'string')
+            // data = JSON.parse(data)
+            // console.log('Post data', data);
+            for (let k in data) {
+                d += (k + "=" + data[k] + "&")
+            }
         }
         http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     }
     http.onreadystatechange = () => {//Call a function when the state changes.
         if (http.readyState == 4 && http.status == 200) {
-            console.log('http.response', http.response);
+            let ct = http.getResponseHeader('content-type')
+            console.log('http.response', ct, http.response);
+            let res = http.response
+            if (ct.search('json') > -1)
+                res = JSON.parse(http.response)
             if (callback)
-                callback(JSON.parse(http.response));
+                callback(res);
         }
     }
     http.send(d);
