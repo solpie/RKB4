@@ -10,9 +10,10 @@ import { Direction, SpriteGroup } from '../../utils/SpriteGroup';
 import { FontName, TimerState, ViewConst } from '../const';
 import { loadImg, paddy } from '../../utils/JsFunc';
 import { BitmapText, imgToTex, loadRes, newBitmap } from '../../utils/PixiEx';
+import { FoulTextM2 } from "./FoulTextM2";
 const skin = {
     light: {
-        bg: '/img/panel/score/m2/bg.png',
+        bg: '/img/panel/score/m2/bg2.png',
         fontColor: '#fff',
         score: '/img/panel/score/m2/score.png',
         foul: '/img/panel/score2017/foul.png',
@@ -22,7 +23,7 @@ const skin = {
         section3: '/img/panel/score2017/section3Light.png'
     },
     dark: {
-        bg: '/img/panel/score/m2/bg.png',
+        bg: '/img/panel/score/m2/bg2.png',
         fontColor: '#1b5e80',
         score: '/img/panel/score/m2/score.png',
         foul: '/img/panel/score2017/foul.png',
@@ -54,8 +55,8 @@ export class ScoreM2 {
     rightScoreText: BitmapText;
     leftFoul: SpriteGroup
     rightFoul: SpriteGroup
-    lFoulText: FoulText
-    rFoulText: FoulText
+    lFoulText: FoulTextM2
+    rFoulText: FoulTextM2
     timer: TextTimer
     winScoreText: PIXI.Text
     gameIdx: PIXI.Text
@@ -77,6 +78,9 @@ export class ScoreM2 {
     rFrame: PIXI.Sprite
 
     _tex = {}
+    _texFt = {}
+    lFtImg: PIXI.Sprite
+    rFtImg: PIXI.Sprite
     ctn: PIXI.DisplayObject
     constructor(stage: PIXI.Container, isDark = false) {
         this.stage = stage
@@ -90,6 +94,42 @@ export class ScoreM2 {
         let ctn = new PIXI.Container
         bg.addChild(ctn)
         ctn.y = ViewConst.STAGE_HEIGHT - 300
+        //ft ctn
+        let ftCtn = new PIXI.Container()
+        ftCtn.x = 780
+        ftCtn.y = 163
+        // ftCtn.alpha = .5
+        ctn.addChild(ftCtn)
+        let lFtImg = new PIXI.Sprite()
+        lFtImg.x = -55
+        // lFtImg.y = 164
+        this.lFtImg = lFtImg
+        ftCtn.addChild(lFtImg)
+
+        let rFtImg = new PIXI.Sprite()
+        rFtImg.x = 170
+        rFtImg.y = lFtImg.y
+        this.rFtImg = rFtImg
+        ftCtn.addChild(rFtImg)
+
+        let ftMask = newBitmap({ url: '/img/panel/score/m2/ftMask.png' })
+        ftMask.x = ftCtn.x
+        ftMask.y = ftCtn.y
+        ftCtn.mask = ftMask
+        ctn.addChild(ftMask)
+
+        let ftStrip = newBitmap({ url: '/img/panel/score/m2/ftStrip.png' })
+        ftStrip.x = 0.5 * (ViewConst.STAGE_WIDTH - 356)
+        ftStrip.y = 163
+        ftStrip.blendMode = PIXI.BLEND_MODES.MULTIPLY
+        ctn.addChild(ftStrip)
+
+        let ftGameInfo = newBitmap({ url: '/img/panel/score/m2/gameInfoBg.png' })
+        ftGameInfo.x = 0.5 * (ViewConst.STAGE_WIDTH - 144)
+        ftGameInfo.y = 163
+        ctn.addChild(ftGameInfo)
+        ////////
+
         this.gameSection = new PIXI.Sprite
         this.gameSection.x = 926
         this.gameSection.y = 174
@@ -127,7 +167,7 @@ export class ScoreM2 {
             let rightScoreNum = new BitmapText(sheet)
             // rightScoreNum.frameWidth = 56
             this.rightScoreText = rightScoreNum
-            rightScoreNum.x = leftScoreNum.x + 222
+            rightScoreNum.x = leftScoreNum.x + 218
             rightScoreNum.y = leftScoreNum.y
             rightScoreNum.align = 'center'
             ctn.addChild(rightScoreNum as any)
@@ -151,17 +191,15 @@ export class ScoreM2 {
             fontSize: '30px', fill: "#fff",
             fontWeight: 'bold'
         }
-        let lft = new FoulText(this.skin.foulHint)
-        lft.hasHint = false
-        lft.x = 490
-        lft.y = 255
+        let lft = new FoulTextM2(this.skin.foulHint)
+        lft.x = 568
+        lft.y = 248
         lft.setFoul(0)
         ctn.addChild(lft)
         this.lFoulText = lft
 
-        let rft = new FoulText(this.skin.foulHint)
-        rft.hasHint = false
-        rft.x = 1290
+        let rft = new FoulTextM2(this.skin.foulHint)
+        rft.x = 1364
         rft.y = lft.y
         rft.setFoul(0)
         ctn.addChild(rft)
@@ -205,6 +243,13 @@ export class ScoreM2 {
             strokeThickness: 2,
             fontWeight: 'bold',
         }
+
+        let lpn = new PIXI.Text("", pns)
+        lpn.y = 160
+        this.lPlayerName = lpn
+        ctn.addChild(lpn)
+
+
         let pis = {
             fontFamily: FontName.MicrosoftYahei,
             fontSize: '22px', fill: this.skin.fontColor,
@@ -212,13 +257,8 @@ export class ScoreM2 {
             strokeThickness: 2,
             fontWeight: 'bold'
         }
-        let lpn = new PIXI.Text("", pns)
-        lpn.y = 160
-        this.lPlayerName = lpn
-        ctn.addChild(lpn)
-
         let lpInfo = new PIXI.Text("", pis)
-        lpInfo.y = 215
+        lpInfo.y = 210
         this.lPlayerInfo = lpInfo
         ctn.addChild(lpInfo)
 
@@ -235,7 +275,7 @@ export class ScoreM2 {
         ctn.addChild(rpInfo)
 
         let lm = newBitmap({ url: '/img/panel/score/m2/mask.png' })
-        lm.x = 650
+        lm.x = 639
         lm.y = 163
         ctn.addChild(lm)
 
@@ -289,6 +329,15 @@ export class ScoreM2 {
         // rFrame.x = 1228
         // rFrame.y = lFrame.y
         // ctn.addChild(rFrame)
+
+
+        // ctn.addChild(ftStrip)
+
+        // let ftStripMask = newBitmap({ url: '/img/panel/score/m2/ftStripMask.png' })
+        // ftStripMask.x = ftStrip.x
+        // ftStripMask.y = ftStrip.y 
+        // ftStrip.mask = ftStripMask
+        // ctn.addChild(ftStripMask)
     }
 
     set35ScoreLight(winScore) {
@@ -363,10 +412,10 @@ export class ScoreM2 {
     }
 
     _setFoulText(label: PIXI.Text, v) {
-        let s = v + ' Foul'
-        if (Number(v) > 3) {
-            s = '  犯满'
-        }
+        let s = v + ''
+        // if (Number(v) > 3) {
+        //     s = '  犯满'
+        // }
         label.text = s
     }
     setLeftFoul(v) {
@@ -437,33 +486,33 @@ export class ScoreM2 {
         // loadImg(proxy(avatar), (img) => {
         //     this.lAvatar.texture = imgToTex(img)
         // })
+        this._setHeightWeight(height, weight, this.lPlayerInfo)
+        this.lPlayerInfo.x = 615 - this.lPlayerInfo.width
+
+        this._loadFt(ftId, this.lFtImg)
+    }
+
+    private _loadFt(ftId, sp) {
+        let ftImg = '/img/panel/score/m2/' + ftId + '.png'
+        if (!this._texFt[ftImg]) {
+            loadImg(ftImg, img => {
+                this._texFt[ftImg] = img
+                sp.texture = imgToTex(img)
+            })
+        }
+        else
+            sp.texture = imgToTex(this._texFt[ftImg])
+    }
+    _loadFrame(level, frame: PIXI.Sprite) {
+    }
+    _setHeightWeight(height, weight, txt) {
         if (!height)
             height = 0
         if (!weight)
             weight = 0
-        this.lPlayerInfo.text = height + 'CM  ' + weight + "KG"
-        this.lPlayerInfo.x = 640 - this.lPlayerInfo.width
-
-        // this.lFtName.text = ft
-        // this._fixFtName(this.lFtName, getFtName(ftId))
-        // this.lFtName.x = 630 - this.lFtName.width * .5
-    }
-    _loadFrame(level, frame: PIXI.Sprite) {
-        // // level = Math.ceil(Number(level) / 5)
-        // level = Number(level)
-        // if (level > 0) {
-        //     let frameUrl = '/img/panel/score2017/frame' + level + '.png'
-        //     frame.visible = true
-        //     if (!this._tex[frameUrl]) {
-        //         loadImg(frameUrl, (img) => {
-        //             this._tex[frameUrl] = frame.texture = imgToTex(img)
-        //         })
-        //     }
-        //     else
-        //         frame.texture = this._tex[frameUrl]
-        // }
-        // else
-        //     frame.visible = false
+        if (weight > 99)
+            weight = " " + weight
+        txt.text = height + '        ' + weight + ""
     }
     setRightPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number) {
         this._rFtId = ftId
@@ -480,12 +529,8 @@ export class ScoreM2 {
             avt.scale.x = avt.scale.y = s
         }, true);
 
-        if (!height)
-            height = 0
-        if (!weight)
-            weight = 0
-        this.rPlayerInfo.text = height + 'CM ' + weight + "KG"
-
+        this._setHeightWeight(height, weight, this.rPlayerInfo)
+        this._loadFt(ftId, this.rFtImg)
         // this._fixFtName(this.rFtName, getFtName(ftId))
         // this.rFtName.x = 1293 - this.rFtName.width * .5
     }
