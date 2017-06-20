@@ -24,12 +24,12 @@ export class AdminView {
     }
 
     test(name, id) {
-        console.log('test', name, id, this.localName);
-        $get('/dev/admin.html', res => {
-            console.log(res, '222');
-        })
-        $post('/proxy', { data: 122 }, res => {
-            console.log(res, '222');
-        })
+        // console.log('test', name, id, this.localName);
+        // $get('/dev/admin.html', res => {
+        //     console.log(res, '222');
+        // })
+        // $post('/proxy', { data: 122 }, res => {
+        //     console.log(res, '222');
+        // })
     }
 }

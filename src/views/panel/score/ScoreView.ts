@@ -13,7 +13,7 @@ function logEvent(...a) {
     console.info(t, a)
 }
 export class ScoreView {
-    scorePanel: Score2017
+    scorePanel: any
     eventPanel: any
     delayTimeMS: number = 0
     constructor(stage: PIXI.Container) {
@@ -25,7 +25,6 @@ export class ScoreView {
             this.scorePanel = new ScoreM2(stage, isDark)
         else
             this.scorePanel = new Score2017(stage, isDark)
-
         this.initLocalWs()
         this.initRemote()
     }
@@ -213,7 +212,17 @@ export class ScoreView {
             })
             //new event
             .on(`${WebDBCmd.sc_init}`, (data) => {
+                console.log('sc_init', data);
+                let p = data.leftPlayer
+                this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
+                p = data.rightPlayer
+                this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
                 this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
+                this.scorePanel.set35ScoreLight(data.winScore)
+                this.scorePanel.setLeftFoul(data.leftFoul)
+                this.scorePanel.setRightFoul(data.rightFoul)
+                this.scorePanel.setLeftScore(data.leftScore)
+                this.scorePanel.setRightScore(data.rightScore)
             })
             .on(`${WebDBCmd.sc_score}`, (data) => {
                 this.scorePanel.setScoreFoul(data)

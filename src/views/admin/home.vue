@@ -1,8 +1,9 @@
-
 <template>
     <div>
-        Home link
-        <iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>
+        Home link 
+        <a href="/dev/panel.html?panel=bracket&m=1"> /dev/panel.html?panel=bracket&m=1</a>
+       
+        <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->
         <el-button @click='_("test","hhh",3)'>onClk</el-button>
     </div>
 </template>

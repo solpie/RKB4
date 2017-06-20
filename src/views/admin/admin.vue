@@ -17,10 +17,9 @@
                 <span slot="label">
                     <i class="el-icon-edit"></i>Admin Home</span>
                 <LiveData></LiveData>
-                <!--<Home></Home>-->
             </el-tab-pane>
             <el-tab-pane label="月赛">
-                http://127.0.0.1:8088/dev/panel.html?panel=bracket&m=1
+                <Home></Home>
             </el-tab-pane>
         </el-tabs>
     </div>

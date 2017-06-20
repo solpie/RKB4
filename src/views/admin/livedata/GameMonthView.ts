@@ -28,11 +28,19 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             this.initGameInfo(res)
         })
     }
-    
+
     initWS() {
-        io.connect('/rbk')
-            .on(`${WebDBCmd.sc_bracketCreated}`, _ => {
+        io.connect('/rkb')
+            .on('connect', () => {
+                console.log('connect GameMonthView initWS')
+            })
+            .on(`${WebDBCmd.sc_bracketCreated}`, () => {
                 console.log('sc_bracketCreated');
+                this.emitBracket()
+            })
+            .on(`${WebDBCmd.sc_panelCreated}`, () => {
+                console.log('sc_panelCreated');
+                this.emitGameInfo()
             })
     }
 
@@ -138,9 +146,21 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
     }
 
     setGameInfo(idx) {
-        let data: any = { _: null }
         let gameData = this.recMap[idx]
         this.gameIdx = Number(idx)
+        this.lPlayer = gameData.player[0]
+        this.rPlayer = gameData.player[1]
+        this.lHupuID = this.getHupuId(this.lPlayer)
+        this.rHupuID = this.getHupuId(this.rPlayer)
+        this.lScore = Number(gameData.score[0])
+        this.rScore = Number(gameData.score[1])
+        this.lFoul = Number(gameData.foul[0])
+        this.rFoul = Number(gameData.foul[1])
+        this.emitGameInfo()
+    }
+
+    emitGameInfo() {
+        let data: any = { _: null }
         data.winScore = 3
         if (this.gameIdx == 37) {//决赛
             data.winScore = 5
@@ -153,14 +173,14 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             data.matchType = 1
         }
         data.gameIdx = this.gameIdx + 1
-        this.lPlayer = gameData.player[0]
-        this.rPlayer = gameData.player[1]
-        this.lHupuID = this.getHupuId(this.lPlayer)
-        this.rHupuID = this.getHupuId(this.rPlayer)
-        this.lScore = Number(gameData.score[0])
-        this.rScore = Number(gameData.score[1])
-        this.lFoul = Number(gameData.foul[0])
-        this.rFoul = Number(gameData.foul[1])
+        let lPlayerData = this.getPlayerInfo(this.lPlayer).data
+        let rPlayerData = this.getPlayerInfo(this.rPlayer).data
+        data.leftScore = this.lScore
+        data.rightScore = this.rScore
+        data.leftFoul = this.lFoul
+        data.rightFoul = this.rFoul
+        data.leftPlayer = lPlayerData
+        data.rightPlayer = rPlayerData
         console.log('setGameInfo', data);
         $post(`/emit/${WebDBCmd.cs_init}`, data)
     }

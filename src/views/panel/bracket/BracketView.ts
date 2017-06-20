@@ -40,19 +40,18 @@ export class BracketView {
             this.initAuto(Number(gameId));
         }
         this.initLocal()
-        this.initBg()
     }
 
     initManmaul() {
-        let srvIO = io.connect('/rbk')
-            .on('connect', () => {
-                console.log('connect manmaul!')
-                $post(`/emit/${WebDBCmd.cs_bracketCreated}`, { _: null })
-            })
-            .on(`${WebDBCmd.sc_bracketInit}`, (data) => {
-                delete data['_']
-                this.onBracketData({ data: data });
-            })
+        // let srvIO = io.connect('/rbk')
+        //     .on('connect', () => {
+        //         console.log('connect manmaul!')
+        //         $post(`/emit/${WebDBCmd.cs_bracketCreated}`, { _: null })
+        //     })
+        //     .on(`${WebDBCmd.sc_bracketInit}`, (data) => {
+        //         delete data['_']
+        //         this.onBracketData({ data: data });
+        //     })
     }
 
     getPreRoundInfo(gameId) {
@@ -68,8 +67,6 @@ export class BracketView {
         // })
     }
 
-    initBg() {
-    }
 
     showComingIdx(idx) {
         //todo：加上延时
@@ -97,26 +94,18 @@ export class BracketView {
         // });
         // console.log('connected local /rkb');
     }
-
+    isInit: boolean
     initLocal() {
         let localWs = io.connect(`/rkb`)
         localWs.on('connect', (msg) => {
-            if (this.isMonth) {
-                let url = `/emit/${WebDBCmd.cs_bracketCreated}`
-                let param = { _: null }
-                // $.ajax({
-                //     url: url,
-                //     type: 'post',
-                //     data: JSON.stringify(param),
-                //     headers: { "Content-Type": "application/json" },
-                //     dataType: 'json'
-                // });
-                $post(url, JSON.stringify(param))
+            if (this.isMonth && !this.isInit) {
+                this.isInit = true
+                $post(`/emit/${WebDBCmd.cs_bracketCreated}`, { _: null })
             }
-
             console.log('connect', window.location.host)
         })
             .on(`${WebDBCmd.sc_bracketInit}`, (data) => {
+                console.log('sc_bracketInit')
                 delete data['_']
                 this.onBracketData({ data: data });
             })

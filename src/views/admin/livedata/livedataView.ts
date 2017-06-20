@@ -48,14 +48,15 @@ export default class LiveDateView {
     }
 
     emitInfo() {
+        gmv.emitGameInfo()
         // let data: any = this.gameInfo.getGameData()
         // data._ = null
-        let data: any = { _: null }
-        data.gameIdx = 20
-        data.matchType = MatchType.Master
-        $post(`/emit/${WebDBCmd.cs_init}`, data)
+        // let data: any = { _: null }
+        // data.gameIdx = 20
+        // data.matchType = MatchType.Master
+        // $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
-    
+
     emitScore() {
         let data: any = { _: null }
         data.leftScore = Number(this.gameView.lScore)

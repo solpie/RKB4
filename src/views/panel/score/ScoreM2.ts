@@ -68,8 +68,8 @@ export class ScoreM2 {
     lAvatar: PIXI.Sprite
     rAvatar: PIXI.Sprite
 
-    lFtName: PIXI.Text
-    rFtName: PIXI.Text
+    // lFtName: PIXI.Text
+    // rFtName: PIXI.Text
     _lFtId: string
     _rFtId: string
 
@@ -161,7 +161,7 @@ export class ScoreM2 {
 
         let rft = new FoulText(this.skin.foulHint)
         rft.hasHint = false
-        rft.x = 1290    
+        rft.x = 1290
         rft.y = lft.y
         rft.setFoul(0)
         ctn.addChild(rft)
@@ -189,18 +189,18 @@ export class ScoreM2 {
 
         let gis = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '26px', fill: "#fff",
+            fontSize: '18px', fill: "#fff",
             fontWeight: 'bold'
         }
-        let gi = new PIXI.Text("第00场", gis)
+        let gi = new PIXI.Text("", gis)
         this.gameIdx = gi
-        gi.x = 917
+        gi.x = 915
         gi.y = 168
         ctn.addChild(gi)
 
         let pns = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '31px', fill: this.skin.fontColor,
+            fontSize: '28px', fill: this.skin.fontColor,
             stroke: '#000',
             strokeThickness: 2,
             fontWeight: 'bold',
@@ -213,7 +213,7 @@ export class ScoreM2 {
             fontWeight: 'bold'
         }
         let lpn = new PIXI.Text("", pns)
-        lpn.y = 155
+        lpn.y = 160
         this.lPlayerName = lpn
         ctn.addChild(lpn)
 
@@ -234,25 +234,12 @@ export class ScoreM2 {
         this.rPlayerInfo = rpInfo
         ctn.addChild(rpInfo)
 
-        let shift = 20
-        let lm = new PIXI.Graphics()
-            .beginFill(0xff0000)
-        // polygon(lm, 63, 6)
-        lm.moveTo(0, 0)
-            .lineTo(124, 0)
-            .lineTo(124 + shift, 123)
-            .lineTo(shift, 123)
+        let lm = newBitmap({ url: '/img/panel/score/m2/mask.png' })
         lm.x = 650
         lm.y = 163
         ctn.addChild(lm)
 
-        let rm = new PIXI.Graphics()
-            .beginFill(0xff0000)
-        // polygon(rm, 63, 6)
-        rm.moveTo(shift, 0)
-            .lineTo(124 + shift, 0)
-            .lineTo(124, 123)
-            .lineTo(0, 123)
+        let rm = newBitmap({ url: '/img/panel/score/m2/maskR.png' })
         rm.x = 1122
         rm.y = lm.y
         ctn.addChild(rm)
@@ -278,30 +265,30 @@ export class ScoreM2 {
             fontWeight: 'bold'
         }
 
-        let lftn = new PIXI.Text('', ftns)
-        this.lFtName = lftn
-        lftn.y = 267
-        ctn.addChild(lftn)
+        // let lftn = new PIXI.Text('', ftns)
+        // this.lFtName = lftn
+        // lftn.y = 267
+        // ctn.addChild(lftn)
 
-        let rftn = new PIXI.Text('', ftns)
-        ctn.addChild(rftn)
-        this.rFtName = rftn
-        rftn.y = lftn.y
-        ctn.addChild(rftn)
+        // let rftn = new PIXI.Text('', ftns)
+        // ctn.addChild(rftn)
+        // this.rFtName = rftn
+        // rftn.y = lftn.y
+        // ctn.addChild(rftn)
 
-        let lFrame = new PIXI.Sprite()
-        lFrame.scale.x = lFrame.scale.y = 0.97
-        this.lFrame = lFrame
-        lFrame.x = 562
-        lFrame.y = 134
-        ctn.addChild(lFrame)
+        // let lFrame = new PIXI.Sprite()
+        // lFrame.scale.x = lFrame.scale.y = 0.97
+        // this.lFrame = lFrame
+        // lFrame.x = 562
+        // lFrame.y = 134
+        // ctn.addChild(lFrame)
 
-        let rFrame = new PIXI.Sprite()
-        rFrame.scale.x = rFrame.scale.y = 0.97
-        this.rFrame = rFrame
-        rFrame.x = 1228
-        rFrame.y = lFrame.y
-        ctn.addChild(rFrame)
+        // let rFrame = new PIXI.Sprite()
+        // rFrame.scale.x = rFrame.scale.y = 0.97
+        // this.rFrame = rFrame
+        // rFrame.x = 1228
+        // rFrame.y = lFrame.y
+        // ctn.addChild(rFrame)
     }
 
     set35ScoreLight(winScore) {
@@ -312,33 +299,33 @@ export class ScoreM2 {
     setGameIdx(gameIdx, matchType) {
         console.log('isMaster', matchType)
         if (matchType == 2) {
-            if (!this.gameSection2)
-                loadImg(this.skin.section2, (img) => {
-                    this.gameSection2 = imgToTex(img)
-                    this.gameSection.texture = this.gameSection2
-                })
-            else
-                this.gameSection.texture = this.gameSection2
+            // if (!this.gameSection2)
+            //     loadImg(this.skin.section2, (img) => {
+            //         this.gameSection2 = imgToTex(img)
+            //         this.gameSection.texture = this.gameSection2
+            //     })
+            // else
+            //     this.gameSection.texture = this.gameSection2
         }
         else if (matchType == 1) {
-            if (!this.gameSection1)
-                loadImg(this.skin.section1, (img) => {
-                    this.gameSection1 = imgToTex(img)
-                    this.gameSection.texture = this.gameSection1
-                })
-            else
-                this.gameSection.texture = this.gameSection1
+            // if (!this.gameSection1)
+            //     loadImg(this.skin.section1, (img) => {
+            //         this.gameSection1 = imgToTex(img)
+            //         this.gameSection.texture = this.gameSection1
+            //     })
+            // else
+            //     this.gameSection.texture = this.gameSection1
+            this.gameIdx.text = '小组赛' + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 3) {
-            if (!this.gameSection3)
-                loadImg(this.skin.section3, (img) => {
-                    this.gameSection3 = imgToTex(img)
-                    this.gameSection.texture = this.gameSection3
-                })
-            else
-                this.gameSection.texture = this.gameSection3
+            // if (!this.gameSection3)
+            //     loadImg(this.skin.section3, (img) => {
+            //         this.gameSection3 = imgToTex(img)
+            //         this.gameSection.texture = this.gameSection3
+            //     })
+            // else
+            //     this.gameSection.texture = this.gameSection3
         }
-        this.gameIdx.text = '第' + paddy(gameIdx, 2) + '场'
     }
     _showWinScore() {
         this.winScoreText.visible = true
@@ -442,7 +429,7 @@ export class ScoreM2 {
         loadRes(avatar, (img) => {
             let avt = this.lAvatar
             avt.texture = imgToTex(img)
-            let s = 148 / img.width
+            let s = 155 / img.width
             avt.x = avt.mask.x// - avt.texture.width * .5 * s
             avt.y = avt.mask.y// - avt.texture.height * .5 * s
             avt.scale.x = avt.scale.y = s
@@ -458,25 +445,25 @@ export class ScoreM2 {
         this.lPlayerInfo.x = 640 - this.lPlayerInfo.width
 
         // this.lFtName.text = ft
-        this._fixFtName(this.lFtName, getFtName(ftId))
-        this.lFtName.x = 630 - this.lFtName.width * .5
+        // this._fixFtName(this.lFtName, getFtName(ftId))
+        // this.lFtName.x = 630 - this.lFtName.width * .5
     }
     _loadFrame(level, frame: PIXI.Sprite) {
-        // level = Math.ceil(Number(level) / 5)
-        level = Number(level)
-        if (level > 0) {
-            let frameUrl = '/img/panel/score2017/frame' + level + '.png'
-            frame.visible = true
-            if (!this._tex[frameUrl]) {
-                loadImg(frameUrl, (img) => {
-                    this._tex[frameUrl] = frame.texture = imgToTex(img)
-                })
-            }
-            else
-                frame.texture = this._tex[frameUrl]
-        }
-        else
-            frame.visible = false
+        // // level = Math.ceil(Number(level) / 5)
+        // level = Number(level)
+        // if (level > 0) {
+        //     let frameUrl = '/img/panel/score2017/frame' + level + '.png'
+        //     frame.visible = true
+        //     if (!this._tex[frameUrl]) {
+        //         loadImg(frameUrl, (img) => {
+        //             this._tex[frameUrl] = frame.texture = imgToTex(img)
+        //         })
+        //     }
+        //     else
+        //         frame.texture = this._tex[frameUrl]
+        // }
+        // else
+        //     frame.visible = false
     }
     setRightPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number) {
         this._rFtId = ftId
@@ -487,7 +474,7 @@ export class ScoreM2 {
         loadRes(avatar, (img) => {
             let avt = this.rAvatar
             avt.texture = imgToTex(img)
-            let s = 148 / img.width
+            let s = 155 / img.width
             avt.x = avt.mask.x //- avt.texture.width * .5 * s
             avt.y = avt.mask.y //- avt.texture.height * .5 * s
             avt.scale.x = avt.scale.y = s
@@ -499,9 +486,8 @@ export class ScoreM2 {
             weight = 0
         this.rPlayerInfo.text = height + 'CM ' + weight + "KG"
 
-        // this.rFtName.text = ft
-        this._fixFtName(this.rFtName, getFtName(ftId))
-        this.rFtName.x = 1293 - this.rFtName.width * .5
+        // this._fixFtName(this.rFtName, getFtName(ftId))
+        // this.rFtName.x = 1293 - this.rFtName.width * .5
     }
     getPlayerInfo(isLeft) {
         let player: any = {}

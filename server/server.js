@@ -11,9 +11,9 @@ var io = require('socket.io')(server);
 // const path = require('path')
 var static_path = '../dist/static';
 app.use(express.static(static_path));
-app.get('/', function(req, res, next) {
-    res.redirect('/dev/admin.html')
-});
+// app.get('/', function(req, res, next) {
+//     res.redirect('/dev/admin.html')
+// });
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({
     extended: true
@@ -55,6 +55,7 @@ app.post('/emit/:cmd', (req, res) => {
             toEvent = cmd.replace("cs_", req.body['prefix'])
         else
             toEvent = cmd.replace("cs_", "sc_")
+        delete req.body['_']
         rkbIO.emit(toEvent, req.body)
     }
     console.log('emit ', cmd, req.body, 'to ', toEvent);

@@ -15,7 +15,8 @@ import { ScoreView } from './score/ScoreView';
 // import io from 'socket.io-client';
 // window['io'] = io
 // console.log('socket.io ', io);
-
+// document.getElementsByTagName('body')['style'].margin = 0
+document.body.style.margin = '0px'
 declare let PIXI;
 declare let TWEEN;
 

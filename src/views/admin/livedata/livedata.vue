@@ -73,7 +73,7 @@
                 <el-button @click='_("buildGroup","d")'>Group D</el-button>
             </el-row>
         </el-col>
-        <iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>
+        <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->
     </div>
 </template>
 <script>

@@ -1,3 +1,4 @@
+console.log('admin view')
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
@@ -27,4 +28,3 @@ let $vm = new Vue({
     el: '#app',
     render: h => h(Admin)
 })
-console.log('vue ',$vm)
