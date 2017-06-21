@@ -102,4 +102,12 @@ export default class LiveDateView {
     setScore(scoreStr) {
         gmv.setScore(scoreStr)
     }
+
+    initMaster() {
+        gmv.initMaster()
+    }
+
+    clearMaster(s) {
+        gmv.clearMaster(s)
+    }
 }

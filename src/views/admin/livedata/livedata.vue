@@ -73,12 +73,17 @@
                 <el-button @click='_("showGroup","d")'>Group D</el-button>
                 <el-button @click='_("hideGroup")'>Hide Group Rank</el-button>
                 <br>
+                <el-button @click='_("initMaster")'>initMaster</el-button>
+                <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
     
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
+                <hr>
+                <el-button @click='_("clearMaster",1)'>clear Master</el-button>
+                <el-button @click='_("clearMaster",0)'>clear All</el-button>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

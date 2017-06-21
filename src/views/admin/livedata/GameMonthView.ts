@@ -5,6 +5,7 @@ import { MatchType } from "../../panel/score/Com2017";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { BaseGameView, getDoc, IBaseGameView, saveDoc, RecData } from './BaseGame';
 import { firstBy } from "./thenBy";
+import { mapToArr } from "../../utils/JsFunc";
 
 declare let io;
 export class GameMonthView extends BaseGameView implements IBaseGameView {
@@ -256,9 +257,6 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         console.log(playerArr)
         return { _: null, group: group, playerArr: playerArr }
     }
-    // numFy(doc) {
-
-    // }
     buildPlayerData(doc, isAll = false) {
         let sumMap: any = {}
         let sumIdx;
@@ -325,5 +323,85 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                 saveDoc(doc)
             })
         }
+    }
+
+    initMaster() {
+        getDoc((doc) => {
+            let sumMap: any = this.buildPlayerData(doc)
+            console.log('initMaster sumMap', sumMap);
+            let playerArr = mapToArr(sumMap)
+            for (let p1 of playerArr) {
+                for (let p2 of playerArr) {
+                    // if (p1.win == p2.win && p1.beat.indexOf(p2.name) > -1)
+                    //     p1.win += 0.1
+                }
+            }
+            playerArr.sort(firstBy(function (v1, v2) { return v2.win - v1.win; })
+                .thenBy(function (v1, v2) { return v2.dtScore - v1.dtScore; })
+            )
+            // this.playerRank = playerArr
+
+            // -- -master---                
+            let groupMap: any = { 'a': [], 'b': [], 'c': [], 'd': [] }
+            for (let p3 of playerArr) {
+                let pg = p3.name[0]
+                if (groupMap[pg].length < 2) {
+                    groupMap[pg].push(p3)
+                }
+            }
+
+            let m = []
+            for (let g in groupMap) {
+                m = m.concat(groupMap[g])
+            }
+
+            let masterIdx = 24
+            doc['recMap'][masterIdx + 0].player = [m[0].name, m[3].name]
+
+            doc['recMap'][masterIdx + 1].player[0] = m[2].name
+            doc['recMap'][masterIdx + 1].player[1] = m[1].name
+
+            doc['recMap'][masterIdx + 2].player[0] = m[4].name
+            doc['recMap'][masterIdx + 2].player[1] = m[7].name
+
+            doc['recMap'][masterIdx + 3].player[0] = m[6].name
+            doc['recMap'][masterIdx + 3].player[1] = m[5].name
+            for (let m1 of m) {
+                console.log('master', m1.name)
+            }
+            console.log('master', doc)
+            saveDoc(doc)
+            this.initDoc(doc)
+        })
+    }
+
+    clearMaster(section) {
+        let min = 0
+        let max = 38
+        if (section == 0) {
+
+        }
+        else if (section == 1) {
+            min = 24
+        }
+        getDoc((doc) => {
+            if (doc) {
+                for (let k in doc['recMap']) {
+                    let gameIdx = Number(k)
+                    if (gameIdx <= max && gameIdx >= min) {
+                        doc['recMap'][k].score = [0, 0]
+                        doc['recMap'][k].foul = [0, 0]
+
+                        if (section == 1) {
+                            doc['recMap'][k].player = ['', '']
+                        }
+                    }
+
+                }
+                doc.gameIdx = 0
+                this.initDoc(doc)
+                saveDoc(doc)
+            }
+        })
     }
 }
