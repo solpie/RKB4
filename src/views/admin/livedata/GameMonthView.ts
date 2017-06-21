@@ -145,7 +145,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         })
     }
 
-    setGameInfo(idx) {
+    setGameInfo(idx, isEmit = true) {
         let gameData = this.recMap[idx]
         this.gameIdx = Number(idx)
         this.lPlayer = gameData.player[0]
@@ -156,7 +156,8 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         this.rScore = Number(gameData.score[1])
         this.lFoul = Number(gameData.foul[0])
         this.rFoul = Number(gameData.foul[1])
-        this.emitGameInfo()
+        if (isEmit)
+            this.emitGameInfo()
     }
 
     emitGameInfo() {
@@ -166,12 +167,10 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             data.winScore = 5
             data.matchType = 3
         }
-        else if (this.gameIdx > 23) {//大师赛
+        else if (this.gameIdx > 23) //大师赛
             data.matchType = 2
-        }
-        else {
+        else
             data.matchType = 1
-        }
         data.gameIdx = this.gameIdx + 1
         let lPlayerData = this.getPlayerInfo(this.lPlayer).data
         let rPlayerData = this.getPlayerInfo(this.rPlayer).data
@@ -227,8 +226,16 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
 
     showGroup(group) {
         getDoc(doc => {
-            this.curGroupRank = this.getGroup(doc, group).playerArr
+            let data = this.getGroup(doc, group)
+            $post(`/emit/${WebDBCmd.cs_showGroupRank}`, data)
+            this.curGroupRank = data.playerArr
         })
+    }
+
+    hideGroup() {
+        let data = { _: null }
+        $post(`/emit/${WebDBCmd.cs_hideGroupRank}`, data)
+
     }
 
     getGroup(doc, group) {
@@ -268,25 +275,55 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                 }
                 if (r.score[0] > r.score[1]) {
                     sumMap[r.player[0]].win++
-                    sumMap[r.player[0]].dtScore += r.score[0] - r.score[1]
+                    sumMap[r.player[0]].dtScore += (r.score[0] - r.score[1])
                     sumMap[r.player[0]].beat.push(r.player[1])
                     sumMap[r.player[0]].score += r.score[0]
 
                     sumMap[r.player[1]].lose++
+                    sumMap[r.player[1]].dtScore -= (r.score[0] - r.score[1])
                     sumMap[r.player[1]].score += r.score[1]
                 }
                 else {
                     sumMap[r.player[1]].win++
-                    sumMap[r.player[1]].dtScore += r.score[1] - r.score[0]
+                    sumMap[r.player[1]].dtScore += (r.score[1] - r.score[0])
                     sumMap[r.player[1]].beat.push(r.player[0])
                     sumMap[r.player[1]].score += r.score[1]
 
                     sumMap[r.player[0]].lose++
+                    sumMap[r.player[0]].dtScore -= (r.score[1] - r.score[0])
                     sumMap[r.player[0]].score += r.score[0]
                 }
                 console.log(r)
             }
         }
         return sumMap
+    }
+
+    setVS(vsStr) {
+        let a = vsStr.split(' ')
+        if (a.length == 2) {
+            let p1 = a[0]
+            let p2 = a[1]
+            getDoc(doc => {
+                let r = doc['recMap'][this.gameIdx]
+                r.player = [p1, p2]
+                this.initDoc(doc)
+                saveDoc(doc)
+            })
+        }
+    }
+
+    setScore(scoreStr) {
+        let a = scoreStr.split(' ')
+        if (a.length == 2) {
+            let s1 = a[0]
+            let s2 = a[1]
+            getDoc(doc => {
+                let r = doc['recMap'][this.gameIdx]
+                r.score = [s1, s2]
+                this.initDoc(doc)
+                saveDoc(doc)
+            })
+        }
     }
 }

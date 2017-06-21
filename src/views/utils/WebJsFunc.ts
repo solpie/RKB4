@@ -121,7 +121,7 @@ export let $get = (url, callback) => {
                 callback(res.body, res)
         })
 }
-export let $post = (url, data, callback?) => {
+export let $post = (url, data?, callback?) => {
     let $http = window['$http']
     if (!$http) {
         xhr(url, 'POST', data, (res) => {

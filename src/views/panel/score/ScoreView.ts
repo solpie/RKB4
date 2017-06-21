@@ -16,6 +16,7 @@ export class ScoreView {
     scorePanel: any
     eventPanel: any
     delayTimeMS: number = 0
+    localWS: any
     constructor(stage: PIXI.Container) {
         let gameId = getUrlQuerys('gameId')
         let isDark = getUrlQuerys('theme') == 'dark'
@@ -23,10 +24,13 @@ export class ScoreView {
         console.log(gameId, isDark)
         if (isMonth)
             this.scorePanel = new ScoreM2(stage, isDark)
-        else
+        else {
             this.scorePanel = new Score2017(stage, isDark)
-        this.initLocalWs()
-        this.initRemote()
+            this.initRemote()
+        }
+        // TweenEx.delayedCall(2000, _ => {
+        this.localWS = this.initLocalWs()
+        // })
     }
 
     initDefaultPlayer() {
@@ -161,11 +165,16 @@ export class ScoreView {
             });
         })
     }
+
+    isInit = false
     initLocalWs() {
         let localWs = io.connect(`/rkb`)
         localWs.on('connect', (msg) => {
             console.log('connect', window.location.host)
-            $post(`/emit/${WebDBCmd.cs_panelCreated}`, { _: null })
+            if (!this.isInit) {
+                this.isInit = true
+                $post(`/emit/${WebDBCmd.cs_panelCreated}`, { _: null })
+            }
         })
             .on(`${CommandId.sc_setDelayTime}`, (data) => {
                 this.delayTimeMS = data.delayTimeMS
@@ -245,5 +254,6 @@ export class ScoreView {
                     this.scorePanel.setTimer(data.sec)
                 }
             })
+        return localWs
     }
 }

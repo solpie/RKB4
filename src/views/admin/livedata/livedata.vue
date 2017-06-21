@@ -22,7 +22,7 @@
             </el-collapse>
         </el-col>
         <el-col :span='14'>
-            {{lHupuID}} vs {{rHupuID}}
+            [{{lPlayer}}]{{lHupuID}} vs [{{rPlayer}}] {{rHupuID}}
             <el-row>
                 <el-col :span='4'>
                     L Score
@@ -56,7 +56,6 @@
             </el-row>
             <br>
             <el-row>
-                <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <el-button @click='_("setTimer",1)'>开始计时</el-button>
                 <el-button @click='_("setTimer",0)'>暂停计时</el-button>
                 <el-button @click='_("setTimer",-1)'>reset计时</el-button>
@@ -67,10 +66,19 @@
                 <el-button @click='_("commit")'>提交比赛</el-button>
                 <hr>
                 <el-button @click='_("initGameMonth",286)'>init Game Month</el-button>
-                <el-button @click='_("buildGroup","a")'>Group A</el-button>
-                <el-button @click='_("buildGroup","b")'>Group B</el-button>
-                <el-button @click='_("buildGroup","c")'>Group C</el-button>
-                <el-button @click='_("buildGroup","d")'>Group D</el-button>
+                <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
+                <el-button @click='_("showGroup","a")'>Group A</el-button>
+                <el-button @click='_("showGroup","b")'>Group B</el-button>
+                <el-button @click='_("showGroup","c")'>Group C</el-button>
+                <el-button @click='_("showGroup","d")'>Group D</el-button>
+                <el-button @click='_("hideGroup")'>Hide Group Rank</el-button>
+                <br>
+                <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
+                <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
+    
+                <br>
+                <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
+                <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

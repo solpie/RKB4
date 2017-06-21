@@ -8,7 +8,7 @@ let gmv = new GameMonthView()
 export default class LiveDateView {
     gameView: IBaseGameView
     gmv: GameMonthView
-    timeInput: number = 0
+
     constructor() {
         this.gameView = gmv
         this.gmv = gmv
@@ -16,6 +16,8 @@ export default class LiveDateView {
         gmv['timeInput'] = 0
         gmv['actPanel'] = '1'
         gmv['group'] = ''
+        gmv['inputVS'] = ''
+        gmv['inputScore'] = ''
         console.log('livedata view');
     }
 
@@ -49,12 +51,6 @@ export default class LiveDateView {
 
     emitInfo() {
         gmv.emitGameInfo()
-        // let data: any = this.gameInfo.getGameData()
-        // data._ = null
-        // let data: any = { _: null }
-        // data.gameIdx = 20
-        // data.matchType = MatchType.Master
-        // $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
 
     emitScore() {
@@ -73,11 +69,11 @@ export default class LiveDateView {
 
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }
+
     commit() {
         let data: any = { _: null }
         this.gameView.commit()
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
-
     }
     ///game month
     initGameMonth(gameId) {
@@ -85,13 +81,25 @@ export default class LiveDateView {
     }
     getGameInfo(row) {
         let gameIdx = row.gameIdx
-        gmv.setGameInfo(gameIdx)
+        gmv.setGameInfo(gameIdx, false)
         console.log('getGameInfo', row);
     }
 
-    buildGroup(g) {
+    showGroup(g) {
         gmv['actPanel'] = '2'
         gmv['group'] = g
         gmv.showGroup(g)
+    }
+
+    hideGroup() {
+        gmv.hideGroup()
+    }
+
+    setVS(vsStr) {
+        gmv.setVS(vsStr)
+    }
+
+    setScore(scoreStr) {
+        gmv.setScore(scoreStr)
     }
 }

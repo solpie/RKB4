@@ -1,3 +1,4 @@
+import { PopupView } from './popup/PopupView';
 
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
@@ -17,6 +18,7 @@ import { ScoreView } from './score/ScoreView';
 // console.log('socket.io ', io);
 // document.getElementsByTagName('body')['style'].margin = 0
 document.body.style.margin = '0px'
+document.body.style.overflow = 'hidden'
 declare let PIXI;
 declare let TWEEN;
 
@@ -36,12 +38,16 @@ let initPIXI = () => {
     return renderer.stage;
 }
 
-window['stage'] = initPIXI()
+let s = window['stage'] = initPIXI()
 // new Score2017(window['stage'], false)
 let panel = getUrlQuerys('panel')
 let gameId = getUrlQuerys('gameId')
 let isMonth = getUrlQuerys('m') == '1'
+let localWS;
 if (panel == 'bracket')
-    new BracketView(window['stage'], gameId, isMonth)
-else
-    new ScoreView(window['stage'])
+    new BracketView(s, gameId, isMonth)
+else {
+    let scoreView = new ScoreView(s)
+    localWS = scoreView.localWS
+}
+new PopupView(s,localWS)

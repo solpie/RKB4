@@ -1,4 +1,5 @@
 export const WebDBCmd = {
+    //popup
     //rawday client
     init: '',
     pull: ``,
@@ -10,10 +11,10 @@ export const WebDBCmd = {
     sc_bracketInit: ``,
     cs_startGame: ``,
     sc_startGame: ``,
-    cs_showProgress: ``,
-    sc_showProgress: ``,
-    cs_hideProgress: ``,
-    sc_hideProgress: ``,
+    cs_showGroupRank: ``,//小组排名
+    sc_showGroupRank: ``,
+    cs_hideGroupRank: ``,
+    sc_hideGroupRank: ``,
     cs_startTimer: ``,
     sc_startTimer: ``,
     cs_setTimer: ``,
