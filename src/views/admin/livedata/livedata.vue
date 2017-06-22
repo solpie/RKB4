@@ -68,11 +68,11 @@
                 </el-col>
                 <el-col :span='8'>
                     冠军：
+                    <el-button @click='_("showChampion","hide")'>Hide Champion</el-button>
                     <el-input v-model="inputChampion"  style="width:450px"></el-input>
                     <br>
                     <el-button @click='_("showChampion",lPlayer,inputChampion)'>{{lHupuID}}</el-button>
                     <el-button @click='_("showChampion",rPlayer,inputChampion)'>{{rHupuID}}</el-button>
-                    <el-button @click='_("showChampion","hide")'>Hide Champion</el-button>
                 </el-col>
             </el-row>
             <el-row>

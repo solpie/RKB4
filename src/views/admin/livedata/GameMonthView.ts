@@ -184,8 +184,47 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         console.log('setGameInfo', data);
         $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
-
+    routeBracket() {
+        let masterIdx = 23
+        let route = (from, toWin, toLose) => {
+            from += masterIdx
+            toWin += masterIdx
+            toLose += masterIdx
+            let rFrom = this.recMap[from]
+            let rWin = this.recMap[toWin]
+            let rLose = this.recMap[toLose]
+            if (rFrom.score[0] == 0 && rFrom.score[1] == 0)
+                return
+            if (rFrom.score[0] > rFrom.score[1]) {
+                rWin.player.push(rFrom.player[0])
+                if (rLose)
+                    rLose.player.push(rFrom.player[1])
+            }
+            else {
+                rWin.player.push(rFrom.player[1])
+                if (rLose)
+                    rLose.player.push(rFrom.player[0])
+            }
+        }
+        for (let i = 5; i < 15; i++) {
+            this.recMap[i + masterIdx].player = []
+        }
+        route(1, 7, 5)
+        route(2, 7, 5)
+        route(3, 8, 6)
+        route(4, 8, 6)
+        route(5, 10, 99)
+        route(6, 9, 99)
+        route(7, 11, 9)
+        route(8, 11, 10)
+        route(9, 12, 99)
+        route(10, 12, 99)
+        route(11, 14, 13)
+        route(12, 13, 99)
+        route(13, 14, 99)
+    }
     emitBracket() {
+        this.routeBracket()
         let data: any = { _: null }
         for (let i = 24; i < 38; i++) {
             let r = this.recMap[i]
@@ -215,6 +254,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             gameData.gameIdx = this.gameIdx
             doc.gameIdx = this.gameIdx + 1
             this.initDoc(doc)
+            this.emitBracket()
             saveDoc(doc)
         })
     }
@@ -373,6 +413,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             console.log('master', doc)
             saveDoc(doc)
             this.initDoc(doc)
+            this.emitBracket()
         })
     }
 
