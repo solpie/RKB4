@@ -18,6 +18,7 @@ export default class LiveDateView {
         gmv['group'] = ''
         gmv['inputVS'] = ''
         gmv['inputScore'] = ''
+        gmv['inputChampion'] = ''
         console.log('livedata view');
     }
 
@@ -89,6 +90,15 @@ export default class LiveDateView {
         gmv['actPanel'] = '2'
         gmv['group'] = g
         gmv.showGroup(g)
+    }
+
+    showChampion(groupName,title) {
+        if (groupName) {
+            if (groupName == 'hide') 
+                gmv.hideChampion()
+            else
+                gmv.showChampion(groupName,title)
+        }
     }
 
     hideGroup() {

@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+console.log('json', { visible: false });
 
 //proxy
 var XMLHttpRequest = require('xhr2');

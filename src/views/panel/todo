@@ -1,5 +1,5 @@
 获胜面板
-冠军抬头
+[o]冠军抬头
 [o]小组进度
 滚动条
 小组排名 beats
@@ -7,6 +7,9 @@
 livedataview
 .清除比分
 [o].清除大师赛
+创建小组赛
 
 gpu mode test 
 mask less
+
+text layout {x,y,text,name,style,align,parent}

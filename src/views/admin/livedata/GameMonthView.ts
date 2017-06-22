@@ -227,16 +227,16 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
 
     showGroup(group) {
         getDoc(doc => {
-            let data = this.getGroup(doc, group)
+            let data: any = this.getGroup(doc, group)
+            data.visible = true
             $post(`/emit/${WebDBCmd.cs_showGroupRank}`, data)
             this.curGroupRank = data.playerArr
         })
     }
 
     hideGroup() {
-        let data = { _: null }
-        $post(`/emit/${WebDBCmd.cs_hideGroupRank}`, data)
-
+        let data = { _: null, visible: false }
+        $post(`/emit/${WebDBCmd.cs_showGroupRank}`, data)
     }
 
     getGroup(doc, group) {
@@ -257,6 +257,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         console.log(playerArr)
         return { _: null, group: group, playerArr: playerArr }
     }
+
     buildPlayerData(doc, isAll = false) {
         let sumMap: any = {}
         let sumIdx;
@@ -403,5 +404,23 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                 saveDoc(doc)
             }
         })
+    }
+
+    showChampion(groupName, title) {
+        let p = this.getPlayerInfo(groupName)
+        let data: any = { _: null }
+        data.title = title
+        data.visible = true
+        data.ftId = p.data.groupId
+        data.name = p.data.name
+        data.info = p.data.height + ' CM ' + p.data.weight + " KG"
+        $post(`/emit/${WebDBCmd.cs_showChampion}`, data)
+        $post(`/emit/${WebDBCmd.cs_showScore}`, { _: null, visible: false })
+    }
+
+    hideChampion() {
+        let data = { _: null, visible: false }
+        $post(`/emit/${WebDBCmd.cs_showChampion}`, data)
+        $post(`/emit/${WebDBCmd.cs_showScore}`, { _: null, visible: true })
     }
 }

@@ -13,8 +13,8 @@ export const WebDBCmd = {
     sc_startGame: ``,
     cs_showGroupRank: ``,//小组排名
     sc_showGroupRank: ``,
-    cs_hideGroupRank: ``,
-    sc_hideGroupRank: ``,
+    cs_showChampion: ``,//冠军title
+    sc_showChampion: ``,
     cs_startTimer: ``,
     sc_startTimer: ``,
     cs_setTimer: ``,
@@ -23,6 +23,8 @@ export const WebDBCmd = {
     sc_commit: ``,
     cs_score: ``,
     sc_score: ``,
+    cs_showScore: ``,//显示隐藏比分面板
+    sc_showScore: ``,
     cs_panelCreated: ``,
     sc_panelCreated: ``,
     cs_bracketCreated: ``,

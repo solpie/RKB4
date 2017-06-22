@@ -185,12 +185,6 @@ export class ScoreView {
                 // window.location.href = getScorePanelUrl(this.gameId, isDark, ob)
                 // window.location.reload()
             })
-            .on(`${CommandId.sc_showChampion}`, (data) => {
-                let player = this.scorePanel.getPlayerInfo(data.isLeft)
-                this.eventPanel.showChampion(data.title, player)
-                this.eventPanel.champion.show()
-                this.scorePanel.hide()
-            })
             .on(`${CommandId.sc_toggleScorePanel}`, (data) => {
                 data.visible ?
                     this.scorePanel.show()
@@ -236,6 +230,10 @@ export class ScoreView {
             .on(`${WebDBCmd.sc_score}`, (data) => {
                 this.scorePanel.setScoreFoul(data)
             })
+            .on(`${WebDBCmd.sc_showScore}`, (data) => {
+                  data.visible ? this.scorePanel.show()
+                    : this.scorePanel.hide()
+            })
             .on(`${WebDBCmd.sc_setTimer}`, (data) => {
                 console.log('webdbcmd', data);
                 let s = data.state
@@ -254,6 +252,8 @@ export class ScoreView {
                     this.scorePanel.setTimer(data.sec)
                 }
             })
+         
+
         return localWs
     }
 }

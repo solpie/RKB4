@@ -1,6 +1,8 @@
+import { Champion } from './Champion';
 import { GroupRank } from './GroupRank';
 import { WebDBCmd } from '../webDBCmd';
 export interface IPopup {
+    create: (parent) => void
     show: (param: any) => void
     hide: () => void
 }
@@ -14,18 +16,25 @@ export class PopupView {
     initWS(io) {
         io.on(WebDBCmd.sc_showGroupRank, data => {
             console.log('sc_groupRank', data);
-            this.show(GroupRank, data)
-        })
-            .on(WebDBCmd.sc_hideGroupRank, _ => {
+            if (data.visible)
+                this.show(GroupRank, data)
+            else
                 this.hide(GroupRank)
+        })
+            .on(WebDBCmd.sc_showChampion, data => {
+            console.log('sc_showChampion', data);
+                data.visible ?
+                    this.show(Champion, data)
+                    : this.hide(Champion)
             })
     }
 
     show(cls, param) {
         if (!this.popupItemMap[cls]) {
-            this.popupItemMap[cls] = new cls(this.ctn)
+            this.popupItemMap[cls] = new cls()
+            this.popupItemMap[cls].create(this.ctn)
         }
-        this.popupItemMap[cls].show(param)
+        (this.popupItemMap[cls] as IPopup).show(param)
     }
 
     hide(cls) {

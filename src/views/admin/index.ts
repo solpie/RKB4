@@ -2,7 +2,7 @@ console.log('admin view')
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
-Vue['http'].options.emulateJSON = true;
+Vue['http'].options.emulateJSON = false;
 window['$http'] = Vue['http'] 
 
 import ElementUI from 'element-ui'
