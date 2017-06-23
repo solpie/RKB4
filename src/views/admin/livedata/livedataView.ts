@@ -92,12 +92,12 @@ export default class LiveDateView {
         gmv.showGroup(g)
     }
 
-    showChampion(groupName,title) {
+    showChampion(groupName, title) {
         if (groupName) {
-            if (groupName == 'hide') 
+            if (groupName == 'hide')
                 gmv.hideChampion()
             else
-                gmv.showChampion(groupName,title)
+                gmv.showChampion(groupName, title)
         }
     }
 
@@ -119,5 +119,8 @@ export default class LiveDateView {
 
     clearMaster(s) {
         gmv.clearMaster(s)
+    }
+    showGamePlayerInfo(v) {
+        gmv.showGamePlayerInfo(v)
     }
 }

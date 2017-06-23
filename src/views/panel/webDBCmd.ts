@@ -15,6 +15,8 @@ export const WebDBCmd = {
     sc_showGroupRank: ``,
     cs_showChampion: ``,//冠军title
     sc_showChampion: ``,
+    cs_showGamePlayerInfo: ``,//球员intro信息
+    sc_showGamePlayerInfo: ``,
     cs_startTimer: ``,
     sc_startTimer: ``,
     cs_setTimer: ``,

@@ -49,5 +49,5 @@ if (panel == 'bracket')
 else {
     let scoreView = new ScoreView(s)
     localWS = scoreView.localWS
+    new PopupView(s, localWS)
 }
-new PopupView(s,localWS)

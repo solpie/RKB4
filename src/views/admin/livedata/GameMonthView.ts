@@ -464,4 +464,14 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         $post(`/emit/${WebDBCmd.cs_showChampion}`, data)
         $post(`/emit/${WebDBCmd.cs_showScore}`, { _: null, visible: true })
     }
+
+    showGamePlayerInfo(visible) {
+        let data = {
+            _: null,
+            visible: visible,
+            leftPlayer: this.getPlayerInfo(this.lPlayer),
+            rightPlayer: this.getPlayerInfo(this.rPlayer)
+        }
+        $post(`/emit/${WebDBCmd.cs_showGamePlayerInfo}`, data)
+    }
 }

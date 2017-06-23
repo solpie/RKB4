@@ -96,6 +96,8 @@
                 <hr>
                 <el-button @click='_("clearMaster",1)'>clear Master</el-button>
                 <el-button @click='_("clearMaster",0)'>clear All</el-button>
+                <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
+                <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

@@ -24,7 +24,6 @@ export function getPreRoundPlayer(gameId, callback) {
 
 export function getAllPlayer(gameId, callback) {
     let url = 'http://api.liangle.com/api/passerbyking/game/players/' + gameId
-    // $get(url, callback)
     _get(_proxyJSON(url), callback)
 }
 

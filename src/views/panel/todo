@@ -3,13 +3,16 @@
 [o]小组进度
 滚动条
 小组排名 beats
+头像preLoad
 
 livedataview
 .清除比分
 [o].清除大师赛
 创建小组赛
+参赛宣言check location
 
+obs 多路流 切换
+
+node pack test
 gpu mode test 
 mask less
-
-text layout {x,y,text,name,style,align,parent}

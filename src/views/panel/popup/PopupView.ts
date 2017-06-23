@@ -1,3 +1,4 @@
+import { GamePlayerInfo } from './GamePlayerInfo';
 import { Champion } from './Champion';
 import { GroupRank } from './GroupRank';
 import { WebDBCmd } from '../webDBCmd';
@@ -22,10 +23,16 @@ export class PopupView {
                 this.hide(GroupRank)
         })
             .on(WebDBCmd.sc_showChampion, data => {
-            console.log('sc_showChampion', data);
+                console.log('sc_showChampion', data);
                 data.visible ?
                     this.show(Champion, data)
                     : this.hide(Champion)
+            })
+            .on(WebDBCmd.sc_showGamePlayerInfo, data => {
+                console.log('sc_showGamePlayerInfo', data);
+                data.visible ?
+                    this.show(GamePlayerInfo, data)
+                    : this.hide(GamePlayerInfo)
             })
     }
 
