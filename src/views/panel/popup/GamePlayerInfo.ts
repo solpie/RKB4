@@ -34,7 +34,7 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.addChild(bg)
         this.lFt = new PIXI.Sprite()
         this.lFt.x = 0
-        this.lFt.y =86
+        this.lFt.y = 86
         // this.lFt.blendMode = PIXI.BLEND_MODES.MULTIPLY
         bg.addChild(this.lFt)
 
@@ -49,9 +49,14 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         strip.y = bg.y + 86
         this.addChild(strip)
 
+        let top = newBitmap({ url: '/img/panel/score/m2/gamePlayerTop.png' })
+        top.x = bg.x
+        top.y = bg.y
+        this.addChild(top)
+
         let tm = new TextMaker(this)
         let nameStyle = {
-            fill: '#fff',
+            fill: '#000',
             fontWeight: 'bold',
             fontFamily: FontName.MicrosoftYahei,
             fontSize: '35px'
@@ -66,6 +71,7 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.rInfo = tm.add({ x: this.rName.x, y: this.lInfo.y, style: nameStyle, hAlign: 'right' })
         this.rLocation = tm.add({ x: this.rName.x, y: this.lLocation.y, style: nameStyle, hAlign: 'right' })
 
+        nameStyle.fill = '#fff'
         nameStyle.fontSize = '30px'
         this.lIntro = tm.add({ x: 310, y: 680, style: nameStyle })
         this.rIntro = tm.add({ x: 1346 + 286, y: this.lIntro.y, style: nameStyle, hAlign: 'right' })
@@ -84,10 +90,6 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.rAvt.y = this.lAvt.y
         this.addChild(this.rAvt)
 
-        let top = newBitmap({ url: '/img/panel/score/m2/gamePlayerTop.png' })
-        top.x = 310 + 199
-        top.y = 310 - 19
-        this.addChild(top)
 
     }
 

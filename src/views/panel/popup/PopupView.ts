@@ -1,3 +1,5 @@
+import { Victory } from './Victory';
+import { NoticePanel } from './NoticePanel';
 import { GamePlayerInfo } from './GamePlayerInfo';
 import { Champion } from './Champion';
 import { WebDBCmd } from '../webDBCmd';
@@ -33,6 +35,18 @@ export class PopupView {
                 data.visible ?
                     this.show(GamePlayerInfo, data)
                     : this.hide(GamePlayerInfo)
+            })
+            .on(WebDBCmd.sc_showNotice, data => {
+                console.log('sc_showNotice', data);
+                data.visible ?
+                    this.show(NoticePanel, data)
+                    : this.hide(NoticePanel)
+            })
+            .on(WebDBCmd.sc_showVictory, data => {
+                console.log('sc_showVictory', data);
+                data.visible ?
+                    this.show(Victory, data)
+                    : this.hide(Victory)
             })
     }
 

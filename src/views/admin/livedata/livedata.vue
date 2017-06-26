@@ -81,6 +81,7 @@
                 <hr>
                 <el-button @click='_("initGameMonth",286)'>init Game Month</el-button>
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
+                <br>
                 <el-button @click='_("showGroup","a")'>Group A</el-button>
                 <el-button @click='_("showGroup","b")'>Group B</el-button>
                 <el-button @click='_("showGroup","c")'>Group C</el-button>

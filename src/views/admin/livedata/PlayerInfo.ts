@@ -1,7 +1,7 @@
 export class PlayerInfo{
     id: number
     playerId: number
-    name: string
+    name: string//group name
     hupuID: string
     avatar: string
     weight: number

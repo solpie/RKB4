@@ -4,6 +4,9 @@ export const WebDBCmd = {
     init: '',
     pull: ``,
     cs_pull: ``,
+    //common
+    cs_showNotice: ``,//公告
+    sc_showNotice: ``,
     //game month
     cs_init: ``,
     sc_init: ``,
@@ -17,6 +20,8 @@ export const WebDBCmd = {
     sc_showChampion: ``,
     cs_showGamePlayerInfo: ``,//球员intro信息
     sc_showGamePlayerInfo: ``,
+    cs_showVictory: ``,//本场获胜
+    sc_showVictory: ``,
     cs_startTimer: ``,
     sc_startTimer: ``,
     cs_setTimer: ``,

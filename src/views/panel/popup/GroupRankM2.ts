@@ -48,8 +48,8 @@ export class GroupRankM2 extends PIXI.Container implements IPopup {
             }
 
             let avt = new PIXI.Sprite()
-            avt.y = 118 + i * leading
-            avt.x = 120
+            avt.y = 98 + i * leading
+            avt.x = 130
             bg.addChild(avt)
             this.avatarArr.push(avt)
 

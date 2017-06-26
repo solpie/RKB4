@@ -253,10 +253,25 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             gameData.time = this.time
             gameData.gameIdx = this.gameIdx
             doc.gameIdx = this.gameIdx + 1
+            this.emitVictory(doc)
             this.initDoc(doc)
             this.emitBracket()
             saveDoc(doc)
         })
+    }
+
+    emitVictory(doc) {
+        if (this.lScore != 0 || this.rScore != 0) {
+            let winPlayer: PlayerInfo;
+            if (this.lScore > this.rScore)
+                winPlayer = this.getPlayerInfo(this.lPlayer)
+            else
+                winPlayer = this.getPlayerInfo(this.rPlayer)
+            let sumMap = this.buildPlayerData(doc)
+            let rec = sumMap[winPlayer.name]
+            let data = { _: null, winner: winPlayer.data, rec: rec }
+            $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+        }
     }
 
     getPlayerInfo(groupName) {

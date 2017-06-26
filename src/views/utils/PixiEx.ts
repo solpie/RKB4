@@ -1,3 +1,4 @@
+import { ViewConst } from '../panel/const';
 import { loadImg } from "./JsFunc";
 import { proxy } from "./WebJsFunc";
 
@@ -174,7 +175,16 @@ export class BitmapText extends PIXI.Container {
         return ctn
     }
 }
-
+export const newModal = (alpha = 0.8, width?, height?) => {
+    if (!width)
+        width = ViewConst.STAGE_WIDTH
+    if (!height)
+        height = ViewConst.STAGE_HEIGHT
+    let m = new PIXI.Graphics()
+    m.drawRect(0, 0, width, height)
+        .alpha = alpha
+    return m
+}
 export let newWhiteMask = (url) => {
     let sp = newBitmap({
         url: url, callback: () => {
