@@ -67,11 +67,12 @@ export default class LiveDateView {
         let data: any = { _: null, state: state }
         if (sec)
             data['sec'] = sec
-
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }
 
     commit() {
+        this.setTimer(0, 0)
+        this.setTimer(-1, 0)
         let data: any = { _: null }
         this.gameView.commit()
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)

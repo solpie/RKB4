@@ -40,8 +40,10 @@
                     <div v-else>
                         大师赛第{{gameIdx-23}}场
                     </div>
-                    Score {{lScore}} :{{rScore}}
-                    <br> Foul {{lFoul}} :{{rFoul}}
+                    <span style="fontSize:40px">
+                        Score <span style="color:blue">{{lScore}}</span> :<span style="color:red">{{rScore}}</span>
+                        <br> Foul {{lFoul}} :{{rFoul}}
+                    </span>
                 </el-col>
     
                 <el-col :span='4'>
@@ -69,7 +71,7 @@
                 <el-col :span='8'>
                     冠军：
                     <el-button @click='_("showChampion","hide")'>Hide Champion</el-button>
-                    <el-input v-model="inputChampion"  style="width:450px"></el-input>
+                    <el-input v-model="inputChampion" style="width:450px"></el-input>
                     <br>
                     <el-button @click='_("showChampion",lPlayer,inputChampion)'>{{lHupuID}}</el-button>
                     <el-button @click='_("showChampion",rPlayer,inputChampion)'>{{rHupuID}}</el-button>
@@ -85,6 +87,9 @@
                 <el-button @click='_("showGroup","d")'>Group D</el-button>
                 <el-button @click='_("hideGroup")'>Hide Group Rank</el-button>
                 <br>
+                <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
+                <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
+                <br>
                 <el-button @click='_("initMaster")'>initMaster</el-button>
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
@@ -96,8 +101,7 @@
                 <hr>
                 <el-button @click='_("clearMaster",1)'>clear Master</el-button>
                 <el-button @click='_("clearMaster",0)'>clear All</el-button>
-                <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
-                <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
+    
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

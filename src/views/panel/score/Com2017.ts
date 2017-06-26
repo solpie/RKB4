@@ -17,8 +17,11 @@ export function getFtLogoUrl2(ftId) {
     //     7 => 'XJBD',
     //     8 => 'GreenLight',
 }
-export function getFtLogoUrlm(ftId) {
+export function getFtLogoUrlgray(ftId) {
     return '/img/ft/' + ftId + 'g.png'
+}
+export function getFtLogoUrlm(ftId) {
+    return '/img/ft/' + ftId + 'm.png'
 }
 const ftName = {
     '1': 'Gambia',

@@ -1,7 +1,7 @@
 import { GamePlayerInfo } from './GamePlayerInfo';
 import { Champion } from './Champion';
-import { GroupRank } from './GroupRank';
 import { WebDBCmd } from '../webDBCmd';
+import { GroupRankM2 } from "./GroupRankM2";
 export interface IPopup {
     create: (parent) => void
     show: (param: any) => void
@@ -18,9 +18,9 @@ export class PopupView {
         io.on(WebDBCmd.sc_showGroupRank, data => {
             console.log('sc_groupRank', data);
             if (data.visible)
-                this.show(GroupRank, data)
+                this.show(GroupRankM2, data)
             else
-                this.hide(GroupRank)
+                this.hide(GroupRankM2)
         })
             .on(WebDBCmd.sc_showChampion, data => {
                 console.log('sc_showChampion', data);

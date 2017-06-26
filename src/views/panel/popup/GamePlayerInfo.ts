@@ -1,6 +1,6 @@
 import { TweenEx } from '../../utils/TweenEx';
 import { cnWrap, loadImg, loadImgArr } from '../../utils/JsFunc';
-import { getFtLogoUrl2, getFtLogoUrlm } from '../score/Com2017';
+import { getFtLogoUrl2, getFtLogoUrlgray } from '../score/Com2017';
 import { loadRes, newBitmap, imgToTex } from '../../utils/PixiEx';
 import { TextEx, TextMaker } from '../../utils/TextMaker';
 import { IPopup } from './PopupView';
@@ -116,13 +116,13 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         }, true);
 
 
-        loadImg(getFtLogoUrlm(lPlayer.groupId), img => {
+        loadImg(getFtLogoUrlgray(lPlayer.groupId), img => {
             this.lFt.texture = imgToTex(img)
             // let s = 670 / img.height
             // this.lFt.scale.x = this.lFt.scale.y = s
         })
 
-        loadImg(getFtLogoUrlm(rPlayer.groupId), img => {
+        loadImg(getFtLogoUrlgray(rPlayer.groupId), img => {
             this.rFt.texture = imgToTex(img)
             // let s = 670 / img.height
             // this.rFt.scale.x = this.rFt.scale.y = s
