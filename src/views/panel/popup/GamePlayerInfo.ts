@@ -89,8 +89,6 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.rAvt.x = 1464
         this.rAvt.y = this.lAvt.y
         this.addChild(this.rAvt)
-
-
     }
 
     show(data: any) {

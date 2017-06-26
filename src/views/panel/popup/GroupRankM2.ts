@@ -33,9 +33,9 @@ export class GroupRankM2 extends PIXI.Container implements IPopup {
 
         // bg.addChild(this.groupText)
         let leading = 128
-        let xs = [50, 790, 935]
+        let xs = [50, 150, 790, 935]
         for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 3; j++) {
+            for (let j = 0; j < 4; j++) {
                 let pt = new PIXI.Text
                 pt.x = xs[j]
                 pt.y = 125 + i * leading
@@ -48,8 +48,8 @@ export class GroupRankM2 extends PIXI.Container implements IPopup {
             }
 
             let avt = new PIXI.Sprite()
+            avt.x = 145
             avt.y = 98 + i * leading
-            avt.x = 130
             bg.addChild(avt)
             this.avatarArr.push(avt)
 
@@ -95,11 +95,14 @@ export class GroupRankM2 extends PIXI.Container implements IPopup {
         this.groupText.text = group.toLocaleUpperCase() + '组'
         for (let i = 0; i < 4; i++) {
             let p = playerArr[i]
-            let ptName = this.playerTextArr[i * 3]
-            ptName.text = group.toLocaleUpperCase() +'                          '+ p.name
-            let ptWin = this.playerTextArr[i * 3 + 1]
+            let ptGroupName = this.playerTextArr[i * 4]
+            ptGroupName.text = group.toLocaleUpperCase()
+            let ptName = this.playerTextArr[i * 4 + 1]
+            ptName.text = p.name
+            ptName.x = 400 - ptName.width * .5
+            let ptWin = this.playerTextArr[i * 4 + 2]
             ptWin.text = p.win || (0 + "")
-            let ptScore = this.playerTextArr[i * 3 + 2]
+            let ptScore = this.playerTextArr[i * 4 + 3]
             ptScore.text = p.dtScore || (0 + "")
             let avt = this.avatarArr[i]
             loadRes(p.avatar, (img) => {
