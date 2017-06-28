@@ -1,9 +1,10 @@
 import { Victory } from './Victory';
-import { NoticePanel } from './NoticePanel';
-import { GamePlayerInfo } from './GamePlayerInfo';
-import { Champion } from './Champion';
 import { WebDBCmd } from '../webDBCmd';
-import { GroupRankM2 } from "./GroupRankM2";
+import { Champion } from './Champion';
+import { ChampionM2 } from './ChampionM2';
+import { GamePlayerInfo } from './GamePlayerInfo';
+import { GroupRankM2 } from './GroupRankM2';
+import { NoticePanel } from './NoticePanel';
 export interface IPopup {
     create: (parent) => void
     show: (param: any) => void
@@ -27,8 +28,8 @@ export class PopupView {
             .on(WebDBCmd.sc_showChampion, data => {
                 console.log('sc_showChampion', data);
                 data.visible ?
-                    this.show(Champion, data)
-                    : this.hide(Champion)
+                    this.show(ChampionM2, data)
+                    : this.hide(ChampionM2)
             })
             .on(WebDBCmd.sc_showGamePlayerInfo, data => {
                 console.log('sc_showGamePlayerInfo', data);

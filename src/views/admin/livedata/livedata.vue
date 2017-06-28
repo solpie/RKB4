@@ -79,7 +79,7 @@
             </el-row>
             <el-row>
                 <hr>
-                <el-button @click='_("initGameMonth",286)'>init Game Month</el-button>
+                <el-button @click='_("initGameMonth",380)'>init Game Month</el-button>
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>
                 <el-button @click='_("showGroup","a")'>Group A</el-button>

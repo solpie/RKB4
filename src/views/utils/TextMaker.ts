@@ -49,6 +49,8 @@ export class TextEx {
 }
 export class TextMaker {
     ctn: any
+    lastX: number = 0
+    lastY: number = 0
     constructor(parent) {
         this.ctn = parent
     }
@@ -73,6 +75,8 @@ export class TextMaker {
         tEx.hAlign = option.hAlign || 'left'
         tEx.x = option.x || 0
         tEx.y = option.y || 0
+        this.lastX = tEx.x
+        this.lastY = tEx.y
         return tEx
     }
 

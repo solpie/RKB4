@@ -6,13 +6,19 @@
 头像preLoad
 
 livedataview
-.清除比分
+[o].清除比分
 [o].清除大师赛
-创建小组赛
+[0]创建小组赛
 参赛宣言check location
 
+香槟特效
 obs 多路流 切换
 
 node pack test
 gpu mode test 
 mask less
+
+
+	var texture = new PIXI.RenderTexture();
+	texture.render(myContainer);
+	var background = new PIXI.Sprite(texture);

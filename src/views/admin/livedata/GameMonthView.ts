@@ -84,7 +84,13 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             , '平常心myd', '大霖哥666', '蔡炜少年', 'AL张雅龙'
             , '新锐宋教练', '邓丹阿丹', '认得挖方一号', '习惯过了头'
         ]
+        playerIdArr = ['郝天佶', '王培钊', '哈特好', '知名球童戴一志'
+            , '泡椒top13', '打铁不算多', '习惯过了头', '阿彬BIN'
+            , '平常心myd', '万宅男', '认得挖方一号', 'NGFNGN'
+            , '大霖哥666', 'Gyoung15', '带伤上阵也不怕', 'biglrip'
+        ]
         let playerOrderArr = []
+        console.log('initGameInfo ', res);
         let getData = (name) => {
             for (let p of res.data) {
                 if (p.name == name)
@@ -269,7 +275,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                 winPlayer = this.getPlayerInfo(this.rPlayer)
             let sumMap = this.buildPlayerData(doc)
             let rec = sumMap[winPlayer.name]
-            let data = { _: null, winner: winPlayer.data, rec: rec }
+            let data = { _: null, visible: true, winner: winPlayer.data, rec: rec }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
         }
     }
@@ -469,7 +475,9 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         data.visible = true
         data.ftId = p.data.groupId
         data.name = p.data.name
-        data.info = p.data.height + ' CM ' + p.data.weight + " KG"
+        data.location = p.data.school
+        data.avatar = p.data.avatar
+        data.info = p.data.height + ' cm/ ' + p.data.weight + " kg/ "+p.data.age+' 岁'
         $post(`/emit/${WebDBCmd.cs_showChampion}`, data)
         $post(`/emit/${WebDBCmd.cs_showScore}`, { _: null, visible: false })
     }

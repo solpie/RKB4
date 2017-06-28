@@ -2,7 +2,8 @@
     "main": "index.js",
 
     "scripts": {
-        "start": "nodemon server.js"
+        "start": ".\electron-v1.6.11-win32-x64\electron.exe .",
+        "start2": "nodemon server.js"
     },
     "dependencies": {
         "body-parser": "^1.17.2",
