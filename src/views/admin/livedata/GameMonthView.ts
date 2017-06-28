@@ -87,7 +87,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         ]
         playerIdArr = ['郝天佶', '王培钊', '哈特好', '知名球童戴一志'
             , '泡椒top13', '打铁不算多', '习惯过了头', '阿彬BIN'
-            , '平常心myd', '万宅男', '认得挖方一号', 'NGFNGN'
+            , '平常心myd', '小丑的梦想', '认得挖方一号', 'NGFNGN'
             , '大霖哥666', 'Gyoung15', '带伤上阵也不怕', 'biglrip'
         ]
         let playerOrderArr = []

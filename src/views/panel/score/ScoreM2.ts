@@ -272,7 +272,7 @@ export class ScoreM2 {
 
         let rpn = new PIXI.Text("", pns)
         rpn.y = lpn.y
-        rpn.x = 1288
+        rpn.x = 1284
         this.rPlayerName = rpn
         ctn.addChild(rpn)
 

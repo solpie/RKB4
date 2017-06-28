@@ -1,4 +1,3 @@
-import { PopupView } from './popup/PopupView';
 
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
@@ -8,11 +7,14 @@ document.write(`<canvas id='panel'></canvas>`)
 console.log('PIXI', window['PIXI']);
 // import tween from 'tween'
 // window['TWEEN'] = tween
-import { ViewConst } from "./const";
 import { Score2017 } from './score/Score2017';
 import { BracketView } from './bracket/BracketView';
+import { loadImgArr } from '../utils/JsFunc';
 import { getUrlQuerys } from '../utils/WebJsFunc';
+import { preLoadImgArr, ViewConst } from './const';
 import { ScoreView } from './score/ScoreView';
+import { PopupView } from './popup/PopupView';
+
 // import io from 'socket.io-client';
 // window['io'] = io
 // console.log('socket.io ', io);
@@ -51,3 +53,4 @@ else {
     localWS = scoreView.localWS
     new PopupView(s, localWS)
 }
+loadImgArr(preLoadImgArr,_=>{})
