@@ -1,11 +1,12 @@
 import { $get, $post } from '../../utils/WebJsFunc';
 import { getAllPlayer, getGameInfo } from '../../utils/HupuAPI';
 import { PlayerInfo } from "./PlayerInfo";
-import { MatchType } from "../../panel/score/Com2017";
-import { WebDBCmd } from "../../panel/webDBCmd";
-import { BaseGameView, getDoc, IBaseGameView, saveDoc, RecData } from './BaseGame';
-import { firstBy } from "./thenBy";
-import { mapToArr } from "../../utils/JsFunc";
+import { MatchType } from '../../panel/score/Com2017';
+import { WebDBCmd } from '../../panel/webDBCmd';
+import { mapToArr } from '../../utils/JsFunc';
+import { TweenEx } from '../../utils/TweenEx';
+import { BaseGameView, getDoc, IBaseGameView, RecData, saveDoc } from './BaseGame';
+import { firstBy } from './thenBy';
 
 declare let io;
 export class GameMonthView extends BaseGameView implements IBaseGameView {
@@ -166,7 +167,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         if (isEmit)
             this.emitGameInfo()
     }
-
+    delayEmitGameInfo: number = 0
     emitGameInfo() {
         let data: any = { _: null }
         data.winScore = 3
@@ -188,7 +189,15 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         data.leftPlayer = lPlayerData
         data.rightPlayer = rPlayerData
         console.log('setGameInfo', data);
-        $post(`/emit/${WebDBCmd.cs_init}`, data)
+
+        if (this.delayEmitGameInfo > 0) {
+            setTimeout(_ => {
+                this.delayEmitGameInfo = 0
+                $post(`/emit/${WebDBCmd.cs_init}`, data)
+            }, this.delayEmitGameInfo);
+        }
+        else
+            $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
     routeBracket() {
         let masterIdx = 23
@@ -260,8 +269,14 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             gameData.gameIdx = this.gameIdx
             doc.gameIdx = this.gameIdx + 1
             this.emitVictory(doc)
+            this.delayEmitGameInfo = 5000
             this.initDoc(doc)
-            this.emitBracket()
+            setTimeout(_ => {
+                console.log('delay show player info');
+                this.emitBracket()
+                if (this.gameIdx < 24)
+                    this.showGamePlayerInfo(true)
+            }, this.delayEmitGameInfo)
             saveDoc(doc)
         })
     }
@@ -477,7 +492,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         data.name = p.data.name
         data.location = p.data.school
         data.avatar = p.data.avatar
-        data.info = p.data.height + ' cm/ ' + p.data.weight + " kg/ "+p.data.age+' 岁'
+        data.info = p.data.height + ' cm/ ' + p.data.weight + " kg/ " + p.data.age + ' 岁'
         $post(`/emit/${WebDBCmd.cs_showChampion}`, data)
         $post(`/emit/${WebDBCmd.cs_showScore}`, { _: null, visible: false })
     }

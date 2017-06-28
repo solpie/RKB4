@@ -91,6 +91,12 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.addChild(this.rAvt)
     }
 
+    _fixN(intro: string) {
+        if (intro.search('微博') > 0) {
+            intro = intro.replace('微博', '\n微博')
+        }
+        return intro
+    }
     show(data: any) {
         let lPlayer = data.leftPlayer.data
         let rPlayer = data.rightPlayer.data
@@ -98,8 +104,13 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.rName.text = rPlayer.name
         this.lInfo.text = lPlayer.height + " cm/ " + lPlayer.weight + ' kg/ ' + lPlayer.age + " 岁"
         this.rInfo.text = rPlayer.height + " cm/ " + rPlayer.weight + ' kg/ ' + rPlayer.age + " 岁"
-        this.lIntro.text = cnWrap(lPlayer.intro.replace('\n', ''), 32, 96)
-        this.rIntro.text = cnWrap(rPlayer.intro.replace('\n', ''), 32, 96)
+        // lPlayer.intro = this._fixN(lPlayer.intro)
+        // rPlayer.intro = this._fixN(rPlayer.intro)
+        lPlayer.intro = cnWrap(lPlayer.intro.replace('\n', ''), 32, 96)
+        rPlayer.intro = cnWrap(rPlayer.intro.replace('\n', ''), 32, 96)
+        this.lIntro.text = lPlayer.intro
+        this.rIntro.text = rPlayer.intro
+
         this.lLocation.text = cnWrap(lPlayer.school, 20, 20)
         this.rLocation.text = cnWrap(rPlayer.school, 20, 20)
 

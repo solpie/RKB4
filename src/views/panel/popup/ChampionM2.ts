@@ -20,6 +20,7 @@ export class ChampionM2 extends PIXI.Container implements IPopup {
     top: PIXI.Sprite
     info: PIXI.Sprite
     avt: PIXI.Sprite
+    light: PIXI.Sprite
     // rLight: PIXI.Sprite
     ctn: any
     create(ctn) {
@@ -62,7 +63,7 @@ export class ChampionM2 extends PIXI.Container implements IPopup {
             .beginFill(0xff0000)
         polygon(avtMask, 121, 6)
         avtMask.x = 960
-        avtMask.y = 72 + 88
+        avtMask.y = 72 + 89
         info.addChild(avtMask)
 
         let avt = new PIXI.Sprite()
@@ -71,6 +72,11 @@ export class ChampionM2 extends PIXI.Container implements IPopup {
         avt.y = avtMask.y - 121
         avt.mask = avtMask
         this.avt = avt
+
+        let light = newBitmap({ url: '/img/panel/score/m2/victoryLight.png' })
+        light.y = back.y - 136
+        this.light = light
+        this.addChild(light)
     }
 
 
@@ -86,12 +92,14 @@ export class ChampionM2 extends PIXI.Container implements IPopup {
         this.info.x = -800
         this.top.y = ViewConst.STAGE_HEIGHT - 306 - 197
         this.title.alpha = 0
+        this.light.alpha = 1
         // this.title
         new TweenEx(this.top)
             .delay(5000)
             .call(_ => {
                 TweenEx.to(this.title, 80, { alpha: 1 })
                 TweenEx.to(this.info, 80, { x: 0 })
+                TweenEx.to(this.light, 80, { alpha: 0 })
             })
             .to({ y: 1080 }, 200)
             .start()
