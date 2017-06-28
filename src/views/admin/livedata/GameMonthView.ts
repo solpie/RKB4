@@ -167,6 +167,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         if (isEmit)
             this.emitGameInfo()
     }
+
     delayEmitGameInfo: number = 0
     emitGameInfo() {
         let data: any = { _: null }
@@ -269,11 +270,16 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             gameData.gameIdx = this.gameIdx
             doc.gameIdx = this.gameIdx + 1
             this.emitVictory(doc)
+            // if (this.gameIdx < 24)
             this.delayEmitGameInfo = 5000
+            // else
+            // this.delayEmitGameInfo = 1   
             this.initDoc(doc)
+
             setTimeout(_ => {
                 console.log('delay show player info');
                 this.emitBracket()
+                this.setGameInfo(this.gameIdx, true)
                 if (this.gameIdx < 24)
                     this.showGamePlayerInfo(true)
             }, this.delayEmitGameInfo)
@@ -288,7 +294,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                 winPlayer = this.getPlayerInfo(this.lPlayer)
             else
                 winPlayer = this.getPlayerInfo(this.rPlayer)
-            let sumMap = this.buildPlayerData(doc)
+            let sumMap = this.buildPlayerData(doc,true)
             let rec = sumMap[winPlayer.name]
             let data = { _: null, visible: true, winner: winPlayer.data, rec: rec }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)

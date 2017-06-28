@@ -111,8 +111,8 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
         this.lIntro.text = lPlayer.intro
         this.rIntro.text = rPlayer.intro
 
-        this.lLocation.text = cnWrap(lPlayer.school, 20, 20)
-        this.rLocation.text = cnWrap(rPlayer.school, 20, 20)
+        this.lLocation.text = cnWrap(lPlayer.school, 20, 20) || '路人王'
+        this.rLocation.text = cnWrap(rPlayer.school, 20, 20) || '路人王'
 
         loadRes(lPlayer.avatar, (img) => {
             this.lAvt.texture = imgToTex(img)

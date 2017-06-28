@@ -335,7 +335,7 @@ export class ScoreM2 {
             this.gameIdx.text = '小组赛' + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 3) {
-            this.gameIdx.text = '决赛'
+            this.gameIdx.text = '冠军赛决赛'
         }
     }
     _showWinScore() {
