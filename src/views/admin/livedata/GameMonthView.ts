@@ -294,7 +294,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                 winPlayer = this.getPlayerInfo(this.lPlayer)
             else
                 winPlayer = this.getPlayerInfo(this.rPlayer)
-            let sumMap = this.buildPlayerData(doc,true)
+            let sumMap = this.buildPlayerData(doc, true)
             let rec = sumMap[winPlayer.name]
             let data = { _: null, visible: true, winner: winPlayer.data, rec: rec }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
@@ -413,25 +413,22 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             let sumMap: any = this.buildPlayerData(doc)
             console.log('initMaster sumMap', sumMap);
             let playerArr = mapToArr(sumMap)
-            for (let p1 of playerArr) {
-                for (let p2 of playerArr) {
-                    // if (p1.win == p2.win && p1.beat.indexOf(p2.name) > -1)
-                    //     p1.win += 0.1
-                }
-            }
+
             playerArr.sort(firstBy(function (v1, v2) { return v2.win - v1.win; })
                 .thenBy(function (v1, v2) { return v2.dtScore - v1.dtScore; })
             )
-            // this.playerRank = playerArr
 
             // -- -master---                
+            let winCondition: any = { 'a': [], 'b': [], 'c': [], 'd': [] }
             let groupMap: any = { 'a': [], 'b': [], 'c': [], 'd': [] }
             for (let p3 of playerArr) {
                 let pg = p3.name[0]
                 if (groupMap[pg].length < 2) {
                     groupMap[pg].push(p3)
                 }
+                winCondition.push(p3.win)
             }
+            console.log('winCondition', winCondition);
 
             let m = []
             for (let g in groupMap) {
@@ -480,7 +477,6 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
                             doc['recMap'][k].player = ['', '']
                         }
                     }
-
                 }
                 doc.gameIdx = 0
                 this.initDoc(doc)

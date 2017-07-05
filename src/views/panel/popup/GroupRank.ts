@@ -4,6 +4,7 @@ import { getFtLogoUrl2, getFtName } from "../score/Com2017";
 import { ViewConst } from "../const";
 
 export class GroupRank extends PIXI.Container implements IPopup {
+    static class = 'GroupRank'
     groupText: PIXI.Text
     p: any
     playerTextArr: Array<PIXI.Text> = []

@@ -5,6 +5,7 @@ import { FontName, ViewConst } from "../const";
 import { IPopup } from "./PopupView";
 
 export class NoticePanel extends PIXI.Container implements IPopup {
+    static class = 'NoticePanel'
     frame: ScaleSprite
     line: PIXI.Sprite
     content: PIXI.Text
@@ -68,7 +69,7 @@ export class NoticePanel extends PIXI.Container implements IPopup {
         this.setText(data.content, data.title, data.isLeft, data.isBold)
         this.visible = true
     }
-    
+
     hide() {
         this.visible = false
     }

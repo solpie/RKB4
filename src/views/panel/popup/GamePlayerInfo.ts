@@ -6,6 +6,7 @@ import { TextEx, TextMaker } from '../../utils/TextMaker';
 import { IPopup } from './PopupView';
 import { FontName, ViewConst } from '../const';
 export class GamePlayerInfo extends PIXI.Container implements IPopup {
+    static class = 'GamePlayerInfo'
     ctn: any
     lAvt: PIXI.Sprite
     rAvt: PIXI.Sprite

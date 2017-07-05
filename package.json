@@ -6,8 +6,6 @@
     "scripts": {
         "dev": "webpack-dev-server -d --inline --hot --env.dev",
         "start": "cd server/&&nodemon server.js",
-        "pack": "pyinstaller src/server/RKB.py -F --upx-dir c:/bin/upx391w --noupx",
-        "pack2": "pyinstaller src/server/RKB.spec -F --upx-dir c:/bin/upx391w --noupx",
         "build": "rimraf ./dist/static/views && webpack -p --progress --hide-modules"
     },
     "repository": {

@@ -5,6 +5,7 @@ import { getFtName, getFtLogoUrl2 } from "../score/Com2017";
 import { loadImg } from "../../utils/JsFunc";
 
 export class Champion extends PIXI.Container implements IPopup {
+    static class = 'Champion'
     title: PIXI.Text
     playerName: PIXI.Text
     playerInfo: PIXI.Text

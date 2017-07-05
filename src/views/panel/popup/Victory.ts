@@ -6,6 +6,7 @@ import { FontName } from '../const';
 import { IPopup } from './PopupView';
 
 export class Victory extends PIXI.Container implements IPopup {
+    static class = 'Victory'
     ctn: any
     avt: PIXI.Sprite
     winLoseText: TextEx
@@ -60,10 +61,11 @@ export class Victory extends PIXI.Container implements IPopup {
     }
 
     show(param: any) {
+        console.log('show Victory',param);
         this.winLoseText.text = param.rec.win + '胜' + param.rec.lose + '负'
         let win = param.winner
         this.nameText.text = win.name
-        this.infoText.text = win.weight + 'cm / ' + win.height + 'kg / ' + win.age + '岁'
+        this.infoText.text = win.height + 'cm / ' + win.weight + 'kg / ' + win.age + '岁'
         this.locationText.text = win.school
         console.log('show victory', param)
 

@@ -13,6 +13,7 @@ function polygon(g: PIXI.Graphics, radius, sides) {
     }
 }
 export class ChampionM2 extends PIXI.Container implements IPopup {
+    static class = 'ChampionM2'
     title: PIXI.Sprite
     playerName: TextEx
     playerInfo: TextEx

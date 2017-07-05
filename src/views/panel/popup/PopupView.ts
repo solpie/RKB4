@@ -50,13 +50,15 @@ export class PopupView {
                     : this.hide(Victory)
             })
     }
-
     show(cls, param) {
-        if (!this.popupItemMap[cls]) {
-            this.popupItemMap[cls] = new cls()
-            this.popupItemMap[cls].create(this.ctn)
+        if (cls.class) {
+            if (!this.popupItemMap[cls.class]) {
+                this.popupItemMap[cls.class] = new cls()
+                this.popupItemMap[cls.class].create(this.ctn)
+            }
+            (this.popupItemMap[cls.class] as IPopup).show(param)
         }
-        (this.popupItemMap[cls] as IPopup).show(param)
+        else throw 'check class def' + cls
     }
 
     hide(cls) {

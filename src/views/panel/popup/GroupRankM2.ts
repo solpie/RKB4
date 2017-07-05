@@ -11,6 +11,7 @@ function polygon(g: PIXI.Graphics, radius, sides) {
     }
 }
 export class GroupRankM2 extends PIXI.Container implements IPopup {
+    static class = 'GroupRankM2'
     groupText: PIXI.Text
     p: any
     playerTextArr: Array<PIXI.Text> = []
