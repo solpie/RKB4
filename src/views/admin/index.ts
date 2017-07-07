@@ -20,6 +20,9 @@ import Admin from './admin.vue'
 import Home from './home.vue'
 Vue.component('Home', Home)
 
+import Dashboard from './dashboard/dashboard.vue'
+Vue.component('Dashboard', Dashboard)
+
 import LiveData from './livedata/livedata.vue'
 Vue.component('LiveData', LiveData)
 

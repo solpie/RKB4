@@ -4,18 +4,18 @@
             <el-collapse v-model="actPanel" accordion>
                 <el-collapse-item title="Group Rank" name="2">
                     <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                        <el-table-column prop="name" label="name" width="140" />
-                        <el-table-column prop="win" label="胜场" width="80" />
-                        <el-table-column prop="dtScore" label="净胜分" width="120" />
+                        <el-table-column prop="name" label="name" width="140"></el-table-column>
+                        <el-table-column prop="win" label="胜场" width="80"></el-table-column>
+                        <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
                     </el-table>
                 </el-collapse-item>
                 <el-collapse-item title="Game List" name="1">
                     <el-table stripe :data="gameInfoTable" style="width: 100%" @row-click='rowClick'>
-                        <el-table-column prop="idx" label="#" width="60" />
-                        <el-table-column prop="vs" label="vs" width="100" />
-                        <el-table-column prop="lPlayer" label="L" width="120" />
-                        <el-table-column prop="score" label="" width="80" />
-                        <el-table-column prop="rPlayer" label="R" />
+                        <el-table-column prop="idx" label="#" width="60"></el-table-column>
+                        <el-table-column prop="vs" label="vs" width="100"></el-table-column>
+                        <el-table-column prop="lPlayer" label="L" width="120"></el-table-column>
+                        <el-table-column prop="score" label="" width="80"></el-table-column>
+                        <el-table-column prop="rPlayer" label="R"></el-table-column>
                     </el-table>
                 </el-collapse-item>
     
@@ -41,7 +41,9 @@
                         大师赛第{{gameIdx-23}}场
                     </div>
                     <span style="fontSize:40px">
-                        Score <span style="color:blue">{{lScore}}</span> :<span style="color:red">{{rScore}}</span>
+                        Score
+                        <span style="color:blue">{{lScore}}</span> :
+                        <span style="color:red">{{rScore}}</span>
                         <br> Foul {{lFoul}} :{{rFoul}}
                     </span>
                 </el-col>

@@ -13,13 +13,16 @@
 <template>
     <div id="app">
         <el-tabs type="border-card">
-            <el-tab-pane style="width:250px">
+            <el-tab-pane>
                 <span slot="label">
-                    <i class="el-icon-edit"></i>Admin Home</span>
-                <LiveData></LiveData>
+                    <i class="el-icon-edit"></i>Admin</span>
+                <Home></Home>
+            </el-tab-pane>
+            <el-tab-pane label="线上控制台">
+                <Dashboard></Dashboard>
             </el-tab-pane>
             <el-tab-pane label="月赛">
-                <Home></Home>
+                <LiveData></LiveData>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -30,6 +33,7 @@ import { AdminView } from './adminView';
 let adminView = new AdminView()
 
 export default {
+
     created() {
         adminView.init(this)
     },

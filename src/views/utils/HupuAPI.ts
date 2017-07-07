@@ -26,9 +26,13 @@ export function getAllPlayer(gameId, callback) {
     let url = 'http://api.liangle.com/api/passerbyking/game/players/' + gameId
     _get(_proxyJSON(url), callback)
 }
-
+//比赛xx站 gameid
 export function getRoundList(callback) {
     let url = 'http://api.liangle.com/api/passerbyking/game/list'
+    _get(_proxyJSON(url), callback)
+}
+export function getRtmpInfo(gameId, callback) {
+    let url = 'http://api.liangle.com/api/passerbyking/game/info/' + gameId
     _get(_proxyJSON(url), callback)
 }
 export function getRoundRawDate(gameId, callback) {

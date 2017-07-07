@@ -327,6 +327,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         for (let i = 0; i < 4; i++) {
             let data = sumMap[group + (i + 1)]
             let p: PlayerInfo = this.getPlayerInfo(data.name)
+            data.groupName = data.name
             data.name = p.hupuID
             data.groupId = p.data.groupId
             data.avatar = p.data.avatar
@@ -336,6 +337,44 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
         playerArr.sort(firstBy(function (v1, v2) { return v2.win - v1.win; })
             .thenBy(function (v1, v2) { return v2.dtScore - v1.dtScore; })
         )
+
+        let winCondition: any = { 'a': [], 'b': [], 'c': [], 'd': [] }
+        let groupMap: any = { 'a': [], 'b': [], 'c': [], 'd': [] }
+        for (let p3 of playerArr) {
+            let pg = p3.groupName[0]
+            console.log('player group', pg);
+            if (groupMap[pg].length < 2) {
+                groupMap[pg].push(p3)
+            }
+            winCondition[pg].push(p3.win)
+        }
+
+        let p1, p2, p3;
+        for (let g in winCondition) {
+            let winArr = winCondition[g] + ''
+            console.log('winArr', winArr)
+            if (winArr == '2, 2, 1, 1') {
+                p1 = groupMap[g][0]
+                p2 = groupMap[g][1]
+            }
+            else if (winArr == '2,2,2,0') {
+                p1 = groupMap[g][0]
+                p2 = groupMap[g][1]
+                if (p2.groupName in p1.beat) {
+                    console.log('p1 beat p2');
+                }
+                else if (p1.groupName in p2.beat) {
+                    console.log('p2 beat p1');
+                }
+                console.log('p1', p1, 'p2', p2);
+            }
+            else if (winArr == '3,1,1,1') {
+                p2 = groupMap[g][1]
+                p3 = groupMap[g][2]
+            }
+        }
+        console.log('winCondition', winCondition);
+
         console.log(playerArr)
         return { _: null, group: group, playerArr: playerArr }
     }
