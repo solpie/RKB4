@@ -1,3 +1,4 @@
+import { Bracket20View } from './bracket20/Bracket20View';
 
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
@@ -48,6 +49,8 @@ let isMonth = getUrlQuerys('m') == '1'
 let localWS;
 if (panel == 'bracket')
     new BracketView(s, gameId, isMonth)
+else if(panel=='bracket20')
+    new Bracket20View(s)
 else {
     let scoreView = new ScoreView(s)
     localWS = scoreView.localWS

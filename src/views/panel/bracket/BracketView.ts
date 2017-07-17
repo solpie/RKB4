@@ -43,15 +43,7 @@ export class BracketView {
     }
 
     initManmaul() {
-        // let srvIO = io.connect('/rbk')
-        //     .on('connect', () => {
-        //         console.log('connect manmaul!')
-        //         $post(`/emit/${WebDBCmd.cs_bracketCreated}`, { _: null })
-        //     })
-        //     .on(`${WebDBCmd.sc_bracketInit}`, (data) => {
-        //         delete data['_']
-        //         this.onBracketData({ data: data });
-        //     })
+
     }
 
     getPreRoundInfo(gameId) {

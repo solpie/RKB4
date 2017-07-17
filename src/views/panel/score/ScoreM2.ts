@@ -71,8 +71,6 @@ export class ScoreM2 {
     lAvatar: PIXI.Sprite
     rAvatar: PIXI.Sprite
 
-    // lFtName: PIXI.Text
-    // rFtName: PIXI.Text
     _lFtId: string
     _rFtId: string
 

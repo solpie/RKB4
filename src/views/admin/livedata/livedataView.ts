@@ -1,3 +1,5 @@
+import { DoubleEliminationView } from './DoubleElimationView';
+import { EventDispatcher } from '../../utils/EventDispatcher';
 import { BaseGameView, getDoc, IBaseGameView } from './BaseGame';
 import { getAllPlayer } from '../../utils/HupuAPI';
 import { MatchType } from '../../panel/score/Com2017';
@@ -5,11 +7,13 @@ import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
 let gmv = new GameMonthView()
-export default class LiveDateView {
+export default class LiveDataView extends EventDispatcher {
     gameView: IBaseGameView
     gmv: GameMonthView
-
+    doubleElimination: DoubleEliminationView
     constructor() {
+        super()
+        this.doubleElimination = new DoubleEliminationView(this)
         this.gameView = gmv
         this.gmv = gmv
 
@@ -33,6 +37,7 @@ export default class LiveDateView {
         this.gameView.lScore = Number(score)
         this.emitScore()
     }
+
     setRScore(score) {
         this.gameView.rScore = Number(score)
         this.emitScore()
@@ -51,6 +56,7 @@ export default class LiveDateView {
     }
 
     emitInfo() {
+        this.emit(WebDBCmd.cs_init,{})
         gmv.emitGameInfo()
     }
 
@@ -60,6 +66,7 @@ export default class LiveDateView {
         data.rightScore = Number(this.gameView.rScore)
         data.leftFoul = Number(this.gameView.lFoul)
         data.rightFoul = Number(this.gameView.rFoul)
+        this.emit(WebDBCmd.cs_score, data)
         $post(`/emit/${WebDBCmd.cs_score}`, data)
     }
 
@@ -75,12 +82,14 @@ export default class LiveDateView {
         this.setTimer(-1, 0)
         let data: any = { _: null }
         this.gameView.commit()
+        this.emit(WebDBCmd.cs_commit, data)
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }
     ///game month
     initGameMonth(gameId) {
         gmv.initGameMonth(gameId)
     }
+
     getGameInfo(row) {
         let gameIdx = row.gameIdx
         gmv.setGameInfo(gameIdx, false)
@@ -121,6 +130,7 @@ export default class LiveDateView {
     clearMaster(s) {
         gmv.clearMaster(s)
     }
+
     showGamePlayerInfo(v) {
         gmv.showGamePlayerInfo(v)
     }

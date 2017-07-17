@@ -3,7 +3,6 @@ import { $get, $post } from '../../utils/WebJsFunc';
 import { BaseView } from '../BaseView';
 const getDoc = (callback) => {
     $get('/db/find/79', (res) => {
-        console.log('getDoc', res);
         if (!res.err && res.docs.length) {
             let doc = res.docs[0]
             callback(res.docs[0])
@@ -47,7 +46,7 @@ export class DashboardView extends BaseView {
         $post(`/emit/${CommandId.cs_setDelayTime}`, data)
     }
 
-    onSetChampion() {
+    onSetChampion() { 
 
     }
 }

@@ -63,3 +63,26 @@ export const saveDoc = (doc, cb?) => {
             cb()
     })
 }
+
+export const syncDoc = (idx, cb) => {
+    let _get = (callback) => {
+        $get('/db/find/' + idx, (res) => {
+            if (!res.err && res.docs.length) {
+                let doc = res.docs[0]
+                callback(res.docs[0])
+            }
+            else
+                callback(null)
+        })
+    }
+    let _saveDoc = (doc, callback?) => {
+        $post('/db/update/' + idx, doc, () => {
+            if (callback)
+                callback()
+        })
+    }
+    _get(doc => {
+        cb(doc)
+        _saveDoc(doc)
+    })
+}
