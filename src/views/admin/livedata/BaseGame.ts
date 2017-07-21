@@ -64,7 +64,7 @@ export const saveDoc = (doc, cb?) => {
     })
 }
 
-export const syncDoc = (idx, cb) => {
+export const syncDoc = (idx, cb, isSave = false) => {
     let _get = (callback) => {
         $get('/db/find/' + idx, (res) => {
             if (!res.err && res.docs.length) {
@@ -83,6 +83,7 @@ export const syncDoc = (idx, cb) => {
     }
     _get(doc => {
         cb(doc)
-        _saveDoc(doc)
+        if (isSave)
+            _saveDoc(doc)
     })
 }

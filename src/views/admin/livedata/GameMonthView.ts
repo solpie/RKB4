@@ -64,10 +64,10 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             row.lPlayer = this.getHupuId(rec.player[0])
             row.rPlayer = this.getHupuId(rec.player[1])
             row.score = rec.score[0] + " : " + rec.score[1]
-            console.log('row', row);
+            // console.log('row', row);
             rowArr.push(row)
         }
-        console.log('init GameInfo Table', rowArr, this.nameMapHupuId);
+        // console.log('init GameInfo Table', rowArr, this.nameMapHupuId);
         this.gameInfoTable = rowArr
     }
     getHupuId(groupName) {
@@ -91,7 +91,7 @@ export class GameMonthView extends BaseGameView implements IBaseGameView {
             , '大霖哥666', 'Gyoung15', '带伤上阵也不怕', 'biglrip'
         ]
         let playerOrderArr = []
-        console.log('initGameInfo ', res);
+        // console.log('initGameInfo ', res);
         let getData = (name) => {
             for (let p of res.data) {
                 if (p.name == name)

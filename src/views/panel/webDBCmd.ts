@@ -35,10 +35,13 @@ export const WebDBCmd = {
     sc_score: ``,
     cs_showScore: ``,//显示隐藏比分面板
     sc_showScore: ``,
+    //create panel web page
     cs_panelCreated: ``,
     sc_panelCreated: ``,
     cs_bracketCreated: ``,
     sc_bracketCreated: ``,
+    cs_bracket20Created: ``,
+    sc_bracket20Created: ``,
     //base cmd
     cs_srvCreated: ``,
     sc_srvCreated: ``

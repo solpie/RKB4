@@ -76,14 +76,30 @@ export class Bracket20 extends PIXI.Container {
             let lPlayer = new Player20()
             lPlayer.x = pos[0]
             lPlayer.y = pos[1]
-            lPlayer.setInfo('player')
+            lPlayer.setInfo('', '')
+
             let rPlayer = new Player20()
             rPlayer.x = lPlayer.x
             rPlayer.y = lPlayer.y + 25
-            rPlayer.setInfo('player')
+            rPlayer.setInfo('', '')
             this.addChild(lPlayer)
             this.addChild(rPlayer)
             this.gameMap[i + 1] = [lPlayer, rPlayer]
+        }
+    }
+
+    setRec(rec) {
+        for (let i = 0; i < 39; i++) {
+            let gameIdx = i + 1
+            let game = rec[gameIdx]
+            let player20Arr = this.gameMap[gameIdx]
+            let lPlayer: Player20 = player20Arr[0]
+            let rPlayer: Player20 = player20Arr[1]
+            // if(game.score[0]!=0&&game.score[1]!=0)
+            if (game.player[0])
+                lPlayer.setInfo(game.player[0], game.score[0])
+            if (game.player[1])
+                rPlayer.setInfo(game.player[1], game.score[1])
         }
     }
 }

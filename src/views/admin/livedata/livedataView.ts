@@ -1,4 +1,3 @@
-import { DoubleEliminationView } from './DoubleElimationView';
 import { EventDispatcher } from '../../utils/EventDispatcher';
 import { BaseGameView, getDoc, IBaseGameView } from './BaseGame';
 import { getAllPlayer } from '../../utils/HupuAPI';
@@ -8,15 +7,15 @@ import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
 let gmv = new GameMonthView()
 export default class LiveDataView extends EventDispatcher {
+    EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     gameView: IBaseGameView
     gmv: GameMonthView
-    doubleElimination: DoubleEliminationView
     constructor() {
         super()
-        this.doubleElimination = new DoubleEliminationView(this)
         this.gameView = gmv
         this.gmv = gmv
-
+    }
+    appendProp(gmv) {
         gmv['timeInput'] = 0
         gmv['actPanel'] = '1'
         gmv['group'] = ''
@@ -56,7 +55,7 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     emitInfo() {
-        this.emit(WebDBCmd.cs_init,{})
+        this.emit(WebDBCmd.cs_init, {})
         gmv.emitGameInfo()
     }
 
@@ -92,7 +91,8 @@ export default class LiveDataView extends EventDispatcher {
 
     getGameInfo(row) {
         let gameIdx = row.gameIdx
-        gmv.setGameInfo(gameIdx, false)
+        // gmv.setGameInfo(gameIdx, false)
+        this.emit(this.EVENT_SET_GAME_INFO, gameIdx)
         console.log('getGameInfo', row);
     }
 

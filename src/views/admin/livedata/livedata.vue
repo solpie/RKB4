@@ -3,11 +3,11 @@
         <el-col :span='8'>
             <el-collapse v-model="actPanel" accordion>
                 <el-collapse-item title="Group Rank" name="2">
-                    <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
+                    <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
                         <el-table-column prop="name" label="name" width="140"></el-table-column>
                         <el-table-column prop="win" label="胜场" width="80"></el-table-column>
                         <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                    </el-table>
+                    </el-table> -->
                 </el-collapse-item>
                 <el-collapse-item title="Game List" name="1">
                     <el-table stripe :data="gameInfoTable" style="width: 100%" @row-click='rowClick'>
@@ -34,12 +34,14 @@
                     <el-button @click='_("setLFoul",lFoul-1)'>-1</el-button>
                 </el-col>
                 <el-col :span='4'>
-                    <div v-if='gameIdx<24'>
+                    <!-- <div v-if='gameIdx<24'>
                         小组赛第{{gameIdx+1}}场
                     </div>
                     <div v-else>
                         大师赛第{{gameIdx-23}}场
-                    </div>
+                    </div> -->
+                    小组赛第{{gameIdx}}场
+                    
                     <span style="fontSize:40px">
                         Score
                         <span style="color:blue">{{lScore}}</span> :
@@ -112,10 +114,16 @@
 </template>
 <script>
 import LiveDataView from './livedataView'
+import DoubleEliminationView  from './DoubleElimationView';
+
 let livedataView = new LiveDataView()
+let doubleElimination = new DoubleEliminationView(livedataView)
+livedataView.appendProp(doubleElimination)
 export default {
     data() {
-        let g = livedataView.gmv
+        let g = doubleElimination
+        // let g = livedataView.gmv
+        // g.gameInfoTable = doubleElimination.gameInfoTable
         return g
     },
     methods: {
