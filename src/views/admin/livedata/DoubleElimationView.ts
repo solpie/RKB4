@@ -43,6 +43,15 @@ export default class DoubleEliminationView extends BaseGameView {
             console.log(this, 'EVENT_SET_GAME_INFO', gameIdx);
             this.setGameInfo(gameIdx)
         })
+
+        liveDataView.on(liveDataView.EVENT_INIT_BRACKET, _ => {
+            console.log(this, 'EVENT_INIT_BRACKET');
+            syncDoc(gameDate, doc => {
+                console.log('sync doc', doc);
+                this.initBracket(doc)
+                this.initView(doc)
+            },true)
+        })
         this.initWS()
     }
 

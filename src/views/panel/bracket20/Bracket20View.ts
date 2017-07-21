@@ -14,8 +14,8 @@ export class Bracket20View {
     }
 
     onBracketData(rec) {
-        routeBracket(rec)
-        this.bracket.setRec(rec)
+        let data = routeBracket(rec)
+        this.bracket.setRec(rec, data.incoming)
     }
 
     isInit: boolean

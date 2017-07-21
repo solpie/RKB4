@@ -1,4 +1,5 @@
 export const routeBracket = (rec) => {
+    let incoming = 1
     let route = (gameIdx, toWin, toLose) => {
         let rFrom = rec[gameIdx]
         let a = toWin.split('.')
@@ -13,6 +14,7 @@ export const routeBracket = (rec) => {
         let rLose = rec[loseGameIdx]
         if (rFrom.score[0] == 0 && rFrom.score[1] == 0)
             return
+        incoming++
         if (gameIdx == 5) {
             console.log('toWin', rWin, 'toLose', rLose, losePos);
         }
@@ -51,7 +53,7 @@ export const routeBracket = (rec) => {
     route(18, '28.1', 'x.0')
     route(19, '25.1', 'x.0')
     route(20, '26.1', 'x.0')
-    
+
     route(21, '31.0', '25.0')
     route(22, '31.1', '26.0')
     route(23, '32.0', '27.0')
@@ -76,4 +78,5 @@ export const routeBracket = (rec) => {
 
     route(37, '38.1', 'x.0')
     // route(38, '38.1', 'x.0')
+    return { incoming: incoming }
 }

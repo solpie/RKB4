@@ -2,6 +2,8 @@ import { newBitmap } from '../../utils/PixiEx';
 import { Player20 } from './Player20';
 export class Bracket20 extends PIXI.Container {
     gameMap = {}
+    incomingSp: PIXI.Sprite
+    posMap: any
     constructor(stage) {
         super()
         stage.addChild(this)
@@ -71,6 +73,7 @@ export class Bracket20 extends PIXI.Container {
             '38': [1410, 365],
             '39': [1690, 365],
         }
+        this.posMap = posMap
         for (let i = 0; i < 39; i++) {
             let pos = posMap[i + 1]
             let lPlayer = new Player20()
@@ -86,9 +89,13 @@ export class Bracket20 extends PIXI.Container {
             this.addChild(rPlayer)
             this.gameMap[i + 1] = [lPlayer, rPlayer]
         }
+
+        let incoming = newBitmap({ url: '/img/panel/bracket/final/incoming.png' })
+        this.addChild(incoming)
+        this.incomingSp = incoming
     }
 
-    setRec(rec) {
+    setRec(rec, incomingIdx) {
         for (let i = 0; i < 39; i++) {
             let gameIdx = i + 1
             let game = rec[gameIdx]
@@ -100,6 +107,11 @@ export class Bracket20 extends PIXI.Container {
                 lPlayer.setInfo(game.player[0], game.score[0])
             if (game.player[1])
                 rPlayer.setInfo(game.player[1], game.score[1])
+        }
+        let pos = this.posMap[incomingIdx]
+        if (pos) {
+            this.incomingSp.x = pos[0]
+            this.incomingSp.y = pos[1]
         }
     }
 }

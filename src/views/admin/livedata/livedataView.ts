@@ -8,9 +8,10 @@ import { GameMonthView } from "./GameMonthView";
 let gmv = new GameMonthView()
 export default class LiveDataView extends EventDispatcher {
     EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
+    EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     gameView: IBaseGameView
     gmv: GameMonthView
-    $vm:any
+    $vm: any
     constructor() {
         super()
         this.gameView = gmv
@@ -125,7 +126,8 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     initMaster() {
-        gmv.initMaster()
+        // gmv.initMaster()
+        this.emit(this.EVENT_INIT_BRACKET)
     }
 
     clearMaster(s) {
