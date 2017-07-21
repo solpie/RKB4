@@ -10,6 +10,7 @@ export default class LiveDataView extends EventDispatcher {
     EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     gameView: IBaseGameView
     gmv: GameMonthView
+    $vm:any
     constructor() {
         super()
         this.gameView = gmv
@@ -33,20 +34,20 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     setLScore(score) {
-        this.gameView.lScore = Number(score)
+        this.$vm.lScore = Number(score)
         this.emitScore()
     }
 
     setRScore(score) {
-        this.gameView.rScore = Number(score)
+        this.$vm.rScore = Number(score)
         this.emitScore()
     }
     setLFoul(f) {
-        this.gameView.lFoul = Number(f)
+        this.$vm.lFoul = Number(f)
         this.emitScore()
     }
     setRFoul(f) {
-        this.gameView.rFoul = Number(f)
+        this.$vm.rFoul = Number(f)
         this.emitScore()
     }
 
@@ -61,10 +62,10 @@ export default class LiveDataView extends EventDispatcher {
 
     emitScore() {
         let data: any = { _: null }
-        data.leftScore = Number(this.gameView.lScore)
-        data.rightScore = Number(this.gameView.rScore)
-        data.leftFoul = Number(this.gameView.lFoul)
-        data.rightFoul = Number(this.gameView.rFoul)
+        data.leftScore = this.$vm.lScore
+        data.rightScore = this.$vm.rScore
+        data.leftFoul = this.$vm.lFoul
+        data.rightFoul = this.$vm.rFoul
         this.emit(WebDBCmd.cs_score, data)
         $post(`/emit/${WebDBCmd.cs_score}`, data)
     }

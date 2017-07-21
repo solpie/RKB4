@@ -2,6 +2,7 @@ import { BaseGameView, syncDoc } from './BaseGame';
 import LiveDataView from './livedataView';
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
+import { routeBracket } from "../../panel/bracket20/Bracket20Route";
 let gameDate = 730
 declare let io;
 export default class DoubleEliminationView extends BaseGameView {
@@ -29,8 +30,8 @@ export default class DoubleEliminationView extends BaseGameView {
 
         liveDataView.on(WebDBCmd.cs_score, data => {
             console.log('DoubleElimination', data);
-            this.lScore = data.leftScore || this.lScore
-            this.rScore = data.rightScore || this.rScore
+            this.lScore = data.leftScore
+            this.rScore = data.rightScore
         })
 
         liveDataView.on(WebDBCmd.cs_commit, data => {
@@ -61,6 +62,8 @@ export default class DoubleEliminationView extends BaseGameView {
     initView(doc) {
         //  this.recMap = doc['recMap']
         let recMap = doc['rec']
+        routeBracket(recMap)
+
         let gameIdx = doc.gameIdx
         this.setGameInfo(gameIdx)
         //gameInfoTable
@@ -75,10 +78,11 @@ export default class DoubleEliminationView extends BaseGameView {
             row.lPlayer = this.getHupuId(rec.player[0])
             row.rPlayer = this.getHupuId(rec.player[1])
             row.score = rec.score[0] + " : " + rec.score[1]
-            console.log('row', row);
+            // console.log('row', row);
             rowArr.push(row)
         }
         // console.log('init GameInfo Table', rowArr, this.nameMapHupuId);
+
         this.gameInfoTable = rowArr
     }
 
@@ -100,11 +104,14 @@ export default class DoubleEliminationView extends BaseGameView {
                 // this.emitGameInfo()
             })
     }
-    emitBracket() {
-        syncDoc(gameDate, doc => {
-            console.log('emit bracket', doc);
+    emitBracket(doc?) {
+        if (doc)
             $post(`/emit/${WebDBCmd.cs_bracket20Init}`, { _: null, rec: doc.rec })
-        })
+        else
+            syncDoc(gameDate, doc => {
+                console.log('emit bracket', doc);
+                $post(`/emit/${WebDBCmd.cs_bracket20Init}`, { _: null, rec: doc.rec })
+            })
     }
 
     commit() {
@@ -116,6 +123,7 @@ export default class DoubleEliminationView extends BaseGameView {
             rec.player = [this.lPlayer, this.rPlayer]
             this.gameIdx++
             doc.gameIdx = this.gameIdx
+            this.emitBracket(doc)
             this.initView(doc)
         }, true)
     }
