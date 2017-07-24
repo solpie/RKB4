@@ -1,14 +1,17 @@
-import { BaseGameView, syncDoc } from './BaseGame';
+import { BaseGameView, syncDoc, buildPlayerData } from './BaseGame';
 import LiveDataView from './livedataView';
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { routeBracket } from "../../panel/bracket20/Bracket20Route";
+import { getAllPlayer } from "../../utils/HupuAPI";
+import { PlayerInfo } from "./PlayerInfo";
 let gameDate = 730
 declare let io;
 export default class DoubleEliminationView extends BaseGameView {
     //gameIdx from 1 - 39
-
+    nameMapHupuId = {}
     gameInfoTable = []
+    delayEmitGameInfo = 0
     lHupuID = ''
     rHupuID = ''
     constructor(liveDataView: LiveDataView) {
@@ -17,13 +20,15 @@ export default class DoubleEliminationView extends BaseGameView {
             console.log('sync doc', doc);
             // if (!doc['rec']) {
             // this.initBracket(doc)
-            this.initView(doc)
+            this.initPlayer(_ => {
+                this.initView(doc)
+            })
             // }
         })
-
         liveDataView.on(WebDBCmd.cs_init, data => {
             console.log('DoubleElimination cs_init', data);
             syncDoc(gameDate, doc => {
+                this.emitGameInfo()
                 $post(`/emit/${WebDBCmd.cs_bracket20Init}`, doc)
             })
         })
@@ -50,9 +55,48 @@ export default class DoubleEliminationView extends BaseGameView {
                 console.log('sync doc', doc);
                 this.initBracket(doc)
                 this.initView(doc)
-            },true)
+            }, true)
         })
         this.initWS()
+    }
+
+    initPlayer(callback) {
+        getAllPlayer(380, (res) => {
+            console.log('380 all player ', res);
+            // this.initGameInfo(res)
+            let playerIdArr = ['郝天佶', '打铁不算多', '哈特好', '知名球童戴一志'
+                , '郝天佶', '打铁不算多', '哈特好', '知名球童戴一志'
+                , '泡椒top13', '打铁不算多', '习惯过了头', '阿彬BIN'
+                , '平常心myd', '小丑的梦想', '认得挖方一号', 'NGFNGN'
+                , '大霖哥666', 'Gyoung15', '带伤上阵也不怕', 'biglrip'
+            ]
+            let playerOrderArr = []
+            // console.log('initGameInfo ', res);
+            let getData = (name) => {
+                for (let p of res.data) {
+                    if (p.name == name)
+                    { return p }
+                }
+            }
+
+            for (let p of playerIdArr) {
+                playerOrderArr.push(getData(p))
+            }
+            console.log('player 20', playerOrderArr);
+            let playerArr = []
+
+            for (let i = 0; i < 20; i++) {
+                let p = new PlayerInfo()
+                p.id = i + 1
+                p.hupuID = playerOrderArr[i].name
+                p.name = 'p' + (i + 1)
+                p.data = playerOrderArr[i]
+                playerArr.push(p)
+                this.nameMapHupuId[p.name] = p
+            }
+
+            callback()
+        })
     }
 
     setGameInfo(gameIdx) {
@@ -78,7 +122,7 @@ export default class DoubleEliminationView extends BaseGameView {
         //gameInfoTable
         let rowArr: any = []
         for (let idx in recMap) {
-            console.log('idx', idx, recMap);
+            // console.log('idx', idx, recMap);
             let rec = recMap[idx]
             let row = { idx: 0, gameIdx: 0, vs: '', score: '', rPlayer: '', lPlayer: '' }
             row.gameIdx = Number(idx)
@@ -96,7 +140,12 @@ export default class DoubleEliminationView extends BaseGameView {
     }
 
     getHupuId(groupName) {
-        return groupName
+        for (let k in this.nameMapHupuId) {
+            let o = this.nameMapHupuId[k]
+            if (o.name == groupName)
+                return o.hupuID
+        }
+        return ''
     }
 
     initWS() {
@@ -113,6 +162,48 @@ export default class DoubleEliminationView extends BaseGameView {
                 // this.emitGameInfo()
             })
     }
+
+    getPlayerInfo(groupName) {
+        if (this.nameMapHupuId[groupName])
+            return this.nameMapHupuId[groupName]
+        return {}
+    }
+
+
+    emitGameInfo() {
+        let data: any = { _: null }
+        data.winScore = 3
+        if (this.gameIdx == 37) {//决赛
+            data.winScore = 5
+            data.matchType = 3
+        }
+        else  //大师赛
+            data.matchType = 2
+        // else
+        //     data.matchType = 1
+        data.gameIdx = this.gameIdx
+        let lPlayerData = this.getPlayerInfo(this.lPlayer).data
+        let rPlayerData = this.getPlayerInfo(this.rPlayer).data
+        lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+        rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+        data.leftScore = this.lScore
+        data.rightScore = this.rScore
+        data.leftFoul = this.lFoul
+        data.rightFoul = this.rFoul
+        data.leftPlayer = lPlayerData
+        data.rightPlayer = rPlayerData
+        console.log('setGameInfo', data);
+
+        if (this.delayEmitGameInfo > 0) {
+            setTimeout(_ => {
+                this.delayEmitGameInfo = 0
+                $post(`/emit/${WebDBCmd.cs_init}`, data)
+            }, this.delayEmitGameInfo);
+        }
+        else
+            $post(`/emit/${WebDBCmd.cs_init}`, data)
+    }
+
     emitBracket(doc?) {
         if (doc)
             $post(`/emit/${WebDBCmd.cs_bracket20Init}`, { _: null, rec: doc.rec })
@@ -132,9 +223,24 @@ export default class DoubleEliminationView extends BaseGameView {
             rec.player = [this.lPlayer, this.rPlayer]
             this.gameIdx++
             doc.gameIdx = this.gameIdx
+            this.emitVictory(doc)
             this.emitBracket(doc)
             this.initView(doc)
         }, true)
+    }
+
+    emitVictory(doc) {
+        if (this.lScore != 0 || this.rScore != 0) {
+            let winPlayer: PlayerInfo;
+            if (this.lScore > this.rScore)
+                winPlayer = this.getPlayerInfo(this.lPlayer)
+            else
+                winPlayer = this.getPlayerInfo(this.rPlayer)
+            let sumMap = buildPlayerData(doc, true)
+            let rec = sumMap[winPlayer.name]
+            let data = { _: null, visible: true, winner: winPlayer.data, rec: rec }
+            $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+        }
     }
 
     initBracket(doc) {

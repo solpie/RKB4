@@ -4,13 +4,13 @@ import { FontName } from '../const';
 export class FoulTextM2 extends PIXI.Container {
     label: PIXI.Text
     hasHint: boolean
-    constructor(hintUrl) {
+    constructor() {
         super()
         this.hasHint = true
 
         let fts = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '30px', fill: "#fff",
+            fontSize: '40px', fill: "#fff",
             fontWeight: 'bold'
         }
         let l = new PIXI.Text('', fts)

@@ -230,3 +230,12 @@ export let PIXI_MOUSE_EVENT = {
     mousedown: 'mousedown',
     click: 'click',
 }
+
+export function polygon(g: PIXI.Graphics, radius, sides) {
+    if (sides < 3) return;
+    var a = (Math.PI * 2) / sides;
+    g.moveTo(radius, 0);
+    for (var i = 1; i < sides; i++) {
+        g.lineTo(radius * Math.cos(a * i), radius * Math.sin(a * i));
+    }
+}

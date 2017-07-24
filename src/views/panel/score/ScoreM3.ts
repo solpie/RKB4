@@ -1,56 +1,20 @@
+import { imgLoader } from '../../utils/ImgLoader';
 import { getFtName } from './Com2017';
 import { FoulText } from './FoulText';
-import { blink2 } from '../../utils/Fx';
-import { TweenEx } from '../../utils/TweenEx';
 import { FoulGroup } from './FoulGroup';
-import { _avatar } from '../../utils/HupuAPI';
-import { proxy } from '../../utils/WebJsFunc';
-import { TextTimer } from '../../utils/TextTimer';
-import { Direction, SpriteGroup } from '../../utils/SpriteGroup';
-import { FontName, TimerState, ViewConst } from '../const';
-import { loadImg, paddy } from '../../utils/JsFunc';
-import { BitmapText, imgToTex, loadRes, newBitmap } from '../../utils/PixiEx';
+import { BitmapText, newBitmap, imgToTex, loadRes, polygon } from "../../utils/PixiEx";
+import { SpriteGroup, Direction } from "../../utils/SpriteGroup";
+import { TextTimer } from "../../utils/TextTimer";
+import { ViewConst, FontName } from "../const";
+import { paddy, loadImg } from "../../utils/JsFunc";
+import { blink2 } from "../../utils/Fx";
 import { FoulTextM2 } from "./FoulTextM2";
-const skin = {
-    light: {
-        bg: '/img/panel/score/m2/bg2.png',
-        fontColor: '#fff',
-        score: '/img/panel/score/m2/score.png',
-        foul: '/img/panel/score2017/foul.png',
-        foulHint: '/img/panel/score2017/foulHintLight.png',
-        section1: '/img/panel/score2017/section1Light.png',
-        section2: '/img/panel/score2017/section2Light.png',
-        section3: '/img/panel/score2017/section3Light.png'
-    },
-    dark: {
-        bg: '/img/panel/score/m2/bg2.png',
-        fontColor: '#1b5e80',
-        score: '/img/panel/score/m2/score.png',
-        foul: '/img/panel/score2017/foul.png',
-        foulHint: '/img/panel/score2017/foulHintDark.png',
-        section1: '/img/panel/score2017/section1Dark.png',
-        section2: '/img/panel/score2017/section2Dark.png',
-        section3: '/img/panel/score2017/section3Dark.png'
-    }
-}
-interface Skin {
-    bg: string
-    section1: string
-    section2: string
-    section3: string
-    score: string
-    foul: string
-    foulHint: string
-    fontColor: string
-}
-export class ScoreM2 {
-    stage: PIXI.Container
+export class ScoreM3 {
     //车轮战
     gameSection1: PIXI.Texture
     gameSection2: PIXI.Texture
     gameSection3: PIXI.Texture
     gameSection: PIXI.Sprite
-    skin: Skin
     leftScoreText: BitmapText;
     rightScoreText: BitmapText;
     leftFoul: SpriteGroup
@@ -81,60 +45,28 @@ export class ScoreM2 {
     _texFt = {}
     lFtImg: PIXI.Sprite
     rFtImg: PIXI.Sprite
+
+    lRankingColor: PIXI.Graphics
+    rRankingColor: PIXI.Graphics
+    lRankingText: PIXI.Text
+    rRankingText: PIXI.Text
     ctn: PIXI.DisplayObject
     constructor(stage: PIXI.Container, isDark = false) {
-        this.stage = stage
-        if (isDark)
-            this.skin = skin.dark
-        else
-            this.skin = skin.light
-        let bg = newBitmap({ url: this.skin.bg })
+        let bg = newBitmap({ url: '/img/panel/score/final/bg.png' })
         stage.addChild(bg)
         this.ctn = bg
         let ctn = new PIXI.Container
         bg.addChild(ctn)
         ctn.y = ViewConst.STAGE_HEIGHT - 300
-        //ft ctn
-        let ftCtn = new PIXI.Container()
-        ftCtn.x = 780
-        ftCtn.y = 163
-        // ftCtn.alpha = .5
-        ctn.addChild(ftCtn)
-        let lFtImg = new PIXI.Sprite()
-        lFtImg.x = -55
-        // lFtImg.y = 164
-        this.lFtImg = lFtImg
-        ftCtn.addChild(lFtImg)
-
-        let rFtImg = new PIXI.Sprite()
-        rFtImg.x = 170
-        rFtImg.y = lFtImg.y
-        this.rFtImg = rFtImg
-        ftCtn.addChild(rFtImg)
-
-        let ftMask = newBitmap({ url: '/img/panel/score/m2/ftMask.png' })
-        ftMask.x = ftCtn.x
-        ftMask.y = ftCtn.y
-        ftCtn.mask = ftMask
-        ctn.addChild(ftMask)
-
-        let ftStrip = newBitmap({ url: '/img/panel/score/m2/ftStrip.png' })
-        ftStrip.x = 0.5 * (ViewConst.STAGE_WIDTH - 356)
-        ftStrip.y = 163
-        ftStrip.blendMode = PIXI.BLEND_MODES.MULTIPLY
-        ctn.addChild(ftStrip)
-
-        let ftGameInfo = newBitmap({ url: '/img/panel/score/m2/gameInfoBg.png' })
-        ftGameInfo.x = 0.5 * (ViewConst.STAGE_WIDTH - 144)
-        ftGameInfo.y = 163
-        ctn.addChild(ftGameInfo)
+        bg.scale.x = bg.scale.y = .87
+        bg.x = 122
+        bg.y = 146
         ////////
-
         this.gameSection = new PIXI.Sprite
         this.gameSection.x = 926
         this.gameSection.y = 174
         ctn.addChild(this.gameSection)
-        loadRes(this.skin.score, (img) => {
+        loadRes('/img/panel/score/m2/score.png', (img) => {
             let tex = imgToTex(img)
             let sheet = {
                 text: '0',
@@ -156,50 +88,34 @@ export class ScoreM2 {
                     [55, 162, 54, 80]]
             }
 
-            let leftScoreNum = new BitmapText(sheet)
+            let lScoreNum = new BitmapText(sheet)
             // leftScoreNum.frameWidth = 56
-            this.leftScoreText = leftScoreNum
-            leftScoreNum.x = 825
-            leftScoreNum.y = 188
-            leftScoreNum.align = 'center'
-            ctn.addChild(leftScoreNum as any)
+            this.leftScoreText = lScoreNum
+            lScoreNum.x = 808
+            lScoreNum.y = 110
+            lScoreNum.align = 'center'
+            ctn.addChild(lScoreNum as any)
 
-            let rightScoreNum = new BitmapText(sheet)
+            let rScoreNum = new BitmapText(sheet)
             // rightScoreNum.frameWidth = 56
-            this.rightScoreText = rightScoreNum
-            rightScoreNum.x = leftScoreNum.x + 218
-            rightScoreNum.y = leftScoreNum.y
-            rightScoreNum.align = 'center'
-            ctn.addChild(rightScoreNum as any)
+            this.rightScoreText = rScoreNum
+            rScoreNum.x = lScoreNum.x + 232
+            rScoreNum.y = lScoreNum.y
+            rScoreNum.align = 'center'
+            lScoreNum.scale.x = lScoreNum.scale.y = 1.3
+            rScoreNum.scale.x = rScoreNum.scale.y = 1.3
+            ctn.addChild(rScoreNum as any)
         })
 
-        let lf = new FoulGroup({ dir: Direction.e, invert: 29, img: this.skin.foul, count: 4 })
-        // ctn.addChild(lf)
-        lf.x = 771
-        lf.y = 262
-        this.leftFoul = lf
-
-        let rf = new FoulGroup({ dir: Direction.w, invert: 29, img: this.skin.foul, count: 4 })
-        // ctn.addChild(rf)
-        rf.x = 1037
-        rf.y = lf.y
-        this.rightFoul = rf
-        // this.setGameIdx(1,true)
-
-        let fts = {
-            fontFamily: FontName.MicrosoftYahei,
-            fontSize: '30px', fill: "#fff",
-            fontWeight: 'bold'
-        }
         let lft = new FoulTextM2()
-        lft.x = 568
-        lft.y = 248
+        lft.x = 510
+        lft.y = 192
         lft.setFoul(0)
         ctn.addChild(lft)
         this.lFoulText = lft
 
         let rft = new FoulTextM2()
-        rft.x = 1364
+        rft.x = 1464
         rft.y = lft.y
         rft.setFoul(0)
         ctn.addChild(rft)
@@ -214,7 +130,7 @@ export class ScoreM2 {
         let t = new TextTimer('', tts)
         ctn.addChild(t)
         t.x = 919
-        t.y = 248
+        t.y = 210
         t.textInSec = 0
         this.timer = t
 
@@ -227,38 +143,36 @@ export class ScoreM2 {
 
         let gis = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '18px', fill: "#fff",
+            fontSize: '24px', fill: "#fff",
             fontWeight: 'bold'
         }
         let gi = new PIXI.Text("", gis)
         this.gameIdx = gi
-        gi.x = 915
-        gi.y = 168
+        gi.x = 908
+        gi.y = 68
         ctn.addChild(gi)
 
         let pns = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '24px', fill: this.skin.fontColor,
-            // stroke: '#000',
-            strokeThickness: 2,
+            fontSize: '30px', fill: '#fff',
             fontWeight: 'bold',
         }
 
         let lpn = new PIXI.Text("", pns)
-        lpn.y = 165
+        lpn.y = 82
         this.lPlayerName = lpn
         ctn.addChild(lpn)
 
-
         let pis = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '22px', fill: this.skin.fontColor,
+            fontSize: '28px', fill: '#fff',
             stroke: '#000',
             strokeThickness: 2,
             fontWeight: 'bold'
         }
+
         let lHeight = new PIXI.Text("", pis)
-        lHeight.y = 210
+        lHeight.y = 142
         this.lPlayerHeight = lHeight
         ctn.addChild(lHeight)
 
@@ -267,10 +181,9 @@ export class ScoreM2 {
         this.lPlayerWeight = lWeight
         ctn.addChild(lWeight)
 
-
         let rpn = new PIXI.Text("", pns)
         rpn.y = lpn.y
-        rpn.x = 1284
+        rpn.x = 1318
         this.rPlayerName = rpn
         ctn.addChild(rpn)
 
@@ -286,36 +199,67 @@ export class ScoreM2 {
         this.rPlayerWeight = rWeight
         ctn.addChild(rWeight)
 
-        let lm = newBitmap({ url: '/img/panel/score/m2/mask.png' })
-        lm.x = 639
-        lm.y = 163
-        ctn.addChild(lm)
-
-        let rm = newBitmap({ url: '/img/panel/score/m2/maskR.png' })
-        rm.x = 1122
-        rm.y = lm.y
-        ctn.addChild(rm)
-
-        let la = new PIXI.Sprite()
-        la.x = lm.x
-        la.y = lm.y
-        la.mask = lm
-        this.lAvatar = la
+        let lAvatar = new PIXI.Sprite()
+        lAvatar.x = 595
+        lAvatar.y = 76
+        this.lAvatar = lAvatar
         ctn.addChild(this.lAvatar)
 
-        let ra = new PIXI.Sprite()
-        ra.x = rm.x
-        ra.y = rm.y
-        ra.mask = rm
-        this.rAvatar = ra
+        let lm = newBitmap({ url: '/img/panel/score/final/avtMask.png' })
+        lm.x = lAvatar.x + 2
+        lm.y = 76
+        lAvatar.mask = lm
+        ctn.addChild(lm)
+
+        let rAvatar = new PIXI.Sprite()
+        rAvatar.x = 1138
+        rAvatar.y = lm.y
+
+        this.rAvatar = rAvatar
         ctn.addChild(this.rAvatar)
+        let rm = newBitmap({ url: '/img/panel/score/final/avtMask.png' })
+        rm.x = 1138
+        rm.y = rAvatar.y
+        rAvatar.mask = rm
+        ctn.addChild(rm)
 
+        let rRankingColor = new PIXI.Graphics()
+        this._drawRankingColor(rRankingColor, 0xdddddd)
+        rRankingColor.x = rm.x + 45
+        rRankingColor.y = lm.y + 120
+        ctn.addChild(rRankingColor)
 
-        let ftns = {
+        let lRankingColor = new PIXI.Graphics()
+        this._drawRankingColor(lRankingColor, 0xdddddd)
+        lRankingColor.x = lm.x + 45
+        lRankingColor.y = lm.y + 120
+        this.lRankingColor = lRankingColor
+        this.rRankingColor = rRankingColor
+        ctn.addChild(lRankingColor)
+
+        let rs = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '22px', fill: '#fff',
-            fontWeight: 'bold'
+            fontSize: '35px', fill: "#fff",
         }
+        let lRankingText = new PIXI.Text("", rs)
+        // lRankingText.x = lRankingColor.x + 26
+        lRankingText.y = lRankingColor.y + 5
+        ctn.addChild(lRankingText)
+        this.lRankingText = lRankingText
+
+        let rRankingText = new PIXI.Text("", rs)
+        // rRankingText.x = rRankingColor.x + 22
+        rRankingText.y = lRankingText.y
+        ctn.addChild(rRankingText)
+        this.rRankingText = rRankingText
+    }
+
+    _drawRankingColor(g: PIXI.Graphics, col) {
+        g.beginFill(col)
+            .moveTo(25, 0)
+            .lineTo(75, 0)
+            .lineTo(100, 50)
+            .lineTo(0, 50)
     }
 
     set35ScoreLight(winScore) {
@@ -326,15 +270,15 @@ export class ScoreM2 {
     setGameIdx(gameIdx, matchType) {
         console.log('isMaster', matchType)
         if (matchType == 2) {
-            gameIdx -= 24
-            this.gameIdx.text = '大师赛' + paddy(gameIdx, 2) + '场'
+            this.gameIdx.text = '决赛' + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 1) {
-            this.gameIdx.text = '小组赛' + paddy(gameIdx, 2) + '场'
+            this.gameIdx.text = '车轮战' + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 3) {
-            this.gameIdx.text = '冠军赛决赛'
+            this.gameIdx.text = '总决赛'
         }
+        this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
     _showWinScore() {
         this.winScoreText.visible = true
@@ -350,6 +294,7 @@ export class ScoreM2 {
         //     this.timer.visible = true
         // })
     }
+
     setLeftScore(v) {
         this.leftScoreText.text = v + ''
         this._showWinScore()
@@ -428,79 +373,86 @@ export class ScoreM2 {
         }
     }
     //player
-    setLeftPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number) {
+    setLeftPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number, rankingData: any) {
         this._lFtId = ftId
         this._loadFrame(level, this.lFrame)
         //cm kg
         this.lPlayerName.text = name
         this.cutName(this.lPlayerName, this._NAME_WIDTH)
-        this.lPlayerName.x = 634 - this.lPlayerName.width
-        loadRes(avatar, (img) => {
+        this.lPlayerName.x = 604 - this.lPlayerName.width
+        // loadRes(avatar, (img) => {
+        //     let avt = this.lAvatar
+        //     avt.texture = imgToTex(img)
+        //     let s = 190 / img.width
+        //     avt.x = avt.mask.x// - avt.texture.width * .5 * s
+        //     avt.y = avt.mask.y// - avt.texture.height * .5 * s
+        //     avt.scale.x = avt.scale.y = s
+        // }, true);
+
+        imgLoader.loadTex(avatar, tex => {
             let avt = this.lAvatar
-            avt.texture = imgToTex(img)
-            let s = 155 / img.width
+            avt.texture = tex
+            let s = 190 / tex.width
             avt.x = avt.mask.x// - avt.texture.width * .5 * s
             avt.y = avt.mask.y// - avt.texture.height * .5 * s
             avt.scale.x = avt.scale.y = s
-        }, true);
+        })
         this.lPlayerHeight.text = height
         this.lPlayerWeight.text = weight
         // this._setHeightWeight(height, weight, this.lPlayerHeight)
-        this.lPlayerHeight.x = 532 - this.lPlayerHeight.width
-        this.lPlayerWeight.x = 618 - this.lPlayerWeight.width
+        this.lPlayerHeight.x = 390 - this.lPlayerHeight.width
+        this.lPlayerWeight.x = 535 - this.lPlayerWeight.width
 
-        this._loadFt(ftId, this.lFtImg)
-    }
-
-    private _loadFt(ftId, sp) {
-        let ftImg = '/img/panel/score/m2/' + ftId + '.png'
-        if (!this._texFt[ftImg]) {
-            loadImg(ftImg, img => {
-                this._texFt[ftImg] = img
-                sp.texture = imgToTex(img)
-            })
+        // this._loadFt(ftId, this.lFtImg)
+        if (rankingData) {
+            console.log('lPlayer ranking data', rankingData);
+            this._drawRankingColor(this.lRankingColor, rankingData.color)
+            this.lRankingText.text = rankingData.text
+            this.lRankingText.x = 693 - this.lRankingText.width * .5
         }
-        else
-            sp.texture = imgToTex(this._texFt[ftImg])
     }
+
     _loadFrame(level, frame: PIXI.Sprite) {
     }
 
 
-    _NAME_WIDTH = 176
-    setRightPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number) {
+    _NAME_WIDTH = 250
+    setRightPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number, rankingData: any) {
         this._rFtId = ftId
         this._loadFrame(level, this.rFrame)
 
         this.rPlayerName.text = name
         this.cutName(this.rPlayerName, this._NAME_WIDTH)
-        loadRes(avatar, (img) => {
+        // loadRes(avatar, (img) => {
+        imgLoader.loadTex(avatar, tex => {
             let avt = this.rAvatar
-            avt.texture = imgToTex(img)
-            let s = 155 / img.width
+            avt.texture = tex
+            let s = 190 / tex.width
             avt.x = avt.mask.x //- avt.texture.width * .5 * s
             avt.y = avt.mask.y //- avt.texture.height * .5 * s
             avt.scale.x = avt.scale.y = s
-        }, true);
+        });
 
         this.rPlayerHeight.text = height
         this.rPlayerWeight.text = weight
-        this.rPlayerHeight.x = 1320 - this.rPlayerHeight.width
-        this.rPlayerWeight.x = 1410 - this.rPlayerWeight.width
-        this._loadFt(ftId, this.rFtImg)
-        // this._fixFtName(this.rFtName, getFtName(ftId))
-        // this.rFtName.x = 1293 - this.rFtName.width * .5
+        this.rPlayerHeight.x = 1420 - this.rPlayerHeight.width
+        this.rPlayerWeight.x = 1558 - this.rPlayerWeight.width
+        if (rankingData) {
+            this._drawRankingColor(this.rRankingColor, rankingData.color)
+            this.rRankingText.text = rankingData.text
+            this.rRankingText.x = 1235 - this.rRankingText.width * .5
+        }
     }
     getPlayerInfo(isLeft) {
         let player: any = {}
         if (isLeft) {
             player.name = this.lPlayerName.text
-            player.info = this.lPlayerHeight.text
+            player.info = this.lPlayerHeight.text + ' CM ' + this.lPlayerWeight.text + ' KG'
             player.ftId = this._lFtId
         }
         else {
             player.name = this.rPlayerName.text
-            player.info = this.rPlayerHeight.text
+            player.info = this.rPlayerHeight.text + ' CM ' + this.rPlayerWeight.text + ' KG'
             player.ftId = this._rFtId
         }
         return player

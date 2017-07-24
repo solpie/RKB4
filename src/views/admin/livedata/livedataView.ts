@@ -53,12 +53,7 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     setGameInfo() {
-        this.emitInfo()
-    }
-
-    emitInfo() {
         this.emit(WebDBCmd.cs_init, {})
-        gmv.emitGameInfo()
     }
 
     emitScore() {
@@ -88,7 +83,7 @@ export default class LiveDataView extends EventDispatcher {
     }
     ///game month
     initGameMonth(gameId) {
-        gmv.initGameMonth(gameId)
+        // gmv.initGameMonth(gameId)
     }
 
     getGameInfo(row) {

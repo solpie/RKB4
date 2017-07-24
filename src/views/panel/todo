@@ -5,13 +5,9 @@
 小组排名 beats
 头像preLoad
 
-livedataview
-[o].清除比分
-[o].清除大师赛
-[0]创建小组赛
+
 参赛宣言check location
 
-香槟特效
 obs 多路流 切换
 
 mask less
@@ -21,8 +17,18 @@ mask less
 	texture.render(myContainer);
 	var background = new PIXI.Sprite(texture);
 
-扑克 抽一个展示一个
-20双败
+
+##final
+bracket zoom in pan
+获取球员列表 对应p1 p20
+比分面板M3换皮
+修改比分
+gameIdx 胜者组 败者组
+总决赛title
+
+扑克 抽一个展示一个 序列帧
+
+
 	网
 	音视频同步
 	摆位
