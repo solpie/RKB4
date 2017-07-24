@@ -107,11 +107,23 @@ export class Bracket20 extends PIXI.Container {
                 lPlayer.setInfo(game.player[0], game.score[0])
             if (game.player[1])
                 rPlayer.setInfo(game.player[1], game.score[1])
+            let lScore = Number(game.score[0])
+            let rScore = Number(game.score[1])
+            lPlayer.setAlpha(1)
+            rPlayer.setAlpha(1)
+            if (lScore == 0 && rScore == 0) {
+            }
+            else {
+                if (lScore < rScore)
+                    lPlayer.setAlpha(0.3)
+                else
+                    rPlayer.setAlpha(0.3)
+            }
         }
         let pos = this.posMap[incomingIdx]
         if (pos) {
             this.incomingSp.x = pos[0]
-            this.incomingSp.y = pos[1]
+            this.incomingSp.y = pos[1]-20
         }
     }
 }

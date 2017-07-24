@@ -28,7 +28,7 @@ export class Player20 extends PIXI.Container {
         this.addChild(sp)
 
         let scoreText = new PIXI.Text('', ns)
-        scoreText.x = 150
+        scoreText.x = 200
         this.scoreText = scoreText
         this.addChild(scoreText)
     }
@@ -36,6 +36,9 @@ export class Player20 extends PIXI.Container {
     setInfo(playerName, score, poke = 'L1') {
         this.nameText.text = playerName
         // if (score != 0)
-            this.scoreText.text = score
+        this.scoreText.text = score
+    }
+    setAlpha(a) {
+        this.nameText.alpha = a
     }
 }

@@ -1,12 +1,3 @@
-获胜面板
-[o]冠军抬头
-[o]小组进度
-滚动条
-小组排名 beats
-头像preLoad
-
-
-参赛宣言check location
 
 obs 多路流 切换
 
@@ -20,11 +11,13 @@ mask less
 
 ##final
 bracket zoom in pan
-获取球员列表 对应p1 p20
-比分面板M3换皮
+bracket name fit width
+参赛宣言check location
+[o]获取球员列表 对应p1 p20
+[o]比分面板M3换皮
 修改比分
-gameIdx 胜者组 败者组
 总决赛title
+gameIdx 胜者组 败者组
 
 扑克 抽一个展示一个 序列帧
 

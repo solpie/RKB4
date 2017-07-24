@@ -77,7 +77,7 @@ export default class LiveDataView extends EventDispatcher {
         this.setTimer(0, 0)
         this.setTimer(-1, 0)
         let data: any = { _: null }
-        this.gameView.commit()
+        // this.gameView.commit()
         this.emit(WebDBCmd.cs_commit, data)
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }

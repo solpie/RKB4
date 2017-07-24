@@ -159,7 +159,7 @@ export default class DoubleEliminationView extends BaseGameView {
             })
             .on(`${WebDBCmd.sc_panelCreated}`, () => {
                 console.log('sc_panelCreated');
-                // this.emitGameInfo()
+                this.emitGameInfo()
             })
     }
 
@@ -173,7 +173,7 @@ export default class DoubleEliminationView extends BaseGameView {
     emitGameInfo() {
         let data: any = { _: null }
         data.winScore = 3
-        if (this.gameIdx == 37) {//决赛
+        if (this.gameIdx == 38) {//决赛
             data.winScore = 5
             data.matchType = 3
         }
@@ -205,12 +205,20 @@ export default class DoubleEliminationView extends BaseGameView {
     }
 
     emitBracket(doc?) {
+        let setHupuId = (doc) => {
+            let cloneDoc = JSON.parse(JSON.stringify(doc))
+            for (let i = 0; i < 38; i++) {
+                let r = cloneDoc.rec[i + 1]
+                let a = [this.getHupuId(r.player[0]), this.getHupuId(r.player[1])]
+                r.player = a
+            }
+            $post(`/emit/${WebDBCmd.cs_bracket20Init}`, { _: null, rec: cloneDoc.rec })
+        }
         if (doc)
-            $post(`/emit/${WebDBCmd.cs_bracket20Init}`, { _: null, rec: doc.rec })
+            setHupuId(doc)
         else
             syncDoc(gameDate, doc => {
-                console.log('emit bracket', doc);
-                $post(`/emit/${WebDBCmd.cs_bracket20Init}`, { _: null, rec: doc.rec })
+                setHupuId(doc)
             })
     }
 
@@ -226,6 +234,18 @@ export default class DoubleEliminationView extends BaseGameView {
             this.emitVictory(doc)
             this.emitBracket(doc)
             this.initView(doc)
+            if (this.gameIdx < 13)
+                this.delayEmitGameInfo = 5000
+            else
+                this.delayEmitGameInfo = 1
+            setTimeout(_ => {
+                console.log('delay show player info');
+                this.emitGameInfo()
+                this.emitBracket()
+                this.setGameInfo(this.gameIdx)
+                if (this.gameIdx < 13)
+                    this.showGamePlayerInfo(true)
+            }, this.delayEmitGameInfo)
         }, true)
     }
 
@@ -241,6 +261,16 @@ export default class DoubleEliminationView extends BaseGameView {
             let data = { _: null, visible: true, winner: winPlayer.data, rec: rec }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
         }
+    }
+
+    showGamePlayerInfo(visible) {
+        let data = {
+            _: null,
+            visible: visible,
+            leftPlayer: this.getPlayerInfo(this.lPlayer),
+            rightPlayer: this.getPlayerInfo(this.rPlayer)
+        }
+        $post(`/emit/${WebDBCmd.cs_showGamePlayerInfo}`, data)
     }
 
     initBracket(doc) {
