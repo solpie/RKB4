@@ -1,14 +1,25 @@
+import { imgLoader } from '../../utils/ImgLoader';
+import { PokerPanel } from './PokerPanel';
 import { PokerPlayer } from './PokerPlayer';
 export class PokerView {
     pokerPlayer: Array<PokerPlayer>
     pokerMap: any
-    constructor() {
-        this.pokerPlayer = []
-        for (let i = 0; i < 12; i++) {
-            let p = new PokerPlayer
-            this.pokerPlayer.push(p)
+    pokerPanel: PokerPanel
+    constructor(stage) {
+        let frameUrl
+        for (let i = 0; i < 13; i++) {
         }
-        this.pokerMap = {}
+        imgLoader.loadTexArr(['/img/panel/bracket/final/playerBg1.png'], _ => {
+            this.pokerPanel = new PokerPanel()
+            stage.addChild(this.pokerPanel)
+        }, false)
+
+        // this.pokerPlayer = []
+        // for (let i = 0; i < 12; i++) {
+        //     let p = new PokerPlayer
+        //     this.pokerPlayer.push(p)
+        // }
+        // this.pokerMap = {}
     }
     /**
      * p1 d1

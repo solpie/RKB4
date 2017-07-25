@@ -57,6 +57,20 @@ export default class DoubleEliminationView extends BaseGameView {
                 this.initView(doc)
             }, true)
         })
+        liveDataView.on(LiveDataView.EVENT_SET_SCORE, scoreStr => {
+            syncDoc(gameDate, doc => {
+                console.log('sync doc', doc);
+                let game = doc.rec[this.gameIdx]
+                if (game) {
+                    let a = scoreStr.split(' ')
+                    if (a.length == 2) {
+                        game.score = [Number(a[0]), Number(a[1])]
+                    }
+                }
+                this.initBracket(doc)
+                this.initView(doc)
+            }, true)
+        })
         this.initWS()
     }
 
@@ -94,7 +108,6 @@ export default class DoubleEliminationView extends BaseGameView {
                 playerArr.push(p)
                 this.nameMapHupuId[p.name] = p
             }
-
             callback()
         })
     }
@@ -208,7 +221,7 @@ export default class DoubleEliminationView extends BaseGameView {
         else
             $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
-    
+
     emitBracket(doc?) {
         let setHupuId = (doc) => {
             let cloneDoc = JSON.parse(JSON.stringify(doc))

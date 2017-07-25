@@ -9,6 +9,7 @@ let gmv = new GameMonthView()
 export default class LiveDataView extends EventDispatcher {
     EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
+    static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -117,7 +118,8 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     setScore(scoreStr) {
-        gmv.setScore(scoreStr)
+        this.emit(LiveDataView.EVENT_SET_SCORE, scoreStr)
+        // gmv.setScore(scoreStr)
     }
 
     initMaster() {

@@ -12,8 +12,10 @@ export class Bracket20 extends PIXI.Container {
         super()
         stage.addChild(this)
 
-        let bg = newBitmap({ url: '/img/panel/bracket/final/bracket.png' })
+        let bg = newBitmap({ url: '/img/panel/bracket/final/bracketBg.png' })
         this.addChild(bg)
+        let bg2 = newBitmap({ url: '/img/panel/bracket/final/bracket.png' })
+        this.addChild(bg2)
         let x1 = 78
         let y1 = 82
         let y1_2 = 750
@@ -81,7 +83,7 @@ export class Bracket20 extends PIXI.Container {
             '33': [x5, 870],
             '34': [x5, 710],
             '35': [1405, 795],
-            '36': [1345, 325],
+            '36': [1345, 320],
             '37': [1650, 758],
             '38': [1662, 448],
             // '39': [1690, 365],

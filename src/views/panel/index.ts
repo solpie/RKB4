@@ -61,10 +61,11 @@ else if (panel == 'bracket20') {
 }
 else if (panel == 'poker') {
     // document.removeChild()
-    var element = document.getElementById("panel");
-    element.parentNode.removeChild(element);
-    initThree()
-    new PokerView()
+    // var element = document.getElementById("panel");
+    // element.parentNode.removeChild(element);
+    // initThree()
+    s = window['stage'] = initPIXI()
+    new PokerView(s)
 }
 else {
     s = window['stage'] = initPIXI()
