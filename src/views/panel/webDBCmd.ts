@@ -7,6 +7,9 @@ export const WebDBCmd = {
     //common
     cs_showNotice: ``,//公告
     sc_showNotice: ``,
+    //poker panel
+    sc_showPoker: ``,
+    cs_showPoker: ``,
     //game month
     cs_init: ``,
     sc_init: ``,

@@ -10,6 +10,7 @@ export default class LiveDataView extends EventDispatcher {
     EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
+    static EVENT_SHOW_POKET_PANEL = 'EVENT_SHOW_POKET_PANEL'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -133,5 +134,9 @@ export default class LiveDataView extends EventDispatcher {
 
     showGamePlayerInfo(v) {
         gmv.showGamePlayerInfo(v)
+    }
+
+    showPokerPanel(pokerNum) {
+        this.emit(LiveDataView.EVENT_SHOW_POKET_PANEL, pokerNum)
     }
 }

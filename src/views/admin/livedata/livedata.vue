@@ -109,7 +109,8 @@
             </el-row>
             <el-row>
                 <hr>
-                <el-button @click='_("setRow1",1)'>setRow1</el-button>
+                <el-button @click='_("showPokerPanel",8)'>show Poker 8</el-button>
+                <el-button @click='_("showPokerPanel",12)'>show Poker 12</el-button>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

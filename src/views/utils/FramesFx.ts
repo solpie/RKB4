@@ -22,7 +22,7 @@ export class FramesFx extends PIXI.Container {
         mc.onComplete = () => {
             this.emit('complete')
         }
-        console.log('mc', mc)
+        // console.log('mc', mc)
     }
     onComplete(callback) {
 

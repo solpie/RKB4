@@ -3,6 +3,8 @@ import { loadRes, imgToTex } from "./PixiEx";
 class ImgLoader {
     _texMap = {}
     loadTex(url, callback, isCrossOrigin = true) {
+        if (url.charAt(0) == '/')
+            isCrossOrigin = false
         if (!this._texMap[url]) {
             loadRes(url, (img) => {
                 this._texMap[url] = imgToTex(img)

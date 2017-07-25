@@ -239,3 +239,7 @@ export function polygon(g: PIXI.Graphics, radius, sides) {
         g.lineTo(radius * Math.cos(a * i), radius * Math.sin(a * i));
     }
 }
+
+export function setScale(obj, s) {
+    obj.scale.x = obj.scale.y = s
+}
