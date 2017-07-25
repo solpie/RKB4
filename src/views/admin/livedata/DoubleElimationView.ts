@@ -109,6 +109,8 @@ export default class DoubleEliminationView extends BaseGameView {
             this.rScore = Number(rec.score[1]) || 0
             this.lFoul = Number(rec.foul[0]) || 0
             this.rFoul = Number(rec.foul[1]) || 0
+            this.lHupuID = this.getHupuId(this.lPlayer)
+            this.rHupuID = this.getHupuId(this.rPlayer)
         })
     }
 
@@ -192,6 +194,9 @@ export default class DoubleEliminationView extends BaseGameView {
         data.rightFoul = this.rFoul
         data.leftPlayer = lPlayerData
         data.rightPlayer = rPlayerData
+        //test
+        // data.leftPlayer.name += this.lHupuID
+        // data.rightPlayer.name += this.rHupuID
         console.log('setGameInfo', data);
 
         if (this.delayEmitGameInfo > 0) {
@@ -203,12 +208,13 @@ export default class DoubleEliminationView extends BaseGameView {
         else
             $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
-
+    
     emitBracket(doc?) {
         let setHupuId = (doc) => {
             let cloneDoc = JSON.parse(JSON.stringify(doc))
             for (let i = 0; i < 38; i++) {
                 let r = cloneDoc.rec[i + 1]
+                r.poker = r.player
                 let a = [this.getHupuId(r.player[0]), this.getHupuId(r.player[1])]
                 r.player = a
             }
@@ -237,7 +243,8 @@ export default class DoubleEliminationView extends BaseGameView {
             if (this.gameIdx < 13)
                 this.delayEmitGameInfo = 5000
             else
-                this.delayEmitGameInfo = 1
+                this.delayEmitGameInfo = 2000
+
             setTimeout(_ => {
                 console.log('delay show player info');
                 this.emitGameInfo()

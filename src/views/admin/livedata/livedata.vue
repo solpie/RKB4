@@ -106,7 +106,10 @@
                 <hr>
                 <el-button @click='_("clearMaster",1)'>clear Master</el-button>
                 <el-button @click='_("clearMaster",0)'>clear All</el-button>
-    
+            </el-row>
+            <el-row>
+                <hr>
+                <el-button @click='_("setRow1",1)'>setRow1</el-button>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

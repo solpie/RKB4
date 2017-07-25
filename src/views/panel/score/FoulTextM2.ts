@@ -10,7 +10,7 @@ export class FoulTextM2 extends PIXI.Container {
 
         let fts = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '40px', fill: "#fff",
+            fontSize: '30px', fill: "#fff",
             fontWeight: 'bold'
         }
         let l = new PIXI.Text('', fts)

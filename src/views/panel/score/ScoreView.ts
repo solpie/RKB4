@@ -24,7 +24,7 @@ export class ScoreView {
         let isMonth = getUrlQuerys('m') == '1'
         console.log(gameId, isDark)
         if (isMonth)
-            this.scorePanel = new ScoreM3(stage, isDark)
+            this.scorePanel = new ScoreM2(stage, isDark)
         else {
             // this.scorePanel = new Score2017(stage, isDark)
             // this.initRemote()

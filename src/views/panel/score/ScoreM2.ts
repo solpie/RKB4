@@ -323,19 +323,35 @@ export class ScoreM2 {
     }
 
     //1 车轮 2 大师 3 决赛    
-    setGameIdx(gameIdx, matchType) {
+    // setGameIdx(gameIdx, matchType) {
+    //     console.log('isMaster', matchType)
+    //     if (matchType == 2) {
+    //         gameIdx -= 24
+    //         this.gameIdx.text = '大师赛' + paddy(gameIdx, 2) + '场'
+    //     }
+    //     else if (matchType == 1) {
+    //         this.gameIdx.text = '小组赛' + paddy(gameIdx, 2) + '场'
+    //     }
+    //     else if (matchType == 3) {
+    //         this.gameIdx.text = '冠军赛决赛'
+    //     }
+    // }
+
+     setGameIdx(gameIdx, matchType) {
         console.log('isMaster', matchType)
         if (matchType == 2) {
-            gameIdx -= 24
-            this.gameIdx.text = '大师赛' + paddy(gameIdx, 2) + '场'
+            this.gameIdx.text = '决赛' + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 1) {
-            this.gameIdx.text = '小组赛' + paddy(gameIdx, 2) + '场'
+            this.gameIdx.text = '车轮战' + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 3) {
-            this.gameIdx.text = '冠军赛决赛'
+            this.gameIdx.text = '总决赛'
         }
+        this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
+    
+    
     _showWinScore() {
         this.winScoreText.visible = true
         this.timer.visible = false

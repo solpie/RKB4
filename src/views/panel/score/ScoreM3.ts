@@ -280,6 +280,7 @@ export class ScoreM3 {
         }
         this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
+    
     _showWinScore() {
         this.winScoreText.visible = true
         this.timer.visible = false
