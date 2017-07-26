@@ -2,12 +2,29 @@
     <div style="width:1920px">
         <el-col :span='8'>
             <el-collapse v-model="actPanel" accordion>
-                <el-collapse-item title="Group Rank" name="2">
-                    <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                            <el-table-column prop="name" label="name" width="140"></el-table-column>
-                            <el-table-column prop="win" label="胜场" width="80"></el-table-column>
-                            <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                        </el-table> -->
+                <!-- <el-collapse-item title="Group Rank" name="2"> -->
+                <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
+                                            <el-table-column prop="name" label="name" width="140"></el-table-column>
+                                            <el-table-column prop="win" label="胜场" width="80"></el-table-column>
+                                            <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
+                                        </el-table> -->
+                <!-- </el-collapse-item> -->
+                <el-collapse-item title="Player List" name="3">
+                    <vue v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
+                        {{item.name}}
+                        <el-input v-model='item.poker' style="width:50px"></el-input>
+                        <el-button @click='_("showPoker",true,item.name,item.poker)'>show</el-button>
+                        <el-button @click='_("showPoker",false,item.name,item.poker)'>hide</el-button>
+                        {{item.hupuID}}
+                        <br>
+                    </vue>
+                    <hr>
+                    <vue v-for='(item,idx) in pokerPlayerArrG2' v-bind:key="idx">
+                        {{item.name}}
+                        <el-input v-model='item.poker' style="width:50px"></el-input>
+                        {{item.hupuID}}
+                        <br>
+                    </vue>
                 </el-collapse-item>
                 <el-collapse-item title="Game List" name="1">
                     <el-table stripe :data="gameInfoTable" style="width: 100%" @row-click='rowClick'>
@@ -35,11 +52,11 @@
                 </el-col>
                 <el-col :span='4'>
                     <!-- <div v-if='gameIdx<24'>
-                            小组赛第{{gameIdx+1}}场
-                        </div>
-                        <div v-else>
-                            大师赛第{{gameIdx-23}}场
-                        </div> -->
+                                            小组赛第{{gameIdx+1}}场
+                                        </div>
+                                        <div v-else>
+                                            大师赛第{{gameIdx-23}}场
+                                        </div> -->
                     小组赛第{{gameIdx}}场
     
                     <span style="fontSize:40px">
@@ -111,6 +128,12 @@
                 <hr>
                 <el-button @click='_("showPokerPanel",8)'>show Poker 8</el-button>
                 <el-button @click='_("showPokerPanel",12)'>show Poker 12</el-button>
+            </el-row>
+            <el-row>
+                <hr>
+                /panel.html?panel=poker
+                /panel=score&m=1
+                /panel.html?panel=bracket20&m2=1
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

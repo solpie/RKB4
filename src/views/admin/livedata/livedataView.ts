@@ -10,7 +10,8 @@ export default class LiveDataView extends EventDispatcher {
     EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
-    static EVENT_SHOW_POKET_PANEL = 'EVENT_SHOW_POKET_PANEL'
+    static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
+    static EVENT_SHOW_POKER_PLAYER = 'EVENT_SHOW_POKER_PLAYER'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -19,6 +20,7 @@ export default class LiveDataView extends EventDispatcher {
         this.gameView = gmv
         this.gmv = gmv
     }
+
     appendProp(gmv) {
         gmv['timeInput'] = 0
         gmv['actPanel'] = '1'
@@ -26,6 +28,14 @@ export default class LiveDataView extends EventDispatcher {
         gmv['inputVS'] = ''
         gmv['inputScore'] = ''
         gmv['inputChampion'] = ''
+        //13-20
+        gmv['pokerPlayerArrG1'] = [
+            { name: 'p13', poker: 'LA', hupuID: '' },
+        ]
+        // //1-12
+        gmv['pokerPlayerArrG2'] = [
+            { name: 'p1', poker: 'LA', hupuID: '' },
+        ]
         console.log('livedata view');
     }
 
@@ -137,6 +147,10 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     showPokerPanel(pokerNum) {
-        this.emit(LiveDataView.EVENT_SHOW_POKET_PANEL, pokerNum)
+        this.emit(LiveDataView.EVENT_SHOW_POKER_PANEL, pokerNum)
+    }
+
+    showPoker(visible, playerName, pokerStr) {
+        this.emit(LiveDataView.EVENT_SHOW_POKER_PLAYER, { visible: visible, playerName: playerName, pokerStr: pokerStr })
     }
 }

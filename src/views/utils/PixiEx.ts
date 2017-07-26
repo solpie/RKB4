@@ -243,3 +243,14 @@ export function polygon(g: PIXI.Graphics, radius, sides) {
 export function setScale(obj, s) {
     obj.scale.x = obj.scale.y = s
 }
+
+export function alignCenter(obj, posX) {
+    obj.x = posX - obj.width * .5
+}
+
+export function cutText(textObj, width) {
+    if (textObj.width > width) {
+        textObj.text = textObj.text.substring(0, textObj.text.length - 1)
+        cutText(textObj, width)
+    }
+}

@@ -71,8 +71,18 @@ export default class DoubleEliminationView extends BaseGameView {
                 this.initView(doc)
             }, true)
         })
-        liveDataView.on(LiveDataView.EVENT_SHOW_POKET_PANEL, pokerNum => {
+        liveDataView.on(LiveDataView.EVENT_SHOW_POKER_PANEL, pokerNum => {
             $post(`/emit/${WebDBCmd.cs_showPoker}`, { _: null, pokerNum: pokerNum })
+        })
+        liveDataView.on(LiveDataView.EVENT_SHOW_POKER_PLAYER, data => {
+            data._ = 'null'
+            data.pokerStr = data.pokerStr.toUpperCase()
+            if (data.visible) {
+                let playerData = this.nameMapHupuId[data.playerName]
+                data.playerData = playerData
+                console.log('EVENT_SHOW_POKER_PLAYER', playerData.hupuID, playerData.poker);
+            }
+            $post(`/emit/${WebDBCmd.cs_showPokerPlayer}`, data)
         })
         this.initWS()
     }
@@ -101,16 +111,18 @@ export default class DoubleEliminationView extends BaseGameView {
             }
             console.log('player 20', playerOrderArr);
             let playerArr = []
-
             for (let i = 0; i < 20; i++) {
                 let p = new PlayerInfo()
                 p.id = i + 1
                 p.hupuID = playerOrderArr[i].name
                 p.name = 'p' + (i + 1)
+                p['poker'] = ''
                 p.data = playerOrderArr[i]
                 playerArr.push(p)
                 this.nameMapHupuId[p.name] = p
             }
+            this['pokerPlayerArrG1'] = playerArr.slice(12, 20)
+            this['pokerPlayerArrG2'] = playerArr.slice(0, 12)
             callback()
         })
     }

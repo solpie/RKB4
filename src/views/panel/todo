@@ -18,13 +18,13 @@ mask less
 [o]修改比分
 总决赛title
 打印p1 -p20 对应名字
+[o]pokerSp
+[o]扑克 抽一个展示一个 序列帧
+remap bracket order
+
 本地球员头像
-pokerSp
 上下展开
-扑克 抽一个展示一个 序列帧
-
 gameIdx 胜者组 败者组
-
 球员数据 写死rankingData
 
 

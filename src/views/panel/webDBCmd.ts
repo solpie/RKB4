@@ -10,6 +10,8 @@ export const WebDBCmd = {
     //poker panel
     sc_showPoker: ``,
     cs_showPoker: ``,
+    sc_showPokerPlayer: ``,
+    cs_showPokerPlayer: ``,
     //game month
     cs_init: ``,
     sc_init: ``,

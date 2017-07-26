@@ -30,7 +30,9 @@ export class FramesFx extends PIXI.Container {
     show() {
         this.mc.play()
     }
-
+    gotoAndStop(frame) {
+        this.mc.gotoAndStop(frame)
+    }
     playOnce() {
         this.mc.gotoAndStop(0)
         this.mc.play()
