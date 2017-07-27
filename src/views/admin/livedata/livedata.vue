@@ -4,12 +4,14 @@
             <el-collapse v-model="actPanel" accordion>
                 <!-- <el-collapse-item title="Group Rank" name="2"> -->
                 <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                                            <el-table-column prop="name" label="name" width="140"></el-table-column>
-                                            <el-table-column prop="win" label="胜场" width="80"></el-table-column>
-                                            <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                                        </el-table> -->
+                                                                                <el-table-column prop="name" label="name" width="140"></el-table-column>
+                                                                                <el-table-column prop="win" label="胜场" width="80"></el-table-column>
+                                                                                <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
+                                                                            </el-table> -->
                 <!-- </el-collapse-item> -->
                 <el-collapse-item title="Player List" name="3">
+                    L1 ~ L4
+                    <br>
                     <vue v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
                         {{item.name}}
                         <el-input v-model='item.poker' style="width:50px"></el-input>
@@ -18,11 +20,13 @@
                         {{item.hupuID}}
                         <br>
                     </vue>
-                    <hr>
+                    <hr> L5 ~ L10
+                    <br>
                     <vue v-for='(item,idx) in pokerPlayerArrG2' v-bind:key="idx">
                         {{item.name}}
                         <el-input v-model='item.poker' style="width:50px"></el-input>
-                        {{item.hupuID}}
+                        <el-button @click='_("showPoker",true,item.name,item.poker)'>show</el-button>
+                        <el-button @click='_("showPoker",false,item.name,item.poker)'>hide</el-button> {{item.hupuID}}
                         <br>
                     </vue>
                 </el-collapse-item>
@@ -52,11 +56,11 @@
                 </el-col>
                 <el-col :span='4'>
                     <!-- <div v-if='gameIdx<24'>
-                                            小组赛第{{gameIdx+1}}场
-                                        </div>
-                                        <div v-else>
-                                            大师赛第{{gameIdx-23}}场
-                                        </div> -->
+                                                                                小组赛第{{gameIdx+1}}场
+                                                                            </div>
+                                                                            <div v-else>
+                                                                                大师赛第{{gameIdx-23}}场
+                                                                            </div> -->
                     小组赛第{{gameIdx}}场
     
                     <span style="fontSize:40px">
@@ -103,16 +107,16 @@
                 <el-button @click='_("initGameMonth",380)'>init Game Month</el-button>
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>
-                <el-button @click='_("showGroup","a")'>Group A</el-button>
+                <!-- <el-button @click='_("showGroup","a")'>Group A</el-button>
                 <el-button @click='_("showGroup","b")'>Group B</el-button>
                 <el-button @click='_("showGroup","c")'>Group C</el-button>
                 <el-button @click='_("showGroup","d")'>Group D</el-button>
-                <el-button @click='_("hideGroup")'>Hide Group Rank</el-button>
+                <el-button @click='_("hideGroup")'>Hide Group Rank</el-button> -->
                 <br>
                 <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
                 <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
                 <br>
-                <el-button @click='_("initMaster")'>initMaster</el-button>
+                <el-button @click='_("initMaster")'>initBracket Data</el-button>
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
@@ -121,19 +125,26 @@
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
-                <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                <el-button @click='_("clearMaster",0)'>clear All</el-button>
+                <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
+                <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
             </el-row>
             <el-row>
                 <hr>
-                <el-button @click='_("showPokerPanel",8)'>show Poker 8</el-button>
-                <el-button @click='_("showPokerPanel",12)'>show Poker 12</el-button>
+                <el-button @click='_("reMapBracket")'>reMapBracket</el-button>
+                <el-button @click='_("resetPokerPicker")'>resetPokerPicker</el-button>
+                <el-button @click='_("showPokerPanel",true,8)'>show Poker 8</el-button>
+                <el-button @click='_("showPokerPanel",true,12)'>show Poker 12</el-button>
+                <el-button @click='_("showPokerPanel",false)'>hide</el-button>
+                翻完八个hide=> reset =>show 12
+                <el-button @click='_("showPokerPanel",true,0)'>reset</el-button>
             </el-row>
             <el-row>
                 <hr>
-                /panel.html?panel=poker
-                /panel=score&m=1
-                /panel.html?panel=bracket20&m2=1
+                <a href="/panel.html?panel=poker"> /panel.html?panel=poker</a>
+                <br>
+                <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
+                <br>
+                <a href="/panel.html?panel=bracket20&m2=1">/panel.html?panel=bracket20&m2=1</a>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

@@ -21,78 +21,82 @@ export class PokerPlayer extends PIXI.Container {
         imgLoader.loadTex('/img/panel/bracket/final/playerBg1.png', tex => {
             let bg = new PIXI.Sprite()
             bg.texture = tex
-            this.ctn.addChild(bg)
             this.bg = bg
-        }, false)
-        let avt = new PIXI.Sprite()
-        avt.x = 60
-        avt.y = 38
-        let r = 208 / 2
-        let avtMask = new PIXI.Graphics()
-        avtMask.x = avt.x
-        avtMask.y = avt.y
-        avtMask.beginFill(0xff0000)
-            .drawCircle(r, r, r)
-        this.ctn.addChild(avt)
-        avt.mask = avtMask
-        this.ctn.addChild(avtMask)
-        this.avt = avt
-        let ns = {
-            fill: '#000',
-            fontWeight: 'bold',
-            fontFamily: FontName.MicrosoftYahei,
-            fontSize: '32px'
-        }
-        let nameText = new PIXI.Text('', ns)
-        nameText.x = 20
-        nameText.y = 255
-        this.ctn.addChild(nameText)
-        this.nameText = nameText
 
-        let infoText = new PIXI.Text('', ns)
-        infoText.x = 20
-        infoText.y = 305
-        this.ctn.addChild(infoText)
-        infoText.style.fontSize = '25px'
-        this.infoText = infoText
+            let avt = new PIXI.Sprite()
+            avt.x = 61
+            avt.y = 39
+            let r = 210 / 2
+            let avtMask = new PIXI.Graphics()
+            avtMask.x = avt.x
+            avtMask.y = avt.y
+            avtMask.beginFill(0xff0000)
+                .drawCircle(r, r, r)
+            this.ctn.addChild(avt)
+            avt.mask = avtMask
+            this.ctn.addChild(avtMask)
+            this.avt = avt
+            this.ctn.addChild(bg)
 
-        let pkTop = new PIXI.Sprite
-        let pkS = {
-            fontWeight: 'bold',
-            fontFamily: FontName.MicrosoftYahei,
-            fontSize: '50px'
-        }
-        let pkText = new PIXI.Text('A', pkS)
-        pkText.y = 65
-        pkTop['label'] = pkText
-        pkTop.addChild(pkText)
-        pkTop.x = 25
-        pkTop.y = 25
-        this.pokerSpTop = pkTop
-        this.ctn.addChild(pkTop)
 
-        let pkBtm = new PIXI.Sprite
-        pkText = new PIXI.Text('A', pkS)
-        pkBtm['label'] = pkText
-        pkText.y = 65
-        pkBtm.addChild(pkText)
-        pkBtm.x = 308
-        pkBtm.y = 340
-        pkBtm.rotation = 180 * PIXI.DEG_TO_RAD
-        this.pokerSpBottom = pkBtm
-        this.ctn.addChild(pkBtm)
+            let ns = {
+                fill: '#000',
+                fontWeight: 'bold',
+                fontFamily: FontName.MicrosoftYahei,
+                fontSize: '32px'
+            }
+            let nameText = new PIXI.Text('', ns)
+            nameText.x = 20
+            nameText.y = 255
+            this.ctn.addChild(nameText)
+            this.nameText = nameText
 
-        setScale(pkBtm, 0.6)
-        setScale(pkTop, 0.6)
-        let fx = new FramesFx('/img/panel/bracket/final/poker8/poker_8_', 0, 13)
-        fx.y = -72
-        fx.x = -87
-        this.addChild(fx)
-        this.fx = fx
-        fx.on('complete', _ => {
-            this.isPlaying = false
-            this.fx.visible = false
-            this.ctn.visible = true
+            let infoText = new PIXI.Text('', ns)
+            infoText.x = 20
+            infoText.y = 305
+            this.ctn.addChild(infoText)
+            infoText.style.fontSize = '25px'
+            this.infoText = infoText
+
+            let pkTop = new PIXI.Sprite
+            let pkS = {
+                fontWeight: 'bold',
+                fontFamily: FontName.MicrosoftYahei,
+                fontSize: '50px'
+            }
+            let pkText = new PIXI.Text('A', pkS)
+            pkText.y = 65
+            pkTop['label'] = pkText
+            pkTop.addChild(pkText)
+            pkTop.x = 25
+            pkTop.y = 25
+            this.pokerSpTop = pkTop
+            this.ctn.addChild(pkTop)
+
+            let pkBtm = new PIXI.Sprite
+            pkText = new PIXI.Text('A', pkS)
+            pkBtm['label'] = pkText
+            pkText.y = 65
+            pkBtm.addChild(pkText)
+            pkBtm.x = 308
+            pkBtm.y = 340
+            pkBtm.rotation = 180 * PIXI.DEG_TO_RAD
+            this.pokerSpBottom = pkBtm
+            this.ctn.addChild(pkBtm)
+
+            setScale(pkBtm, 0.6)
+            setScale(pkTop, 0.6)
+            let fx = new FramesFx('/img/panel/bracket/final/poker8/poker_8_', 0, 13)
+            fx.y = -72
+            fx.x = -87
+            this.addChild(fx)
+            this.fx = fx
+            fx.on('complete', _ => {
+                this.isPlaying = false
+                this.fx.visible = false
+                this.ctn.visible = true
+                console.log('complete', this.pokerSpTop, this.nameText);
+            })
         })
         // TweenEx.delayedCall(Math.random() * 3000, _ => {
         //     this.setInfo({ name: '带上上阵也不怕2', height: 178, weight: 80 })
@@ -145,7 +149,6 @@ export class PokerPlayer extends PIXI.Container {
         alignCenter(this.nameText, 164)
         this.infoText.text = playerData.height + " CM /" + playerData.weight + ' KG'
         alignCenter(this.infoText, 164)
-
         imgLoader.loadTex(playerData.avatar, tex => {
             this.avt.texture = tex
             setScale(this.avt, 210 / tex.height)

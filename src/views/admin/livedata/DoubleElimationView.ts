@@ -10,6 +10,7 @@ declare let io;
 export default class DoubleEliminationView extends BaseGameView {
     //gameIdx from 1 - 39
     nameMapHupuId = {}
+    pokerMapPlayer = {}
     gameInfoTable = []
     delayEmitGameInfo = 0
     lHupuID = ''
@@ -57,6 +58,7 @@ export default class DoubleEliminationView extends BaseGameView {
                 this.initView(doc)
             }, true)
         })
+
         liveDataView.on(LiveDataView.EVENT_SET_SCORE, scoreStr => {
             syncDoc(gameDate, doc => {
                 console.log('sync doc', doc);
@@ -67,26 +69,101 @@ export default class DoubleEliminationView extends BaseGameView {
                         game.score = [Number(a[0]), Number(a[1])]
                     }
                 }
-                this.initBracket(doc)
+                // this.initBracket(doc)
                 this.initView(doc)
             }, true)
         })
-        liveDataView.on(LiveDataView.EVENT_SHOW_POKER_PANEL, pokerNum => {
-            $post(`/emit/${WebDBCmd.cs_showPoker}`, { _: null, pokerNum: pokerNum })
+        liveDataView.on(LiveDataView.EVENT_SHOW_POKER_PANEL, data => {
+            data._ = 'null'
+            $post(`/emit/${WebDBCmd.cs_showPoker}`, data)
         })
+
         liveDataView.on(LiveDataView.EVENT_SHOW_POKER_PLAYER, data => {
             data._ = 'null'
             data.pokerStr = data.pokerStr.toUpperCase()
             if (data.visible) {
+
                 let playerData = this.nameMapHupuId[data.playerName]
+                this.pokerMapPlayer[data.pokerStr] = playerData
                 data.playerData = playerData
                 console.log('EVENT_SHOW_POKER_PLAYER', playerData.hupuID, playerData.poker);
+                syncDoc(gameDate, doc => {
+                    if (!doc.pokerMap)
+                        doc.pokerMap = {}
+                    doc.pokerMap[data.pokerStr] = { hupuID: playerData.data.name, playerName: data.playerName }
+                }, true)
             }
             $post(`/emit/${WebDBCmd.cs_showPokerPlayer}`, data)
+            setTimeout(_=> {
+                this.reMapBracket()
+            }, 2000);
         })
+
+        liveDataView.on(LiveDataView.EVENT_SHOW_CHAMPION, data => {
+            this.showChampion(data)
+        })
+
+        liveDataView.on(LiveDataView.EVENT_REMAP_BRACKET, data => {
+            this.reMapBracket()
+        })
+
+        liveDataView.on(LiveDataView.EVENT_RESET_POKER_PICKER, data => {
+            this.resetPokerPicker()
+        })
+
         this.initWS()
     }
 
+    resetPokerPicker() {
+        syncDoc(gameDate, doc => {
+            doc.pokerMap = {}
+        }, true)
+    }
+
+    reMapBracket() {
+        console.log('reMapBracket');
+        //find LA set to p16 RA to p16   \
+        syncDoc(gameDate, doc => {
+            if (doc.pokerMap) {
+                let rec = doc.rec
+                //clear all
+                for (let i = 0; i < 38; i++) {
+                    rec[i + 1].score = [0, 0]
+                    rec[i + 1].player = ['', '']
+                }
+                let findPlayerName = (gameIdx, pokerStrArr) => {
+                    let pmL = doc.pokerMap[pokerStrArr[0]]
+                    let pmR = doc.pokerMap[pokerStrArr[1]]
+                    let player = ['', '']
+                    if (pmL)
+                        player[0] = pmL.playerName
+
+                    if (pmR)
+                        player[1] = pmR.playerName
+
+                    rec[gameIdx].player = player
+                }
+                findPlayerName(1, ['L1', 'R1'])
+                findPlayerName(2, ['L2', 'R2'])
+                findPlayerName(3, ['L3', 'R3'])
+                findPlayerName(4, ['L4', 'R4'])
+
+                findPlayerName(5, ['L5', 'R5'])
+                findPlayerName(6, ['L6', 'R6'])
+                findPlayerName(7, ['L7', 'R7'])
+                findPlayerName(8, ['L8', 'R8'])
+
+                findPlayerName(9, ['L9', ''])
+                findPlayerName(10, ['R9', ''])
+                findPlayerName(11, ['L10', ''])
+                findPlayerName(12, ['R10', ''])
+                this.emitBracket(doc)
+            }
+        }, true)
+    }
+    clearBracketScore() {
+
+    }
     initPlayer(callback) {
         getAllPlayer(380, (res) => {
             console.log('380 all player ', res);
@@ -121,12 +198,26 @@ export default class DoubleEliminationView extends BaseGameView {
                 playerArr.push(p)
                 this.nameMapHupuId[p.name] = p
             }
-            this['pokerPlayerArrG1'] = playerArr.slice(12, 20)
-            this['pokerPlayerArrG2'] = playerArr.slice(0, 12)
+            this.initPokerSelectView(playerArr)
             callback()
         })
     }
-
+    initPokerSelectView(playerArr) {
+        syncDoc(gameDate, doc => {
+            if (doc.pokerMap) {
+                for (let pokerStr in doc.pokerMap) {
+                    let item = doc.pokerMap[pokerStr]
+                    for (let p of playerArr) {
+                        if (p.name == item.playerName) {
+                            p.poker = pokerStr
+                        }
+                    }
+                }
+            }
+            this['pokerPlayerArrG1'] = playerArr.slice(12, 20)
+            this['pokerPlayerArrG2'] = playerArr.slice(0, 12)
+        })
+    }
     setGameInfo(gameIdx) {
         syncDoc(gameDate, doc => {
             let rec = doc['rec'][gameIdx]
@@ -308,6 +399,7 @@ export default class DoubleEliminationView extends BaseGameView {
         $post(`/emit/${WebDBCmd.cs_showGamePlayerInfo}`, data)
     }
 
+    //clear data
     initBracket(doc) {
         let rec = doc['rec'] = {}
         for (let i = 0; i < 39; i++) {
@@ -328,5 +420,22 @@ export default class DoubleEliminationView extends BaseGameView {
         rec[10].player = ['p4', '']
         rec[11].player = ['p2', '']
         rec[12].player = ['p3', '']
+    }
+
+    showChampion(data1) {
+        let visible = data1.visible
+            , groupName = data1.visible
+            , title = data1.title
+        let p = this.getPlayerInfo(groupName)
+        let data: any = { _: null, visible: visible }
+        data.title = title
+        data.visible = true
+        data.ftId = p.data.groupId
+        data.name = p.data.name
+        data.location = p.data.school
+        data.avatar = p.data.avatar
+        data.info = p.data.height + ' cm/ ' + p.data.weight + " kg/ " + p.data.age + ' 岁'
+        $post(`/emit/${WebDBCmd.cs_showChampion}`, data)
+        $post(`/emit/${WebDBCmd.cs_showScore}`, { _: null, visible: false })
     }
 }

@@ -2,31 +2,31 @@ import { newBitmap } from '../../utils/PixiEx';
 import { imgLoader } from '../../utils/ImgLoader';
 import { FontName } from "../const";
 import { zoomMax } from "./Bracket20";
-const pokerMap = {
-    'p16': 'L1',
-    'p17': 'R1',
-    'p13': 'L2',
-    'p20': 'R2',
-    'p15': 'L3',
-    'p18': 'R3',
-    'p14': 'L4',
-    'p19': 'R4',
+// const pokerMap = {
+//     'p16': 'L1',
+//     'p17': 'R1',
+//     'p13': 'L2',
+//     'p20': 'R2',
+//     'p15': 'L3',
+//     'p18': 'R3',
+//     'p14': 'L4',
+//     'p19': 'R4',
 
-    'p8': 'L5',
-    'p9': 'R5',
-    'p5': 'L6',
-    'p12': 'R6',
-    'p7': 'L7',
-    'p10': 'R7',
-    'p6': 'L8',
-    'p11': 'R8',
+//     'p8': 'L5',
+//     'p9': 'R5',
+//     'p5': 'L6',
+//     'p12': 'R6',
+//     'p7': 'L7',
+//     'p10': 'R7',
+//     'p6': 'L8',
+//     'p11': 'R8',
 
-    'p1': 'L9',
-    'p4': 'R9',
+//     'p1': 'L9',
+//     'p4': 'R9',
 
-    'p2': 'L10',
-    'p3': 'R10',
-}
+//     'p2': 'L10',
+//     'p3': 'R10',
+// }
 export class Player20 extends PIXI.Container {
     nameText: PIXI.Text
     scoreText: PIXI.Text
@@ -85,14 +85,13 @@ export class Player20 extends PIXI.Container {
         this.nameText.text = playerName
         this.scoreText.text = score
         if (pNum) {
-            let poker = pokerMap[pNum]
+            let poker = pNum
             console.log(playerName, 'pNum', pNum, 'poker', poker);
             this.fitWidth()
             // if (score != 0)
             this.pokeText.text = poker.charAt(1)
             this.pokeText.style.fontSize = '40px'
             if (this.pokeText.text == '1') {
-
                 if (poker.length < 3)
                     this.pokeText.text = 'A'
                 else {

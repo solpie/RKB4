@@ -43,8 +43,8 @@ export class ChampionM2 extends PIXI.Container implements IPopup {
         this.info = info
 
         let title = newBitmap({ url: '/img/panel/score/m2/championTitle.png' })
-        title.y = back.y + 90
-        title.x = back.x + 80
+        title.y = back.y + 125
+        title.x = back.x + 70
         this.addChild(title)
         title.alpha = 0
         this.title = title

@@ -10,8 +10,11 @@ export default class LiveDataView extends EventDispatcher {
     EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
+    static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
     static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
     static EVENT_SHOW_POKER_PLAYER = 'EVENT_SHOW_POKER_PLAYER'
+    static EVENT_REMAP_BRACKET = 'EVENT_REMAP_BRACKET'
+    static EVENT_RESET_POKER_PICKER = 'EVENT_RESET_POKER_PICKER'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -111,13 +114,21 @@ export default class LiveDataView extends EventDispatcher {
         gmv.showGroup(g)
     }
 
-    showChampion(groupName, title) {
+    showChampion(visible, groupName, title) {
         if (groupName) {
-            if (groupName == 'hide')
-                gmv.hideChampion()
-            else
-                gmv.showChampion(groupName, title)
+            this.emit(LiveDataView.EVENT_SHOW_CHAMPION, {
+                visible: visible,
+                groupName: groupName,
+                title: title,
+
+            })
         }
+        // if (groupName) {
+        //     if (groupName == 'hide')
+        //         gmv.hideChampion()
+        //     else
+        //         gmv.showChampion(groupName, title)
+        // }
     }
 
     hideGroup() {
@@ -146,11 +157,19 @@ export default class LiveDataView extends EventDispatcher {
         gmv.showGamePlayerInfo(v)
     }
 
-    showPokerPanel(pokerNum) {
-        this.emit(LiveDataView.EVENT_SHOW_POKER_PANEL, pokerNum)
+    showPokerPanel(visible, pokerNum) {
+        this.emit(LiveDataView.EVENT_SHOW_POKER_PANEL, { visible: visible, pokerNum: pokerNum })
     }
 
     showPoker(visible, playerName, pokerStr) {
         this.emit(LiveDataView.EVENT_SHOW_POKER_PLAYER, { visible: visible, playerName: playerName, pokerStr: pokerStr })
+    }
+
+    reMapBracket() {
+        this.emit(LiveDataView.EVENT_REMAP_BRACKET)
+    }
+    
+    resetPokerPicker() {
+        this.emit(LiveDataView.EVENT_RESET_POKER_PICKER)
     }
 }

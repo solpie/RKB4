@@ -1,13 +1,40 @@
+import { PokerPlayer } from '../poker/PokerPlayer';
 import { imgLoader } from '../../utils/ImgLoader';
 import { newBitmap } from '../../utils/PixiEx';
 import { Player20 } from './Player20';
 
 export const zoomMax = 2
+const pokerMap = {
+    '1.0': 'L1',
+    '1.1': 'R1',
+    '2.0': 'L2',
+    '2.1': 'R2',
+    '3.0': 'L3',
+    '3.1': 'R3',
+    '4.0': 'L4',
+    '4.1': 'R4',
+
+    '5.0': 'L5',
+    '5.1': 'R5',
+    '6.0': 'L6',
+    '6.1': 'R6',
+    '7.0': 'L7',
+    '7.1': 'R7',
+    '8.0': 'L8',
+    '8.1': 'R8',
+
+    '9.0': 'L9',
+    '10.0': 'R9',
+
+    '11.0': 'L10',
+    '12.0': 'R10',
+}
 export class Bracket20 extends PIXI.Container {
     gameMap = {}
     incomingSp: PIXI.Sprite
     posMap: any
-
+    pokerPlayer: PokerPlayer
+    playerNameMapPoker = {}
     constructor(stage) {
         super()
         stage.addChild(this)
@@ -122,6 +149,8 @@ export class Bracket20 extends PIXI.Container {
                 this.gameMap[i + 1] = [lPlayer, rPlayer]
             }
 
+
+
             let incoming = newBitmap({ url: '/img/panel/bracket/final/incoming.png' })
             // this.addChild(incoming)
             incoming.scale.x = incoming.scale.y = .5
@@ -131,7 +160,11 @@ export class Bracket20 extends PIXI.Container {
         }, false)
 
     }
-
+    setFirstView() {
+        this.x = 0
+        this.scale.x = this.scale.y = .8
+        this.y = -30
+    }
     initKey() {
         window.onkeyup = (e) => {
             if (e.keyCode == 219) {
@@ -141,9 +174,7 @@ export class Bracket20 extends PIXI.Container {
                 this.x = this.y = 0
             }
             else if (e.keyCode == 81) {//q
-                this.x = 0
-                this.scale.x = this.scale.y = .8
-                this.y = -60
+                this.setFirstView()
             }
             else if (e.keyCode == 65) {//a
                 this.x = 0
@@ -213,13 +244,12 @@ export class Bracket20 extends PIXI.Container {
             let player20Arr = this.gameMap[gameIdx]
             let lPlayer: Player20 = player20Arr[0]
             let rPlayer: Player20 = player20Arr[1]
-            // if(game.score[0]!=0&&game.score[1]!=0)
+            let pokerStr = [pokerMap[gameIdx+'.0'],pokerMap[gameIdx+'.1']]
+            console.log('gameIdx',gameIdx,pokerStr);
             if (game.player[0])
-                // lPlayer.setInfo(game.player[0], game.score[0], game.poker[0])
-                lPlayer.setInfo(game.player[0] + game.poker[0], game.score[0], game.poker[0])
+                lPlayer.setInfo(game.player[0], game.score[0], pokerStr[0])
             if (game.player[1])
-                // rPlayer.setInfo(game.player[1], game.score[1], game.poker[1])
-                rPlayer.setInfo(game.player[1] + game.poker[1], game.score[1], game.poker[1])
+                rPlayer.setInfo(game.player[1], game.score[1], pokerStr[1])
             let lScore = Number(game.score[0])
             let rScore = Number(game.score[1])
             lPlayer.setWin(1)

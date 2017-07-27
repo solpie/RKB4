@@ -32,8 +32,6 @@ export class PokerPanel extends PIXI.Container {
             p.y = 240
             p2.x = p.x
             p2.y = 610
-            p.reset()
-            p2.reset()
         }
         this.pokerPlayer[8].visible = true
         this.pokerPlayer[9].visible = true
@@ -55,28 +53,29 @@ export class PokerPanel extends PIXI.Container {
             p.y = 240
             p2.x = p.x
             p2.y = 610
-            p.reset()
-            p2.reset()
+
         }
         this.pokerPlayer[8].visible = false
         this.pokerPlayer[9].visible = false
         this.pokerPlayer[10].visible = false
         this.pokerPlayer[11].visible = false
     }
-
+    resetAll() {
+        for (let p of this.pokerPlayer) {
+            p.reset()
+        }
+    }
     showPokerPlayer(data) {
         // if (data.visible)
         for (let pp of this.pokerPlayer) {
             if (pp.pokerStr == data.pokerStr) {
-                pp.setInfo(data.playerData.data)
-                if (data.visible)
+                if (data.visible) {
+                    pp.setInfo(data.playerData.data)
                     pp.playOnce()
+                }
                 else
                     pp.reset()
             }
         }
-        // else {
-
-        // }
     }
 }

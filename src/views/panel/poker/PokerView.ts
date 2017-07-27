@@ -44,12 +44,16 @@ export class PokerView {
                 this.pokerPanel.showPokerPlayer(data)
             })
             .on(`${WebDBCmd.sc_showPoker}`, (data) => {
-                if (data.pokerNum == 8) {
-                    this.pokerPanel.show8Player()
+                this.pokerPanel.visible = data.visible
+                if (data.visible) {
+                    if (data.pokerNum == 8) {
+                        this.pokerPanel.show8Player()
+                    }
+                    else if (data.pokerNum == 12)
+                        this.pokerPanel.show12Player()
+                    else if (data.pokerNum == 0)
+                        this.pokerPanel.resetAll()
                 }
-                else if (data.pokerNum == 12)
-                    this.pokerPanel.show12Player()
-
                 console.log('sc_bracketInit', data)
             })
     }
