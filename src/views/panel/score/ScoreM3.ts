@@ -1,5 +1,5 @@
 import { imgLoader } from '../../utils/ImgLoader';
-import { getFtName } from './Com2017';
+import { getFtName, simplifyName } from './Com2017';
 import { FoulText } from './FoulText';
 import { FoulGroup } from './FoulGroup';
 import { BitmapText, newBitmap, imgToTex, loadRes, polygon } from "../../utils/PixiEx";
@@ -280,7 +280,7 @@ export class ScoreM3 {
         }
         this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
-    
+
     _showWinScore() {
         this.winScoreText.visible = true
         this.timer.visible = false
@@ -378,7 +378,7 @@ export class ScoreM3 {
         this._lFtId = ftId
         this._loadFrame(level, this.lFrame)
         //cm kg
-        this.lPlayerName.text = name
+        this.lPlayerName.text = simplifyName(name)
         this.cutName(this.lPlayerName, this._NAME_WIDTH)
         this.lPlayerName.x = 604 - this.lPlayerName.width
         // loadRes(avatar, (img) => {
@@ -422,7 +422,7 @@ export class ScoreM3 {
         this._rFtId = ftId
         this._loadFrame(level, this.rFrame)
 
-        this.rPlayerName.text = name
+        this.rPlayerName.text = simplifyName(name)
         this.cutName(this.rPlayerName, this._NAME_WIDTH)
         // loadRes(avatar, (img) => {
         imgLoader.loadTex(avatar, tex => {

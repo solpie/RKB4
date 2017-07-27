@@ -16,15 +16,17 @@ mask less
 [o]获取球员列表 对应p1 p20
 [o]比分面板M3换皮
 [o]修改比分
-总决赛title
+[o]总决赛title
 打印p1 -p20 对应名字
 [o]pokerSp
 [o]扑克 抽一个展示一个 序列帧
-翻牌效果移到 bracket
-incoming pos fix
-remap bracket order
-
-
+[o]翻牌效果移到 bracket
+[o]incoming pos fix ,group bg .
+[o]安云鹏处理
+[o]remap bracket order
+实力榜截图
+线上抽奖，本地面板RKB3
+-----
 本地球员头像
 上下展开
 gameIdx 胜者组 败者组

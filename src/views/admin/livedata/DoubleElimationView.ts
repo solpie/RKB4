@@ -96,7 +96,7 @@ export default class DoubleEliminationView extends BaseGameView {
             $post(`/emit/${WebDBCmd.cs_showPokerPlayer}`, data)
             setTimeout(_=> {
                 this.reMapBracket()
-            }, 2000);
+            }, 3000);
         })
 
         liveDataView.on(LiveDataView.EVENT_SHOW_CHAMPION, data => {
@@ -406,20 +406,20 @@ export default class DoubleEliminationView extends BaseGameView {
             rec[i + 1] = { gameIdx: i + 1, player: ['', ''], score: [0, 0], foul: [0, 0] }
         }
         doc['gameIdx'] = 1
-        rec[1].player = ['p16', 'p17']
-        rec[2].player = ['p13', 'p20']
-        rec[3].player = ['p15', 'p18']
-        rec[4].player = ['p14', 'p19']
+        // rec[1].player = ['p16', 'p17']
+        // rec[2].player = ['p13', 'p20']
+        // rec[3].player = ['p15', 'p18']
+        // rec[4].player = ['p14', 'p19']
 
-        rec[5].player = ['p8', 'p9']
-        rec[6].player = ['p5', 'p12']
-        rec[7].player = ['p7', 'p10']
-        rec[8].player = ['p6', 'p11']
+        // rec[5].player = ['p8', 'p9']
+        // rec[6].player = ['p5', 'p12']
+        // rec[7].player = ['p7', 'p10']
+        // rec[8].player = ['p6', 'p11']
 
-        rec[9].player = ['p1', '']
-        rec[10].player = ['p4', '']
-        rec[11].player = ['p2', '']
-        rec[12].player = ['p3', '']
+        // rec[9].player = ['p1', '']
+        // rec[10].player = ['p4', '']
+        // rec[11].player = ['p2', '']
+        // rec[12].player = ['p3', '']
     }
 
     showChampion(data1) {

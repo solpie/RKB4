@@ -1,7 +1,8 @@
-import { newBitmap } from '../../utils/PixiEx';
+import { cutText, newBitmap } from '../../utils/PixiEx';
 import { imgLoader } from '../../utils/ImgLoader';
 import { FontName } from "../const";
 import { zoomMax } from "./Bracket20";
+import { simplifyName } from "../score/Com2017";
 // const pokerMap = {
 //     'p16': 'L1',
 //     'p17': 'R1',
@@ -45,14 +46,17 @@ export class Player20 extends PIXI.Container {
         }
         let nt = new PIXI.Text('', ns)
         nt.x = 105
+        nt.y = 8
         this.nameText = nt
         this.addChild(nt)
 
         let pt = new PIXI.Text('', ns)
-        pt.x = 60
+        pt.y = 6
         this.pokeText = pt
 
         let sp = new PIXI.Sprite()
+        sp.x =4
+        sp.y =4
         this.pokeSp = sp
         this.addChild(sp)
         this.addChild(pt)
@@ -64,30 +68,31 @@ export class Player20 extends PIXI.Container {
 
         let winSp = newBitmap({ url: '/img/panel/bracket/final/winHint.png' })
         if (isSmall) {
-            this.nameWidth = 190
-            winSp.x = 150 * zoomMax
+            this.nameWidth = 200
+            winSp.x = 162 * zoomMax
         }
         else {
-            this.nameWidth = 265
-            winSp.x = 200 * zoomMax
+            this.nameWidth = 285
+            winSp.x = 207 * zoomMax
         }
         winSp.scale.x = winSp.scale.y = 1 / zoomMax
         this.addChild(winSp)
         this.winSp = winSp
     }
-    fitWidth() {
-        if (this.nameText.width > this.nameWidth) {
-            this.nameText.text = this.nameText.text.substring(0, this.nameText.text.length - 1)
-            this.fitWidth()
-        }
-    }
+    // fitWidth() {
+    //     if (this.nameText.width > this.nameWidth) {
+    //         this.nameText.text = this.nameText.text.substring(0, this.nameText.text.length - 1)
+    //         this.fitWidth()
+    //     }
+    // }
+  
     setInfo(playerName, score, pNum?) {
-        this.nameText.text = playerName
+        this.nameText.text = simplifyName(playerName)
         this.scoreText.text = score
         if (pNum) {
             let poker = pNum
             console.log(playerName, 'pNum', pNum, 'poker', poker);
-            this.fitWidth()
+            cutText(this.nameText, this.nameWidth)
             // if (score != 0)
             this.pokeText.text = poker.charAt(1)
             this.pokeText.style.fontSize = '40px'
@@ -99,7 +104,7 @@ export class Player20 extends PIXI.Container {
                     this.pokeText.text = '10'
                 }
             }
-            this.pokeText.x = 85 - this.pokeText.width
+            this.pokeText.x = 90 - this.pokeText.width
             let type = poker.charAt(0)
             if (type == 'L') {
                 this.pokeText.style.fill = '#000'

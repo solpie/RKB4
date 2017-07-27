@@ -52,3 +52,9 @@ export const MatchType = {
     Final: 3,
     RawDay: 4
 };
+
+export function simplifyName(n: string) {
+    if (n.substring(0, 1) == '安')
+        return '安云鹏'
+    return n||''
+}

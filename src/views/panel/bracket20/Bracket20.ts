@@ -1,6 +1,7 @@
+import { blink2 } from '../../utils/Fx';
 import { PokerPlayer } from '../poker/PokerPlayer';
 import { imgLoader } from '../../utils/ImgLoader';
-import { newBitmap } from '../../utils/PixiEx';
+import { newBitmap, setScale } from '../../utils/PixiEx';
 import { Player20 } from './Player20';
 
 export const zoomMax = 2
@@ -29,6 +30,8 @@ const pokerMap = {
     '11.0': 'L10',
     '12.0': 'R10',
 }
+let bg3Arr = [29, 30, 33, 34
+    , 35]
 export class Bracket20 extends PIXI.Container {
     gameMap = {}
     incomingSp: PIXI.Sprite
@@ -41,8 +44,10 @@ export class Bracket20 extends PIXI.Container {
 
         let bg = newBitmap({ url: '/img/panel/bracket/final/bracketBg.png' })
         this.addChild(bg)
+
         let bg2 = newBitmap({ url: '/img/panel/bracket/final/bracket.png' })
         this.addChild(bg2)
+
         let x1 = 78
         let y1 = 82
         let y1_2 = 750
@@ -123,40 +128,78 @@ export class Bracket20 extends PIXI.Container {
             '34': true,
             '35': true,
         }
-        imgLoader.loadTexArr([
-            '/img/panel/bracket/final/pokerBlack.png',
-            '/img/panel/bracket/final/pokerRed.png',
-            '/img/panel/bracket/final/winHint.png',
-        ], _ => {
-            for (let i = 0; i < 38; i++) {
-                let pos = posMap[i + 1]
+        // let bg1Arr = [1, 2, 3, 4
+        //     , 5, 6, 7, 8
+        //     , 9, 10, 11, 12
+        //     , 21, 22, 23, 24
+        //     , 31, 32, 36, 38
+        // ]
+        let bg2Arr = [13, 14, 15, 16
+            , 17, 18, 19, 20
+            , 25, 26, 27, 28
+            , 37
+        ]
+
+        let makeGroup = (bgUrl, gameIdx) => {
+            imgLoader.loadTex(bgUrl, tex => {
+                let bg = new PIXI.Sprite()
+                bg.texture = tex
+                let pos = posMap[gameIdx]
                 pos[0] *= zoomMax
                 pos[1] *= zoomMax
-                let isSmall = Boolean(smallMap[i + 1])
+                this.addChild(bg)
+                bg.x = pos[0]
+                bg.y = pos[1]
+
+
+                let isSmall = Boolean(smallMap[gameIdx])
                 let lPlayer = new Player20(isSmall)
-                lPlayer.x = pos[0]
-                lPlayer.y = pos[1]
+                // lPlayer.x = pos[0]
+                // lPlayer.y = pos[1]
 
                 lPlayer.setInfo('', '')
 
                 let rPlayer = new Player20(isSmall)
                 rPlayer.x = lPlayer.x
-                rPlayer.y = lPlayer.y + 35 * zoomMax
+                rPlayer.y = lPlayer.y + 37 * zoomMax
 
                 rPlayer.setInfo('', '')
-                this.addChild(lPlayer)
-                this.addChild(rPlayer)
-                this.gameMap[i + 1] = [lPlayer, rPlayer]
+                bg.addChild(lPlayer)
+                bg.addChild(rPlayer)
+                this.gameMap[gameIdx] = [lPlayer, rPlayer]
+            })
+        }
+        imgLoader.loadTexArr([
+            '/img/panel/bracket/final/pokerBlack.png',
+            '/img/panel/bracket/final/pokerRed.png',
+            '/img/panel/bracket/final/winHint.png',
+            '/img/panel/bracket/final/groupBg1.png',
+            '/img/panel/bracket/final/groupBg2.png',
+            '/img/panel/bracket/final/groupBg3.png',
+        ], _ => {
+            for (let i = 0; i < 38; i++) {
+                let gameIdx = i + 1
+
+                let bgUrl = '/img/panel/bracket/final/groupBg1.png'
+                if (bg2Arr.indexOf(gameIdx) > -1) {
+                    bgUrl = '/img/panel/bracket/final/groupBg2.png'
+                }
+                else if (bg3Arr.indexOf(gameIdx) > -1)
+                    bgUrl = '/img/panel/bracket/final/groupBg3.png'
+                makeGroup(bgUrl, gameIdx)
             }
 
 
 
-            let incoming = newBitmap({ url: '/img/panel/bracket/final/incoming.png' })
-            // this.addChild(incoming)
-            incoming.scale.x = incoming.scale.y = .5
+            let incoming = new PIXI.Sprite()
+            // let incoming = newBitmap({ url: '/img/panel/bracket/final/incoming.png' })
+            this.addChild(incoming)
+            // incoming.scale.x = incoming.scale.y = .5
             this.incomingSp = incoming
+            blink2({ target: this.incomingSp, time: 600 });
             this.initKey()
-            this.scale.x = this.scale.y = 0.5
+            setScale(this, 0.5)
+            // this.scale.x = this.scale.y = 0.5
         }, false)
 
     }
@@ -238,18 +281,25 @@ export class Bracket20 extends PIXI.Container {
     }
 
     setRec(rec, incomingIdx) {
+        let playerNameMapPokerStr = {}
         for (let i = 0; i < 38; i++) {
             let gameIdx = i + 1
             let game = rec[gameIdx]
             let player20Arr = this.gameMap[gameIdx]
+            console.log('gameIdx', gameIdx, player20Arr);
             let lPlayer: Player20 = player20Arr[0]
             let rPlayer: Player20 = player20Arr[1]
-            let pokerStr = [pokerMap[gameIdx+'.0'],pokerMap[gameIdx+'.1']]
-            console.log('gameIdx',gameIdx,pokerStr);
+            let pokerStr = [pokerMap[gameIdx + '.0'], pokerMap[gameIdx + '.1']]
+            console.log('gameIdx', gameIdx, pokerStr);
+            if (pokerStr[0])
+                playerNameMapPokerStr[game.player[0]] = pokerStr[0]
+            if (pokerStr[1])
+                playerNameMapPokerStr[game.player[1]] = pokerStr[1]
+            game.poker = [playerNameMapPokerStr[game.player[0]], playerNameMapPokerStr[game.player[1]]]
             if (game.player[0])
-                lPlayer.setInfo(game.player[0], game.score[0], pokerStr[0])
+                lPlayer.setInfo(game.player[0], game.score[0], game.poker[0])
             if (game.player[1])
-                rPlayer.setInfo(game.player[1], game.score[1], pokerStr[1])
+                rPlayer.setInfo(game.player[1], game.score[1], game.poker[1])
             let lScore = Number(game.score[0])
             let rScore = Number(game.score[1])
             lPlayer.setWin(1)
@@ -266,9 +316,17 @@ export class Bracket20 extends PIXI.Container {
             }
         }
         let pos = this.posMap[incomingIdx]
-        if (pos) {
-            this.incomingSp.x = pos[0] - 40
-            this.incomingSp.y = pos[1] - 20 * zoomMax
-        }
+        let incomingUrl = '/img/panel/bracket/final/incoming.png'
+        if (bg3Arr.indexOf(incomingIdx) > -1)
+            incomingUrl = '/img/panel/bracket/final/incoming2.png'
+        imgLoader.loadTex(incomingUrl, tex => {
+            if (pos) {
+                this.incomingSp.x = pos[0] - 34
+                this.incomingSp.y = pos[1] - 34
+            }
+            this.incomingSp.texture = tex
+
+        })
+
     }
 }

@@ -151,9 +151,25 @@ export class PokerPlayer extends PIXI.Container {
         alignCenter(this.infoText, 164)
         imgLoader.loadTex(playerData.avatar, tex => {
             this.avt.texture = tex
-            setScale(this.avt, 210 / tex.height)
+            if (tex.width > tex.height)
+                setScale(this.avt, 210 / tex.height)
+            else
+                setScale(this.avt, 210 / tex.width)
             this.playOnce()
         })
+    }
+
+    toPos(fromX, fromY, px, py,callback) {
+        let target = this
+        TweenEx.to(target, 300, { x: px, y: py - 100 })
+            .call(_ => {
+                target.x = fromX
+                target.y = fromY
+                this.reset()
+                setScale(target, 1)
+                callback()
+            })
+        TweenEx.to(target.scale, 150, { x: 0.05, y: 0.05 })
     }
 
     reset() {

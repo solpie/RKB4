@@ -12,23 +12,23 @@
                 <el-collapse-item title="Player List" name="3">
                     L1 ~ L4
                     <br>
-                    <vue v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
+                    <span v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
                         {{item.name}}
                         <el-input v-model='item.poker' style="width:50px"></el-input>
                         <el-button @click='_("showPoker",true,item.name,item.poker)'>show</el-button>
                         <el-button @click='_("showPoker",false,item.name,item.poker)'>hide</el-button>
                         {{item.hupuID}}
                         <br>
-                    </vue>
+                    </span>
                     <hr> L5 ~ L10
                     <br>
-                    <vue v-for='(item,idx) in pokerPlayerArrG2' v-bind:key="idx">
+                    <span v-for='(item,idx) in pokerPlayerArrG2' v-bind:key="idx">
                         {{item.name}}
                         <el-input v-model='item.poker' style="width:50px"></el-input>
                         <el-button @click='_("showPoker",true,item.name,item.poker)'>show</el-button>
                         <el-button @click='_("showPoker",false,item.name,item.poker)'>hide</el-button> {{item.hupuID}}
                         <br>
-                    </vue>
+                    </span>
                 </el-collapse-item>
                 <el-collapse-item title="Game List" name="1">
                     <el-table stripe :data="gameInfoTable" style="width: 100%" @row-click='rowClick'>
@@ -131,12 +131,13 @@
             <el-row>
                 <hr>
                 <el-button @click='_("reMapBracket")'>reMapBracket</el-button>
-                <el-button @click='_("resetPokerPicker")'>resetPokerPicker</el-button>
                 <el-button @click='_("showPokerPanel",true,8)'>show Poker 8</el-button>
                 <el-button @click='_("showPokerPanel",true,12)'>show Poker 12</el-button>
                 <el-button @click='_("showPokerPanel",false)'>hide</el-button>
                 翻完八个hide=> reset =>show 12
                 <el-button @click='_("showPokerPanel",true,0)'>reset</el-button>
+                <el-button @click='_("resetPokerPicker")'>resetPokerPicker</el-button>
+                <!-- <el-button @click='_("")'>resetPokerPicker</el-button> -->
             </el-row>
             <el-row>
                 <hr>

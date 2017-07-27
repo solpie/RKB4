@@ -1,6 +1,6 @@
 import { TweenEx } from '../../utils/TweenEx';
 import { cnWrap, loadImg, loadImgArr } from '../../utils/JsFunc';
-import { getFtLogoUrl2, getFtLogoUrlgray } from '../score/Com2017';
+import { getFtLogoUrl2, getFtLogoUrlgray, simplifyName } from '../score/Com2017';
 import { loadRes, newBitmap, imgToTex } from '../../utils/PixiEx';
 import { TextEx, TextMaker } from '../../utils/TextMaker';
 import { IPopup } from './PopupView';
@@ -101,8 +101,8 @@ export class GamePlayerInfo extends PIXI.Container implements IPopup {
     show(data: any) {
         let lPlayer = data.leftPlayer.data
         let rPlayer = data.rightPlayer.data
-        this.lName.text = lPlayer.name
-        this.rName.text = rPlayer.name
+        this.lName.text = simplifyName(lPlayer.name)
+        this.rName.text = simplifyName(rPlayer.name)
         this.lInfo.text = lPlayer.height + " cm/ " + lPlayer.weight + ' kg/ ' + lPlayer.age + " 岁"
         this.rInfo.text = rPlayer.height + " cm/ " + rPlayer.weight + ' kg/ ' + rPlayer.age + " 岁"
         // lPlayer.intro = this._fixN(lPlayer.intro)

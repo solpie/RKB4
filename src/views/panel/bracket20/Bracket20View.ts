@@ -23,6 +23,7 @@ export class Bracket20View {
 
         this.initLocal()
     }
+    pokerPlayerArr: Array<PokerPlayer> = []
     initPokerPanel() {
         // TweenEx.delayedCall(1500, _ => {
         //     this.bracket.setFirstView()
@@ -37,6 +38,14 @@ export class Bracket20View {
         pokerPlayer.x = 1130
         pokerPlayer.y = 640
         this.pokerCtn.visible = false
+
+        for (let i = 0; i < 10; i++) {
+            let pp = new PokerPlayer();
+            pp.x = 1130 + (i + 1) * 50
+            pp.y = pokerPlayer.y
+            this.pokerPlayerArr.push(pp)
+            this.pokerCtn.addChildAt(pp, 1)
+        }
         this.pokerCtn.addChild(pokerPlayer)
     }
 
@@ -49,10 +58,11 @@ export class Bracket20View {
     initLocal() {
         let localWs = io.connect(`/rkb`)
         localWs.on('connect', (msg) => {
-            if (!this.isInit) {
-                this.isInit = true
+            // if (!this.isInit) {
+            // this.isInit = true
+            setTimeout(_ => {
                 $post(`/emit/${WebDBCmd.cs_bracket20Created}`, { _: null })
-            }
+            }, 3000)
             console.log('connect', window.location.host)
         })
             .on(`${WebDBCmd.sc_bracket20Init}`, (data) => {
@@ -64,6 +74,23 @@ export class Bracket20View {
                 this.pokerPlayer.reset()
                 this.pokerPlayer.setPoker(data.pokerStr)
                 this.pokerPlayer.setInfo(data.playerData.data)
+                TweenEx.delayedCall(2500, _ => {
+                    let gameIdx = data.pokerStr.substring(1)
+                    let pos = this.bracket.posMap[gameIdx]
+                    console.log('toPos', pos, gameIdx);
+                    if (pos) {
+                        this.pokerPlayer.toPos(1130, 640, pos[0], pos[1], _ => {
+                            for (let i = 0; i < this.pokerPlayerArr.length; i++) {
+                                let pp = this.pokerPlayerArr[i];
+                                TweenEx.to(pp, i * 80, { x: 1130 + (i + 1) * 50 })
+                            }
+                        })
+                        for (let i = 0; i < this.pokerPlayerArr.length; i++) {
+                            let pp = this.pokerPlayerArr[i];
+                            TweenEx.to(pp, i * 30, { x: 1130 })
+                        }
+                    }
+                })
             })
             .on(`${WebDBCmd.sc_showPoker}`, (data) => {
                 console.log('sc_showPokerPlayer', data, this.pokerPlayer)

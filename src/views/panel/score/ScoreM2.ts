@@ -1,4 +1,4 @@
-import { getFtName } from './Com2017';
+import { getFtName, simplifyName } from './Com2017';
 import { FoulText } from './FoulText';
 import { blink2 } from '../../utils/Fx';
 import { TweenEx } from '../../utils/TweenEx';
@@ -337,7 +337,7 @@ export class ScoreM2 {
     //     }
     // }
 
-     setGameIdx(gameIdx, matchType) {
+    setGameIdx(gameIdx, matchType) {
         console.log('isMaster', matchType)
         if (matchType == 2) {
             this.gameIdx.text = '决赛' + paddy(gameIdx, 2) + '场'
@@ -350,8 +350,8 @@ export class ScoreM2 {
         }
         this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
-    
-    
+
+
     _showWinScore() {
         this.winScoreText.visible = true
         this.timer.visible = false
@@ -448,7 +448,7 @@ export class ScoreM2 {
         this._lFtId = ftId
         this._loadFrame(level, this.lFrame)
         //cm kg
-        this.lPlayerName.text = name
+        this.lPlayerName.text = simplifyName(name)
         this.cutName(this.lPlayerName, this._NAME_WIDTH)
         this.lPlayerName.x = 634 - this.lPlayerName.width
         loadRes(avatar, (img) => {
@@ -488,7 +488,7 @@ export class ScoreM2 {
         this._rFtId = ftId
         this._loadFrame(level, this.rFrame)
 
-        this.rPlayerName.text = name
+        this.rPlayerName.text = simplifyName(name)
         this.cutName(this.rPlayerName, this._NAME_WIDTH)
         loadRes(avatar, (img) => {
             let avt = this.rAvatar
