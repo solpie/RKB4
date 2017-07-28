@@ -146,6 +146,7 @@
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
                 <br>
                 <a href="/panel.html?panel=bracket20&m2=1">/panel.html?panel=bracket20&m2=1</a>
+                <a href="/panel.html?panel=bracket20&m2=1&score=1">/panel.html?panel=bracket20&m2=1&score=1</a>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->

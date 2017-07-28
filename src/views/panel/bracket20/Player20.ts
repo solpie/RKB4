@@ -1,33 +1,9 @@
+import { getUrlQuerys } from '../../utils/WebJsFunc';
 import { cutText, newBitmap } from '../../utils/PixiEx';
 import { imgLoader } from '../../utils/ImgLoader';
 import { FontName } from "../const";
 import { zoomMax } from "./Bracket20";
 import { simplifyName } from "../score/Com2017";
-// const pokerMap = {
-//     'p16': 'L1',
-//     'p17': 'R1',
-//     'p13': 'L2',
-//     'p20': 'R2',
-//     'p15': 'L3',
-//     'p18': 'R3',
-//     'p14': 'L4',
-//     'p19': 'R4',
-
-//     'p8': 'L5',
-//     'p9': 'R5',
-//     'p5': 'L6',
-//     'p12': 'R6',
-//     'p7': 'L7',
-//     'p10': 'R7',
-//     'p6': 'L8',
-//     'p11': 'R8',
-
-//     'p1': 'L9',
-//     'p4': 'R9',
-
-//     'p2': 'L10',
-//     'p3': 'R10',
-// }
 export class Player20 extends PIXI.Container {
     nameText: PIXI.Text
     scoreText: PIXI.Text
@@ -55,16 +31,19 @@ export class Player20 extends PIXI.Container {
         this.pokeText = pt
 
         let sp = new PIXI.Sprite()
-        sp.x =4
-        sp.y =4
+        sp.x = 4
+        sp.y = 4
         this.pokeSp = sp
         this.addChild(sp)
         this.addChild(pt)
 
         let scoreText = new PIXI.Text('', ns)
         scoreText.x = 200 * zoomMax
+        scoreText.y = 5
         this.scoreText = scoreText
-        // this.addChild(scoreText)
+        let isShowScore = getUrlQuerys('score') == '1'
+        if (isShowScore)
+            this.addChild(scoreText)
 
         let winSp = newBitmap({ url: '/img/panel/bracket/final/winHint.png' })
         if (isSmall) {
@@ -85,7 +64,7 @@ export class Player20 extends PIXI.Container {
     //         this.fitWidth()
     //     }
     // }
-  
+
     setInfo(playerName, score, pNum?) {
         this.nameText.text = simplifyName(playerName)
         this.scoreText.text = score

@@ -55,9 +55,7 @@ if (panel == 'bracket') {
 }
 else if (panel == 'bracket20') {
     s = window['stage'] = initPIXI()
-    // setTimeout(_ => {
-        new Bracket20View(s)
-    // }, 1500)
+    new Bracket20View(s)
 }
 else if (panel == 'poker') {
     // document.removeChild()

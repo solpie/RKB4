@@ -15,6 +15,7 @@ export class Bracket20View {
 
     pokerCtn: PIXI.Container
     constructor(stage) {
+        
         this.bracket = new Bracket20(stage)
 
         this.pokerCtn = new PIXI.Container()
