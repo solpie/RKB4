@@ -336,11 +336,17 @@ export class ScoreM2 {
     //         this.gameIdx.text = '冠军赛决赛'
     //     }
     // }
-
+    preGroup = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    winGroup = [21, 22, 23, 24, 31, 32, 36, 38]
     setGameIdx(gameIdx, matchType) {
+        let prefix = '败者组'
         console.log('isMaster', matchType)
         if (matchType == 2) {
-            this.gameIdx.text = '决赛' + paddy(gameIdx, 2) + '场'
+            if (this.winGroup.indexOf(gameIdx) > -1)
+                prefix = '胜者组'
+            if (this.preGroup.indexOf(gameIdx) > -1)
+                prefix = '分组赛'
+            this.gameIdx.text = prefix + paddy(gameIdx, 2) + '场'
         }
         else if (matchType == 1) {
             this.gameIdx.text = '车轮战' + paddy(gameIdx, 2) + '场'

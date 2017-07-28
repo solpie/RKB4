@@ -25,6 +25,8 @@ mask less
 [o]安云鹏处理
 [o]remap bracket order
 [o]实力榜截图
+
+
 线上抽奖，本地面板RKB3
 
 9：30 中圈投篮 剩八人 28场之后
@@ -32,10 +34,10 @@ mask less
 -----
 本地球员头像
 上下展开
-gameIdx 胜者组 败者组
+[o]gameIdx 胜者组 败者组
 球员数据 写死rankingData
 
-
+实力榜头像scale match
 	网
 	音视频同步
 	摆位
