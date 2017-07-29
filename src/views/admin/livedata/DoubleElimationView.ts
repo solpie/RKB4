@@ -94,7 +94,7 @@ export default class DoubleEliminationView extends BaseGameView {
                 }, true)
             }
             $post(`/emit/${WebDBCmd.cs_showPokerPlayer}`, data)
-            setTimeout(_=> {
+            setTimeout(_ => {
                 this.reMapBracket()
             }, 3000);
         })
@@ -168,11 +168,11 @@ export default class DoubleEliminationView extends BaseGameView {
         getAllPlayer(421, (res) => {
             console.log('380 all player ', res);
             // this.initGameInfo(res)
-            let playerIdArr = ['习惯过了头', '安云鹏别让我瞧不起你', '平常心myd','Li_DD'
+            let playerIdArr = ['习惯过了头', '安云鹏别让我瞧不起你', '平常心myd', 'Li_DD'
                 , '打铁不算多', '新锐宋教练', 'Gyoung15', '小丑的梦想'
                 , '7号唐日辉同学', '雷雷雷雷子', 'NGFNGN', '知名球童戴一志'
-                , 'Beans吴', '刘宇9号', '泡椒top13', '万宅男'
-                , '大霖哥666', '带伤上阵也不怕', '认得挖方一号', '鬼手林坤8023'
+                ,  '刘宇9号', '泡椒top13', '万宅男'
+                , '大霖哥666', '带伤上阵也不怕', '认得挖方一号', '鬼手林坤8023','zzz勇'
             ]
             let playerOrderArr = []
             // console.log('initGameInfo ', res);

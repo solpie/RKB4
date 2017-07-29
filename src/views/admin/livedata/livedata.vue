@@ -134,7 +134,7 @@
                 <el-button @click='_("showPokerPanel",true,8)'>show Poker 8</el-button>
                 <el-button @click='_("showPokerPanel",true,12)'>show Poker 12</el-button>
                 <el-button @click='_("showPokerPanel",false)'>hide</el-button>
-                翻完八个hide=> reset =>show 12
+                翻完hide
                 <el-button @click='_("showPokerPanel",true,0)'>reset</el-button>
                 <el-button @click='_("resetPokerPicker")'>resetPokerPicker</el-button>
                 <!-- <el-button @click='_("")'>resetPokerPicker</el-button> -->
@@ -146,6 +146,7 @@
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
                 <br>
                 <a href="/panel.html?panel=bracket20&m2=1">/panel.html?panel=bracket20&m2=1</a>
+                <br>
                 <a href="/panel.html?panel=bracket20&m2=1&score=1">/panel.html?panel=bracket20&m2=1&score=1</a>
             </el-row>
         </el-col>
