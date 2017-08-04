@@ -1,10 +1,12 @@
 
+import { downLoadGameData } from "../../ranking/RankingV2";
+
 declare let $http;
 declare let io;
 export class AdminView {
     localName = 'hhe'
     constructor() {
-
+        downLoadGameData()
     }
     init($vm) {
 

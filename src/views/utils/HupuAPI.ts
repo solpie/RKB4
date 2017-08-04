@@ -35,7 +35,7 @@ export function getRtmpInfo(gameId, callback) {
     let url = 'http://api.liangle.com/api/passerbyking/game/info/' + gameId
     _get(_proxyJSON(url), callback)
 }
-export function getRoundRawDate(gameId, callback) {
+export function getRoundRawData(gameId, callback) {
     let url = 'http://api.liangle.com/api/passerbyking/game/match/' + gameId
     _get(_proxyJSON(url), callback)
 }

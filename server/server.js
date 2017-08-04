@@ -101,6 +101,9 @@ app.post('/db/update/:idx', (req, res) => {
 });
 
 ///////////////////////
+// let downLoadGameData = require('./ranking/ranking.js')
+
 server.listen(Number(conf.server.port), function(_) {
     console.log('server running...');
+    // downLoadGameData()
 });

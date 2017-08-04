@@ -9,6 +9,7 @@ module.exports = (options = {}) => ({
     entry: {
         // index: './src/index.ts',
         panel: './src/views/panel/index.ts',
+        panel: './src/views/ranking/index.ts',
         admin: './src/views/admin/index.ts'
     },
     output: {
