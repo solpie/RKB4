@@ -16,14 +16,14 @@
             <el-tab-pane>
                 <span slot="label">
                     <i class="el-icon-edit"></i>Admin</span>
-                        <LiveData></LiveData>
-          
+                <Ranking></Ranking>
             </el-tab-pane>
             <el-tab-pane label="线上控制台">
                 <Dashboard></Dashboard>
             </el-tab-pane>
             <el-tab-pane label="月赛">
-                  <Home></Home>
+                 <LiveData></LiveData> 
+                <Home></Home>
             </el-tab-pane>
         </el-tabs>
     </div>

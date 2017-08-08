@@ -5,7 +5,7 @@ var conf = ini.parse(fs.readFileSync('./.cfg', 'utf-8'));
 console.log('config', conf);
 //webserver
 var express = require('express');
-var app = express();
+const app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 // const path = require('path')
@@ -89,7 +89,6 @@ app.get('/db/find/:idx', (req, res) => {
         } else
             res.send(ret)
     })
-
 });
 app.post('/db/update/:idx', (req, res) => {
     let idx = req.params.idx

@@ -71,8 +71,7 @@ function genPlayer(playerData) {
         win: 0,
         lastRank: 0, //最近排名
         beatPlayerMap: {},
-        losePlayerMap: {},
-        meetPlayerWinRaitoMap: {}, //交手胜率
+        losePlayerMap: {}, //绝对值越小差距越小
         section: 0, //1最高 ~5
         master: 0, //大师赛次数
         champion: 0, //冠军次数
@@ -121,17 +120,12 @@ function topRelationWin() {
 
 function isAwinB(playerA, playerB, playerMap) {
     let nodeNum = 0
-    while (nodeNum < 3) {
+    while (nodeNum < 2) {
         if (findWinPath(playerA.player_id, playerB.player_id, playerMap, 0))
             return true
         nodeNum++
     }
     return false
-        // if (findWinPath(pidA, pidB, playerMap, 0))
-        // {
-        //     return true
-        // }
-        // else if(findWinPath(pidA,pidB,playerMap))
 }
 
 function circlePlayer(playerId, playerMap, num) {
@@ -203,26 +197,12 @@ function countMap(map) {
     return Object.keys(map).length
 }
 
-function sumPlayer(playerMap) {
-    let playerArrRankBase = []
-    for (let player_id in playerMap) {
-        let player = playerMap[player_id]
-        let loseCount = player.gameCount - player.win
-        player.activity = countMap(player.gameIdMap)
-        player.beatCount = countMap(player.beatPlayerMap)
-        let notOneRound = (player.win / player.activity) > 2
-        if (notOneRound && player.activity > 1) {
-            // if (player.champion && loseCount < 10) {
-            // console.log('lose 10', player);
-            if (player.master > 0)
-                playerArrRankBase.push(player)
-        }
-    }
-    // playerArrAnimal.sort(ascendingProp('beatCount'))
-    // playerArrRankBase.sort(descendingProp('beatCount'))
-    // console.log('rank base', playerArrRankBase.length, playerArrRankBase);
-    // circlePlayer("4", playerMap, 3)
-
+function sumPlayer(player) {
+    let loseCount = player.gameCount - player.win
+    player.activity = countMap(player.gameIdMap)
+    player.beatCount = countMap(player.beatPlayerMap)
+    player.beatRaito = genBeatRaito(player)
+    return player
 }
 let genBeatRaito = (player, playerMap = null) => {
     if (playerMap)
@@ -239,18 +219,13 @@ let genBeatRaito = (player, playerMap = null) => {
     return sum
 }
 
-function sumGame(playerMap, rankArr) {
-
+function sumGame(playerMap) {
     let playerArrRankBase = []
     for (let player_id in playerMap) {
         let player = playerMap[player_id]
-        let loseCount = player.gameCount - player.win
-        player.activity = countMap(player.gameIdMap)
-        player.beatCount = countMap(player.beatPlayerMap)
-        player.beatRaito = genBeatRaito(player)
+        sumPlayer(player)
         let notOneRound = player.gameCount > 2
         if (notOneRound) {
-            // if (player.master > 0)
             playerArrRankBase.push(player)
         }
     }
@@ -259,8 +234,11 @@ function sumGame(playerMap, rankArr) {
         // }
     console.log('rank base not one Round', sortA.length, sortA);
     return sortA
-        // if (playerArrRankBase.length)
-        //     return rankIn(playerArrRankBase, playerMap)
+}
+
+const MergerType = {
+    BEAT_RAITO: 'beat raito',
+    REF: 'ref',
 }
 
 function mergeRank(rankArrOld, rankArrNew, playerMapSum) {
@@ -284,53 +262,112 @@ function mergeRank(rankArrOld, rankArrNew, playerMapSum) {
         for (let i = 0; i < rMerge.length; i++) {
             let p = rMerge[i];
             if (p.player_id != player.player_id) {
-                if (genBeatRaito(p, playerMapSum) < pInsertBeatRaito) {
-                    // console.log('insert ', rMerge[i]);
-                    rMerge.splice(i, 0, player)
-                        // console.log('insert ', rMerge[i], rMerge[i + 1]);
-                    isInsert = true
-                    break;
-                }
+                if (player.beatCount > p.beatCount)
+                    if (genBeatRaito(p, playerMapSum) < pInsertBeatRaito) {
+                        rMerge.splice(i, 0, player)
+                        isInsert = true
+                        break;
+                    }
             }
         }
+        //todo 
         if (!isInsert)
             rMerge.push(player)
     }
 
-    for (let i = 0; i < rankArrNew.length; i++) {
-        let pNew = rankArrNew[i];
-        for (let i = 0; i < rankArrOld.length; i++) {
-            let pOld = rankArrOld[i];
-            if (pNew.player_id != pOld.player_id) {
-                if (isAwinB(pNew, pOld, playerMapSum)) {
-                    // if()
-                    let oldARank = findRankIn(pNew, rankArrOld)
-                    let oldBRank = findRankIn(pOld, rankArrOld)
-                    if (oldARank < oldBRank) { //
-
-                    } else {
-                        console.log('todo 修正交手排名');
-                        // rankArrOld.splice(oldBRank, 0)
-                    }
-                    console.log('oldRank', pNew.name, oldARank, pOld.name, oldBRank);
-                } else {
-                    if (findRankIn(pNew, rMerge) < 0) {
-                        console.log('rank by beatRaito', pNew.name);
-                        rankByBeatRaito(pNew, playerMapSum)
-                    }
-                }
-            } else { //relation
-                // for (let pid in pOld.beatPlayerMap) {
-                //     for (let pid2 in pNew.beatPlayerMap) {
-                //         isAwinB(playerMapSum[pid], playerMapSum[pid2], playerMapSum)
-                //     }
+    let rankByRelation = (playerIn, playerRef, playerMapSum) => {
+        let playerInLoseRaito = playerIn.losePlayerMap[playerRef.player_id]
+        if (playerIn.beatPlayerMap[playerRef.player_id])
+            playerInLoseRaito += playerIn.beatPlayerMap[playerRef.player_id]
+        let nearestPlayer;
+        let rankIdx = -1;
+        for (let losePlayerId in playerRef.beatPlayerMap) {
+            let losePlayer = playerMapSum[losePlayerId]
+            let loseRaito = losePlayer.losePlayerMap[playerRef.player_id]
+            if (losePlayer.beatPlayerMap[playerRef.player_id])
+                loseRaito += losePlayer.beatPlayerMap[playerRef.player_id]
+            let isA = isAwinB(playerIn, losePlayer, playerMapSum)
+            let isB = isAwinB(losePlayer, playerIn, playerMapSum)
+                // findWinPath(playerIn.player_id,losePlayer.player_id,playerMapSum)
+                // if (isA || isB) {
+                //     console.log('rankByRelationAB', playerIn.name, isA, losePlayer.name, isB);
                 // }
-                // console.log('relation', pNew.name);
+            if (playerInLoseRaito > loseRaito && isA) {
+                let r = findRankIn(losePlayer, rMerge)
+                if (rankIdx < 0 || (r > 0 && r < rankIdx)) {
+                    rankIdx = r
+                }
+                console.log('rankByRelation lose raito', playerIn.name, playerInLoseRaito, losePlayer.name, loseRaito, rankIdx);
             }
         }
+
+        return rankIdx
     }
-    console.log('after merge', rMerge);
-    return rMerge
+
+    for (let i = 0; i < rankArrNew.length; i++) {
+        let pNew = rankArrNew[i];
+        let rankIdx = -1;
+        for (let i = 0; i < rankArrOld.length; i++) {
+            let pOld = rankArrOld[i];
+            // let pOld = rankArrOld[rankArrOld.length - 1 - i];
+            if (pNew.player_id != pOld.player_id) {
+                if (findRankIn(pNew, rMerge) < 0) { //新人入榜
+                    if (isAwinB(pNew, pOld, playerMapSum)) { //和老人有交手
+                        // if()
+                        // rankByRelation(pNew, pOld, playerMapSum)
+                        // let oldARank = findRankIn(pNew, rankArrOld)
+                        // let oldBRank = findRankIn(pOld, rankArrOld)
+                        // if (oldARank < oldBRank) { //
+
+                        // } else {
+                        //     console.log('todo 修正交手排名');
+                        //     // rankArrOld.splice(oldBRank, 0)
+                        //     // break;
+                        // }
+                        // console.log('todo oldRank', pNew.name, oldARank, pOld.name, oldBRank);
+                    } else {
+                        console.log('rank by beatRaito', pNew.name);
+                        rankByBeatRaito(pNew, playerMapSum)
+                        break;
+                    }
+                } else { //relation
+                    //排名修正
+                    if (isAwinB(pNew, pOld, playerMapSum)) { //和老人有交手
+                        // if()
+                        let r = rankByRelation(pNew, pOld, playerMapSum)
+                        if (r > -1) {
+                            if (rankIdx < 0)
+                                rankIdx = r
+                            else if (r < rankIdx) {
+                                rankIdx = r
+                            }
+                        }
+                    }
+                }
+            } else {
+                //same player
+            }
+        }
+        if (rankIdx > -1) {
+            let oldRank = findRankIn(pNew, rMerge)
+            if (oldRank > -1) {
+                if (rankIdx < oldRank) {
+                    rMerge.splice(rankIdx, 0, pNew)
+                    rMerge.splice(oldRank + 1, 1)
+                } else {
+                    console.log('oldRank', oldRank, pNew.name, 'new Rank', rankIdx);
+                }
+            } else
+                rMerge.splice(rankIdx, 0, pNew)
+            console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge[rankIdx + 1].name);
+        }
+    }
+    let sumArr = []
+    for (let p of rMerge) {
+        sumArr.push(sumPlayer(playerMapSum[p.player_id]))
+    }
+    console.log('after merge', sumArr);
+    return sumArr
 }
 
 function rankIn(playerArr, playerMap) {
@@ -419,7 +456,7 @@ function genRanking() {
         let passGameIdxArr = [123, 124, 402]
             // for (let i = 0; i < 5; i++) {
         let sumCount = 0
-        let sumLimit = 2
+        let sumLimit = 30
         for (let i = 0; i < doc[0].gameArr.length; i++) {
             // for (let i = 0; i < 2; i++) {
             let game = doc[0].gameArr[doc[0].gameArr.length - 1 - i]
@@ -446,24 +483,50 @@ function genRanking() {
                         //     genBeatRaito(lPlayer2, rPlayer2, lScore > rScore)
                 }
                 // break;
-                rankArr = sumGame(playerMap, rankArr)
+                rankArr = sumGame(playerMap)
                 if (!rankArrOld)
                     rankArrOld = rankArr.concat()
                 else
                     rankArrOld = mergeRank(rankArrOld, rankArr, playerMapSum)
-
-                //test
+                window['rankArr'] = rankArrOld
+                    //test
                 sumCount++
-                if (sumCount > sumLimit - 1)
+                if (sumCount > sumLimit - 1) {
+                    window['rankArr'] = rankArrOld
                     break;
+                }
             }
         }
-        // for (let r of rankArr) {
-        //     console.log('ranking', r.name);
-        // }
-        // rankArr = sumPlayer(playerMap)
-
-        // console.log(playerMap)
+        logRank(rankArrOld, 100)
+            // for (let r of rankArr) {
+            //     console.log('ranking', r.name);
+            // }
+            // rankArr = sumPlayer(playerMap)
+            // console.log(playerMap)
     })
 }
 genRanking()
+
+function logRank(rankArr, count) {
+    for (let i = 0; i < count; i++) {
+        let p = rankArr[i]
+        if (p.activity > 1)
+            console.log(i + 1, p.name, 'act', p.activity, 'C', p.champion);
+    }
+}
+
+function findPlayer(name) {
+    for (let i = 0; i < window['rankArr'].length; i++) {
+        let p = window['rankArr'][i]
+        if (p.name.search(name) > -1)
+            console.log(i + 1, p.name, '活', p.activity, '冠', p.champion);
+    }
+}
+
+app.get('/ranking/', (req, res) => {
+    gameDb.find({ idx: 2017 }, (err, docs) => {
+        let ret = { err: err, doc: docs[0] }
+        if (docs.length)
+            res.send(ret)
+    })
+});
