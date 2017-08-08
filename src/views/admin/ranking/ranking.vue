@@ -1,11 +1,34 @@
 <template>
     <div>
-        <el-table stripe :data="lastRanking" style="width: 100%" @row-click='rowClick'>
-            <el-table-column prop="ranking" label="#" width="60"></el-table-column>
-            <el-table-column prop="name" label="名" width="100"></el-table-column>
-            <el-table-column prop="activity" label="活" width="120"></el-table-column>
-            <el-table-column prop="champion" label="冠" width="80"></el-table-column>
-        </el-table>
+        <el-col :span='12'>
+            <el-table stripe :data="lastRanking" style="width: 100%" @row-click='rowClick'>
+                <el-table-column prop="ranking" label="#" width="90">
+                   <template scope="scope">
+                        {{ scope.$index+1 }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="名" width="150"></el-table-column>
+                <el-table-column prop="activity" label="活" width="60"></el-table-column>
+                <el-table-column prop="champion" label="冠" width="60">
+                    <template scope="scope">
+                        <span v-bind:class="{isChampion: (scope.row.champion > 0)}">{{ scope.row.champion }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="beatCount" label="斩" width="60"></el-table-column>
+                <el-table-column prop="avgZen" label="斩%" width="80"></el-table-column>
+                <el-table-column prop="winRaito" label="胜%" width="80"></el-table-column>
+                <el-table-column prop="player_id" label="pid" width="80"></el-table-column>
+            </el-table>
+        </el-col>
+        <el-col :span='8'>
+            <div>
+                <el-input v-model='inputLimit' style="width:50px"></el-input>
+                <el-input v-model='inputQuery' style="width:250px"></el-input>
+                <el-button @click='_("reMergeRank",inputLimit)'>mergeRank</el-button>
+                <el-button @click='_("queryPlayer",inputQuery)'>queryPlayer</el-button>
+                <el-button @click='_("fixActivity")'>fixActivity</el-button>
+            </div>
+        </el-col>
     </div>
 </template>
 <script>
@@ -28,4 +51,11 @@ export default {
     }
 }
 </script>
+<style>
+.isChampion {
+    color: blue;
+    font-weight: bold;
+}
+</style>
+
 

@@ -1,7 +1,47 @@
+import { RKPlayer } from '../../../ranking/RankingPlayer';
+import { MergeRank } from '../../../ranking/RankingMerge';
+import { $get } from '../../utils/WebJsFunc';
 export class RankingView {
-    lastRanking = [{ name: '11', champion: 1, activity: 2, ranking: 1 }]
+    lastRanking: Array<RKPlayer> = []
+    lastPlayerRanking: Array<RKPlayer> = []
+    mergeRank: MergeRank
+    inputLimit = 2
+    inputQuery = 2
     constructor() {
+        $get('/ranking/', res => {
+            console.log('get game doc', res);
+            this.mergeRank = new MergeRank(res.doc)
+            let limit = 50
+            this.lastRanking = this.viewRank(this.mergeRank.merge(limit))
+        })
+    }
+    reMergeRank(limit) {
+        this.lastRanking = this.viewRank(this.mergeRank.merge(limit))
+    }
 
+    viewRank(playerArr) {
+        this.lastPlayerRanking = playerArr
+        let a = []
+        for (let i = 0; i < Math.min(playerArr.length, 100); i++) {
+            let p: RKPlayer = playerArr[i];
+            p.ranking = i + 1
+            p.name = p.name.substring(0, 6)
+            p['beatRaitoStr'] = Math.floor(p.beatRaito * 100) / 100
+            a.push(p)
+        }
+        return a
+    }
+
+    fixActivity() {
+        // this.lastRanking = this.mergeRank.fixRankByActivity(this.lastRanking)
+        let a = this.lastPlayerRanking
+        a = this.mergeRank.rippleProp(a, 'avgZen')
+        // a = this.mergeRank.rippleProp(a, 'beatCount')
+        // a = this.mergeRank.rippleProp(a, 'activity')
+        this.lastRanking = a
+    }
+    queryPlayer(n) {
+        this.mergeRank.queryPlayerIdByName(n)
     }
     _(e, param) {
         if (!this[e])

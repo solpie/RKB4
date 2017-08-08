@@ -505,7 +505,7 @@ function genRanking() {
             // console.log(playerMap)
     })
 }
-genRanking()
+// genRanking()
 
 function logRank(rankArr, count) {
     for (let i = 0; i < count; i++) {
