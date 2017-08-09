@@ -11,10 +11,11 @@ export class RankingView {
         $get('/ranking/', res => {
             console.log('get game doc', res);
             this.mergeRank = new MergeRank(res.doc)
-            let limit = 50
+            let limit = 1
             this.lastRanking = this.viewRank(this.mergeRank.merge(limit))
         })
     }
+
     reMergeRank(limit) {
         this.lastRanking = this.viewRank(this.mergeRank.merge(limit))
     }
@@ -35,11 +36,16 @@ export class RankingView {
     fixActivity() {
         // this.lastRanking = this.mergeRank.fixRankByActivity(this.lastRanking)
         let a = this.lastPlayerRanking
-        a = this.mergeRank.rippleProp(a, 'avgZen')
+        a = this.mergeRank.rippleProp(a, 'realWeight', 0.5)
         // a = this.mergeRank.rippleProp(a, 'beatCount')
         // a = this.mergeRank.rippleProp(a, 'activity')
         this.lastRanking = a
     }
+
+    mergeNext() {
+        this.lastRanking = this.mergeRank.mergeNext()
+    }
+
     queryPlayer(n) {
         this.mergeRank.queryPlayerIdByName(n)
     }

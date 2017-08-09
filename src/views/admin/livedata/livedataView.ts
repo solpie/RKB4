@@ -15,6 +15,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SHOW_POKER_PLAYER = 'EVENT_SHOW_POKER_PLAYER'
     static EVENT_REMAP_BRACKET = 'EVENT_REMAP_BRACKET'
     static EVENT_RESET_POKER_PICKER = 'EVENT_RESET_POKER_PICKER'
+    static EVENT_CUSTOM_PLAYER = 'EVENT_CUSTOM_PLAYER'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -25,6 +26,7 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     appendProp(gmv) {
+        gmv['inputPlayerArr'] = ''
         gmv['timeInput'] = 0
         gmv['actPanel'] = '1'
         gmv['group'] = ''
@@ -168,8 +170,13 @@ export default class LiveDataView extends EventDispatcher {
     reMapBracket() {
         this.emit(LiveDataView.EVENT_REMAP_BRACKET)
     }
-    
+
     resetPokerPicker() {
         this.emit(LiveDataView.EVENT_RESET_POKER_PICKER)
+    }
+// 
+    setPlayerArr(jsonStr) {
+        let playerArr = JSON.parse(jsonStr)
+        this.emit(LiveDataView.EVENT_CUSTOM_PLAYER,playerArr)
     }
 }

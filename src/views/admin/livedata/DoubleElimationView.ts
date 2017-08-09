@@ -19,8 +19,10 @@ export default class DoubleEliminationView extends BaseGameView {
     constructor(liveDataView: LiveDataView) {
         super()
         this.liveDataView = liveDataView
+
+        // this.init()
     }
-    
+
     init() {
         let liveDataView = this.liveDataView
         syncDoc(gameDate, doc => {
@@ -115,6 +117,22 @@ export default class DoubleEliminationView extends BaseGameView {
 
         liveDataView.on(LiveDataView.EVENT_RESET_POKER_PICKER, data => {
             this.resetPokerPicker()
+        })
+        liveDataView.on(LiveDataView.EVENT_CUSTOM_PLAYER, playerArr => {
+            this.emitGameInfo(data => {
+                let lPlayer = playerArr[0]
+                let rPlayer = playerArr[1]
+                // let info = playerArr[2]
+                data.leftPlayer.name = lPlayer.name
+                data.leftPlayer.weight = lPlayer.weight
+                data.leftPlayer.height = lPlayer.height
+                data.leftPlayer.avatar = lPlayer.avatar
+
+                data.rightPlayer.name = rPlayer.name
+                data.rightPlayer.weight = rPlayer.weight
+                data.rightPlayer.height = rPlayer.height
+                data.rightPlayer.avatar = rPlayer.avatar
+            })
         })
 
         this.initWS()
@@ -297,7 +315,7 @@ export default class DoubleEliminationView extends BaseGameView {
     }
 
 
-    emitGameInfo() {
+    emitGameInfo(insertPlayerInfoCall?) {
         let data: any = { _: null }
         data.winScore = 3
         if (this.gameIdx == 38) {//决赛
@@ -319,6 +337,9 @@ export default class DoubleEliminationView extends BaseGameView {
         data.rightFoul = this.rFoul
         data.leftPlayer = lPlayerData
         data.rightPlayer = rPlayerData
+        if (insertPlayerInfoCall) {
+            insertPlayerInfoCall(data)
+        }
         //test
         // data.leftPlayer.name += this.lHupuID
         // data.rightPlayer.name += this.rHupuID

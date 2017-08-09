@@ -100,6 +100,9 @@
                     <br>
                     <el-button @click='_("showChampion",lPlayer,inputChampion)'>{{lHupuID}}</el-button>
                     <el-button @click='_("showChampion",rPlayer,inputChampion)'>{{rHupuID}}</el-button>
+                    <br>
+                    <el-input v-model="inputPlayerArr" style="width:250px"></el-input>
+                    <el-button @click='_("setPlayerArr",inputPlayerArr)'>set Player Arr</el-button>
                 </el-col>
             </el-row>
             <el-row>

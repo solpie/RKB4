@@ -2,8 +2,8 @@
     <div>
         <el-col :span='12'>
             <el-table stripe :data="lastRanking" style="width: 100%" @row-click='rowClick'>
-                <el-table-column prop="ranking" label="#" width="90">
-                   <template scope="scope">
+                <el-table-column prop="ranking" label="#" width="60">
+                    <template scope="scope">
                         {{ scope.$index+1 }}
                     </template>
                 </el-table-column>
@@ -14,9 +14,22 @@
                         <span v-bind:class="{isChampion: (scope.row.champion > 0)}">{{ scope.row.champion }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="beatCount" label="斩" width="60"></el-table-column>
-                <el-table-column prop="avgZen" label="斩%" width="80"></el-table-column>
-                <el-table-column prop="winRaito" label="胜%" width="80"></el-table-column>
+                <el-table-column prop="beatCount" label="斩" width="80"></el-table-column>
+                <el-table-column label="斩%" width="80">
+                    <template scope="scope">
+                        {{Math.floor(scope.row.avgZen * 100)}}%
+                    </template>
+                </el-table-column>
+                <el-table-column label="RW" width="80">
+                    <template scope="scope">
+                        {{Math.floor(scope.row.realWeight * 100)}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="winRaito" label="胜%" width="80">
+                    <template scope="scope">
+                        {{Math.floor(scope.row.winRaito * 100)}}%
+                    </template>
+                </el-table-column>
                 <el-table-column prop="player_id" label="pid" width="80"></el-table-column>
             </el-table>
         </el-col>
@@ -27,6 +40,7 @@
                 <el-button @click='_("reMergeRank",inputLimit)'>mergeRank</el-button>
                 <el-button @click='_("queryPlayer",inputQuery)'>queryPlayer</el-button>
                 <el-button @click='_("fixActivity")'>fixActivity</el-button>
+                <el-button @click='_("mergeNext")'>next</el-button>
             </div>
         </el-col>
     </div>
