@@ -22,6 +22,8 @@ export class RKPlayer {
     beatCount = 0
     beatRaito = 0
     rankInRecArr: Array<RankInRec> = []
+
+    exRealWeight = 0
     constructor(playerData) {
         this.player_id = playerData.player_id
         this.name = playerData.name
@@ -57,8 +59,9 @@ export class RKPlayer {
     get realWeight() {
         let winRatioPow2 = this.winRaito * this.winRaito
         if (this.champion > 0)
-            return winRatioPow2 * this.championRaito * .9 * this.avgZen * this.activity + this.champion * .2
-        return winRatioPow2 * .02 * this.avgZen * this.activity + this.champion * .2
+            return winRatioPow2 * this.championRaito * .9 * this.avgZen * this.activity + this.champion * .2 + this.exRealWeight
+
+        return winRatioPow2 * .2 * this.avgZen * this.activity + this.champion * .2 + this.exRealWeight
     }
 
     get winRaito() {

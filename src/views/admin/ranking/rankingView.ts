@@ -1,3 +1,4 @@
+import { findWinPath } from '../../../ranking/PlayerRelation';
 import { RKPlayer } from '../../../ranking/RankingPlayer';
 import { MergeRank } from '../../../ranking/RankingMerge';
 import { $get } from '../../utils/WebJsFunc';
@@ -46,9 +47,14 @@ export class RankingView {
         this.lastRanking = this.mergeRank.mergeNext()
     }
 
+    showRelation(topCount) {
+        this.lastRanking = this.mergeRank.flowUpPlayer(Number(topCount))
+    }
+
     queryPlayer(n) {
         this.mergeRank.queryPlayerIdByName(n)
     }
+
     _(e, param) {
         if (!this[e])
             throw 'no method name: ' + e

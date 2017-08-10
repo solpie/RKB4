@@ -1,6 +1,7 @@
 import { countMap } from "./com";
 import { descendingProp } from "../views/utils/JsFunc";
 import { RKPlayer } from "./RankingPlayer";
+import { findWinPath, isAwinB, logPath } from './PlayerRelation';
 
 let genValidGameArr = (rawGameArr) => {
     let g = []
@@ -41,7 +42,7 @@ let genBeatRaito = (player: RKPlayer, playerMap = null) => {
 }
 
 function sumPlayer(player: RKPlayer) {
-    let loseCount = player.gameCount - player.win
+    // let loseCount = player.gameCount - player.win
     player.activity = countMap(player.gameIdMap)
     player.beatCount = countMap(player.beatPlayerMap)
     player.beatRaito = genBeatRaito(player)
@@ -64,63 +65,20 @@ function sumGame(playerMap) {
     console.log('rank base not one Round', sortA.length, sortA);
     return sortA
 }
-function findWinPath(start, end, playerMap, nodeNum, path = []) {
-    if (!path.length)
-        path.push(start)
-    if (nodeNum > 0) {
-        // console.log('start', start, 'end', end, path, num);
-        for (let pid in playerMap[start].beatPlayerMap) {
-            if (path.indexOf(pid) > -1) {
-                // console.log('back', playerMap[pid].name);
-            } else {
-                let p = playerMap[pid]
-                return findWinPath(pid, end, playerMap, nodeNum - 1, path.concat([pid]))
-            }
-        }
-    } else {
-        // console.log('out start', start, 'end', end, path, num);
-        for (let pid in playerMap[start].beatPlayerMap) {
-            if (pid == end) {
-                path.push(pid)
-                let pathStr = ""
-                let lastPid = ""
-                for (let p2 of path) {
-                    if (lastPid)
-                        pathStr += ' ' + Math.floor(playerMap[lastPid].beatPlayerMap[p2] * 100) + '%'
-                    lastPid = p2
-                    pathStr += "->" + playerMap[p2].name
-                    //+ '[' + p2 + ']'
-                }
-                console.log('path', pathStr);
-                return pathStr
-            }
+
+
+const findRankIn = (player: RKPlayer, rankInArr) => {
+    for (let i = 0; i < rankInArr.length; i++) {
+        let p = rankInArr[i];
+        if (p.player_id == player.player_id) {
+            return i;
         }
     }
+    return -1
 }
 
-function isAwinB(playerA: RKPlayer, playerB: RKPlayer, playerMap) {
-    let nodeNum = 0
-    while (nodeNum < 2) {
-        if (findWinPath(playerA.player_id, playerB.player_id, playerMap, 0))
-            return true
-        nodeNum++
-    }
-    return false
-}
 const mergeGame = (rankArrOld, rankArrNew, playerMapSum) => {
     let rMerge = rankArrOld.concat()
-    // let genLink = (player, header, tail) => {
-    //     return { header: header, player: player, tail: tail }
-    // }
-    let findRankIn = (player, rankInArr) => {
-        for (let i = 0; i < rankInArr.length; i++) {
-            let p = rankInArr[i];
-            if (p.player_id == player.player_id) {
-                return i;
-            }
-        }
-        return -1
-    }
 
     let rankByBeatRaito = (player: RKPlayer, playerMapSum) => {
         let pInsertBeatRaito = genBeatRaito(player, playerMapSum)
@@ -267,13 +225,16 @@ export class MergeRank {
     }
     mergeNext() {
         this.curVaildGameIndex++
+        console.log('merge next', this.curVaildGameIndex);
         return this.mergeGameArr([this.vaildGameIdArr[this.curVaildGameIndex]])
     }
 
     mergeGameArr(gameIdArr) {
         let playerMap
         let rankArr;
-        let rankArrLast = this.rankMerge
+        let rankArrLast
+        if (this.rankMerge.length)
+            rankArrLast = this.rankMerge
         let playerMapSum = this.playerMapSum
         for (let i = 0; i < gameIdArr.length; i++) {
             let gameId = gameIdArr[i];
@@ -292,8 +253,6 @@ export class MergeRank {
 
                     genPlayerActivity(info.id, lPlayer, lScore, rScore, rPlayer.player_id, playerMapSum)
                     genPlayerActivity(info.id, rPlayer, rScore, lScore, lPlayer.player_id, playerMapSum)
-                    // if (lPlayer2 && rPlayer2)
-                    //     genBeatRaito(lPlayer2, rPlayer2, lScore > rScore)
                 }
                 // break;
                 rankArr = sumGame(playerMap)
@@ -306,6 +265,7 @@ export class MergeRank {
                 // }
             }
         }
+        this.rankMerge = rankArrLast
         return rankArrLast
     }
 
@@ -373,66 +333,68 @@ export class MergeRank {
         }
     }
 
-    flowUpPlayer(p: RKPlayer) {
-        //todo flow champion >1
+
+    hasPath(pid1, pid2, nodeNum) {
+        let path = findWinPath(pid1, pid2, this.playerMapSum, 0)
+        if (path && path.length) {
+            logPath(path, this.playerMapSum)
+            return true
+        }
+        return false
     }
-    curVaildGameIndex = -1
-    merge(limit) {
-        let doc = this.doc
-        let playerMap;
-        let playerMapSum = this.playerMapSum = {}
-        console.log('game arr', doc);
-        let rankArr;
-        let rankArrLast;
 
-        let passGameIdxArr = [123, 124, 402]
-        // for (let i = 0; i < 5; i++) {
-        let sumCount = 0
-        let sumLimit = limit
-        for (let i = 0; i < doc.gameArr.length; i++) {
-            // for (let i = 0; i < 2; i++) {
-            let game = doc.gameArr[doc.gameArr.length - 1 - i]
-            let info = game.info
-            if (passGameIdxArr.indexOf(info.id) > -1 || game.gameArr.length == 0) {
+    flowUpPlayer(topCount, times = 1) {
+        //todo flow champion >1
+        if (times > 5)
+            return this.rippleProp(this.rankMerge, 'realWeight', 0.5)
+        let playerArr: Array<RKPlayer> = this.rankMerge.slice(0, topCount)
+        let exRW;
+        let needEx = false
+        for (let p of playerArr)
+            for (let op of playerArr) {
+                if (p.player_id != op.player_id && p.champion > 0) {
+                    let rank1 = findRankIn(p, this.rankMerge)
+                    let rank2 = findRankIn(op, this.rankMerge)
+                    if (rank1 > rank2) {
+                        //todo 2 beatRaito>80% 换位
+                        //低位是否赢过高位
+                        if (!this.hasPath(p.player_id, op.player_id, 0)) {
+                            if (!this.hasPath(p.player_id, op.player_id, 1)) {
+                            }
+                            else {
+                                //up
+                                exRW = p.exRealWeight
+                                p.exRealWeight = Math.abs(p.realWeight - op.realWeight) * p.beatPlayerMap[op.player_id] * .2 / p.zenPlayerMap[op.player_id].length
+                                if (exRW != p.exRealWeight)
+                                    needEx = true
+                                console.log('need up 2', rank1, p.name, 'high', rank2, op.name);
+                            }
+                        }
+                        else {
+                            //up
 
-            } else {
-                playerMap = {}
-                let validGameArr = genValidGameArr(game.gameArr)
-                this.curVaildGameIndex = this.vaildGameIdArr.indexOf(info.id)
-
-                console.log(info.game_start.split(' ')[0], info.id, 'vaildIdx', this.curVaildGameIndex, info.title, validGameArr.length);
-                // let oneGamePlayerMap = {}
-                for (let validGame of validGameArr) {
-                    let lScore = Number(validGame.left.score)
-                    let rScore = Number(validGame.right.score)
-
-                    let lPlayer = validGame.left
-                    let rPlayer = validGame.right
-                    let lPlayer2 = genPlayerActivity(info.id, lPlayer, lScore, rScore, rPlayer.player_id, playerMap)
-                    let rPlayer2 = genPlayerActivity(info.id, rPlayer, rScore, lScore, lPlayer.player_id, playerMap)
-
-                    genPlayerActivity(info.id, lPlayer, lScore, rScore, rPlayer.player_id, playerMapSum)
-                    genPlayerActivity(info.id, rPlayer, rScore, lScore, lPlayer.player_id, playerMapSum)
-                    // if (lPlayer2 && rPlayer2)
-                    //     genBeatRaito(lPlayer2, rPlayer2, lScore > rScore)
-                }
-                // break;
-                rankArr = sumGame(playerMap)
-                if (!rankArrLast)
-                    rankArrLast = rankArr.concat()
-                else {
-                    // rankArrOld = this.rippleProp(rankArrOld, 'avgZen')
-                    rankArrLast = mergeGame(rankArrLast, rankArr, playerMapSum)
-                }
-                //test
-                sumCount++
-                if (sumCount > sumLimit - 1) {
-                    break;
+                            exRW = p.exRealWeight
+                            p.exRealWeight = Math.abs(p.realWeight - op.realWeight) * p.beatPlayerMap[op.player_id] / p.zenPlayerMap[op.player_id].length * .8
+                            if (exRW != p.exRealWeight)
+                                needEx = true
+                            console.log('need up', rank1, p.name, 'high', rank2, op.name);
+                        }
+                    }
                 }
             }
+        if (needEx) {
+            this.rankMerge = this.rippleProp(this.rankMerge, 'realWeight', 1)
+            return this.flowUpPlayer(topCount, times + 1)
         }
-        this.rankMerge = rankArrLast
-        return rankArrLast
-        // logRank(rankArrOld, 100)
+    }
+    
+    curVaildGameIndex = -1
+    curGameInfo: any = {}
+    merge(limit) {
+        let playerMapSum = this.playerMapSum = {}
+        for (let i = 0; i < limit; i++) {
+            this.mergeNext()
+        }
+        return this.rankMerge
     }
 }
