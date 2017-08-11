@@ -17,9 +17,11 @@ let genValidGameArr = (rawGameArr) => {
 }
 let genPlayerActivity = (gameId, player, myScore, opScore, opPlayer, savePlayerMap) => {
     if (player.player_id) {
+ 
         if (!savePlayerMap[player.player_id])
             savePlayerMap[player.player_id] = new RKPlayer(player)
         let p: RKPlayer = savePlayerMap[player.player_id]
+
         p.pushActivity(gameId, myScore, opScore, opPlayer)
         return p
     }
@@ -200,9 +202,10 @@ export class MergeRank {
     gameIdMap: any
     //402 肯帝亚 123 124 2016总决赛
     skipGame = [123, 124, 402]
-    rankMerge = []
+    rankMerge: Array<RKPlayer> = []
     vaildGameIdArr: any
     gameInfoMap: any
+    topZenRealWeight = 0
     constructor(doc) {
         this.doc = doc
         this.playerMapSum = {}
@@ -223,16 +226,21 @@ export class MergeRank {
             }
         }
     }
+    
     mergeNext() {
-        this.curVaildGameIndex++
-        console.log('merge next', this.curVaildGameIndex);
-        return this.mergeGameArr([this.vaildGameIdArr[this.curVaildGameIndex]])
+        this.curVaildGameIdx++
+        let gameId = this.vaildGameIdArr[this.curVaildGameIdx]
+        this.curGameInfo = this.gameInfoMap[gameId]
+        console.log('merge next', this.curVaildGameIdx);
+        return this.mergeGameArr([gameId])
     }
 
     mergeGameArr(gameIdArr) {
         let playerMap
         let rankArr;
         let rankArrLast
+        let finalFour;
+        let rewardArr = [0, 0]
         if (this.rankMerge.length)
             rankArrLast = this.rankMerge
         let playerMapSum = this.playerMapSum
@@ -240,6 +248,7 @@ export class MergeRank {
             let gameId = gameIdArr[i];
             if (this.gameIdMap[gameId]) {
                 let validGameArr = this.gameIdMap[gameId];
+                finalFour = validGameArr.slice(validGameArr.length - 4)
                 let info = this.gameInfoMap[gameId]
                 playerMap = {}
                 for (let validGame of validGameArr) {
@@ -248,20 +257,35 @@ export class MergeRank {
 
                     let lPlayer = validGame.left
                     let rPlayer = validGame.right
+
                     let lPlayer2 = genPlayerActivity(info.id, lPlayer, lScore, rScore, rPlayer.player_id, playerMap)
                     let rPlayer2 = genPlayerActivity(info.id, rPlayer, rScore, lScore, lPlayer.player_id, playerMap)
 
-                    genPlayerActivity(info.id, lPlayer, lScore, rScore, rPlayer.player_id, playerMapSum)
-                    genPlayerActivity(info.id, rPlayer, rScore, lScore, lPlayer.player_id, playerMapSum)
+                    let playerSum1 = genPlayerActivity(info.id, lPlayer, lScore, rScore, rPlayer.player_id, playerMapSum)
+                    let playerSum2 = genPlayerActivity(info.id, rPlayer, rScore, lScore, lPlayer.player_id, playerMapSum)
                 }
                 // break;
+
                 rankArr = sumGame(playerMap)
+                // sumGame(playerMapSum)
+
                 if (!rankArrLast)
                     rankArrLast = rankArr.concat()
                 else {
                     // rankArrOld = this.rippleProp(rankArrOld, 'avgZen')
                     rankArrLast = mergeGame(rankArrLast, rankArr, playerMapSum)
                 }
+                //updateZenWeight
+                for (let pActId in playerMap) {
+                    let pAct: RKPlayer = playerMapSum[pActId]
+                    sumPlayer(pAct)
+                }
+                for (let pActId in playerMap) {
+                    let pAct: RKPlayer = playerMapSum[pActId]
+                    // console.log('realWeight', pAct.name, pAct.realWeight);
+                    this.topZenRealWeight = Math.max(this.topZenRealWeight || pAct.updateZenRealWeight(playerMapSum))
+                }
+                console.log('final four', finalFour);
                 // }
             }
         }
@@ -274,7 +298,8 @@ export class MergeRank {
         let maxAct = 0
         for (let i = 0; i < playerArr.length; i++) {
             let p: RKPlayer = playerArr[i];
-            let propValue = Math.ceil(p[prop] / step)
+            let propValue = Math.ceil(p[prop] / step) || 0
+            // console.log('propValue',p[prop],propValue);
             if (!m[propValue])
                 m[propValue] = []
             maxAct = Math.max(maxAct, propValue)
@@ -345,11 +370,14 @@ export class MergeRank {
 
     flowUpPlayer(topCount, times = 1) {
         //todo flow champion >1
-        if (times > 5)
+        if (times > 3)
             return this.rippleProp(this.rankMerge, 'realWeight', 0.5)
         let playerArr: Array<RKPlayer> = this.rankMerge.slice(0, topCount)
         let exRW;
-        let needEx = false
+        // let needEx = false
+        for (let p0 of playerArr) {
+            p0.exRealWeight = 0
+        }
         for (let p of playerArr)
             for (let op of playerArr) {
                 if (p.player_id != op.player_id && p.champion > 0) {
@@ -365,8 +393,9 @@ export class MergeRank {
                                 //up
                                 exRW = p.exRealWeight
                                 p.exRealWeight = Math.abs(p.realWeight - op.realWeight) * p.beatPlayerMap[op.player_id] * .2 / p.zenPlayerMap[op.player_id].length
-                                if (exRW != p.exRealWeight)
-                                    needEx = true
+                                p.exRealWeight *= (p.zenRealWeight / this.topZenRealWeight)
+                                // if (exRW != p.exRealWeight)
+                                //     needEx = true
                                 console.log('need up 2', rank1, p.name, 'high', rank2, op.name);
                             }
                         }
@@ -375,22 +404,28 @@ export class MergeRank {
 
                             exRW = p.exRealWeight
                             p.exRealWeight = Math.abs(p.realWeight - op.realWeight) * p.beatPlayerMap[op.player_id] / p.zenPlayerMap[op.player_id].length * .8
-                            if (exRW != p.exRealWeight)
-                                needEx = true
+                            p.exRealWeight *= (p.zenRealWeight / this.topZenRealWeight)
+                            // if (exRW != p.exRealWeight)
+                            //     needEx = true
                             console.log('need up', rank1, p.name, 'high', rank2, op.name);
                         }
                     }
                 }
             }
-        if (needEx) {
-            this.rankMerge = this.rippleProp(this.rankMerge, 'realWeight', 1)
-            return this.flowUpPlayer(topCount, times + 1)
+        // if (needEx) {
+        this.rankMerge = this.rippleProp(this.rankMerge, 'realWeight', 1)
+        return this.flowUpPlayer(topCount, times + 1)
+    }
+    updateBestRank() {
+        for (let i = 0; i < this.rankMerge.length; i++) {
+            let p = this.rankMerge[i]
+            p.bestRanking = Math.min(p.bestRanking, i + 1)
         }
     }
-    
-    curVaildGameIndex = -1
+    curVaildGameIdx = -1
     curGameInfo: any = {}
     merge(limit) {
+        this.curVaildGameIdx = -1
         let playerMapSum = this.playerMapSum = {}
         for (let i = 0; i < limit; i++) {
             this.mergeNext()
