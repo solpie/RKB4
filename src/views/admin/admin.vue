@@ -19,11 +19,11 @@
                 <Ranking></Ranking>
             </el-tab-pane>
             <el-tab-pane label="线上控制台">
+                <Home></Home>
                 <Dashboard></Dashboard>
             </el-tab-pane>
             <el-tab-pane label="月赛">
                  <LiveData></LiveData> 
-                <Home></Home>
             </el-tab-pane>
         </el-tabs>
     </div>

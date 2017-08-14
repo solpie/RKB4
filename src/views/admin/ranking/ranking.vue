@@ -53,6 +53,7 @@
                 <el-button @click='_("queryPlayer",inputQuery)'>queryPlayer</el-button>
                 <el-button @click='_("fixActivity")'>fixActivity</el-button>
                 <el-button @click='_("mergeNext")'>next</el-button>
+                <el-button @click='_("fixRelation","fixed",inputQuery)'>fix rank</el-button>
             </div>
             selected:
             <span class="curPlayer">{{curPlayer.name}}</span>
@@ -66,7 +67,8 @@
             </el-table>
             <el-button @click='_("loadRank","s2")'>load s2</el-button>
             <el-button @click='_("fixRank","s2")'>fix s2</el-button>
-            <el-button @click='_("saveRank","s3")'>save s2</el-button>
+            <!-- <el-button @click='_("saveRank","s2")'>save s2</el-button> -->
+            <el-button @click='_("loadRank","s3")'>load s3</el-button>
             <el-button @click='_("saveRank","s3")'>save s3</el-button>
             <div>
             </div>
@@ -88,8 +90,22 @@ export default {
             rankingView._(e, param)
         },
         rowClass(row, index) {
-            if (rankingView.rowColorMap[row.player_id])
-                return { "background-color": rankingView.rowColorMap[row.player_id].color }
+            let pid = row.player_id
+            let sum;
+            let color;
+            if (rankingView.rowColorMap[pid]) {
+                sum = rankingView.rowColorMap[pid]
+                if (sum > 0.4) {
+                    color = 'green' //绝对赢
+                }
+                else if (sum > -0.4) {
+                    color =  'yellow' 
+                }
+                else {
+                    color =  'red' 
+                }
+                return { "background-color": color }
+            }
             if (row.player_id == rankingView.curPlayer.player_id)
                 return { "animation": 'blinker 1s linear infinite' }
         },

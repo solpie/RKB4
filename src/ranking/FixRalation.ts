@@ -22,13 +22,14 @@ export class FixAction {
 }
 const _f = FixAction
 export const fixS2 = [
-    new _f('2525', FixAction.BEFORE, "4"),//lgy before 郝天佶
+    new _f('2525', FixAction.FIX, "0"),//lgy 
     new _f('753', FixAction.AFTER, "4"),//Li_DD after 郝天佶
     new _f('1213', FixAction.AFTER, "753"),//安云鹏 after Li_DD
-    new _f('9931', FixAction.WIN, "753"),//孙胖 win Li_DD
+    new _f('9931', FixAction.SAME, "753"),//孙胖 same Li_DD
     new _f('7184', FixAction.FIX, "9"),//Gyoung fix 9
     new _f('4250', FixAction.AFTER, "574"),//蔡炜少年 after 军哥
     new _f('1230', FixAction.AFTER, "574"),//林瑞宏ail same with 军哥
+    new _f('3536', FixAction.FIX, "15"),//大霖哥666
 ]
 export const fixRankingS2 = [
     '2525',//lgy
@@ -47,29 +48,20 @@ export const checkRelation = (player: RKPlayer, rankPlayerArr: Array<RKPlayer>) 
 
 
     let myIdx = rankPlayerArr.indexOf(player)
-    console.log('lose to', player.losePlayerMap);
-    console.log('win to', player.beatPlayerMap);
-
-    for (let pid in player.losePlayerMap) {
-        let lp: RKPlayer = playerMap[pid]
-        if (lp) {
-            let lpIdx = rankPlayerArr.indexOf(lp)
-            console.log('lose to', lp.name, lpIdx);
-            colorMap[pid] = { color: 'red' }
+    let sumZenMap = {}
+    let sum
+    for (let pid in player.zenPlayerMap) {
+        pid = pid + ''
+        let beatRaitoArr = player.zenPlayerMap[pid]
+        sum = 0
+        // console.log('zen ',pid,beatRaitoArr);
+        for (let i = 0; i < beatRaitoArr.length; i++) {
+            let b = beatRaitoArr[i];
+            sum += b
         }
+        sumZenMap[pid] = sum
     }
-    for (let pid in player.beatPlayerMap) {
-        let wp: RKPlayer = playerMap[pid]
-        if (wp) {
-            let wpIdx = rankPlayerArr.indexOf(wp)
-            console.log('win', wp.name, wpIdx);
-            if (player.losePlayerMap[pid])
-                colorMap[pid] = { color: 'yellow' }
-            else
-                colorMap[pid] = { color: 'green' }
-        }
-    }
-
+    // console.log('zen map', player.name, sumZenMap, colorMap);
     for (let i = 0; i < fixS2.length; i++) {
         let fa: FixAction = fixS2[i];
         if (fa.player_id == player.player_id) {
@@ -77,5 +69,5 @@ export const checkRelation = (player: RKPlayer, rankPlayerArr: Array<RKPlayer>) 
 
         }
     }
-    return colorMap
+    return sumZenMap
 }

@@ -186,7 +186,10 @@ const mergeGame = (rankArrOld, rankArrNew, playerMapSum) => {
                 }
             } else
                 rMerge.splice(rankIdx, 0, pNew)
-            console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge[rankIdx + 1].name);
+            if (rMerge[rankIdx + 1])
+                console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge[rankIdx + 1].name);
+            else
+                console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge.length);
         }
     }
     let sumArr = []

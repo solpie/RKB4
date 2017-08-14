@@ -1,4 +1,4 @@
-import { checkRelation } from '../../../ranking/FixRalation';
+import { checkRelation, FixAction } from '../../../ranking/FixRalation';
 import { arrMove } from '../../../ranking/com';
 import { saveDoc } from '../livedata/BaseGame';
 import { findWinPath, logPath, findWinPath2 } from '../../../ranking/PlayerRelation';
@@ -57,10 +57,18 @@ export class RankingView {
     fixActivity() {
         // this.lastRanking = this.mergeRank.fixRankByActivity(this.lastRanking)
         let a = this.mergeRank.fixActivity()
+        this.mergeRank.rankMerge = a
         // this.lastRanking = a
         console.log('fixactivity', a);
         this.lastRanking = this.viewRank(a)
+    }
 
+    fixRelation(type, param) {
+        if (type == FixAction.FIX) {
+            let from = this.mergeRank.rankMerge.indexOf(this.curPlayer)
+            arrMove(this.mergeRank.rankMerge, from, Number(param) - 1)
+        }
+        this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
     }
 
     showRelation(topCount) {
@@ -102,11 +110,12 @@ export class RankingView {
     }
     inputRelationPlayerArr: Array<any> = [{ name: 'p1' }, { name: 'p2' }]
 
-  
+
     setRelation(row) {
         let p: RKPlayer = row
         this.curPlayer = row
-        this.rowColorMap = checkRelation(this.curPlayer,this.mergeRank.rankMerge)
+        let sum = checkRelation(this.curPlayer, this.mergeRank.rankMerge)
+        this.rowColorMap = sum
         // if (this.inputRelationPlayerArr.length < 2)
         // {
         //     this.inputRelationPlayerArr.push(p)

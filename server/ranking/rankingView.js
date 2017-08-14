@@ -20,11 +20,13 @@ app.get('/ranking/find/:idx', (req, res) => {
 app.post('/ranking/update/:idx', (req, res) => {
     let idx = req.params.idx
     let doc = req.body
-        // rankDb.insert(doc, (err2, doc) => {
-        //         console.log('db.insert', err2, doc);
-        //     })
     rankDb.update({ idx: idx }, doc, {}, (err, numReplaced) => {
         console.log(req.url, doc);
+        if (numReplaced == 0) {
+            rankDb.insert(doc, (err2, doc) => {
+                console.log('db.insert', err2, doc);
+            })
+        }
         res.send({ err: err, numReplaced: numReplaced })
     })
 })

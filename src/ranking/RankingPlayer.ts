@@ -50,7 +50,7 @@ export class RKPlayer {
         delete doc['lastRank']
         return doc
     }
-    
+
     get avgZen() {
         let zenSum = 0
         let zenSumOp = 0
@@ -146,16 +146,14 @@ export class RKPlayer {
         let playerData = this
         playerData.gameCount++;
         playerData.gameIdMap[gameId] = gameId
+        let zen
         if (isWin) {
             playerData.win++;
-            let zen = (myScore - opScore) / myScore * wp
+            zen = (myScore - opScore) / myScore * wp
             if (!playerData.beatPlayerMap[opPlayerId])
                 playerData.beatPlayerMap[opPlayerId] = 0
             playerData.beatPlayerMap[opPlayerId] += zen
 
-            if (!this.zenPlayerMap[opPlayerId])
-                this.zenPlayerMap[opPlayerId] = []
-            this.zenPlayerMap[opPlayerId].push(zen)
 
             if (isFinal) {
                 playerData.reward += rewardArr[0]
@@ -166,12 +164,16 @@ export class RKPlayer {
         } else {
             if (!playerData.losePlayerMap[opPlayerId])
                 playerData.losePlayerMap[opPlayerId] = 0
-            playerData.losePlayerMap[opPlayerId] += (myScore - opScore) / opScore * wp
+            zen = (myScore - opScore) / opScore * wp
+            playerData.losePlayerMap[opPlayerId] += zen
             if (isFinal) {
                 playerData.runnerUp++
                 playerData.reward += rewardArr[1]
             }
         }
+        if (!this.zenPlayerMap[opPlayerId])
+            this.zenPlayerMap[opPlayerId] = []
+        this.zenPlayerMap[opPlayerId].push(zen)
         return playerData
     }
 }
