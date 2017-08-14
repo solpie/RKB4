@@ -1,7 +1,10 @@
+import { checkRelation } from '../../../ranking/FixRalation';
+import { arrMove } from '../../../ranking/com';
+import { saveDoc } from '../livedata/BaseGame';
 import { findWinPath, logPath, findWinPath2 } from '../../../ranking/PlayerRelation';
 import { RKPlayer } from '../../../ranking/RankingPlayer';
 import { MergeRank } from '../../../ranking/RankingMerge';
-import { $get } from '../../utils/WebJsFunc';
+import { $get, $post } from '../../utils/WebJsFunc';
 export class RankingView {
     lastRanking: Array<RKPlayer> = []
     lastPlayerRanking: Array<RKPlayer> = []
@@ -11,6 +14,8 @@ export class RankingView {
     inputLimit = 2
     inputQuery = 2
     gameInfo = {}
+    curPlayer: any = { name: '' }
+    rowColorMap = {}
     constructor() {
         $get('/ranking/', res => {
             console.log('get game doc', res);
@@ -51,8 +56,7 @@ export class RankingView {
 
     fixActivity() {
         // this.lastRanking = this.mergeRank.fixRankByActivity(this.lastRanking)
-        let a = this.mergeRank.rankMerge
-        a = this.mergeRank.rippleProp(a, 'realWeight', 0.5)
+        let a = this.mergeRank.fixActivity()
         // this.lastRanking = a
         console.log('fixactivity', a);
         this.lastRanking = this.viewRank(a)
@@ -97,8 +101,12 @@ export class RankingView {
         this.mergeRank.queryPlayerIdByName(n)
     }
     inputRelationPlayerArr: Array<any> = [{ name: 'p1' }, { name: 'p2' }]
+
+  
     setRelation(row) {
         let p: RKPlayer = row
+        this.curPlayer = row
+        this.rowColorMap = checkRelation(this.curPlayer,this.mergeRank.rankMerge)
         // if (this.inputRelationPlayerArr.length < 2)
         // {
         //     this.inputRelationPlayerArr.push(p)
@@ -108,6 +116,41 @@ export class RankingView {
         this.inputRelationPlayerArr.push(p)
         // }
         console.log('row', p.name);
+    }
+
+    saveRank(season) {
+        let doc = { idx: season, rankArr: [] }
+        let rankArr = this.mergeRank.rankMerge
+        let p: RKPlayer
+        for (let i = 0; i < rankArr.length; i++) {
+            p = rankArr[i];
+            doc.rankArr.push(p.toDoc())
+        }
+        // console.log('toDoc',p.toDoc());
+        $post('/ranking/update/' + season, doc, (res) => {
+            console.log('ranking update', res);
+        })
+    }
+
+    loadRank(season) {
+        $get('/ranking/find/' + season, res => {
+            this.mergeRank.loadRank(res.doc.rankArr)
+            this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
+            console.log('load rank ', res, this.mergeRank.rankMerge);
+        })
+    }
+
+    fixRank(season) {
+
+    }
+
+    rankMove(dir) {
+        let r = this.mergeRank.rankMerge
+        let curIdx = r.indexOf(this.curPlayer)
+        if (curIdx > -1) {
+            this.mergeRank.rankMerge = arrMove(this.mergeRank.rankMerge, curIdx, curIdx + dir)
+            this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
+        }
     }
 
     _(e, param) {

@@ -33,10 +33,24 @@ export class RKPlayer {
         this.name = playerData.name
     }
 
+    load(playerDoc) {
+        for (let k in playerDoc) {
+            this[k] = playerDoc[k]
+        }
+    }
     get playerId() {
         return this.player_id
     }
 
+    toDoc() {
+        let doc = JSON.parse(JSON.stringify(this))
+        delete doc['rankInRecArr']
+        delete doc['exRealWeight']
+        delete doc['_zenRealWeight']
+        delete doc['lastRank']
+        return doc
+    }
+    
     get avgZen() {
         let zenSum = 0
         let zenSumOp = 0

@@ -17,7 +17,7 @@ let genValidGameArr = (rawGameArr) => {
 }
 let genPlayerActivity = (gameId, player, myScore, opScore, opPlayer, savePlayerMap) => {
     if (player.player_id) {
- 
+
         if (!savePlayerMap[player.player_id])
             savePlayerMap[player.player_id] = new RKPlayer(player)
         let p: RKPlayer = savePlayerMap[player.player_id]
@@ -226,7 +226,7 @@ export class MergeRank {
             }
         }
     }
-    
+
     mergeNext() {
         this.curVaildGameIdx++
         let gameId = this.vaildGameIdArr[this.curVaildGameIdx]
@@ -311,6 +311,17 @@ export class MergeRank {
                 pA = m[i + 1].concat(pA)
         }
         return pA
+    }
+
+    fixActivity() {
+        let a = []
+        for (let i = 0; i < this.rankMerge.length; i++) {
+            let p: RKPlayer = this.rankMerge[i];
+            if (p.activity > 2) {
+                a.push(p)
+            }
+        }
+        return a
     }
 
     fixRankByActivity(playerArr: Array<RKPlayer>) {
@@ -422,6 +433,7 @@ export class MergeRank {
             p.bestRanking = Math.min(p.bestRanking, i + 1)
         }
     }
+
     curVaildGameIdx = -1
     curGameInfo: any = {}
     merge(limit) {
@@ -431,5 +443,16 @@ export class MergeRank {
             this.mergeNext()
         }
         return this.rankMerge
+    }
+
+    loadRank(playerArr) {
+        let a = []
+        for (let i = 0; i < playerArr.length; i++) {
+            let p = playerArr[i];
+            let rkp = new RKPlayer(p)
+            rkp.load(p)
+            a.push(rkp)
+        }
+        this.rankMerge = a
     }
 }

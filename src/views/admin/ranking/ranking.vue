@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-col :span='12'>
-            <el-table stripe :data="lastRanking" style="width: 100%" v-bind:key="lastRanking" @row-click='rowClick'>
+            <el-table stripe :data="lastRanking" style="width: 100%" v-bind:key="lastRanking" @row-click='rowClick' :row-style="rowClass">
                 <el-table-column prop="ranking" label="#" width="60">
                     <template scope="scope">
                         {{ scope.$index+1 }}
@@ -54,10 +54,22 @@
                 <el-button @click='_("fixActivity")'>fixActivity</el-button>
                 <el-button @click='_("mergeNext")'>next</el-button>
             </div>
+            selected:
+            <span class="curPlayer">{{curPlayer.name}}</span>
+            <br>
+            <el-button @click='_("rankMove",-1)'>up</el-button>
+            <el-button @click='_("rankMove",1)'>down</el-button>
+            <br>
             <el-button @click='_("showRelation",inputQuery)'>交手关系</el-button>
             {{inputRelationPlayerArr[0].name}} x {{inputRelationPlayerArr[1].name}}
-            <el-table stripe :data="relationArr" style="width: 100%" v-bind:key="lastRanking" @row-click='rowClick'>
+            <el-table stripe :data="relationArr" style="width: 100%;height:450px" v-bind:key="lastRanking" @row-click='rowClick'>
             </el-table>
+            <el-button @click='_("loadRank","s2")'>load s2</el-button>
+            <el-button @click='_("fixRank","s2")'>fix s2</el-button>
+            <el-button @click='_("saveRank","s3")'>save s2</el-button>
+            <el-button @click='_("saveRank","s3")'>save s3</el-button>
+            <div>
+            </div>
         </el-col>
     </div>
 </template>
@@ -75,6 +87,12 @@ export default {
         _: (e, ...param) => {
             rankingView._(e, param)
         },
+        rowClass(row, index) {
+            if (rankingView.rowColorMap[row.player_id])
+                return { "background-color": rankingView.rowColorMap[row.player_id].color }
+            if (row.player_id == rankingView.curPlayer.player_id)
+                return { "animation": 'blinker 1s linear infinite' }
+        },
         rowClick(row, event, col) {
             this._('setRelation', row)
         }
@@ -85,6 +103,16 @@ export default {
 .isChampion {
     color: blue;
     font-weight: bold;
+}
+
+.curPlayer {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
 }
 </style>
 
