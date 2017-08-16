@@ -39,7 +39,6 @@
                         <el-table-column prop="rPlayer" label="R"></el-table-column>
                     </el-table>
                 </el-collapse-item>
-    
             </el-collapse>
         </el-col>
         <el-col :span='14'>

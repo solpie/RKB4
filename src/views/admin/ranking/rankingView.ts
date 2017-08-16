@@ -1,48 +1,55 @@
+import { CollectionView } from './collectionView';
+import { CollectionPlayer } from '../../../rkpCollection/CollectionPlayer';
 import { checkRelation, FixAction } from '../../../ranking/FixRalation';
 import { arrMove } from '../../../ranking/com';
 import { saveDoc } from '../livedata/BaseGame';
 import { findWinPath, logPath, findWinPath2 } from '../../../ranking/PlayerRelation';
 import { RKPlayer } from '../../../ranking/RankingPlayer';
-import { MergeRank } from '../../../ranking/RankingMerge';
+import { RankModel } from '../../../ranking/RankingMerge';
 import { $get, $post } from '../../utils/WebJsFunc';
+
+const collectionView = new CollectionView()
+
 export class RankingView {
     lastRanking: Array<RKPlayer> = []
     lastPlayerRanking: Array<RKPlayer> = []
     lastGameidx = 0
-    mergeRank: MergeRank
+    rankModel: RankModel
     relationArr = []
     inputLimit = 2
     inputQuery = 2
     gameInfo = {}
     curPlayer: any = { name: '' }
     rowColorMap = {}
+    $vm: any
+    lastTongzhiRanking: Array<CollectionPlayer> = []
     constructor() {
         $get('/ranking/', res => {
             console.log('get game doc', res);
-            this.mergeRank = new MergeRank(res.doc)
+            this.rankModel = new RankModel(res.doc)
             let limit = 1
-            this.lastRanking = this.viewRank(this.mergeRank.merge(limit))
+            this.lastRanking = this.viewRank(this.rankModel.merge(limit))
         })
     }
     //第250站 403 2017-07-15 :东莞-第238站 
     reMergeRank(limit) {
-        let a = this.mergeRank.merge(limit)
-        this.mergeRank.flowUpPlayer(Math.min(a.length, 50))
-        this.mergeRank.updateBestRank()
-        this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
+        let a = this.rankModel.merge(limit)
+        this.rankModel.flowUpPlayer(Math.min(a.length, 50))
+        this.rankModel.updateBestRank()
+        this.lastRanking = this.viewRank(this.rankModel.rankMerge)
     }
 
     mergeNext() {
-        let a = this.mergeRank.mergeNext()
-        this.mergeRank.flowUpPlayer(Math.min(a.length, 50))
-        this.mergeRank.updateBestRank()
-        this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
+        let a = this.rankModel.mergeNext()
+        this.rankModel.flowUpPlayer(Math.min(a.length, 50))
+        this.rankModel.updateBestRank()
+        this.lastRanking = this.viewRank(this.rankModel.rankMerge)
     }
 
     viewRank(playerArr) {
         // this.lastPlayerRanking = playerArr
-        this.gameInfo = this.mergeRank.curGameInfo
-        this.lastGameidx = this.mergeRank.curVaildGameIdx
+        this.gameInfo = this.rankModel.curGameInfo
+        this.lastGameidx = this.rankModel.curVaildGameIdx
         let a = []
         for (let i = 0; i < Math.min(playerArr.length, 100); i++) {
             let p: RKPlayer = playerArr[i];
@@ -54,10 +61,10 @@ export class RankingView {
         return a
     }
 
-    fixActivity() {
+    fixActivity(times) {
         // this.lastRanking = this.mergeRank.fixRankByActivity(this.lastRanking)
-        let a = this.mergeRank.fixActivity()
-        this.mergeRank.rankMerge = a
+        let a = this.rankModel.fixActivity(times)
+        this.rankModel.rankMerge = a
         // this.lastRanking = a
         console.log('fixactivity', a);
         this.lastRanking = this.viewRank(a)
@@ -65,10 +72,10 @@ export class RankingView {
 
     fixRelation(type, param) {
         if (type == FixAction.FIX) {
-            let from = this.mergeRank.rankMerge.indexOf(this.curPlayer)
-            arrMove(this.mergeRank.rankMerge, from, Number(param) - 1)
+            let from = this.rankModel.rankMerge.indexOf(this.curPlayer)
+            arrMove(this.rankModel.rankMerge, from, Number(param) - 1)
         }
-        this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
+        this.lastRanking = this.viewRank(this.rankModel.rankMerge)
     }
 
     showRelation(topCount) {
@@ -78,20 +85,20 @@ export class RankingView {
         let playerArr = this.inputRelationPlayerArr
         // if (playerArr[0].player_id && playerArr[1].player_id) {
         let path = []
-        findWinPath2(playerArr[0].player_id, playerArr[1].player_id, this.mergeRank.playerMapSum,
+        findWinPath2(playerArr[0].player_id, playerArr[1].player_id, this.rankModel.playerMapSum,
             1, [], path)
         // console.log('path', path);
         for (let i = 0; i < path.length; i++) {
             let p = path[i];
-            logPath(p, this.mergeRank.playerMapSum)
+            logPath(p, this.rankModel.playerMapSum)
         }
         path = []
-        findWinPath2(playerArr[0].player_id, playerArr[1].player_id, this.mergeRank.playerMapSum,
+        findWinPath2(playerArr[0].player_id, playerArr[1].player_id, this.rankModel.playerMapSum,
             0, [], path)
         // console.log('path', path);
         for (let i = 0; i < path.length; i++) {
             let p = path[i];
-            logPath(p, this.mergeRank.playerMapSum)
+            logPath(p, this.rankModel.playerMapSum)
         }
         // let path1 = findWinPafindWinPath2th(playerArr[0].player_id, playerArr[1].player_id, this.mergeRank.playerMapSum, 1)
         // let ps0 = logPath(path, this.mergeRank.playerMapSum)
@@ -106,7 +113,7 @@ export class RankingView {
     }
 
     queryPlayer(n) {
-        this.mergeRank.queryPlayerIdByName(n)
+        this.rankModel.queryPlayerIdByName(n)
     }
     inputRelationPlayerArr: Array<any> = [{ name: 'p1' }, { name: 'p2' }]
 
@@ -114,7 +121,7 @@ export class RankingView {
     setRelation(row) {
         let p: RKPlayer = row
         this.curPlayer = row
-        let sum = checkRelation(this.curPlayer, this.mergeRank.rankMerge)
+        let sum = checkRelation(this.curPlayer, this.rankModel.rankMerge)
         this.rowColorMap = sum
         // if (this.inputRelationPlayerArr.length < 2)
         // {
@@ -129,23 +136,38 @@ export class RankingView {
 
     saveRank(season) {
         let doc = { idx: season, rankArr: [] }
-        let rankArr = this.mergeRank.rankMerge
+        let rankArr = this.rankModel.rankMerge
         let p: RKPlayer
         for (let i = 0; i < rankArr.length; i++) {
             p = rankArr[i];
             doc.rankArr.push(p.toDoc())
         }
+        this.$vm.$confirm(`是否保存[${season}]排行? length:${doc.rankArr.length}`)
+            .then(_ => {
+                console.log('toDoc', p.toDoc());
+                $post('/ranking/update/' + season, doc, (res) => {
+                    console.log('ranking update', res);
+                })
+            })
+            .catch(_ => { });
+        this.$vm.dialogVisible = function () {
+
+        }
         // console.log('toDoc',p.toDoc());
-        $post('/ranking/update/' + season, doc, (res) => {
-            console.log('ranking update', res);
+
+    }
+
+    mergeRank(season) {
+        $get('/ranking/game/' + season, res => {
+            console.log('load rank ', res);
         })
     }
 
     loadRank(season) {
         $get('/ranking/find/' + season, res => {
-            this.mergeRank.loadRank(res.doc.rankArr)
-            this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
-            console.log('load rank ', res, this.mergeRank.rankMerge);
+            this.rankModel.loadRank(res.doc.rankArr)
+            this.lastRanking = this.viewRank(this.rankModel.rankMerge)
+            console.log('load rank ', res, this.rankModel.rankMerge);
         })
     }
 
@@ -154,14 +176,21 @@ export class RankingView {
     }
 
     rankMove(dir) {
-        let r = this.mergeRank.rankMerge
+        let r = this.rankModel.rankMerge
         let curIdx = r.indexOf(this.curPlayer)
         if (curIdx > -1) {
-            this.mergeRank.rankMerge = arrMove(this.mergeRank.rankMerge, curIdx, curIdx + dir)
-            this.lastRanking = this.viewRank(this.mergeRank.rankMerge)
+            this.rankModel.rankMerge = arrMove(this.rankModel.rankMerge, curIdx, curIdx + dir)
+            this.lastRanking = this.viewRank(this.rankModel.rankMerge)
         }
     }
-
+    //  collection
+    genBattle(dateStr) {
+        collectionView.genBattle(dateStr, this.rankModel.rankMerge)
+        this.showCollectionRanking('tongzhili')
+    }
+    showCollectionRanking(rankName) {
+        this.lastTongzhiRanking = collectionView.showRank(rankName).slice(0, 50)
+    }
     _(e, param) {
         if (!this[e])
             throw 'no method name: ' + e

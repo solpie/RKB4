@@ -9,6 +9,15 @@ app.get('/ranking/', (req, res) => {
     })
 });
 
+app.get('/ranking/game/:idx', (req, res) => {
+    let idx = req.params.idx
+    gameDb.find({ idx: idx }, (err, docs) => {
+        let ret = { err: err, doc: docs[0] }
+        if (docs.length)
+            res.send(ret)
+    })
+});
+
 app.get('/ranking/find/:idx', (req, res) => {
     let idx = req.params.idx
     rankDb.find({ idx: idx }, (err, docs) => {

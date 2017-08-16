@@ -1,9 +1,9 @@
-import { countMap } from "./com";
+import { countMap, findRankIn } from "./com";
 import { descendingProp } from "../views/utils/JsFunc";
 import { RKPlayer } from "./RankingPlayer";
 import { findWinPath, isAwinB, logPath } from './PlayerRelation';
 
-let genValidGameArr = (rawGameArr) => {
+export let genValidGameArr = (rawGameArr) => {
     let g = []
     let j = 1
     while (rawGameArr[j]) {
@@ -69,15 +69,6 @@ function sumGame(playerMap) {
 }
 
 
-const findRankIn = (player: RKPlayer, rankInArr) => {
-    for (let i = 0; i < rankInArr.length; i++) {
-        let p = rankInArr[i];
-        if (p.player_id == player.player_id) {
-            return i;
-        }
-    }
-    return -1
-}
 
 const mergeGame = (rankArrOld, rankArrNew, playerMapSum) => {
     let rMerge = rankArrOld.concat()
@@ -199,7 +190,7 @@ const mergeGame = (rankArrOld, rankArrNew, playerMapSum) => {
     console.log('after merge', sumArr);
     return sumArr
 }
-export class MergeRank {
+export class RankModel {
     doc: any
     playerMapSum: any
     gameIdMap: any
@@ -316,11 +307,11 @@ export class MergeRank {
         return pA
     }
 
-    fixActivity() {
+    fixActivity(times) {
         let a = []
         for (let i = 0; i < this.rankMerge.length; i++) {
             let p: RKPlayer = this.rankMerge[i];
-            if (p.activity > 2) {
+            if (p.activity > times - 1) {
                 a.push(p)
             }
         }
