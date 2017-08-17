@@ -3,6 +3,7 @@ import { RKPCollectionModel } from '../../../rkpCollection/RKPCollection';
 import { getRoundList, getRoundRawData } from "../../utils/HupuAPI";
 import { $get } from "../../utils/WebJsFunc";
 import { genValidGameArr } from "../../../ranking/RankingMerge";
+import { DateFormat } from "../../utils/JsFunc";
 function downLoadGameData(callback) {
     let _downLoadGameData = (gameInfoArr, gameDataArr, callback) => {
         if (gameInfoArr.length) {
@@ -44,6 +45,11 @@ function downLoadGameData(callback) {
 export class CollectionView {
     gameDataArr: any
     collectionModel: RKPCollectionModel
+    curDate: Date
+    curRankArr: Array<CollectionPlayer>
+    get m() {
+        return this.collectionModel
+    }
     constructor() {
         this.collectionModel = new RKPCollectionModel()
         $get('/ranking/game/' + 's2', res => {
@@ -56,18 +62,25 @@ export class CollectionView {
         })
     }
 
-    genBattle(dateStr, rankPlayerArr) {
-        dateStr = '2017-03-01'
-        let gameCount = 15
+    genBattle(dateStr, gameCount, rankPlayerArr) {
+        // if (passDayCount == 0) {
+        // }
+        // dateStr = '2017-03-01'
+        // let a = dateStr.split(' ')
+        // dateStr
+        // let gameCount = 15
+        this.curRankArr = rankPlayerArr
+        this.curDate = dateStr
         let gameDataArr = []
         let isStart = false
         for (let gd of this.gameDataArr) {
             let date = gd.info.game_start.split(' ')[0]
             if (gameDataArr.length > gameCount - 1)
                 break;
+
             if (date == dateStr || isStart) {
                 isStart = true
-                console.log('game info', gd.info);
+                // console.log('game info', gd.info);
                 if (gd.gameArr[1]) {
                     gd.gameArr = genValidGameArr(gd.gameArr)
                     gameDataArr.push(gd)
@@ -90,10 +103,19 @@ export class CollectionView {
         else if (rankName == 'tulong') {
             a = this.collectionModel.tuLongRanking
         }
+        else if (rankName == 'masterCon') {
+            a = this.collectionModel.masterConRanking
+        }
         // for (let i = 0; i < a.length; i++) {
         //     let cPlayer: CollectionPlayer = a[i];
 
         // }
         return a
+    }
+    nextWeek() {
+        let d = new Date(this.curDate)
+        let nextDate = new Date(d.getTime() + 24 * 60 * 60 * 1000 * this.m.week)
+        let dateStr = DateFormat(nextDate, 'yyyy-MM-dd')
+        this.genBattle(dateStr, this.m.week, this.curRankArr)
     }
 }

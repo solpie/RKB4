@@ -106,6 +106,7 @@
             </el-row>
             <el-row>
                 <hr>
+                <el-button @click='_("initDoubleElimation")'>initDoubleElimation</el-button>
                 <el-button @click='_("initGameMonth",380)'>init Game Month</el-button>
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>

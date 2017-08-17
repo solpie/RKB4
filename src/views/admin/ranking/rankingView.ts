@@ -17,13 +17,21 @@ export class RankingView {
     rankModel: RankModel
     relationArr = []
     inputLimit = 2
-    inputQuery = 2
+    inputQuery = '2017-03-01 4'
     gameInfo = {}
     curPlayer: any = { name: '' }
     rowColorMap = {}
     $vm: any
+
+
+    //collectionview
     lastTongzhiRanking: Array<CollectionPlayer> = []
+    rewardPlayerCount = 0
+    activePlayerCount = 0
+    cview: CollectionView
+
     constructor() {
+        this.cview = collectionView
         $get('/ranking/', res => {
             console.log('get game doc', res);
             this.rankModel = new RankModel(res.doc)
@@ -185,9 +193,24 @@ export class RankingView {
     }
     //  collection
     genBattle(dateStr) {
-        collectionView.genBattle(dateStr, this.rankModel.rankMerge)
-        this.showCollectionRanking('tongzhili')
+        let a = dateStr.split(' ')
+        if (a.length == 2) {
+            let ds = a[0]
+            let gameCount = Number(a[1])
+            collectionView.genBattle(ds, gameCount, this.rankModel.rankMerge)
+            this.showCollectionRanking('tongzhili')
+            this.rewardPlayerCount = collectionView.collectionModel.rewardPlayerCount
+            this.activePlayerCount = collectionView.collectionModel.activePlayerCount
+        }
     }
+
+    nextBattle() {
+        this.cview.nextWeek()
+        this.showCollectionRanking('tongzhili')
+        this.rewardPlayerCount = collectionView.collectionModel.rewardPlayerCount
+        this.activePlayerCount = collectionView.collectionModel.activePlayerCount
+    }
+
     showCollectionRanking(rankName) {
         this.lastTongzhiRanking = collectionView.showRank(rankName).slice(0, 50)
     }

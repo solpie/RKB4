@@ -58,6 +58,11 @@ export let getGameInfo = (callback) => {
     _get('/game/', callback)
 }
 
+export let getPlayerInfo = (playerId, callback) => {
+    let url = 'http://api.liangle.com/api/passerbyking/player/info/' + playerId
+    _get(_proxyJSON(url), callback)
+}
+
 export let _avatar = (filename) => {
     return '/img/player/avatar/' + filename
 }

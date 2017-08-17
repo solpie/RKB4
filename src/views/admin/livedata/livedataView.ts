@@ -16,6 +16,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_REMAP_BRACKET = 'EVENT_REMAP_BRACKET'
     static EVENT_RESET_POKER_PICKER = 'EVENT_RESET_POKER_PICKER'
     static EVENT_CUSTOM_PLAYER = 'EVENT_CUSTOM_PLAYER'
+    static EVENT_INIT_DOUBLE_ELIMATION = 'EVENT_INIT_DOUBLE_ELIMATION'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -174,9 +175,12 @@ export default class LiveDataView extends EventDispatcher {
     resetPokerPicker() {
         this.emit(LiveDataView.EVENT_RESET_POKER_PICKER)
     }
-// 
+    // 
+    initDoubleElimation() {
+        this.emit(LiveDataView.EVENT_INIT_DOUBLE_ELIMATION)
+    }
     setPlayerArr(jsonStr) {
         let playerArr = JSON.parse(jsonStr)
-        this.emit(LiveDataView.EVENT_CUSTOM_PLAYER,playerArr)
+        this.emit(LiveDataView.EVENT_CUSTOM_PLAYER, playerArr)
     }
 }

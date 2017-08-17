@@ -19,7 +19,10 @@ export default class DoubleEliminationView extends BaseGameView {
     constructor(liveDataView: LiveDataView) {
         super()
         this.liveDataView = liveDataView
-
+        liveDataView.on(LiveDataView.EVENT_INIT_DOUBLE_ELIMATION, _ => {
+            this.init()
+        })
+        // EVENT_INIT_DOUBLE_ELIMATION
         // this.init()
     }
 

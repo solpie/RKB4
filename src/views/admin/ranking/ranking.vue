@@ -56,7 +56,7 @@
                                 {{ scope.row.rewardFactor*(500-10*scope.$index) }}
                             </template>
                         </el-table-column>
-                        <el-table-column prop="rewardFactor" label="foc" width="150"></el-table-column>
+                        <el-table-column prop="rewardFactor" label="foc" width="80"></el-table-column>
                         <el-table-column label="rankReward" width="150">
                             <template scope="scope">
                                 {{ 500-10*scope.$index }}
@@ -64,12 +64,14 @@
                         </el-table-column>
                         <el-table-column prop="vHeima" label="黑马" width="150"></el-table-column>
                         <el-table-column prop="vTuLong" label="屠龙" width="150"></el-table-column>
+                        <el-table-column prop="masterCon" label="控场" width="150"></el-table-column>
                         <el-table-column prop="vTongZhiLi" label="统治力" width="150">
                             <!-- <template scope="scope">
-                                                    {{ scope.row.vTongZhiLi }}
-                                                </template> -->
+                                                        {{ scope.row.vTongZhiLi }}
+                                                    </template> -->
                         </el-table-column>
                         <el-table-column prop="activity" label="活" width="60"></el-table-column>
+                        <el-table-column prop="age" label="年龄" width="60"></el-table-column>
                     </el-table>
                 </el-collapse-item>
             </el-collapse>
@@ -107,9 +109,19 @@
             <div>
                 <hr>
                 <el-button @click='_("genBattle",inputQuery)'>battle</el-button>
+                <el-button @click='_("nextBattle")'>next</el-button>
                 <el-button @click='_("showCollectionRanking","tongzhili")'>统治力榜</el-button>
                 <el-button @click='_("showCollectionRanking","heima")'>黑马榜</el-button>
                 <el-button @click='_("showCollectionRanking","tulong")'>屠龙榜</el-button>
+                <el-button @click='_("showCollectionRanking","masterCon")'>控场</el-button>
+                <br> {{cview.curDate}}
+                <br> 激活球员数:{{activePlayerCount}}
+                <br> 产生收益球员数:{{rewardPlayerCount}}
+                <br> 橙卡:{{cview.m.sectionCountArr[4]}}  /{{cview.m.qualityCountArr[4]}}
+                <br> 紫卡:{{cview.m.sectionCountArr[3]}}  /{{cview.m.qualityCountArr[3]}}
+                <br> 蓝卡:{{cview.m.sectionCountArr[2]}}  /{{cview.m.qualityCountArr[2]}}
+                <br> 绿卡:{{cview.m.sectionCountArr[1]}}  /{{cview.m.qualityCountArr[1]}}
+                <br> 白卡:{{cview.m.sectionCountArr[0]}}  /{{cview.m.qualityCountArr[0]}}
             </div>
         </el-col>
         <el-dialog title="Tips" size="tiny">

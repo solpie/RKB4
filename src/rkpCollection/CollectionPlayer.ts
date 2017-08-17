@@ -12,19 +12,33 @@ export class CollectionPlayer {
     weight = 0
     age = 0
     lastRanking = 0//from 1
+    win = 0
 
     gameIdMap = {}
     get activity() {
         return countMap(this.gameIdMap)
     }
 
+    activity2 = 0
+
     section = 0//1~5
+    // get section() {
+    //     let n;
+    //     if(this.lastRanking)
+    //     return n
+    // }
     type = ''//
     get vTongZhiLi() {
         return this.winScore / this.loseScore
     }
     loseScore = 0
     winScore = 0
+
+    curWinCount = 0//每轮清空
+    curLoseCount = 0
+
+    hasMasterCon = false
+    masterCon = 0
 
     _sumHeima = 0
     get vHeima() {
@@ -70,6 +84,7 @@ export class CollectionPlayer {
         else if (this.lastRanking > 0) {
             this.rewardFactor = 5
         }
+        this.section = this.rewardFactor
     }
 
     pushActivity(gameId, myScore, opScore, opPlayer: CollectionPlayer) {
@@ -82,19 +97,27 @@ export class CollectionPlayer {
         this.loseScore += opScore
         this.winScore += myScore
         this.gameIdMap[gameId] = gameId
+        if (isMaster) {
+            if (this.curWinCount - this.curLoseCount == 1 && this.curLoseCount > 1) {
+                // if(this.masterCon<this.activity)
+                //     this.
+                if (!this.hasMasterCon) {
+                    this.hasMasterCon = true
+                    this.masterCon++
+                }
+            }
+            console.log('master con', this);
+        }
         if (isWin) {
+            this.curWinCount++
             if (opPlayer.lastRanking != 0 && opPlayer.lastRanking < this.lastRanking)
                 this._sumHeima += (opPlayer.lastRanking - this.lastRanking)
-            this._sumTuLong += (opPlayer.height - this.height)
+            if (opPlayer.height > this.height)
+                this._sumTuLong += (opPlayer.height - this.height)
         }
         else {
-
+            this.curLoseCount++
         }
     }
 }
 
-export class User {
-    playerIdMap = {}
-    rp = 20
-    castLimit = 12
-}
