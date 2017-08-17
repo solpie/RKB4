@@ -61,6 +61,17 @@ export const checkRelation = (player: RKPlayer, rankPlayerArr: Array<RKPlayer>) 
         }
         sumZenMap[pid] = sum
     }
+    // for (let pid in player.zenPlayerMap) {
+    //     pid = pid + ''
+    //     let beatRaitoArr = player.zenPlayerMap[pid]
+    //     sum = 0
+    //     // console.log('zen ',pid,beatRaitoArr);
+    //     for (let i = 0; i < beatRaitoArr.length; i++) {
+    //         let b = beatRaitoArr[i];
+    //         sum += b
+    //     }
+    //     sumZenMap[pid] = sum
+    // }
     // console.log('zen map', player.name, sumZenMap, colorMap);
     for (let i = 0; i < fixS2.length; i++) {
         let fa: FixAction = fixS2[i];

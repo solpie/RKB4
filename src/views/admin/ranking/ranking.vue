@@ -67,8 +67,8 @@
                         <el-table-column prop="masterCon" label="控场" width="150"></el-table-column>
                         <el-table-column prop="vTongZhiLi" label="统治力" width="150">
                             <!-- <template scope="scope">
-                                                        {{ scope.row.vTongZhiLi }}
-                                                    </template> -->
+                                                            {{ scope.row.vTongZhiLi }}
+                                                        </template> -->
                         </el-table-column>
                         <el-table-column prop="activity" label="活" width="60"></el-table-column>
                         <el-table-column prop="age" label="年龄" width="60"></el-table-column>
@@ -95,6 +95,8 @@
             <el-button @click='_("fixRelation","fixed",inputQuery)'>fix rank</el-button>
             <el-button @click='_("rankMove",-1)'>up</el-button>
             <el-button @click='_("rankMove",1)'>down</el-button>
+            <el-button @click='_("page",-1)'>pre page</el-button>
+            <el-button @click='_("page",1)'>next page</el-button>
             <br>
             <el-button @click='_("showRelation",inputQuery)'>交手关系</el-button>
             {{inputRelationPlayerArr[0].name}} x {{inputRelationPlayerArr[1].name}}
@@ -117,11 +119,14 @@
                 <br> {{cview.curDate}}
                 <br> 激活球员数:{{activePlayerCount}}
                 <br> 产生收益球员数:{{rewardPlayerCount}}
-                <br> 橙卡:{{cview.m.sectionCountArr[4]}}  /{{cview.m.qualityCountArr[4]}}
-                <br> 紫卡:{{cview.m.sectionCountArr[3]}}  /{{cview.m.qualityCountArr[3]}}
-                <br> 蓝卡:{{cview.m.sectionCountArr[2]}}  /{{cview.m.qualityCountArr[2]}}
-                <br> 绿卡:{{cview.m.sectionCountArr[1]}}  /{{cview.m.qualityCountArr[1]}}
-                <br> 白卡:{{cview.m.sectionCountArr[0]}}  /{{cview.m.qualityCountArr[0]}}
+                <br> 橙卡:{{cview.m.sectionCountArr[4]}} /{{cview.m.qualityCountArr[4]}}
+                <br> 紫卡:{{cview.m.sectionCountArr[3]}} /{{cview.m.qualityCountArr[3]}}
+                <br> 蓝卡:{{cview.m.sectionCountArr[2]}} /{{cview.m.qualityCountArr[2]}}
+                <br> 绿卡:{{cview.m.sectionCountArr[1]}} /{{cview.m.qualityCountArr[1]}}
+                <br> 白卡:{{cview.m.sectionCountArr[0]}} /{{cview.m.qualityCountArr[0]}}
+                <br> 黑马榜收益球员：{{cview.m.heimaRanking.length}}
+                <br> 屠龙收益球员：{{cview.m.tuLongRanking.length}}
+
             </div>
         </el-col>
         <el-dialog title="Tips" size="tiny">

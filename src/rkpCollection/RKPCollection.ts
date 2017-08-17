@@ -9,8 +9,8 @@ export class RKPCollectionModel {
     week = 3
 
     tongzhiRanking: Array<CollectionPlayer>;
-    heimaRanking: Array<CollectionPlayer>;
-    tuLongRanking: Array<CollectionPlayer>;
+    heimaRanking: Array<CollectionPlayer> = [];
+    tuLongRanking: Array<CollectionPlayer> = [];
     masterConRanking: Array<CollectionPlayer>;
 
     rewardPlayerMap = {}
@@ -188,15 +188,15 @@ export class RKPCollectionModel {
         r = r.sort(descendingProp('vTuLong'))
         return r
     }
+
     genMasterCon(playerMap) {
         let r = []
         for (let pid in playerMap) {
             r.push(playerMap[pid])
         }
-        r =
-            r.sort(firstBy(function (v1, v2) { return v2.masterCon - v1.masterCon; })
-                .thenBy(function (v1, v2) { return v2.vTongZhiLi - v1.vTongZhiLi; })
-            )
+        r = r.sort(firstBy(function (v1, v2) { return v2.masterCon - v1.masterCon; })
+            .thenBy(function (v1, v2) { return v2.vTongZhiLi - v1.vTongZhiLi; })
+        )
         return r
     }
 }

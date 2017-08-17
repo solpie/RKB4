@@ -12,6 +12,7 @@ export class RKPlayer {
     beatPlayerMap = {}
     zenPlayerMap = {}//p
     losePlayerMap = {} //绝对值越小差距越小
+    meetPlayerMap = {}//beat + lose
     section = 0 //1最高 ~5
     bestRanking = 99999
     master = 0 //大师赛次数
@@ -174,6 +175,9 @@ export class RKPlayer {
         if (!this.zenPlayerMap[opPlayerId])
             this.zenPlayerMap[opPlayerId] = []
         this.zenPlayerMap[opPlayerId].push(zen)
+        if (!this.meetPlayerMap[opPlayerId])
+            this.meetPlayerMap[opPlayerId] = 0
+        this.meetPlayerMap[opPlayerId] += zen
         return playerData
     }
 }

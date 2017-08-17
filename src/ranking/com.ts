@@ -17,3 +17,14 @@ export const findRankIn = (player: { player_id: string }, rankInArr) => {
     return -1
 }
 
+export const arrRipple = (arr, func: (item) => Boolean) => {
+    let arrUp = []
+    let arrDown = []
+    for (let item of arr) {
+        if (func(item))
+            arrUp.push(item)
+        else
+            arrDown.push(item)
+    }
+    return arrUp.concat(arrDown)
+}

@@ -54,12 +54,16 @@ export class RankingView {
         this.lastRanking = this.viewRank(this.rankModel.rankMerge)
     }
 
-    viewRank(playerArr) {
+    viewRank(playerArr, page = 0) {
+        // this.curPage = page
+        // if (this.curPage < 0)
+        //     this.curPage = 0
         // this.lastPlayerRanking = playerArr
         this.gameInfo = this.rankModel.curGameInfo
         this.lastGameidx = this.rankModel.curVaildGameIdx
         let a = []
-        for (let i = 0; i < Math.min(playerArr.length, 100); i++) {
+        let start = 0
+        for (let i = 0 + start; i < start + Math.min(playerArr.length, 100); i++) {
             let p: RKPlayer = playerArr[i];
             p.ranking = i + 1
             p.name = p.name.substring(0, 6)
@@ -190,6 +194,10 @@ export class RankingView {
             this.rankModel.rankMerge = arrMove(this.rankModel.rankMerge, curIdx, curIdx + dir)
             this.lastRanking = this.viewRank(this.rankModel.rankMerge)
         }
+    }
+    curPage = 0
+    page(dir) {
+        this.lastRanking = this.viewRank(this.rankModel.rankMerge, this.curPage + dir)
     }
     //  collection
     genBattle(dateStr) {
