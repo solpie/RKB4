@@ -55,14 +55,14 @@ export class RankingView {
     }
 
     viewRank(playerArr, page = 0) {
-        // this.curPage = page
-        // if (this.curPage < 0)
-        //     this.curPage = 0
+        this.curPage = page
+        if (this.curPage < 0)
+            this.curPage = 0
         // this.lastPlayerRanking = playerArr
         this.gameInfo = this.rankModel.curGameInfo
         this.lastGameidx = this.rankModel.curVaildGameIdx
         let a = []
-        let start = 0
+        let start = page*100
         for (let i = 0 + start; i < start + Math.min(playerArr.length, 100); i++) {
             let p: RKPlayer = playerArr[i];
             p.ranking = i + 1
@@ -152,7 +152,11 @@ export class RankingView {
         let p: RKPlayer
         for (let i = 0; i < rankArr.length; i++) {
             p = rankArr[i];
-            doc.rankArr.push(p.toDoc())
+            if (p.toDoc)
+                doc.rankArr.push(p.toDoc())
+            else {
+                console.log('error', p);
+            }
         }
         this.$vm.$confirm(`是否保存[${season}]排行? length:${doc.rankArr.length}`)
             .then(_ => {
@@ -184,7 +188,11 @@ export class RankingView {
     }
 
     fixRank(season) {
-
+        $get('/ranking/find/' + season, res => {
+            this.rankModel.fixRankByRank(res.doc.rankArr)
+            this.lastRanking = this.viewRank(this.rankModel.rankMerge)
+            console.log('fix rank by', season);
+        })
     }
 
     rankMove(dir) {

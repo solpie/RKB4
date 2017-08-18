@@ -6,7 +6,7 @@
                     <el-table stripe :data="lastRanking" style="width: 100%" v-bind:key="lastRanking" @row-click='rowClick' :row-style="rowClass">
                         <el-table-column prop="ranking" label="#" width="60">
                             <template scope="scope">
-                                {{ scope.$index+1 }}
+                                {{ scope.$index+1 +curPage*100 }}
                             </template>
                         </el-table-column>
                         <el-table-column prop="name" label="名" width="150"></el-table-column>
@@ -46,7 +46,7 @@
                     <el-table stripe :data="lastTongzhiRanking" style="width: 100%" @row-click='rowClick'>
                         <el-table-column prop="ranking" label="#" width="60">
                             <template scope="scope">
-                                {{ scope.$index+1 }}
+                                {{ scope.$index+1}}
                             </template>
                         </el-table-column>
                         <el-table-column prop="name" label="名" width="150"></el-table-column>
@@ -67,8 +67,8 @@
                         <el-table-column prop="masterCon" label="控场" width="150"></el-table-column>
                         <el-table-column prop="vTongZhiLi" label="统治力" width="150">
                             <!-- <template scope="scope">
-                                                            {{ scope.row.vTongZhiLi }}
-                                                        </template> -->
+                                                                {{ scope.row.vTongZhiLi }}
+                                                            </template> -->
                         </el-table-column>
                         <el-table-column prop="activity" label="活" width="60"></el-table-column>
                         <el-table-column prop="age" label="年龄" width="60"></el-table-column>
@@ -103,7 +103,7 @@
             <el-table stripe :data="relationArr" style="width: 100%;height:450px" v-bind:key="lastRanking" @row-click='rowClick'>
             </el-table>
             <el-button @click='_("loadRank","s2")'>load s2</el-button>
-            <el-button @click='_("fixRank","s2")'>fix s2</el-button>
+            <el-button @click='_("fixRank","s3")'>fix by s3</el-button>
             <!-- <el-button @click='_("saveRank","s2")'>save s2</el-button> -->
             <el-button @click='_("loadRank","s3")'>load s3</el-button>
             <el-button @click='_("mergeRank","s3")'>merge s3</el-button>
@@ -126,7 +126,7 @@
                 <br> 白卡:{{cview.m.sectionCountArr[0]}} /{{cview.m.qualityCountArr[0]}}
                 <br> 黑马榜收益球员：{{cview.m.heimaRanking.length}}
                 <br> 屠龙收益球员：{{cview.m.tuLongRanking.length}}
-
+    
             </div>
         </el-col>
         <el-dialog title="Tips" size="tiny">

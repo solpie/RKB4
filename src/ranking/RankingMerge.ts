@@ -1,4 +1,4 @@
-import { arrRipple, countMap, findRankIn } from './com';
+import { arrMove, arrRipple, countMap, findRankIn } from './com';
 import { descendingProp } from "../views/utils/JsFunc";
 import { RKPlayer } from "./RankingPlayer";
 import { findWinPath, isAwinB, logPath } from './PlayerRelation';
@@ -451,11 +451,35 @@ export class RankModel {
         this.rankMerge = a
     }
 
+    fixRankByRank(playerArr) {
+        // let from = this.rankModel.rankMerge.indexOf(this.curPlayer)
+        // arrMove(this.rankModel.rankMerge, from, Number(param) - 1)
+        let a = []
+
+        for (let i = 0; i < playerArr.length; i++) {
+            let p = playerArr[i];
+            let rkp = new RKPlayer(p)
+            rkp.load(p)
+            for (let j = 0; j < this.rankMerge.length; j++) {
+                let curP: RKPlayer = this.rankMerge[j]
+                if (curP.player_id == rkp.player_id) {
+                    // let from = this.rankMerge.indexOf(curP)
+                    console.log('move', p.name, j, i);
+                    arrMove(this.rankMerge, j, i)
+                    break;
+                }
+            }
+            // break
+            // a.push(rkp)
+        }
+    }
+
     layerRank() {
         let a1a2 = []//
         let a1c1 = []
         let a3 = []
         let a3c0 = []
+        let layers = [a3, a1c1, a3c0, a1a2]
         for (let p of this.rankMerge) {
             if (p.activity < 3) {
                 if (p.champion > 0)
@@ -474,10 +498,12 @@ export class RankModel {
         a1a2 = a1a2.sort(descendingProp('runnerUp'))
 
         //击败对手数
+        // console.log('layer count a3', a3.length);
         a3 = arrRipple(a3, (item) => {
             return item.beatCount > 9
         })
-        let layers = [a3, a1c1, a3c0, a1a2]
+        // console.log('layer count a3', a3.length);
+        
         let layers2 = []
         for (let l of layers) {
             layers2 = layers2.concat(l)
