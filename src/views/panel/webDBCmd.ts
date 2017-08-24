@@ -47,6 +47,8 @@ export const WebDBCmd = {
     sc_bracketCreated: ``,
     cs_bracket20Created: ``,
     sc_bracket20Created: ``,
+    cs_bracket24Created: ``,
+    sc_bracket24Created: ``,
     //base cmd
     cs_srvCreated: ``,
     sc_srvCreated: ``

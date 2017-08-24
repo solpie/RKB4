@@ -57,6 +57,10 @@ else if (panel == 'bracket20') {
     s = window['stage'] = initPIXI()
     new Bracket20View(s)
 }
+else if (panel == 'bracket24') {
+    s = window['stage'] = initPIXI()
+    new Bracket20View(s)
+}
 else if (panel == 'poker') {
     // document.removeChild()
     // var element = document.getElementById("panel");
