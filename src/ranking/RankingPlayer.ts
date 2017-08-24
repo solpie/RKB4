@@ -19,6 +19,10 @@ export class RKPlayer {
     champion = 0 //冠军次数
     runnerUp = 0 //亚军次数
     reward = 0//奖金 3月6前冠军两千
+    get avgReward()
+    {
+        return this.reward/this.activity
+    }
     gameCount = 0
 
 

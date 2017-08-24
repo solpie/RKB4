@@ -54,7 +54,7 @@ function downLoadGameData() {
 
         _downLoadGameData(gameInfoArr2017, [], gameDataArr2017 => {
             console.log('db save', gameDataArr2017);
-            gameDb.insert({ idx: 's3', gameArr: gameDataArr2017 }, (err, numReplaced) => {
+            gameDb.update({ idx: 's3' }, { idx: 's3', gameArr: gameDataArr2017 }, (err, numReplaced) => {
                 // console.log(req.url, doc);
                 // res.send({ err: err, numReplaced: numReplaced })
             })

@@ -52,7 +52,7 @@ export class CollectionView {
     }
     constructor() {
         this.collectionModel = new RKPCollectionModel()
-        $get('/ranking/game/' + 's2', res => {
+        $get('/ranking/game/' + 's3', res => {
             console.log('load rank ', res);
             let gameDataArr = res.doc.gameArr
             this.gameDataArr = []
@@ -87,11 +87,26 @@ export class CollectionView {
                 }
             }
         }
+        // console.log('gameDataArr', gameDataArr);
 
         this.collectionModel.startBattle(gameDataArr, rankPlayerArr)
+        this.sumSeason()
         return [this.collectionModel.tongzhiRanking]
     }
 
+    sumSeason() {
+        let gameDataArr = []
+        let isStart = false
+        for (let gd of this.gameDataArr) {
+            let date = gd.info.game_start.split(' ')[0]
+            if (gd.gameArr[1]) {
+                gd.gameArr = genValidGameArr(gd.gameArr)
+                gameDataArr.push(gd)
+            }
+        }
+        this.collectionModel.sumGameDataArr(gameDataArr)
+        console.log('sum season', gameDataArr);
+    }
     showRank(rankName) {
         let a;
         if (rankName == 'tongzhili') {

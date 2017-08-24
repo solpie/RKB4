@@ -175,7 +175,7 @@ export class RankingView {
 
     mergeRank(season) {
         $get('/ranking/game/' + season, res => {
-            console.log('load rank ', res);
+            console.log('load game ', res);
         })
     }
 

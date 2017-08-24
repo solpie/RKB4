@@ -495,7 +495,7 @@ export class RankModel {
                     a3.push(p)
             }
         }
-        a1a2 = a1a2.sort(descendingProp('runnerUp'))
+        a1a2 = a1a2.sort(descendingProp('avgReward'))
 
         //击败对手数
         // console.log('layer count a3', a3.length);

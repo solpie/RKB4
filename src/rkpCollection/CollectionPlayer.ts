@@ -22,6 +22,10 @@ export class CollectionPlayer {
     activity2 = 0
 
     section = 0//1~5
+    meetPlayerMap = {}
+    get meetCount() {
+        return countMap(this.meetPlayerMap)
+    }
     // get section() {
     //     let n;
     //     if(this.lastRanking)
@@ -97,6 +101,9 @@ export class CollectionPlayer {
         this.loseScore += opScore
         this.winScore += myScore
         this.gameIdMap[gameId] = gameId
+        if (!this.meetPlayerMap[opPlayer.player_id]) {
+            this.meetPlayerMap[opPlayer.player_id] = opPlayer
+        }
         if (isMaster) {
             if (this.curWinCount - this.curLoseCount == 1 && this.curLoseCount > 1) {
                 // if(this.masterCon<this.activity)
@@ -106,7 +113,7 @@ export class CollectionPlayer {
                     this.masterCon++
                 }
             }
-            console.log('master con', this);
+            // console.log('master con', this);
         }
         if (isWin) {
             this.curWinCount++

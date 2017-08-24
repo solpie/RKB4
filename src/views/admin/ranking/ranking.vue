@@ -4,7 +4,7 @@
             <el-collapse>
                 <el-collapse-item title="实力榜" name="1">
                     <el-table stripe :data="lastRanking" style="width: 100%" v-bind:key="lastRanking" @row-click='rowClick' :row-style="rowClass">
-                        <el-table-column prop="ranking" label="#" width="60">
+                        <el-table-column prop="ranking" label="#" width="120">
                             <template scope="scope">
                                 {{ scope.$index+1 +curPage*100 }}
                             </template>
@@ -67,8 +67,8 @@
                         <el-table-column prop="masterCon" label="控场" width="150"></el-table-column>
                         <el-table-column prop="vTongZhiLi" label="统治力" width="150">
                             <!-- <template scope="scope">
-                                                                {{ scope.row.vTongZhiLi }}
-                                                            </template> -->
+                                                                    {{ scope.row.vTongZhiLi }}
+                                                                </template> -->
                         </el-table-column>
                         <el-table-column prop="activity" label="活" width="60"></el-table-column>
                         <el-table-column prop="age" label="年龄" width="60"></el-table-column>
@@ -107,6 +107,7 @@
             <!-- <el-button @click='_("saveRank","s2")'>save s2</el-button> -->
             <el-button @click='_("loadRank","s3")'>load s3</el-button>
             <el-button @click='_("mergeRank","s3")'>merge s3</el-button>
+            <el-button @click='_("mergeRank","s2")'>merge s2</el-button>
             <el-button @click='_("saveRank","s3")'>save s3</el-button>
             <div>
                 <hr>

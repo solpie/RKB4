@@ -36,24 +36,62 @@ export class RKPCollectionModel {
         return null
     }
 
-    genPlayer(player_data, playerMap, rankPlayerArr): CollectionPlayer {
+    genPlayer(player_data, playerMap, rankPlayerArr?): CollectionPlayer {
         if (!playerMap[player_data.player_id]) {
             playerMap[player_data.player_id] = new CollectionPlayer(player_data)
             let p: CollectionPlayer = playerMap[player_data.player_id]
             if (!this.playerDataMap[p.player_id]) {
                 this.playerDataMap[p.player_id] = p
-                getPlayerInfo(p.player_id, res => {
-                    // console.log('data', res);
-                    this.playerDataMap[p.player_id].age = res.data.age
-                    // this.playerDataMap[p.player_id] = res
-                })
+                // getPlayerInfo(p.player_id, res => {
+                //     // console.log('data', res);
+                //     this.playerDataMap[p.player_id].age = res.data.age
+                //     // this.playerDataMap[p.player_id] = res
+                // })
             }
-            p.lastRanking = findRankIn(player_data, rankPlayerArr) + 1
+            if (rankPlayerArr)
+                p.lastRanking = findRankIn(player_data, rankPlayerArr) + 1
             p.setRewardFactor()
         }
         return playerMap[player_data.player_id]
     }
+    sumGameDataArr(gameDataArr) {
+        let playerMap = {}
+        gameDataArr.length =3
+        for (let gd of gameDataArr) {
+            let info = gd.info
+            // for (let pid in playerMap) {
+            //     let cPlayer: CollectionPlayer = playerMap[pid]
+            //     cPlayer.curWinCount = cPlayer.curLoseCount = 0
+            //     cPlayer.hasMasterCon = false
+            // }
+            for (let validGame of gd.gameArr) {
+                let lScore = Number(validGame.left.score)
+                let rScore = Number(validGame.right.score)
 
+                let lPlayer = validGame.left
+                let rPlayer = validGame.right
+                // console.log('lp',lPlayer);
+                // lPlayer.ranking = findRankIn(lPlayer, rankPlayerArr) + 1
+                // rPlayer.ranking = findRankIn(rPlayer, rankPlayerArr) + 1
+
+                let lCPlayer: CollectionPlayer = this.genPlayer(lPlayer, playerMap)
+                let rCPlayer: CollectionPlayer = this.genPlayer(rPlayer, playerMap)
+
+                this.genPlayerMapSum(info.id, lPlayer, lScore, rScore, rCPlayer, playerMap)
+                this.genPlayerMapSum(info.id, rPlayer, rScore, lScore, lCPlayer, playerMap)
+            }
+        }
+        let rankPlayerBaseArr = []
+        for (let pid in playerMap) {
+            let p: CollectionPlayer = playerMap[pid]
+            if (p.meetCount > 2)
+                rankPlayerBaseArr.push(p)
+        }
+        console.log('count player', countMap(playerMap));
+        console.log('count round', gameDataArr.length);
+        console.log('rank player', rankPlayerBaseArr.length);
+        
+    }
     startBattle(gameDataArr, rankPlayerArr) {
         this.sectionCountArr = []
         this.rewardPlayerMap = {}
@@ -149,9 +187,11 @@ export class RKPCollectionModel {
                 this.rewardPlayerMap[p.player_id] = p
         }
     }
+
     get rewardPlayerCount() {
         return countMap(this.rewardPlayerMap)
     }
+    
     get activePlayerCount() {
         return countMap(this.activityPlayerMap)
     }
