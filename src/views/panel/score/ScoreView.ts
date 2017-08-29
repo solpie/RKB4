@@ -91,18 +91,20 @@ export class ScoreView {
             //new event
             .on(`${WebDBCmd.sc_init}`, (data) => {
                 console.log('sc_init', data);
-                let p = data.leftPlayer
-                this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
-                p = data.rightPlayer
-                this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
-                this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
-                this.scorePanel.set35ScoreLight(data.winScore)
-                this.scorePanel.setLeftFoul(data.leftFoul)
-                this.scorePanel.setRightFoul(data.rightFoul)
-                this.scorePanel.setLeftScore(data.leftScore)
-                this.scorePanel.setRightScore(data.rightScore)
-                if (data.gameTitle) {
-                    this.scorePanel.setGameTitle(data.gameTitle)
+                if (data.leftPlayer) {
+                    let p = data.leftPlayer
+                    this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
+                    p = data.rightPlayer
+                    this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
+                    this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
+                    this.scorePanel.set35ScoreLight(data.winScore)
+                    this.scorePanel.setLeftFoul(data.leftFoul)
+                    this.scorePanel.setRightFoul(data.rightFoul)
+                    this.scorePanel.setLeftScore(data.leftScore)
+                    this.scorePanel.setRightScore(data.rightScore)
+                    if (data.gameTitle) {
+                        this.scorePanel.setGameTitle(data.gameTitle)
+                    }
                 }
             })
             .on(`${WebDBCmd.sc_score}`, (data) => {

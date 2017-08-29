@@ -9,7 +9,7 @@ let a2 = [{
         "weight": "68"
     },
     {
-        "avatar": "http://127.0.0.1:8088/img/player/avatar/rose.jpg",
+        "avatar": "http://202.96.203.27:8091/img/player/avatar/rose.jpg",
         "name": "德里克-罗斯",
         "age": "28",
         "school": "孟菲斯大学",
