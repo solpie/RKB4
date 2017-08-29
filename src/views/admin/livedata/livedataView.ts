@@ -91,10 +91,10 @@ export default class LiveDataView extends EventDispatcher {
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }
 
-    commit() {
+    commit(isEnd = false) {
         this.setTimer(0, 0)
         this.setTimer(-1, 0)
-        let data: any = { _: null }
+        let data: any = { _: null, isEnd: isEnd }
         // this.gameView.commit()
         this.emit(WebDBCmd.cs_commit, data)
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)

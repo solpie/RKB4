@@ -90,7 +90,8 @@
                     <br>
                     <el-input v-model='timeInput' style="width:50px">reset计时</el-input>
                     <el-button @click='_("setTimer",-2,timeInput)'>设置时间</el-button>
-                    <el-button @click='_("commit")'>提交比赛</el-button>
+                    <!-- <el-button @click='_("commit")'>提交比赛</el-button> -->
+                    <el-button @click='_("commit",true)'>提交比赛F</el-button>
                 </el-col>
                 <el-col :span='8'>
                     冠军：

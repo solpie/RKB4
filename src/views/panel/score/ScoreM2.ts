@@ -356,6 +356,11 @@ export class ScoreM2 {
         }
         this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
+    
+    setGameTitle(title) {
+        this.gameIdx.text = title
+        this.gameIdx.x = 962 - this.gameIdx.width * .5
+    }
 
 
     _showWinScore() {

@@ -13,7 +13,7 @@ export interface IBaseGameView {
     gameType: number
     start: () => void
     pause: () => void
-    commit: () => void
+    commit: (data:any) => void
 }
 export class BaseGameView implements IBaseGameView {
     public gameType: number;

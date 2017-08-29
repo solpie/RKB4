@@ -170,7 +170,6 @@ export class RankingView {
 
         }
         // console.log('toDoc',p.toDoc());
-
     }
 
     mergeRank(season) {
@@ -203,6 +202,7 @@ export class RankingView {
             this.lastRanking = this.viewRank(this.rankModel.rankMerge)
         }
     }
+    
     curPage = 0
     page(dir) {
         this.lastRanking = this.viewRank(this.rankModel.rankMerge, this.curPage + dir)

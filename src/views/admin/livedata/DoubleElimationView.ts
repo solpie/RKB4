@@ -53,7 +53,7 @@ export default class DoubleEliminationView extends BaseGameView {
 
         liveDataView.on(WebDBCmd.cs_commit, data => {
             console.log(this, 'cs_commit', data);
-            this.commit()
+            this.commit(data)
         })
 
         liveDataView.on(liveDataView.EVENT_SET_GAME_INFO, gameIdx => {
@@ -130,11 +130,14 @@ export default class DoubleEliminationView extends BaseGameView {
                 data.leftPlayer.weight = lPlayer.weight
                 data.leftPlayer.height = lPlayer.height
                 data.leftPlayer.avatar = lPlayer.avatar
-
+                data.leftPlayer.school = lPlayer.school
+                data.gameTitle = lPlayer.gameTitle
+                
                 data.rightPlayer.name = rPlayer.name
                 data.rightPlayer.weight = rPlayer.weight
                 data.rightPlayer.height = rPlayer.height
                 data.rightPlayer.avatar = rPlayer.avatar
+                data.rightPlayer.school = rPlayer.school
             })
         })
 
@@ -377,9 +380,10 @@ export default class DoubleEliminationView extends BaseGameView {
             })
     }
 
-    commit() {
+    commit(data?) {
         syncDoc(gameDate, doc => {
-            console.log('commit', doc, 'gameIdx:', this.gameIdx);
+            console.log('commit', doc, 'gameIdx:', this.gameIdx, data.hasNext);
+
             let rec = doc['rec'][this.gameIdx]
             rec.score = [this.lScore, this.rScore]
             rec.foul = [this.lFoul, this.rFoul]
@@ -388,6 +392,8 @@ export default class DoubleEliminationView extends BaseGameView {
             doc.gameIdx = this.gameIdx
             this.emitVictory(doc)
             this.emitBracket(doc)
+            if (data.isEnd)
+                return
             this.initView(doc)
             if (this.gameIdx < 13)
                 this.delayEmitGameInfo = 5000
