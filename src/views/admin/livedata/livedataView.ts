@@ -17,6 +17,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_RESET_POKER_PICKER = 'EVENT_RESET_POKER_PICKER'
     static EVENT_CUSTOM_PLAYER = 'EVENT_CUSTOM_PLAYER'
     static EVENT_INIT_DOUBLE_ELIMATION = 'EVENT_INIT_DOUBLE_ELIMATION'
+    static EVENT_ROLL_TEXT = 'EVENT_ROLL_TEXT'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -34,6 +35,7 @@ export default class LiveDataView extends EventDispatcher {
         gmv['inputVS'] = ''
         gmv['inputScore'] = ''
         gmv['inputChampion'] = ''
+        gmv['inputRollText'] = ''
         //13-20
         gmv['pokerPlayerArrG1'] = [
             { name: 'p13', poker: 'LA', hupuID: '' },
@@ -182,5 +184,9 @@ export default class LiveDataView extends EventDispatcher {
     setPlayerArr(jsonStr) {
         let playerArr = JSON.parse(jsonStr)
         this.emit(LiveDataView.EVENT_CUSTOM_PLAYER, playerArr)
+    }
+    
+    setRollText(text, visible = true) {
+        this.emit(LiveDataView.EVENT_ROLL_TEXT, { text: text, visible: visible })
     }
 }

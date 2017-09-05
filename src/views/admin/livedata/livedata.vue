@@ -4,10 +4,10 @@
             <el-collapse v-model="actPanel" accordion>
                 <!-- <el-collapse-item title="Group Rank" name="2"> -->
                 <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                                                                                <el-table-column prop="name" label="name" width="140"></el-table-column>
-                                                                                <el-table-column prop="win" label="胜场" width="80"></el-table-column>
-                                                                                <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                                                                            </el-table> -->
+                                                                                    <el-table-column prop="name" label="name" width="140"></el-table-column>
+                                                                                    <el-table-column prop="win" label="胜场" width="80"></el-table-column>
+                                                                                    <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
+                                                                                </el-table> -->
                 <!-- </el-collapse-item> -->
                 <el-collapse-item title="Player List" name="3">
                     L1 ~ L4
@@ -55,13 +55,13 @@
                 </el-col>
                 <el-col :span='4'>
                     <!-- <div v-if='gameIdx<24'>
-                                                                                小组赛第{{gameIdx+1}}场
-                                                                            </div>
-                                                                            <div v-else>
-                                                                                大师赛第{{gameIdx-23}}场
-                                                                            </div> -->
+                                                                                    小组赛第{{gameIdx+1}}场
+                                                                                </div>
+                                                                                <div v-else>
+                                                                                    大师赛第{{gameIdx-23}}场
+                                                                                </div> -->
                     小组赛第{{gameIdx}}场
-    
+
                     <span style="fontSize:40px">
                         Score
                         <span style="color:blue">{{lScore}}</span> :
@@ -69,7 +69,7 @@
                         <br> Foul {{lFoul}} :{{rFoul}}
                     </span>
                 </el-col>
-    
+
                 <el-col :span='4'>
                     R Score
                     <el-button @click='_("setRScore",rScore+1)'>+1</el-button>
@@ -112,10 +112,10 @@
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>
                 <!-- <el-button @click='_("showGroup","a")'>Group A</el-button>
-                <el-button @click='_("showGroup","b")'>Group B</el-button>
-                <el-button @click='_("showGroup","c")'>Group C</el-button>
-                <el-button @click='_("showGroup","d")'>Group D</el-button>
-                <el-button @click='_("hideGroup")'>Hide Group Rank</el-button> -->
+                    <el-button @click='_("showGroup","b")'>Group B</el-button>
+                    <el-button @click='_("showGroup","c")'>Group C</el-button>
+                    <el-button @click='_("showGroup","d")'>Group D</el-button>
+                    <el-button @click='_("hideGroup")'>Hide Group Rank</el-button> -->
                 <br>
                 <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
                 <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
@@ -124,13 +124,16 @@
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
-    
+
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                滚动文字：<el-input v-model="inputRollText" style="width:250px"></el-input>
+                <el-button @click='_("setRollText",inputRollText)'>发送</el-button>
+                
             </el-row>
             <el-row>
                 <hr>
@@ -160,15 +163,15 @@
 <script>
 import LiveDataView from './livedataView'
 import DoubleEliminationView from './DoubleElimationView';
+import DoubleElimination24View from './DoubleElimation24View';
 
 let livedataView = new LiveDataView()
-let doubleElimination = new DoubleEliminationView(livedataView)
-livedataView.appendProp(doubleElimination)
+let doubleElimination24 = new DoubleElimination24View(livedataView)
+// let doubleElimination = new DoubleEliminationView(livedataView)
+livedataView.appendProp(doubleElimination24)
 export default {
     data() {
-        let g = doubleElimination
-        // let g = livedataView.gmv
-        // g.gameInfoTable = doubleElimination.gameInfoTable
+        let g = doubleElimination24
         return g
     },
     created() {

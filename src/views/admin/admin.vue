@@ -13,6 +13,9 @@
 <template>
     <div id="app">
         <el-tabs type="border-card">
+            <el-tab-pane label="月赛">
+                <LiveData></LiveData>
+            </el-tab-pane>
             <el-tab-pane>
                 <span slot="label">
                     <i class="el-icon-edit"></i>Admin</span>
@@ -22,9 +25,7 @@
                 <Home></Home>
                 <Dashboard></Dashboard>
             </el-tab-pane>
-            <el-tab-pane label="月赛">
-                 <LiveData></LiveData> 
-            </el-tab-pane>
+
         </el-tabs>
     </div>
 </template>

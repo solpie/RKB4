@@ -1,20 +1,60 @@
 import { BaseGameView, syncDoc } from "./BaseGame";
+import LiveDataView from "./livedataView";
+import { WebDBCmd } from "../../panel/webDBCmd";
+import { $post } from "../../utils/WebJsFunc";
 
 declare let io;
 let gameDate = '930'
 export default class DoubleElimination24View extends BaseGameView {
-    constructor() {
+    nameMapHupuId = {}
+    pokerMapPlayer = {}
+    gameInfoTable = []
+    delayEmitGameInfo = 0
+    lHupuID = ''
+    rHupuID = ''
+    liveDataView
+    constructor(liveDataView: LiveDataView) {
         super()
+        this.liveDataView = liveDataView
+        liveDataView.on(LiveDataView.EVENT_INIT_DOUBLE_ELIMATION, _ => {
+            this.init()
+        })
+        // EVENT_INIT_DOUBLE_ELIMATION
+        this.init()
+    }
+
+    initWS() {
+        io.connect('/rkb')
+            .on('connect', () => {
+                console.log('connect DoubleEliminationView initWS')
+            })
+            .on(`${WebDBCmd.sc_bracket20Created}`, () => {
+                console.log('sc_bracketCreated');
+                // this.emitBracket()
+            })
+            .on(`${WebDBCmd.sc_panelCreated}`, () => {
+                console.log('sc_panelCreated');
+                // this.emitGameInfo()
+            })
     }
 
     init() {
+        let lv = this.liveDataView
+        let LVE = LiveDataView
         syncDoc(gameDate, doc => {
             console.log('sync doc', doc);
-            // this.initBracket(doc)
-            // this.initPlayer(_ => {
-            //     this.initView(doc)
-            // })
         })
+        lv.on(LVE.EVENT_ROLL_TEXT, data => {
+            this.sendRollText(data)
+        })
+        this.initWS()
+    }
+
+    sendRollText(data) {
+        console.log('send roll text', data)
+        data._ = ''
+        $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+
     }
 
     initPlayer() {

@@ -1,3 +1,4 @@
+import { RollText } from './RollText';
 import { Victory } from './Victory';
 import { WebDBCmd } from '../webDBCmd';
 import { Champion } from './Champion';
@@ -48,6 +49,12 @@ export class PopupView {
                 data.visible ?
                     this.show(Victory, data)
                     : this.hide(Victory)
+            })
+            .on(WebDBCmd.sc_showRollText, data => {
+                console.log('sc_showRollText', data);
+                data.visible ?
+                    this.show(RollText, data)
+                    : this.hide(RollText)
             })
     }
     show(cls, param) {
