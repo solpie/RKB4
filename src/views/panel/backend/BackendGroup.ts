@@ -56,10 +56,16 @@ export class BackendGroup extends PIXI.Container {
     setRec(recData) {
         // console.log('recData', recData);
         this.lPlayerName.text = recData.player[0]
-        cutText(this.lPlayerName,180)
+        cutText(this.lPlayerName, 180)
         this.rPlayerName.text = recData.player[1]
-        cutText(this.rPlayerName,180)
-        this.lScore.text = recData.score[0]
-        this.rScore.text = recData.score[1]
+        cutText(this.rPlayerName, 180)
+        if (recData.score[0] == 0 && recData.score[1] == 0) {
+            this.lScore.text = ''
+            this.rScore.text = ''
+        }
+        else {
+            this.lScore.text = recData.score[0]
+            this.rScore.text = recData.score[1]
+        }
     }
 }

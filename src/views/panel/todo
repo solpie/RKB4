@@ -1,13 +1,28 @@
 
-obs 多路流 切换
+-----自动开题
+Cookie: u=18800316|54Gs6JC9Xw==|0c57|e1e1f1ab551a4f5feb9c1a94e938da7c|551a4f5feb9c1a94|54Gs6JC9Xw==; us=e0f1a7d137d00241f782758f8d968830739a320abb4873bfe6381498b804744c16974a776635ea0de4c8d74a4906956e2228636554ca861c5c51f515d23b90e7; ua=88515621;
 
-mask less
+出预测题 POST
+http://www.liangle.com/manage/yang/pbk/event/{room_id}
+left_nickname
+right_nickname
+返回结果中有预测题topic_id
 
+封盘  PUT
+http://www.liangle.com/manage/topic/stop/{topic_id}
 
-	var texture = new PIXI.RenderTexture();
-	texture.render(myContainer);
-	var background = new PIXI.Sprite(texture);
+流盘 PUT
+http://www.liangle.com/manage/topic/cancel/{topic_id}
 
+开奖 PUT
+http://www.liangle.com/manage/topic/finish/{topic_id}
+option 选项1 或者2
+
+----------
+----测试
+1自动开题 ，开直播间
+2比赛全流程
+----
 冠军冲脸抽卡ssr
 
 罗斯活动 动态输入球员数据

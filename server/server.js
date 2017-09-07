@@ -102,7 +102,51 @@ app.post('/db/update/:idx', (req, res) => {
 
 ///////////////////////
 // let downLoadGameData = require('./ranking/ranking.js')
-
+//auto game
+var request = require('request');
+request = request.defaults({ jar: true })
+    // request.cookie('u=18800316|54Gs6JC9Xw==|0c57|e1e1f1ab551a4f5feb9c1a94e938da7c|551a4f5feb9c1a94|54Gs6JC9Xw==')
+    // request.cookie('us=e0f1a7d137d00241f782758f8d968830739a320abb4873bfe6381498b804744c16974a776635ea0de4c8d74a4906956e2228636554ca861c5c51f515d23b90e7')
+    // request.cookie('ua=88515621')
+var roomId = 11006
+var startUrl = 'http://pre.liangle.com/manage/yang/pbk/event/' + roomId
+    // request
+var requestify = require('requestify');
+var data1 = {
+        left_nickname: '67号选手',
+        right_nickname: 'sako001'
+    }
+    // requestify.setEncoding('utf8')
+requestify.request(startUrl, {
+        method: 'POST',
+        body: data1,
+        'Content-Type': 'application/json; charset=utf-8',
+        // headers: {
+        //     'X-Forwarded-By': 'me'
+        // },
+        cookies: {
+            'u': '18800316|54Gs6JC9Xw==|0c57|e1e1f1ab551a4f5feb9c1a94e938da7c|551a4f5feb9c1a94|54Gs6JC9Xw==',
+            'us': 'e0f1a7d137d00241f782758f8d968830739a320abb4873bfe6381498b804744c16974a776635ea0de4c8d74a4906956e2228636554ca861c5c51f515d23b90e7',
+            'ua': '88515621'
+        },
+        dataType: 'json'
+    }).then(function(response) {
+        // Get the response body
+        var body = response.getBody();
+        console.log('res body 放', body)
+    })
+    // requestify.post(startUrl, { left_nickname: '方良超', right_nickname: '军哥' }, {
+    //         cookies: {
+    //             'u': '18800316|54Gs6JC9Xw==|0c57|e1e1f1ab551a4f5feb9c1a94e938da7c|551a4f5feb9c1a94|54Gs6JC9Xw==',
+    //             'us': 'e0f1a7d137d00241f782758f8d968830739a320abb4873bfe6381498b804744c16974a776635ea0de4c8d74a4906956e2228636554ca861c5c51f515d23b90e7',
+    //             'ua': '88515621'
+    //         }
+    //     })
+    //     .then(function(response) {
+    //         // Get the response body
+    //         var body = response.getBody();
+    //         console.log('res body', body)
+    //     });
 server.listen(Number(conf.server.port), function(_) {
     console.log('server running...');
     // downLoadGameData()
