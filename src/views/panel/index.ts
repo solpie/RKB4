@@ -1,3 +1,4 @@
+import { BackendView } from './backend/BackendView';
 import { PokerView } from './poker/PokerView';
 import { Bracket20View } from './bracket20/Bracket20View';
 
@@ -60,6 +61,10 @@ else if (panel == 'bracket20') {
 else if (panel == 'bracket24') {
     s = window['stage'] = initPIXI()
     new Bracket20View(s)
+}
+else if (panel == 'backend') {
+    s = window['stage'] = initPIXI()
+    new BackendView(s)
 }
 else if (panel == 'poker') {
     // document.removeChild()

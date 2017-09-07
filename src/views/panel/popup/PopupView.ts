@@ -51,7 +51,7 @@ export class PopupView {
                     : this.hide(Victory)
             })
             .on(WebDBCmd.sc_showRollText, data => {
-                console.log('sc_showRollText', data);
+                console.log('sc_showRollText', data,this.popupItemMap);
                 data.visible ?
                     this.show(RollText, data)
                     : this.hide(RollText)
@@ -69,7 +69,7 @@ export class PopupView {
     }
 
     hide(cls) {
-        if (this.popupItemMap[cls])
-            this.popupItemMap[cls].hide()
+        if (this.popupItemMap[cls.class])
+            this.popupItemMap[cls.class].hide()
     }
 }

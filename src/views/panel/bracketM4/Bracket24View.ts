@@ -1,8 +1,11 @@
+import { Bracket24 } from './Bracket24';
+import { routeBracket24 } from './Bracket24Route';
 import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../webDBCmd";
 
 declare let io;
 export class Bracket24View {
+    bracket:Bracket24
     constructor() {
 
     }
@@ -17,5 +20,16 @@ export class Bracket24View {
             }, 3000)
             console.log('connect', window.location.host)
         })
+            .on(`${WebDBCmd.sc_bracket24Init}`, (data) => {
+                console.log('sc_bracket32Init', data)
+                this.onBracketData(data.rec);
+            })
+        
     }
+
+    onBracketData(rec) {
+        let data = routeBracket24(rec)
+        // this.bracket.setRec(rec, data.incoming)
+    }
+
 }

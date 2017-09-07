@@ -22,6 +22,9 @@ export const WebDBCmd = {
     //20 人双败
     cs_bracket20Init: ``,
     sc_bracket20Init: ``,
+    //32 人双败
+    cs_bracket24Init: ``,
+    sc_bracket24Init: ``,
     cs_startGame: ``,
     sc_startGame: ``,
     cs_showGroupRank: ``,//小组排名

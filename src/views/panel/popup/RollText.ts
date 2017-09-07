@@ -1,8 +1,10 @@
+import { TweenEx } from '../../utils/TweenEx';
 import { newModal } from '../../utils/PixiEx';
 import { IPopup } from "./PopupView";
 import { FontName, ViewConst } from '../const';
 
 export class RollText extends PIXI.Container implements IPopup {
+    static class = 'RollText'
     rollText: PIXI.Text
     public create(parent) {
         parent.addChild(this)
@@ -17,12 +19,22 @@ export class RollText extends PIXI.Container implements IPopup {
         this.rollText.y = ViewConst.STAGE_HEIGHT - 50
 
         let bg = newModal()
+        bg.y = this.rollText.y - 10
         this.addChild(bg)
         this.addChild(this.rollText)
     }
+
     public show(param: any) {
+        console.log('show roll text');
+        TweenEx.to(this, 50, { alpha: 1 })
         this.rollText.text = param.text
+        this.rollText.x = ViewConst.STAGE_WIDTH - 100
+        let sec = (this.rollText.width + this.rollText.x) / 50
+        TweenEx.to(this.rollText, sec * 1000, { x: -this.rollText.width })
     }
-    public hide: () => void;
-    static class = 'RollText'
+
+    public hide() {
+        console.log('hide roll text');
+        TweenEx.to(this, 200, { alpha: 0 })
+    }
 }

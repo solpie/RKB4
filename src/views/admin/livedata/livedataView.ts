@@ -185,8 +185,8 @@ export default class LiveDataView extends EventDispatcher {
         let playerArr = JSON.parse(jsonStr)
         this.emit(LiveDataView.EVENT_CUSTOM_PLAYER, playerArr)
     }
-    
-    setRollText(text, visible = true) {
+
+    showRollText(text, visible = true) {
         this.emit(LiveDataView.EVENT_ROLL_TEXT, { text: text, visible: visible })
     }
 }
