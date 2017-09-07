@@ -12,10 +12,10 @@ export const TimerState = {
 };
 
 export const preLoadImgArr = [
-    '/img/panel/score/m2/victory.png',
-    '/img/panel/score/m2/victoryLight.png',
-    '/img/panel/score/m2/groupBg.png',
-    '/img/panel/score/m2/gamePlayerBg.png',
-    '/img/panel/score/m2/gamePlayerStrip.png',
-    '/img/panel/score/m2/gamePlayerTop.png',
+    // '/img/panel/score/m2/victory.png',
+    // '/img/panel/score/m2/victoryLight.png',
+    // '/img/panel/score/m2/groupBg.png',
+    // '/img/panel/score/m2/gamePlayerBg.png',
+    // '/img/panel/score/m2/gamePlayerStrip.png',
+    // '/img/panel/score/m2/gamePlayerTop.png',
 ]

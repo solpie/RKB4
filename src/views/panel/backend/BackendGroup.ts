@@ -1,16 +1,19 @@
-import { newBitmap } from '../../utils/PixiEx';
+import { fitWidth } from '../bracket/BracketGroup';
+import { cutText, newBitmap } from '../../utils/PixiEx';
 export class BackendGroup extends PIXI.Container {
     lPlayerName: PIXI.Text
     rPlayerName: PIXI.Text
+    lScore: PIXI.Text
+    rScore: PIXI.Text
 
     constructor(idx) {
         super()
         let bg1 = newBitmap({ url: '/img/panel/backend/playerPad.png' })
-        bg1.y = 50
-        bg1.alpha = .4
+        // bg1.alpha = .4
         this.addChild(bg1)
 
         let bg2 = newBitmap({ url: '/img/panel/backend/playerPad.png' })
+        bg2.y = 50
         this.addChild(bg2)
 
 
@@ -19,7 +22,7 @@ export class BackendGroup extends PIXI.Container {
         let pn = new PIXI.Text("player 1", s)
         pn.x = 10
         pn.y = 2
-        // bg2.alpha = .4
+        bg2.alpha = .4
 
         bg1.addChild(pn)
         this.lPlayerName = pn
@@ -30,14 +33,16 @@ export class BackendGroup extends PIXI.Container {
         bg2.addChild(pn)
         this.rPlayerName = pn
 
-        s.fill = '#fff'
+        // s.fill = '#fff'
         let score = new PIXI.Text('0', s)
-        score.x = 260
-        // bg1.addChild(score)
+        score.x = 215
+        this.lScore = score
+        bg1.addChild(score)
 
         let score2 = new PIXI.Text('0', s)
-        score2.x = 260
-        // bg2.addChild(score2)
+        score2.x = score.x
+        this.rScore = score2
+        bg2.addChild(score2)
 
         s.fill = '#fff'
         s.fontWeight = 'bold'
@@ -49,8 +54,12 @@ export class BackendGroup extends PIXI.Container {
     }
 
     setRec(recData) {
-        console.log('recData', recData);
+        // console.log('recData', recData);
         this.lPlayerName.text = recData.player[0]
+        cutText(this.lPlayerName,180)
         this.rPlayerName.text = recData.player[1]
+        cutText(this.rPlayerName,180)
+        this.lScore.text = recData.score[0]
+        this.rScore.text = recData.score[1]
     }
 }
