@@ -7,8 +7,8 @@ import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
 let gmv = new GameMonthView()
 export default class LiveDataView extends EventDispatcher {
-    EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
-    EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
+    static EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
+    static EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
     static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
     static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
@@ -109,7 +109,7 @@ export default class LiveDataView extends EventDispatcher {
     getGameInfo(row) {
         let gameIdx = row.gameIdx
         // gmv.setGameInfo(gameIdx, false)
-        this.emit(this.EVENT_SET_GAME_INFO, gameIdx)
+        this.emit(LiveDataView.EVENT_SET_GAME_INFO, gameIdx)
         console.log('getGameInfo', row);
     }
 
@@ -149,9 +149,9 @@ export default class LiveDataView extends EventDispatcher {
         // gmv.setScore(scoreStr)
     }
 
-    initMaster() {
+    initBracket() {
         // gmv.initMaster()
-        this.emit(this.EVENT_INIT_BRACKET)
+        this.emit(LiveDataView.EVENT_INIT_BRACKET)
     }
 
     clearMaster(s) {
@@ -188,5 +188,9 @@ export default class LiveDataView extends EventDispatcher {
 
     showRollText(text, visible = true) {
         this.emit(LiveDataView.EVENT_ROLL_TEXT, { text: text, visible: visible })
+    }
+
+    testRandomGame() {
+        this.emit('testRandomGame')
     }
 }

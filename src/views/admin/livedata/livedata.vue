@@ -120,7 +120,7 @@
                 <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
                 <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
                 <br>
-                <el-button @click='_("initMaster")'>initBracket Data</el-button>
+                <el-button @click='_("initBracket")'>initBracket Data</el-button>
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
@@ -149,9 +149,12 @@
             </el-row>
             <el-row>
                 <hr>
-                <a href="/panel.html?panel=poker"> /panel.html?panel=poker</a>
+                <a href="/panel.html?panel=backend"> /panel.html?panel=backend</a>
                 <br>
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
+                <br>
+                <el-button @click='_("testRandomGame")'>testRandomGame</el-button>
+                <a href="/panel.html?panel=poker"> /panel.html?panel=poker</a>
                 <br>
                 <a href="/panel.html?panel=bracket20&m2=1">/panel.html?panel=bracket20&m2=1</a>
                 <br>

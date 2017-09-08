@@ -58,6 +58,12 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_ROLL_TEXT, data => {
             this.sendRollText(data)
         })
+        lv.on(LVE.EVENT_INIT_BRACKET, _ => {
+            this.initBracket()
+        })
+        lv.on("testRandomGame", _ => {
+            this.testRandomGame()
+        })
 
         lv.on(WebDBCmd.cs_commit, data => {
             console.log('Double Elimation 24', 'cs_commit', data);
@@ -124,29 +130,18 @@ export default class DoubleElimination24View extends BaseGameView {
     }
 
     //clear data
-    initBracket(doc) {
-        let rec = doc['rec'] = {}
-        for (let i = 0; i < 62; i++) {
-            rec[i + 1] = { gameIdx: i + 1, player: ['', ''], score: [0, 0], foul: [0, 0] }
-        }
-        doc['gameIdx'] = 1
-        for (let i = 0; i < 16; i++) {
-            let gameIdx = i + 1
-            rec[i + 1].player = ['p' + (gameIdx * 2 - 1), 'p' + gameIdx * 2]
-        }
-        // rec[2].player = ['p13', 'p20']
-        // rec[3].player = ['p15', 'p18']
-        // rec[4].player = ['p14', 'p19']
-
-        // rec[5].player = ['p8', 'p9']
-        // rec[6].player = ['p5', 'p12']
-        // rec[7].player = ['p7', 'p10']
-        // rec[8].player = ['p6', 'p11']
-
-        // rec[9].player = ['p1', '']
-        // rec[10].player = ['p4', '']
-        // rec[11].player = ['p2', '']
-        // rec[12].player = ['p3', '']
+    initBracket() {
+        syncDoc(gameDate, doc => {
+            let rec = doc['rec'] = {}
+            for (let i = 0; i < 62; i++) {
+                rec[i + 1] = { gameIdx: i + 1, player: ['', ''], score: [0, 0], foul: [0, 0] }
+            }
+            doc['gameIdx'] = 1
+            for (let i = 0; i < 16; i++) {
+                let gameIdx = i + 1
+                rec[i + 1].player = ['p' + (gameIdx * 2 - 1), 'p' + gameIdx * 2]
+            }
+        }, true)
     }
 
 
@@ -241,7 +236,7 @@ export default class DoubleElimination24View extends BaseGameView {
             // if (this.gameIdx < 13)
             //     this.delayEmitGameInfo = 5000
             // else
-                this.delayEmitGameInfo = 2000
+            this.delayEmitGameInfo = 2000
 
             setTimeout(_ => {
                 console.log('delay show player info');
@@ -254,8 +249,19 @@ export default class DoubleElimination24View extends BaseGameView {
         }, true)
     }
 
-    emitGameInfo()
-    {
+    emitGameInfo() {
 
+    }
+    ///////////
+    testRandomGame() {
+        syncDoc(gameDate, doc => {
+            for (let i = 0; i < 62; i++) {
+                let g = doc['rec'][i + 1]
+                g.score = [1, 0]
+                console.log('gameIdx', i + 1, g);
+            }
+            routeBracket24(doc['rec'])
+            console.log('test random game');
+        }, true)
     }
 }

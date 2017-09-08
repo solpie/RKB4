@@ -64,6 +64,9 @@ export class BackendGroup extends PIXI.Container {
             this.rScore.text = ''
         }
         else {
+            if (recData.score[0] > recData.score[1]) {
+
+            }
             this.lScore.text = recData.score[0]
             this.rScore.text = recData.score[1]
         }

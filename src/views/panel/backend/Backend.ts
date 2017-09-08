@@ -1,14 +1,20 @@
+import { blink2 } from '../../utils/Fx';
 import { BackendGroup } from './BackendGroup';
 import { newBitmap, setScale } from '../../utils/PixiEx';
 export class Backend extends PIXI.Container {
     playerArr = []
-
+    focus: PIXI.Sprite
     groupMap = {}
     constructor() {
         super()
         let bg = newBitmap({ url: '/img/panel/backend/bg.png' })
         this.addChild(bg)
         setScale(this, 0.5)
+
+        let focus = newBitmap({ url: '/img/panel/backend/focus.png' })
+        this.focus = focus
+        blink2({ target: focus, time: 180 })
+        this.addChild(focus)
 
         for (let i = 0; i < 62; i++) {
             let bkg = new BackendGroup(i + 1);
@@ -72,11 +78,14 @@ export class Backend extends PIXI.Container {
         for (let i = 0; i < 62; i++) {
             let gameIdx = i + 1
             let recData = rec[gameIdx]
-            let bkg:BackendGroup = this.groupMap[gameIdx]
+            let bkg: BackendGroup = this.groupMap[gameIdx]
+            if (gameIdx == incomingIdx) {
+                this.focus.x = bkg.x - 105
+                this.focus.y = bkg.y - 20
+            }
             bkg.setRec(recData)
             // bkg
         }
-
         // for (let i = 0; i < 38; i++) {
         //     let gameIdx = i + 1
         //     let game = rec[gameIdx]

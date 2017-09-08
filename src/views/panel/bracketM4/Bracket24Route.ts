@@ -1,32 +1,34 @@
 export const routeBracket24 = (rec) => {
     let incoming = 1
     let route = (gameIdx, winGameIdx, winPos, loseGameIdx, losePos) => {
+        console.log('route', gameIdx, winGameIdx, winPos, loseGameIdx, losePos);
         let rFrom = rec[gameIdx]
 
         let rWin = rec[winGameIdx]
         let rLose = rec[loseGameIdx]
-        if (rFrom.score[0] == 0 && rFrom.score[1] == 0)
-            return
-        incoming++
-        // if (gameIdx == 5) {
-        //     console.log('toWin', rWin, 'toLose', rLose, losePos);
-        // }
-        if (rFrom.score[0] > rFrom.score[1]) {
-            rWin.player[winPos] = rFrom.player[0]
-            if (loseGameIdx != 'x')
-                rLose.player[losePos] = rFrom.player[1]
-        }
-        else {
-            rWin.player[winPos] = rFrom.player[1]
-            if (loseGameIdx != 'x')
-                rLose.player[losePos] = rFrom.player[0]
+        if (rWin) {
+            if (rFrom.score[0] == 0 && rFrom.score[1] == 0)
+                return
+            incoming++
+            // if (gameIdx == 5) {
+            //     console.log('toWin', rWin, 'toLose', rLose, losePos);
+            // }
+            if (rFrom.score[0] > rFrom.score[1]) {
+                rWin.player[winPos] = rFrom.player[0]
+                if (loseGameIdx != 0)
+                    rLose.player[losePos] = rFrom.player[1]
+            }
+            else {
+                rWin.player[winPos] = rFrom.player[1]
+                if (loseGameIdx != 0)
+                    rLose.player[losePos] = rFrom.player[0]
+            }
         }
     }
 
     let _ = (s: string) => {
         let re = /\d+/ig;
         let a1 = s.match(re)
-        console.log('a1', s, a1);
         let gameIdx = Number(a1[0])
         let winIdx = Number(a1[1])
         let winPos = Number(a1[2])
@@ -74,25 +76,122 @@ export const routeBracket24 = (rec) => {
     _(`16-32.1 
         \\24.1`)
 
-    _(`17-40.0 
-        \\x.0`)
-    _(`18-39.0 
-        \\x.1`)
+    _(`17-40.1 
+        \\0.0`)
+    _(`18-39.1 
+        \\0.0`)
 
-    _(`19-38.0 
-        \\x.0`)
-    _(`20-37.0 
-        \\x.1`)
+    _(`19-38.1 
+        \\0.0`)
+    _(`20-37.1 
+        \\0.0`)
 
-    _(`21-36.0 
-        \\x.0`)
-    _(`22-35.0 
-        \\x.1`)
+    _(`21-36.1 
+        \\0.0`)
+    _(`22-35.1 
+        \\0.0`)
 
-    _(`23-34.0 
-        \\x.0`)
-    _(`24-33.0 
-        \\x.1`)
+    _(`23-34.1 
+        \\0.0`)
+    _(`24-33.1 
+        \\0.0`)
+
+    _(`25-41.0 
+        \\33.0`)
+    _(`26-41.1 
+        \\34.0`)
+
+    _(`27-42.0 
+        \\35.0`)
+    _(`28-42.1 
+        \\36.0`)
+
+    _(`29-43.0 
+        \\37.0`)
+    _(`30-43.1 
+        \\38.0`)
+
+    _(`31-44.0 
+        \\39.0`)
+    _(`32-44.1 
+        \\40.0`)
+    //败者组02
+    _(`33-45.0 
+        \\0.0`)
+    _(`34-45.1 
+        \\0.0`)
+
+    _(`35-46.0 
+        \\0.0`)
+    _(`36-46.1 
+        \\0.0`)
+
+    _(`37-47.0 
+        \\0.0`)
+    _(`38-47.1 
+        \\0.0`)
+
+    _(`39-48.0 
+        \\0.0`)
+    _(`40-48.1 
+        \\0.0`)
+    //胜者组02
+    _(`41-53.0 
+        \\51.0`)
+    _(`42-53.1 
+        \\52.0`)
+
+    _(`43-54.0 
+        \\49.0`)
+    _(`44-54.1 
+        \\50.0`)
+    //lose 03
+    _(`45-49.1 
+        \\0.0`)
+    _(`46-50.1 
+        \\0.0`)
+
+    _(`47-51.1 
+        \\0.0`)
+    _(`48-52.1 
+        \\0.0`)
+    //lose 04
+    _(`49-55.1 
+        \\0.0`)
+    _(`50-55.0 
+        \\0.0`)
+
+    _(`51-56.1 
+        \\0.0`)
+    _(`52-56.0 
+        \\0.0`)
+    //win 03
+    _(`53-60.0 
+        \\57.0`)
+    _(`54-60.1 
+        \\58.0`)
+
+    _(`55-57.1 
+        \\0.0`)
+    _(`56-58.1 
+        \\0.0`)
+
+    _(`57-59.1 
+        \\0.0`)
+    _(`58-59.0 
+        \\0.0`)
+
+    _(`59-61.1 
+        \\0.0`)
+
+    _(`60-62.0 
+        \\61.0`)
+
+    _(`61-62.1 
+        \\0.0`)
+
+    _(`62-63.0 
+        \\0.0`)
 
 
     return { incoming: incoming }
