@@ -5,6 +5,7 @@ import { Bracket20View } from './bracket20/Bracket20View';
 // import pixi from '../../libs/pixi.min.js'
 // import pixi from 'script!./../../libs/pixi.min.js'
 document.write(`<canvas id='panel'></canvas>`)
+document.write(`<style>@font-face{font-family:'digital1';src:url(/fonts/digital.ttf); font-style:normal; font-weight:normal}</style>`)
 // import PIXI from 'pixi.js'
 // window['PIXI'] = pixi
 console.log('PIXI', window['PIXI']);

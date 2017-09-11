@@ -1,3 +1,4 @@
+import { ScoreM4 } from './ScoreM4';
 import { ScoreM2 } from './ScoreM2';
 import { WebDBCmd } from '../webDBCmd';
 import { Score2017 } from './Score2017';
@@ -14,7 +15,7 @@ function logEvent(...a) {
     console.info(t, a)
 }
 export class ScoreView {
-    scorePanel: any
+    scorePanel: ScoreM4
     eventPanel: any
     delayTimeMS: number = 0
     localWS: any
@@ -24,7 +25,7 @@ export class ScoreView {
         let isMonth = getUrlQuerys('m') == '1'
         console.log(gameId, isDark)
         if (isMonth)
-            this.scorePanel = new ScoreM2(stage, isDark)
+            this.scorePanel = new ScoreM4(stage, isDark)
         else {
             // this.scorePanel = new Score2017(stage, isDark)
             // this.initRemote()
@@ -36,8 +37,8 @@ export class ScoreView {
 
     initDefaultPlayer() {
         let p = 'http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg'
-        this.scorePanel.setLeftPlayerInfo('Player 1', p, 78, 178, '', 0)
-        this.scorePanel.setRightPlayerInfo('Player 2', p, 78, 178, '', 0)
+        this.scorePanel.setLeftPlayerInfo('Player 1', p, 78, 178, '', 0, {})
+        this.scorePanel.setRightPlayerInfo('Player 2', p, 78, 178, '', 0, {})
     }
 
 
@@ -93,18 +94,18 @@ export class ScoreView {
                 console.log('sc_init', data);
                 if (data.leftPlayer) {
                     let p = data.leftPlayer
-                    this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
+                    this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, {})
                     p = data.rightPlayer
-                    this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level)
+                    this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, {})
                     this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
                     this.scorePanel.set35ScoreLight(data.winScore)
                     this.scorePanel.setLeftFoul(data.leftFoul)
                     this.scorePanel.setRightFoul(data.rightFoul)
                     this.scorePanel.setLeftScore(data.leftScore)
                     this.scorePanel.setRightScore(data.rightScore)
-                    if (data.gameTitle) {
-                        this.scorePanel.setGameTitle(data.gameTitle)
-                    }
+                    // if (data.gameTitle) {
+                    //     this.scorePanel.setGameTitle(data.gameTitle)
+                    // }
                 }
             })
             .on(`${WebDBCmd.sc_score}`, (data) => {

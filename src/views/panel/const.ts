@@ -1,5 +1,6 @@
 export const FontName = {
-    MicrosoftYahei: "Microsoft Yahei"
+    MicrosoftYahei: "Microsoft Yahei",
+    DigiLED: "digital"
 };
 export const ViewConst = {
     STAGE_WIDTH: 1920,
