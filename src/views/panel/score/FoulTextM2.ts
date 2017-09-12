@@ -9,9 +9,8 @@ export class FoulTextM2 extends PIXI.Container {
         this.hasHint = true
 
         let fts = {
-            fontFamily: FontName.MicrosoftYahei,
-            fontSize: '30px', fill: "#fff",
-            fontWeight: 'bold'
+            fontFamily: FontName.Impact,
+            fontSize: '35px', fill: "#a0adb6",
         }
         let l = new PIXI.Text('', fts)
         this.addChild(l)
@@ -19,6 +18,12 @@ export class FoulTextM2 extends PIXI.Container {
     }
 
     setFoul(v) {
+        if (v > 3) {
+            this.label.style.fill = '#eba334'
+        }
+        else
+            this.label.style.fill = "#a0adb6"
+
         let s = v + ' '
         this.label.text = s
         this.label.x = (109 - this.label.width) * .5

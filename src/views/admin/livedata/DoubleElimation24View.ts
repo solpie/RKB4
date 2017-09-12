@@ -39,7 +39,7 @@ export default class DoubleElimination24View extends BaseGameView {
             })
             .on(`${WebDBCmd.sc_panelCreated}`, () => {
                 console.log('sc_panelCreated');
-                // this.emitGameInfo()
+                this.emitGameInfo()
             })
     }
 
@@ -61,6 +61,17 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_INIT_BRACKET, _ => {
             this.initBracket()
         })
+
+        lv.on(LVE.EVENT_SHOW_PROGRESS, _ => {
+            let data = { _: null }
+            $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)
+        })
+
+        lv.on(LVE.EVENT_SET_GAME_INFO, gameIdx => {
+            console.log(this, 'EVENT_SET_GAME_INFO', gameIdx);
+            this.setGameInfo(gameIdx)
+        })
+
         lv.on("testRandomGame", _ => {
             this.testRandomGame()
         })
@@ -68,6 +79,13 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(WebDBCmd.cs_commit, data => {
             console.log('Double Elimation 24', 'cs_commit', data);
             this.commit(data)
+        })
+        lv.on(WebDBCmd.cs_init, data => {
+            // console.log('DoubleElimination cs_init', data);
+            syncDoc(gameDate, doc => {
+                this.emitGameInfo()
+                $post(`/emit/${WebDBCmd.cs_bracket24Init}`, doc)
+            })
         })
 
         this.initWS()
@@ -77,7 +95,6 @@ export default class DoubleElimination24View extends BaseGameView {
         console.log('send roll text', data)
         data._ = ''
         $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
-
     }
 
     initPlayer(callback) {
@@ -249,9 +266,52 @@ export default class DoubleElimination24View extends BaseGameView {
         }, true)
     }
 
-    emitGameInfo() {
+    emitGameInfo(insertPlayerInfoCall?) {
+        let data: any = { _: null }
+        data.winScore = 3
+        if (this.gameIdx == 38) {//决赛
+            data.winScore = 5
+            data.matchType = 3
+        }
+        else  //大师赛
+            data.matchType = 2
+        // else
+        //     data.matchType = 1
+        data.gameIdx = this.gameIdx
+        let lPlayerData = this.getPlayerInfo(this.lPlayer).data
+        let rPlayerData = this.getPlayerInfo(this.rPlayer).data
+        lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+        rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+        data.leftScore = this.lScore
+        data.rightScore = this.rScore
+        data.leftFoul = this.lFoul
+        data.rightFoul = this.rFoul
+        data.leftPlayer = lPlayerData
+        data.rightPlayer = rPlayerData
+        if (insertPlayerInfoCall) {
+            insertPlayerInfoCall(data)
+        }
+        //test
+        // data.leftPlayer.name += this.lHupuID
+        // data.rightPlayer.name += this.rHupuID
+        console.log('setGameInfo', data);
 
+        if (this.delayEmitGameInfo > 0) {
+            setTimeout(_ => {
+                this.delayEmitGameInfo = 0
+                $post(`/emit/${WebDBCmd.cs_init}`, data)
+            }, this.delayEmitGameInfo);
+        }
+        else
+            $post(`/emit/${WebDBCmd.cs_init}`, data)
     }
+
+    getPlayerInfo(groupName) {
+        if (this.nameMapHupuId[groupName])
+            return this.nameMapHupuId[groupName]
+        return {}
+    }
+
     ///////////
     testRandomGame() {
         syncDoc(gameDate, doc => {

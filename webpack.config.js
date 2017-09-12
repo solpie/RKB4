@@ -52,7 +52,7 @@ module.exports = (options = {}) => ({
                 }]
             },
             {
-                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+                test: /\.(png|jpg|jpeg|gif|otf|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
                 exclude: /favicon\.png$/,
                 use: [{
                     loader: 'url-loader',

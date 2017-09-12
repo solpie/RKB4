@@ -1,5 +1,6 @@
 export const FontName = {
     MicrosoftYahei: "Microsoft Yahei",
+    Impact: "impact",
     DigiLED: "digital"
 };
 export const ViewConst = {

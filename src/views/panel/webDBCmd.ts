@@ -23,6 +23,8 @@ export const WebDBCmd = {
     cs_bracket20Init: ``,
     sc_bracket20Init: ``,
     //32 人双败
+    cs_showGameProcess: ``,
+    sc_showGameProcess: ``,
     cs_bracket24Init: ``,
     sc_bracket24Init: ``,
     cs_startGame: ``,
