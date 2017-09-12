@@ -1,3 +1,4 @@
+import { RewardModel } from '../../panel/bracketM4/Reward24';
 import { BaseGameView, syncDoc } from "./BaseGame";
 import LiveDataView from "./livedataView";
 import { WebDBCmd } from "../../panel/webDBCmd";
@@ -83,6 +84,9 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
             syncDoc(gameDate, doc => {
+                let rData = routeBracket24(doc.rec)
+                let rewardPlayerMap = RewardModel.calcReward(doc.rec, rData.winLoseMap)
+                console.log('rewardPlayerMap', rData, rewardPlayerMap, doc.rec);
                 this.emitGameInfo()
                 $post(`/emit/${WebDBCmd.cs_bracket24Init}`, doc)
             })
@@ -173,16 +177,18 @@ export default class DoubleElimination24View extends BaseGameView {
         let rowArr: any = []
         for (let idx in recMap) {
             // console.log('idx', idx, recMap);
-            let rec = recMap[idx]
-            let row = { idx: 0, gameIdx: 0, vs: '', score: '', rPlayer: '', lPlayer: '' }
-            row.gameIdx = Number(idx)
-            row.idx = row.gameIdx
-            row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
-            row.lPlayer = this.getHupuId(rec.player[0])
-            row.rPlayer = this.getHupuId(rec.player[1])
-            row.score = rec.score[0] + " : " + rec.score[1]
-            // console.log('row', row);
-            rowArr.push(row)
+            if (Number(idx) < 63) {
+                let rec = recMap[idx]
+                let row = { idx: 0, gameIdx: 0, vs: '', score: '', rPlayer: '', lPlayer: '' }
+                row.gameIdx = Number(idx)
+                row.idx = row.gameIdx
+                row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
+                row.lPlayer = this.getHupuId(rec.player[0])
+                row.rPlayer = this.getHupuId(rec.player[1])
+                row.score = rec.score[0] + " : " + rec.score[1]
+                // console.log('row', row);
+                rowArr.push(row)
+            }
         }
         // console.log('init GameInfo Table', rowArr, this.nameMapHupuId);
 
@@ -269,7 +275,8 @@ export default class DoubleElimination24View extends BaseGameView {
     emitGameInfo(insertPlayerInfoCall?) {
         let data: any = { _: null }
         data.winScore = 3
-        if (this.gameIdx == 38) {//决赛
+
+        if (this.gameIdx == 62) {//决赛
             data.winScore = 5
             data.matchType = 3
         }
@@ -277,33 +284,36 @@ export default class DoubleElimination24View extends BaseGameView {
             data.matchType = 2
         // else
         //     data.matchType = 1
-        data.gameIdx = this.gameIdx
-        let lPlayerData = this.getPlayerInfo(this.lPlayer).data
-        let rPlayerData = this.getPlayerInfo(this.rPlayer).data
-        lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
-        rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
-        data.leftScore = this.lScore
-        data.rightScore = this.rScore
-        data.leftFoul = this.lFoul
-        data.rightFoul = this.rFoul
-        data.leftPlayer = lPlayerData
-        data.rightPlayer = rPlayerData
-        if (insertPlayerInfoCall) {
-            insertPlayerInfoCall(data)
-        }
-        //test
-        // data.leftPlayer.name += this.lHupuID
-        // data.rightPlayer.name += this.rHupuID
-        console.log('setGameInfo', data);
+        if (this.gameIdx < 63) {
+            data.gameIdx = this.gameIdx
+            let lPlayerData = this.getPlayerInfo(this.lPlayer).data
+            let rPlayerData = this.getPlayerInfo(this.rPlayer).data
+            lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+            rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+            data.leftScore = this.lScore
+            data.rightScore = this.rScore
+            data.leftFoul = this.lFoul
+            data.rightFoul = this.rFoul
+            data.leftPlayer = lPlayerData
+            data.rightPlayer = rPlayerData
+            if (insertPlayerInfoCall) {
+                insertPlayerInfoCall(data)
+            }
+            //test
+            // data.leftPlayer.name += this.lHupuID
+            // data.rightPlayer.name += this.rHupuID
+            console.log('setGameInfo', data);
 
-        if (this.delayEmitGameInfo > 0) {
-            setTimeout(_ => {
-                this.delayEmitGameInfo = 0
+            if (this.delayEmitGameInfo > 0) {
+                setTimeout(_ => {
+                    this.delayEmitGameInfo = 0
+                    $post(`/emit/${WebDBCmd.cs_init}`, data)
+                }, this.delayEmitGameInfo);
+            }
+            else
                 $post(`/emit/${WebDBCmd.cs_init}`, data)
-            }, this.delayEmitGameInfo);
         }
-        else
-            $post(`/emit/${WebDBCmd.cs_init}`, data)
+
     }
 
     getPlayerInfo(groupName) {

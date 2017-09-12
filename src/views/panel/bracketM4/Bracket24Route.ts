@@ -1,11 +1,16 @@
 export const routeBracket24 = (rec) => {
     let incoming = 1
+    let winLoseMap = {}
+
     let route = (gameIdx, winGameIdx, winPos, loseGameIdx, losePos) => {
-        console.log('route', gameIdx, winGameIdx, winPos, loseGameIdx, losePos);
+        // console.log('route', gameIdx, winGameIdx, winPos, loseGameIdx, losePos);
         let rFrom = rec[gameIdx]
 
         let rWin = rec[winGameIdx]
         let rLose = rec[loseGameIdx]
+
+        winLoseMap[gameIdx] = loseGameIdx != 0
+
         if (rWin) {
             if (rFrom.score[0] == 0 && rFrom.score[1] == 0)
                 return
@@ -193,6 +198,5 @@ export const routeBracket24 = (rec) => {
     _(`62-63.0 
         \\0.0`)
 
-
-    return { incoming: incoming }
+    return { incoming: incoming, winLoseMap: winLoseMap }
 }

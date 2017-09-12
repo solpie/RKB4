@@ -53,6 +53,10 @@ export class ScoreM4 {
     lRankingText: PIXI.Text
     rRankingText: PIXI.Text
     ctn: PIXI.DisplayObject
+
+    lRewardText: PIXI.Text
+    rRewardText: PIXI.Text
+
     constructor(stage: PIXI.Container, isDark = false) {
         let bg = newBitmap({ url: '/img/panel/score/m4/bg.png' })
         stage.addChild(bg)
@@ -231,7 +235,6 @@ export class ScoreM4 {
         let rAvatar = new PIXI.Sprite()
         this.rAvatar = rAvatar
         ctn.addChild(this.rAvatar)
-
         lAvatar.mask = lm
         rAvatar.mask = rm
 
@@ -262,6 +265,39 @@ export class ScoreM4 {
         rRankingText.y = lRankingText.y
         ctn.addChild(rRankingText)
         this.rRankingText = rRankingText
+
+        let rewardStyle = {
+            fontFamily: FontName.MicrosoftYahei,
+            fontSize: '28px', fill: "#fff",
+        }
+        let lRewardTex = newBitmap({ url: '/img/panel/score/m4/rewardTex.png' })
+        ctn.addChild(lRewardTex)
+
+        let rRewardTex = newBitmap({ url: '/img/panel/score/m4/rewardTex.png' })
+        ctn.addChild(rRewardTex)
+
+        let lRewardText = new PIXI.Text('￥20,000', rewardStyle)
+        lRewardText.x = 695
+        lRewardText.y = 238
+        this.lRewardText = lRewardText
+
+    
+        ctn.addChild(lRewardText)
+
+        let rRewardText = new PIXI.Text('￥20,000', rewardStyle)
+        this.rRewardText = rRewardText
+        rRewardText.x = 1227 - rRewardText.width
+        rRewardText.y = lRewardText.y
+        ctn.addChild(rRewardText)
+
+
+        lRewardTex.x = lRewardText.x
+        lRewardTex.y = lRewardText.y + 5
+        lRewardTex.mask = lRewardText
+
+        rRewardTex.x = rRewardText.x
+        rRewardTex.y = rRewardText.y + 5
+        rRewardTex.mask = rRewardText
     }
 
     _drawRankingColor(g: PIXI.Graphics, col) {
@@ -403,9 +439,9 @@ export class ScoreM4 {
         imgLoader.loadTex(avatar, tex => {
             let avt = this.lAvatar
             avt.texture = tex
-            let s = 190 / tex.width
+            let s = 153 / tex.width
             avt.x = avt.mask.x// - avt.texture.width * .5 * s
-            avt.y = avt.mask.y// - avt.texture.height * .5 * s
+            avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
             avt.scale.x = avt.scale.y = s
         })
         this.lPlayerHeight.text = height + ' cm   |    ' + weight + ' kg'
@@ -436,10 +472,15 @@ export class ScoreM4 {
         imgLoader.loadTex(avatar, tex => {
             let avt = this.rAvatar
             avt.texture = tex
-            let s = 190 / tex.width
+            let s = 153 / tex.width
             avt.x = avt.mask.x //- avt.texture.width * .5 * s
-            avt.y = avt.mask.y //- avt.texture.height * .5 * s
             avt.scale.x = avt.scale.y = s
+            avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
+            console.log('texture height', avt.texture.height, avt.height);
+            // avt.y = avt.mask.y - (avt.texture.height - avt.mask.height) * .5
+
+            // avt.alpha = 0.3
+            // avt.mask = null
         });
 
         this.rPlayerHeight.text = height + ' cm   |    ' + weight + ' kg'
