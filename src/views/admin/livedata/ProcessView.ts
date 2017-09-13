@@ -1,7 +1,7 @@
 let getGamePlayer = (rec, start, end, playerDataMap) => {
     start--;
     let gamePlayerArr = []
-    for (let i = start; i < start + end; i++) {
+    for (let i = start; i < end; i++) {
         let gameIdx = i + 1
         let playerArr = rec[gameIdx].player
         gamePlayerArr.push([playerDataMap[playerArr[0]], playerDataMap[playerArr[1]]])
@@ -24,7 +24,7 @@ export class ProcessView {
         else if (tab == 'pre2') {
             title = '分组赛02'
             idx = 1
-            gamePlayerArr = getGamePlayer(rec, 8, 16, playerDataMap)
+            gamePlayerArr = getGamePlayer(rec, 9, 16, playerDataMap)
         }
         else if (tab == 'lose1') {
             title = '败者组01'
@@ -35,6 +35,26 @@ export class ProcessView {
             title = '胜者组01'
             idx = 3
             gamePlayerArr = getGamePlayer(rec, 25, 32, playerDataMap)
+        }
+        else if (tab == 'lose2') {
+            title = '败者组02'
+            idx = 4
+            gamePlayerArr = getGamePlayer(rec, 33, 40, playerDataMap)
+        }
+        else if (tab == 'win2') {
+            title = '胜者组02'
+            idx = 5
+            gamePlayerArr = getGamePlayer(rec, 41, 44, playerDataMap)
+        }
+        else if (tab == 'lose3') {
+            title = '败者组03'
+            idx = 6
+            gamePlayerArr = getGamePlayer(rec, 45, 48, playerDataMap)
+        }
+        else if (tab == 'lose4') {
+            title = '败者组04'
+            idx = 7
+            gamePlayerArr = getGamePlayer(rec, 49, 52, playerDataMap)
         }
         // else if (tab == 'final8') {
         //     title = '8强'

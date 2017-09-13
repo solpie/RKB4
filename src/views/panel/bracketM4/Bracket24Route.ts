@@ -1,6 +1,6 @@
 let setGameType = (map, start, end, type) => {
     start--;
-    for (let i = start; i < start + end; i++) {
+    for (let i = start; i < end; i++) {
         let gameIdx = i + 1
         map[gameIdx] = type
     }
