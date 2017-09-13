@@ -1,3 +1,4 @@
+import { ProcessView } from './ProcessView';
 import { RewardModel } from '../../panel/bracketM4/Reward24';
 import { BaseGameView, syncDoc } from "./BaseGame";
 import LiveDataView from "./livedataView";
@@ -63,9 +64,14 @@ export default class DoubleElimination24View extends BaseGameView {
             this.initBracket()
         })
 
-        lv.on(LVE.EVENT_SHOW_PROGRESS, data => {
-            data._ = ''
-            $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)
+        lv.on(LVE.EVENT_SHOW_PROCESS, data => {
+            syncDoc(gameDate, doc => {
+                data._ = ''
+                let processParam = ProcessView.showTab(doc.rec, data.tab, this.nameMapHupuId)
+                data.processParam = processParam
+                console.log('EVENT_SHOW_PROCESS', processParam);
+                $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)
+            })
         })
 
         lv.on(LVE.EVENT_SET_GAME_INFO, gameIdx => {

@@ -18,7 +18,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_CUSTOM_PLAYER = 'EVENT_CUSTOM_PLAYER'
     static EVENT_INIT_DOUBLE_ELIMATION = 'EVENT_INIT_DOUBLE_ELIMATION'
     static EVENT_ROLL_TEXT = 'EVENT_ROLL_TEXT'
-    static EVENT_SHOW_PROGRESS = 'EVENT_SHOW_PROGRESS'
+    static EVENT_SHOW_PROCESS = 'EVENT_SHOW_PROGRESS'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -191,8 +191,8 @@ export default class LiveDataView extends EventDispatcher {
         this.emit(LiveDataView.EVENT_ROLL_TEXT, { text: text, visible: visible })
     }
 
-    showGameProcess(visible) {
-        this.emit(LiveDataView.EVENT_SHOW_PROGRESS, {  visible: visible })
+    showGameProcess(visible, tab) {
+        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab })
     }
 
     testRandomGame() {

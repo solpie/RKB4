@@ -131,6 +131,15 @@
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
                 <br>
                 <el-button @click='_("showGameProcess",true)'>比赛进程</el-button>
+                <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
+                <el-button @click='_("showGameProcess",true,"pre2")'>分组赛 2</el-button>
+                <el-button @click='_("showGameProcess",true,"lose1")'>败者组 1</el-button>
+                <el-button @click='_("showGameProcess",true,"win1")'>胜者组 1</el-button>
+                <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
+                <el-button @click='_("showGameProcess",true,"win2")'>胜者组 2</el-button>
+                <el-button @click='_("showGameProcess",true,"lose3")'>败者组 3</el-button>
+                <el-button @click='_("showGameProcess",true,"lose4")'>败者组 4</el-button>
+                <el-button @click='_("showGameProcess",true,"final8")'>8强</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
             </el-row>
             <el-row>
