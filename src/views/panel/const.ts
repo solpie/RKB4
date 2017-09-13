@@ -14,7 +14,7 @@ export const TimerState = {
 };
 
 export const preLoadImgArr = [
-    // '/img/panel/score/m2/victory.png',
+    '/img/panel/process/bg.png'
     // '/img/panel/score/m2/victoryLight.png',
     // '/img/panel/score/m2/groupBg.png',
     // '/img/panel/score/m2/gamePlayerBg.png',

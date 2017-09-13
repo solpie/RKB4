@@ -1,3 +1,28 @@
+let setGameType = (map, start, end, type) => {
+    start--;
+    for (let i = start; i < start + end; i++) {
+        let gameIdx = i + 1
+        map[gameIdx] = type
+    }
+}
+export const GameTypeMap = {}
+const gt = { win: 11, lose: 12, pre: 10 }
+//10 分组赛 11 胜者组 12 败者组
+setGameType(GameTypeMap, 1, 16, gt.pre)
+setGameType(GameTypeMap, 17, 24, gt.lose)
+setGameType(GameTypeMap, 25, 32, gt.win)
+setGameType(GameTypeMap, 33, 40, gt.lose)
+setGameType(GameTypeMap, 41, 44, gt.win)
+setGameType(GameTypeMap, 45, 48, gt.lose)
+setGameType(GameTypeMap, 49, 52, gt.lose)
+setGameType(GameTypeMap, 53, 54, gt.win)
+setGameType(GameTypeMap, 55, 56, gt.lose)
+setGameType(GameTypeMap, 57, 58, gt.lose)
+setGameType(GameTypeMap, 59, 59, gt.lose)
+setGameType(GameTypeMap, 60, 60, gt.win)
+setGameType(GameTypeMap, 61, 61, gt.lose)
+setGameType(GameTypeMap, 62, 62, gt.win)
+
 export const routeBracket24 = (rec) => {
     let incoming = 1
     let winLoseMap = {}

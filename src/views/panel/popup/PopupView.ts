@@ -1,3 +1,4 @@
+import { GameProcess } from './GameProcess';
 import { RollText } from './RollText';
 import { Victory } from './Victory';
 import { WebDBCmd } from '../webDBCmd';
@@ -55,6 +56,12 @@ export class PopupView {
                 data.visible ?
                     this.show(RollText, data)
                     : this.hide(RollText)
+            })
+            .on(WebDBCmd.sc_showGameProcess, data => {
+                console.log('sc_showGameProcess');
+                data.visible ?
+                    this.show(GameProcess, data)
+                    : this.hide(GameProcess)
             })
     }
     show(cls, param) {

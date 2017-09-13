@@ -10,6 +10,7 @@ import { ViewConst, FontName } from "../const";
 import { paddy, loadImg } from "../../utils/JsFunc";
 import { blink2 } from "../../utils/Fx";
 import { FoulTextM2 } from "./FoulTextM2";
+import { GameTypeMap } from "../bracketM4/Bracket24Route";
 declare let Font;
 export class ScoreM4 {
     //车轮战
@@ -281,7 +282,7 @@ export class ScoreM4 {
         lRewardText.y = 238
         this.lRewardText = lRewardText
 
-    
+
         ctn.addChild(lRewardText)
 
         let rRewardText = new PIXI.Text('￥20,000', rewardStyle)
@@ -315,16 +316,30 @@ export class ScoreM4 {
     //1 车轮 2 大师 3 决赛    
     setGameIdx(gameIdx, matchType) {
         console.log('isMaster', matchType)
-        if (matchType == 2) {
-            this.gameIdx.text = '决赛' + paddy(gameIdx, 2) + '场'
+        let gameIdxStr = paddy(gameIdx, 2)
+        if (gameIdx == 61) {
+            this.gameIdx.text = '败者组决赛'
         }
-        else if (matchType == 1) {
-            this.gameIdx.text = '车轮战' + paddy(gameIdx, 2) + '场'
+        else if (gameIdx == 60) {
+            this.gameIdx.text = '胜者组决赛'
         }
-        else if (matchType == 3) {
-            this.gameIdx.text = '总决赛'
+        else if (gameIdx == 62) {
+            this.gameIdx.text = '决赛'
         }
-        this.gameIdx.x = 962 - this.gameIdx.width * .5
+        else {
+            let gt = GameTypeMap[gameIdx]
+            if (gt == 10) {
+                this.gameIdx.text = '分组赛' + gameIdxStr
+            }
+            else if (gt == 11) {
+                this.gameIdx.text = '胜者组' + gameIdxStr
+            }
+            else if (gt == 12) {
+                this.gameIdx.text = '败者组' + gameIdxStr
+            }
+        }
+
+        this.gameIdx.x = 960 - this.gameIdx.width * .5
     }
 
     _showWinScore() {
@@ -427,22 +442,13 @@ export class ScoreM4 {
         this.lPlayerName.text = simplifyName(name)
         this.cutName(this.lPlayerName, this._NAME_WIDTH)
         this.lPlayerName.x = 595 - this.lPlayerName.width
-        // loadRes(avatar, (img) => {
-        //     let avt = this.lAvatar
-        //     avt.texture = imgToTex(img)
-        //     let s = 190 / img.width
-        //     avt.x = avt.mask.x// - avt.texture.width * .5 * s
-        //     avt.y = avt.mask.y// - avt.texture.height * .5 * s
-        //     avt.scale.x = avt.scale.y = s
-        // }, true);
-
         imgLoader.loadTex(avatar, tex => {
             let avt = this.lAvatar
             avt.texture = tex
             let s = 153 / tex.width
             avt.x = avt.mask.x// - avt.texture.width * .5 * s
-            avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
             avt.scale.x = avt.scale.y = s
+            avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
         })
         this.lPlayerHeight.text = height + ' cm   |    ' + weight + ' kg'
         // this.lPlayerWeight.text = weight + ' kg'
@@ -476,11 +482,6 @@ export class ScoreM4 {
             avt.x = avt.mask.x //- avt.texture.width * .5 * s
             avt.scale.x = avt.scale.y = s
             avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
-            console.log('texture height', avt.texture.height, avt.height);
-            // avt.y = avt.mask.y - (avt.texture.height - avt.mask.height) * .5
-
-            // avt.alpha = 0.3
-            // avt.mask = null
         });
 
         this.rPlayerHeight.text = height + ' cm   |    ' + weight + ' kg'
@@ -495,6 +496,25 @@ export class ScoreM4 {
             this.rRankingText.x = 1235 - this.rRankingText.width * .5
         }
     }
+
+    setExPlayerInfo(data) {
+
+        let lText = ''
+        if (data.lReward == 0)
+            lText = '￥000.00'
+        else
+            lText = '￥' + data.lReward / 1000 + ',000'
+
+        let rText = ''
+        if (data.rReward == 0)
+            rText = '￥000.00'
+        else
+            rText = '￥' + data.rReward / 1000 + ',000'
+
+        this.lRewardText.text = lText
+        this.rRewardText.text = rText
+    }
+
     getPlayerInfo(isLeft) {
         let player: any = {}
         if (isLeft) {

@@ -103,6 +103,7 @@ export class ScoreView {
                     this.scorePanel.setRightFoul(data.rightFoul)
                     this.scorePanel.setLeftScore(data.leftScore)
                     this.scorePanel.setRightScore(data.rightScore)
+                    this.scorePanel.setExPlayerInfo(data)
                     // if (data.gameTitle) {
                     //     this.scorePanel.setGameTitle(data.gameTitle)
                     // }

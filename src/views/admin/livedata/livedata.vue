@@ -129,6 +129,7 @@
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
+                <br>
                 <el-button @click='_("showGameProcess",true)'>比赛进程</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
             </el-row>

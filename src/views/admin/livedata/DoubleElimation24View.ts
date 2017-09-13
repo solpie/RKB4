@@ -63,8 +63,8 @@ export default class DoubleElimination24View extends BaseGameView {
             this.initBracket()
         })
 
-        lv.on(LVE.EVENT_SHOW_PROGRESS, _ => {
-            let data = { _: null }
+        lv.on(LVE.EVENT_SHOW_PROGRESS, data => {
+            data._ = ''
             $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)
         })
 
@@ -83,16 +83,26 @@ export default class DoubleElimination24View extends BaseGameView {
         })
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
-            syncDoc(gameDate, doc => {
-                let rData = routeBracket24(doc.rec)
-                let rewardPlayerMap = RewardModel.calcReward(doc.rec, rData.winLoseMap)
-                console.log('rewardPlayerMap', rData, rewardPlayerMap, doc.rec);
-                this.emitGameInfo()
-                $post(`/emit/${WebDBCmd.cs_bracket24Init}`, doc)
-            })
+            this.emitGameInfo2()
         })
 
         this.initWS()
+    }
+
+    emitGameInfo2(doc?) {
+        let _ = (doc) => {
+            this.emitGameInfo(data => {
+                let rewardArr = RewardModel.getReward(doc.rec, this.lPlayer, this.rPlayer)
+                data.lReward = rewardArr[0]
+                data.rReward = rewardArr[1]
+            })
+        }
+        if (doc)
+            _(doc)
+        else
+            syncDoc(gameDate, doc => {
+                _(doc)
+            })
     }
 
     sendRollText(data) {
@@ -179,15 +189,18 @@ export default class DoubleElimination24View extends BaseGameView {
             // console.log('idx', idx, recMap);
             if (Number(idx) < 63) {
                 let rec = recMap[idx]
-                let row = { idx: 0, gameIdx: 0, vs: '', score: '', rPlayer: '', lPlayer: '' }
-                row.gameIdx = Number(idx)
-                row.idx = row.gameIdx
-                row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
-                row.lPlayer = this.getHupuId(rec.player[0])
-                row.rPlayer = this.getHupuId(rec.player[1])
-                row.score = rec.score[0] + " : " + rec.score[1]
-                // console.log('row', row);
-                rowArr.push(row)
+                if (rec) {
+                    let row = { idx: 0, gameIdx: 0, vs: '', score: '', rPlayer: '', lPlayer: '' }
+                    row.gameIdx = Number(idx)
+                    row.idx = row.gameIdx
+                    row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
+                    row.lPlayer = this.getHupuId(rec.player[0])
+                    row.rPlayer = this.getHupuId(rec.player[1])
+                    row.score = rec.score[0] + " : " + rec.score[1]
+                    // console.log('row', row);
+                    rowArr.push(row)
+                }
+
             }
         }
         // console.log('init GameInfo Table', rowArr, this.nameMapHupuId);
@@ -259,11 +272,11 @@ export default class DoubleElimination24View extends BaseGameView {
             // if (this.gameIdx < 13)
             //     this.delayEmitGameInfo = 5000
             // else
-            this.delayEmitGameInfo = 2000
+            this.delayEmitGameInfo = 500
 
             setTimeout(_ => {
                 console.log('delay show player info');
-                this.emitGameInfo()
+                this.emitGameInfo2(doc)
                 this.emitBracket()
                 this.setGameInfo(this.gameIdx)
                 // if (this.gameIdx < 13)
@@ -272,7 +285,7 @@ export default class DoubleElimination24View extends BaseGameView {
         }, true)
     }
 
-    emitGameInfo(insertPlayerInfoCall?) {
+    emitGameInfo(exDataCall?) {
         let data: any = { _: null }
         data.winScore = 3
 
@@ -296,8 +309,8 @@ export default class DoubleElimination24View extends BaseGameView {
             data.rightFoul = this.rFoul
             data.leftPlayer = lPlayerData
             data.rightPlayer = rPlayerData
-            if (insertPlayerInfoCall) {
-                insertPlayerInfoCall(data)
+            if (exDataCall) {
+                exDataCall(data)
             }
             //test
             // data.leftPlayer.name += this.lHupuID

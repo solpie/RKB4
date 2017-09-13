@@ -1,3 +1,5 @@
+import { routeBracket24 } from "./Bracket24Route";
+
 const winGroupReward: number = 2000
 const loseGroupReward: number = 1000
 const reward1: number = 50000
@@ -6,6 +8,25 @@ const reward3: number = 10000
 const reward4: number = 5000
 export class RewardModel {
 
+    static getReward(rec, lPlayer, rPlayer) {
+        let rData = routeBracket24(rec)
+        let rewardPlayerMap = RewardModel.calcReward(rec, rData.winLoseMap)
+        let lRewardArr = rewardPlayerMap[lPlayer]
+        let rRewardArr = rewardPlayerMap[rPlayer]
+        let lSum = 0
+        if (lRewardArr) {
+            for (let r of lRewardArr) {
+                lSum += r
+            }
+        }
+        let rSum = 0
+        if (rRewardArr) {
+            for (let r of rRewardArr) {
+                rSum += r
+            }
+        }
+        return [lSum, rSum]
+    }
 
     static calcReward(rec, winLoseMap) {
         let playerMap = {}
