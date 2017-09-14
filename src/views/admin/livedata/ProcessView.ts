@@ -4,7 +4,11 @@ let getGamePlayer = (rec, start, end, playerDataMap) => {
     for (let i = start; i < end; i++) {
         let gameIdx = i + 1
         let playerArr = rec[gameIdx].player
-        gamePlayerArr.push([playerDataMap[playerArr[0]], playerDataMap[playerArr[1]]])
+        let lPlayer = playerDataMap[playerArr[0]]
+        let rPlayer = playerDataMap[playerArr[1]]
+        lPlayer.score = rec[gameIdx].score[0]
+        rPlayer.score = rec[gameIdx].score[1]
+        gamePlayerArr.push([lPlayer,rPlayer ])
     }
     return gamePlayerArr
 }
@@ -16,34 +20,47 @@ export class ProcessView {
         let gamePlayerArr;
         let title;
         let idx
+        let start, end;
         if (tab == 'pre1') {
             title = '分组赛01'
             idx = 1
-            gamePlayerArr = getGamePlayer(rec, 1, 8, playerDataMap)
+            start = 1
+            end = 8
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'pre2') {
             title = '分组赛02'
             idx = 1
-            gamePlayerArr = getGamePlayer(rec, 9, 16, playerDataMap)
+            start = 9
+            end = 16
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'lose1') {
             title = '败者组01'
             idx = 2
-            gamePlayerArr = getGamePlayer(rec, 17, 24, playerDataMap)
+            start = 17
+            end = 24
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'win1') {
             title = '胜者组01'
             idx = 3
+            start = 25
+            end = 32
             gamePlayerArr = getGamePlayer(rec, 25, 32, playerDataMap)
         }
         else if (tab == 'lose2') {
             title = '败者组02'
             idx = 4
+            start = 33
+            end = 40
             gamePlayerArr = getGamePlayer(rec, 33, 40, playerDataMap)
         }
         else if (tab == 'win2') {
             title = '胜者组02'
             idx = 5
+            start = 41
+            end = 44
             gamePlayerArr = getGamePlayer(rec, 41, 44, playerDataMap)
         }
         else if (tab == 'lose3') {
@@ -56,10 +73,17 @@ export class ProcessView {
             idx = 7
             gamePlayerArr = getGamePlayer(rec, 49, 52, playerDataMap)
         }
-        // else if (tab == 'final8') {
-        //     title = '8强'
-        //     // gamePlayerArr = getGamePlayer(rec, 17, 24, playerDataMap)
-        // }
-        return { gamePlayerArr: gamePlayerArr, title: title, idx: 1 }
+        else if (tab == 'final8') {
+            title = '8 强'
+            idx = 8
+            gamePlayerArr = getGamePlayer(rec, 17, 24, playerDataMap)
+        }
+        else if (tab == 'final') {
+            title = '决 赛'
+            idx = 9
+            gamePlayerArr = getGamePlayer(rec, 17, 24, playerDataMap)
+        }
+
+        return { gamePlayerArr: gamePlayerArr, title: title, idx: idx }
     }
 }

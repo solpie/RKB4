@@ -5,12 +5,13 @@ import LiveDataView from "./livedataView";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { PlayerInfo } from "./PlayerInfo";
-import { getAllPlayer } from "../../utils/HupuAPI";
+import { getAllPlayer, getPlayerInfoArr, updatePlayerDoc } from '../../utils/HupuAPI';
 import { routeBracket } from "../../panel/bracket20/Bracket20Route";
 import { routeBracket24 } from "../../panel/bracketM4/Bracket24Route";
 
 declare let io;
 let gameDate = '930'
+let playerDoc = '930.player'
 export default class DoubleElimination24View extends BaseGameView {
     nameMapHupuId = {}
     pokerMapPlayer = {}
@@ -41,10 +42,18 @@ export default class DoubleElimination24View extends BaseGameView {
             })
             .on(`${WebDBCmd.sc_panelCreated}`, () => {
                 console.log('sc_panelCreated');
-                this.emitGameInfo()
+                this.emitGameInfo2()
             })
     }
 
+    syncPlayerDoc() {
+        this.getAllPlayer2(playerDataArr => {
+            syncDoc(playerDoc, doc => {
+                doc.player = playerDataArr
+            }, true)
+        })
+
+    }
     init() {
         let lv = this.liveDataView
         let LVE = LiveDataView
@@ -62,6 +71,14 @@ export default class DoubleElimination24View extends BaseGameView {
         })
         lv.on(LVE.EVENT_INIT_BRACKET, _ => {
             this.initBracket()
+        })
+
+        lv.on(LVE.EVENT_SYNC_PLAYER, _ => {
+            this.syncPlayerDoc()
+        })
+
+        lv.on(LVE.EVENT_SET_VS, vsStr => {
+            this.setVS(vsStr)
         })
 
         lv.on(LVE.EVENT_SHOW_PROCESS, data => {
@@ -95,6 +112,18 @@ export default class DoubleElimination24View extends BaseGameView {
         this.initWS()
     }
 
+    setVS(vsStr) {
+        let a = vsStr.split(' ')
+        if (a.length == 2) {
+            let p1 = a[0]
+            let p2 = a[1]
+            syncDoc(gameDate, doc => {
+                let r = doc['rec'][this.gameIdx]
+                r.player = [p1, p2]
+            }, true)
+        }
+    }
+
     emitGameInfo2(doc?) {
         let _ = (doc) => {
             this.emitGameInfo(data => {
@@ -116,34 +145,28 @@ export default class DoubleElimination24View extends BaseGameView {
         data._ = ''
         $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
     }
-
+    getAllPlayer2(callback) {
+        let playerIdArr = [
+            44, 7686, 1001, 1754,
+            9118, 2849, 10368, 1163,
+            1906, 8449, 10207, 4257,
+            3715, 11470, 20, 4218,
+            4, 8066, 6487, 11082,
+            4752, 9097, 1900, 1213,
+            1679, 574, 1176, 8903,
+            7851, 2993, 5091, 361]
+        getPlayerInfoArr(playerIdArr, resArr => {
+            let playerDataArr = []
+            for (let res of resArr) {
+                playerDataArr.push(res.data)
+            }
+            console.log('get all player info', resArr);
+            callback(playerDataArr)
+        })
+    }
     initPlayer(callback) {
-        getAllPlayer(421, (res) => {
-            // res = JSON.parse(res)
-            console.log('421 all player ', res);
-            // this.initGameInfo(res)
-            let playerIdArr = [
-                '习惯过了头', '安云鹏别让我瞧不起你', '平常心myd', 'Li_DD'
-                , '打铁不算多', '新锐宋教练', 'Gyoung15', '小丑的梦想'
-                , '7号唐日辉同学', '雷雷雷雷子', 'NGFNGN', '知名球童戴一志'
-                , '刘宇9号', '泡椒top13', '万宅男', '大霖哥666'
-                , '带伤上阵也不怕', '认得挖方一号', '鬼手林坤8023', 'zzz勇'
-                , '带伤上阵也不怕', '认得挖方一号', '鬼手林坤8023', 'zzz勇'
-                , '带伤上阵也不怕', '认得挖方一号', '鬼手林坤8023', 'zzz勇'
-                , '带伤上阵也不怕', '认得挖方一号', '鬼手林坤8023', 'zzz勇'
-            ]
-            let playerOrderArr = []
-            // console.log('initGameInfo ', res);
-            let getData = (name) => {
-                for (let p of res.data) {
-                    if (p.name == name)
-                    { return p }
-                }
-            }
-
-            for (let p of playerIdArr) {
-                playerOrderArr.push(getData(p))
-            }
+        syncDoc(playerDoc, doc => {
+            let playerOrderArr = doc.player
             console.log('player 32', playerOrderArr);
             let playerArr = []
             for (let i = 0; i < 32; i++) {
@@ -156,16 +179,13 @@ export default class DoubleElimination24View extends BaseGameView {
                 playerArr.push(p)
                 this.nameMapHupuId[p.name] = p
             }
-            // this.initPokerSelectView(playerArr)
+            this.initPokerSelectView(playerArr)
             callback()
         })
-        // let playerIdArr = []
-        // let playerArr = []
-        // for (let i = 0; i < 32; i++) {
-
-        // }
     }
-
+    initPokerSelectView(playerArr) {
+        this['pokerPlayerArrG1'] = playerArr
+    }
     //clear data
     initBracket() {
         syncDoc(gameDate, doc => {

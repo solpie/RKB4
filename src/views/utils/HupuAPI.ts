@@ -63,6 +63,21 @@ export let getPlayerInfo = (playerId, callback) => {
     _get(_proxyJSON(url), callback)
 }
 
+export let getPlayerInfoArr = (playerIdArr, callback) => {
+    let a = playerIdArr.concat()
+    let resArr = []
+    let _ = () => {
+        getPlayerInfo(a.pop(), res => {
+            resArr.push(res)
+            if (a.length) {
+                _()
+            }
+            else 
+                callback(resArr)
+        })
+    }
+    _()
+}
 export let _avatar = (filename) => {
     return '/img/player/avatar/' + filename
 }

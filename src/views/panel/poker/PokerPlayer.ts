@@ -117,7 +117,7 @@ export class PokerPlayer extends PIXI.Container {
         this.pokerStr = pokerStr
         let color = pokerStr.charAt(0)
         let icon;
-        let fill
+        let fill;
         if (color == 'L') {
             icon = '/img/panel/bracket/final/pokerBlack.png'
             fill = '#000'

@@ -4,10 +4,10 @@
             <el-collapse v-model="actPanel" accordion>
                 <!-- <el-collapse-item title="Group Rank" name="2"> -->
                 <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                                                                                                <el-table-column prop="name" label="name" width="140"></el-table-column>
-                                                                                                <el-table-column prop="win" label="胜场" width="80"></el-table-column>
-                                                                                                <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                                                                                            </el-table> -->
+                                                                                                    <el-table-column prop="name" label="name" width="140"></el-table-column>
+                                                                                                    <el-table-column prop="win" label="胜场" width="80"></el-table-column>
+                                                                                                    <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
+                                                                                                </el-table> -->
                 <!-- </el-collapse-item> -->
                 <el-collapse-item title="Player List" name="3">
                     L1 ~ L4
@@ -55,9 +55,9 @@
                 </el-col>
                 <el-col :span='4'>
                     小组赛第{{gameIdx}}场
-                    <span  style="fontSize:40px">
+                    <span style="fontSize:40px">
                         Score
-                    <br>
+                        <br>
                         <span style="color:blue">{{lScore}}</span> :
                         <span style="color:red">{{rScore}}</span>
                         <br> Foul {{lFoul}} :{{rFoul}}
@@ -106,10 +106,10 @@
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>
                 <!-- <el-button @click='_("showGroup","a")'>Group A</el-button>
-                                <el-button @click='_("showGroup","b")'>Group B</el-button>
-                                <el-button @click='_("showGroup","c")'>Group C</el-button>
-                                <el-button @click='_("showGroup","d")'>Group D</el-button>
-                                <el-button @click='_("hideGroup")'>Hide Group Rank</el-button> -->
+                                    <el-button @click='_("showGroup","b")'>Group B</el-button>
+                                    <el-button @click='_("showGroup","c")'>Group C</el-button>
+                                    <el-button @click='_("showGroup","d")'>Group D</el-button>
+                                    <el-button @click='_("hideGroup")'>Hide Group Rank</el-button> -->
                 <br>
                 <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
                 <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
@@ -124,7 +124,7 @@
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
@@ -140,10 +140,12 @@
                 <el-button @click='_("showGameProcess",true,"lose3")'>败者组 3</el-button>
                 <el-button @click='_("showGameProcess",true,"lose4")'>败者组 4</el-button>
                 <el-button @click='_("showGameProcess",true,"final8")'>8强</el-button>
+                <el-button @click='_("showGameProcess",true,"final")'>决赛</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
             </el-row>
             <el-row>
                 <hr>
+                <el-button @click='_("syncPlayer")'>更新球员数据</el-button>
                 <el-button @click='_("reMapBracket")'>reMapBracket</el-button>
                 <!-- <el-button @click='_("showPokerPanel",true,8)'>show Poker 8</el-button> -->
                 <!-- <el-button @click='_("showPokerPanel",true,12)'>show Poker 12</el-button> -->

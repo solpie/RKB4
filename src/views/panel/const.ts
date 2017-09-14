@@ -18,4 +18,5 @@ export const preLoadImgArr = [
     '/img/panel/process/title.png',
     '/img/panel/process/titleTex.png',
     '/img/panel/process/playerBg.png',
+    '/img/panel/process/tabFocus.png',
 ]

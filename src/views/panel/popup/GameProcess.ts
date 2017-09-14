@@ -1,3 +1,5 @@
+import { blink2 } from '../../utils/Fx';
+import { fitWidth } from '../bracket/BracketGroup';
 import { TweenEx } from '../../utils/TweenEx';
 import { simplifyName } from '../score/Com2017';
 import { ViewConst, FontName } from '../const';
@@ -55,6 +57,8 @@ class PlayerItem extends PIXI.Container {
         rScore.y = lScore.y
         this.rScoreText = rScore
         bg.addChild(rScore)
+
+
     }
 
     setStrip(odd) {
@@ -64,11 +68,23 @@ class PlayerItem extends PIXI.Container {
             this.flatBg.alpha = .2
     }
 
+    _fitName(labal: PIXI.Text) {
+        if (labal.width > 300)
+            labal.style.fontSize = '40px'
+    }
+
     setPlayerName(l, r) {
         this.lPlayerName.text = simplifyName(l)
+        fitWidth(this.lPlayerName, 270, 38)
         this.lPlayerName.x = 295 - this.lPlayerName.width
         this.rPlayerName.text = simplifyName(r)
+        fitWidth(this.rPlayerName, 270, 38)
         this.rPlayerName.x = 670
+    }
+
+    setScore(l, r) {
+        this.lScoreText.text = l
+        this.rScoreText.text = r
     }
 
     setFocus(v) {
@@ -86,6 +102,8 @@ export class GameProcess extends PIXI.Container implements IPopup {
     p: PIXI.Container
     title: PIXI.Text
     playerItemArr: Array<PlayerItem>
+    tabIdxPosMap: any
+    tabFocus: PIXI.Sprite
     create(parent: any) {
         this.p = parent
         let bg = newBitmap({ url: '/img/panel/process/bg.png' })
@@ -131,6 +149,25 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.toPosX = titleBg.x
 
 
+        let tab1x = 262
+        this.tabIdxPosMap = [
+            0,
+            tab1x,
+            tab1x + 163 * 1,
+            tab1x + 163 * 2 + 8,
+            tab1x + 12 + 163 * 3,
+            tab1x + 10 + 163 * 4 + 12,
+            tab1x + 163 * 5 + 12 + 12,
+            tab1x + 163 * 6 + 30,
+            tab1x + 163 * 7 + 36,
+            tab1x + 163 * 8 + 38,
+        ]
+        let tabFocus = newBitmap({ url: '/img/panel/process/tabFocus.png' })
+        tabFocus.x = 253
+        tabFocus.y = 104
+        this.addChild(tabFocus)
+        blink2({ target: tabFocus, time: 500 })
+        this.tabFocus = tabFocus
     };
     toPosX: number
     show(data) {
@@ -146,6 +183,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
             let playerArr = gamePlayerArr[i];
             let pi = this.playerItemArr[i]
             pi.setPlayerName(playerArr[0].hupuID, playerArr[1].hupuID)
+            pi.setScore(playerArr[0].score, playerArr[1].score)
             let odd = i % 2
             if (odd) {
                 pi.x = -pi.width
@@ -162,6 +200,10 @@ export class GameProcess extends PIXI.Container implements IPopup {
         // for(let p)
         this.title.text = processParam.title
         this.title.x = (1377 - this.title.width) * .5
+
+
+        this.tabFocus.x = this.tabIdxPosMap[processParam.idx]
+        console.log('this.tabIdxPosMap', this.tabFocus.x);
         this.p.addChild(this)
     }
 

@@ -10,6 +10,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     static EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
+    static EVENT_SET_VS = 'EVENT_SET_VS'
     static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
     static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
     static EVENT_SHOW_POKER_PLAYER = 'EVENT_SHOW_POKER_PLAYER'
@@ -19,6 +20,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_INIT_DOUBLE_ELIMATION = 'EVENT_INIT_DOUBLE_ELIMATION'
     static EVENT_ROLL_TEXT = 'EVENT_ROLL_TEXT'
     static EVENT_SHOW_PROCESS = 'EVENT_SHOW_PROGRESS'
+    static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
     gameView: IBaseGameView
     gmv: GameMonthView
     $vm: any
@@ -142,7 +144,9 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     setVS(vsStr) {
-        gmv.setVS(vsStr)
+        // gmv.setVS(vsStr)
+        this.emit(LiveDataView.EVENT_SET_VS, vsStr)
+        
     }
 
     setScore(scoreStr) {
@@ -193,6 +197,10 @@ export default class LiveDataView extends EventDispatcher {
 
     showGameProcess(visible, tab) {
         this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab })
+    }
+
+    syncPlayer() {
+        this.emit(LiveDataView.EVENT_SYNC_PLAYER)
     }
 
     testRandomGame() {
