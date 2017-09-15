@@ -20,6 +20,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_INIT_DOUBLE_ELIMATION = 'EVENT_INIT_DOUBLE_ELIMATION'
     static EVENT_ROLL_TEXT = 'EVENT_ROLL_TEXT'
     static EVENT_SHOW_PROCESS = 'EVENT_SHOW_PROGRESS'
+    static EVENT_SHOW_PLAYER_PROCESS = 'EVENT_SHOW_PLAYER_PROCESS'
     static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
     gameView: IBaseGameView
     gmv: GameMonthView
@@ -146,7 +147,7 @@ export default class LiveDataView extends EventDispatcher {
     setVS(vsStr) {
         // gmv.setVS(vsStr)
         this.emit(LiveDataView.EVENT_SET_VS, vsStr)
-        
+
     }
 
     setScore(scoreStr) {
@@ -201,6 +202,10 @@ export default class LiveDataView extends EventDispatcher {
 
     syncPlayer() {
         this.emit(LiveDataView.EVENT_SYNC_PLAYER)
+    }
+
+    showPlayerProcess(name, player) {
+        this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { player: player })
     }
 
     testRandomGame() {

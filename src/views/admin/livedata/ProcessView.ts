@@ -8,7 +8,7 @@ let getGamePlayer = (rec, start, end, playerDataMap) => {
         let rPlayer = playerDataMap[playerArr[1]]
         lPlayer.score = rec[gameIdx].score[0]
         rPlayer.score = rec[gameIdx].score[1]
-        gamePlayerArr.push([lPlayer,rPlayer ])
+        gamePlayerArr.push([lPlayer, rPlayer])
     }
     return gamePlayerArr
 }
@@ -16,6 +16,18 @@ export class ProcessView {
     constructor() {
 
     }
+
+    static showPlayerProcess(rec, player, playerDataMap) {
+        for (let i in rec) {
+            let r = rec[i]
+            if (r.player[0] == player || r.player[1] == player) {
+                let lData = playerDataMap[r.player[0]]
+                let rData = playerDataMap[r.player[1]]
+                console.log(lData, rData);
+            }
+        }
+    }
+
     static showTab(rec, tab, playerDataMap) {
         let gamePlayerArr;
         let title;
@@ -76,12 +88,12 @@ export class ProcessView {
         else if (tab == 'final8') {
             title = '8 强'
             idx = 8
-            gamePlayerArr = getGamePlayer(rec, 17, 24, playerDataMap)
+            gamePlayerArr = getGamePlayer(rec, 53, 62, playerDataMap)
         }
         else if (tab == 'final') {
             title = '决 赛'
             idx = 9
-            gamePlayerArr = getGamePlayer(rec, 17, 24, playerDataMap)
+            gamePlayerArr = getGamePlayer(rec, 53, 62, playerDataMap)
         }
 
         return { gamePlayerArr: gamePlayerArr, title: title, idx: idx }

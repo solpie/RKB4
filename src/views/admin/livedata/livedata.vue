@@ -15,8 +15,7 @@
                     <span v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
                         {{item.name}}
                         <el-input v-model='item.poker' style="width:50px"></el-input>
-                        <el-button @click='_("showPoker",true,item.name,item.poker)'>show</el-button>
-                        <el-button @click='_("showPoker",false,item.name,item.poker)'>hide</el-button>
+                        <el-button @click='_("showPlayerProcess",true,item.name,item.poker)'>show</el-button>
                         {{item.hupuID}}
                         <br>
                     </span>
@@ -135,6 +134,7 @@
                 <el-button @click='_("showGameProcess",true,"pre2")'>分组赛 2</el-button>
                 <el-button @click='_("showGameProcess",true,"lose1")'>败者组 1</el-button>
                 <el-button @click='_("showGameProcess",true,"win1")'>胜者组 1</el-button>
+                <br>
                 <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
                 <el-button @click='_("showGameProcess",true,"win2")'>胜者组 2</el-button>
                 <el-button @click='_("showGameProcess",true,"lose3")'>败者组 3</el-button>
