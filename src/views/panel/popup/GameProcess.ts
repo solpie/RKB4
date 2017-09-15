@@ -1,3 +1,4 @@
+import { BaseAvatar } from '../base/BaseAvatar';
 import { blink2 } from '../../utils/Fx';
 import { fitWidth } from '../bracket/BracketGroup';
 import { TweenEx } from '../../utils/TweenEx';
@@ -11,6 +12,8 @@ class PlayerItem extends PIXI.Container {
     rPlayerName: PIXI.Text
     lScoreText: PIXI.Text
     rScoreText: PIXI.Text
+    lAvt: BaseAvatar
+    rAvt: BaseAvatar
     constructor() {
         super()
         let flatBg = new PIXI.Graphics()
@@ -59,6 +62,15 @@ class PlayerItem extends PIXI.Container {
         bg.addChild(rScore)
 
 
+        this.lAvt = new BaseAvatar('/img/panel/score/m4/avtMask.png', 88)
+        this.lAvt.x = 310
+        this.lAvt.y = 2
+        bg.addChild(this.lAvt)
+
+        this.rAvt = new BaseAvatar('/img/panel/score/m4/avtMaskR.png', 88)
+        this.rAvt.x = 568
+        this.rAvt.y = this.lAvt.y
+        bg.addChild(this.rAvt)
     }
 
     setStrip(odd) {
@@ -87,6 +99,17 @@ class PlayerItem extends PIXI.Container {
         this.rScoreText.text = r
     }
 
+    setAvatar(l, r) {
+        this.lAvt.load(l)
+        this.rAvt.load(r)
+    }
+
+    setData(l, r) {
+        this.setPlayerName(l.hupuID, r.hupuID)
+        this.setScore(l.score, r.score)
+        this.setAvatar(l.data.avatar, r.data.avatar)
+    }
+
     setFocus(v) {
         if (v) {
             this.flatBg.alpha = .7
@@ -101,9 +124,12 @@ export class GameProcess extends PIXI.Container implements IPopup {
     static class = 'GameProcess'
     p: PIXI.Container
     title: PIXI.Text
+    playerItemCtn: PIXI.Container
     playerItemArr: Array<PlayerItem>
     tabIdxPosMap: any
     tabFocus: PIXI.Sprite
+    final8Bg: PIXI.Sprite
+    flatBg: PIXI.Graphics
     create(parent: any) {
         this.p = parent
         let bg = newBitmap({ url: '/img/panel/process/bg.png' })
@@ -117,12 +143,20 @@ export class GameProcess extends PIXI.Container implements IPopup {
         titleTex.x = 520
         titleTex.y = -2
 
+
+        let final8Bg = newBitmap({ url: '/img/panel/process/final8Bg.png' })
+        final8Bg.x = (ViewConst.STAGE_WIDTH - 1652) * .5
+        final8Bg.y = 155
+        this.final8Bg = final8Bg
+        this.addChild(final8Bg)
+
         let flatBg = new PIXI.Graphics()
         flatBg.beginFill(0x303030)
             .drawRect(0, 0, 1377, 30)
         flatBg.x = titleBg.x
         flatBg.y = 170
         flatBg.alpha = .2
+        this.flatBg = flatBg
         let ns = {
             fontFamily: FontName.MicrosoftYahei,
             fontWeight: 'bold',
@@ -137,13 +171,16 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.addChild(flatBg)
         this.addChild(titleBg)
 
+
+        this.playerItemCtn = new PIXI.Container()
+        this.addChild(this.playerItemCtn)
         this.playerItemArr = []
         for (let i = 0; i < 8; i++) {
             let playerItem = new PlayerItem()
             playerItem.y = titleBg.y + 80 + 105 * i
             playerItem.x = titleBg.x
             playerItem.setStrip((i) % 2)
-            this.addChild(playerItem)
+            this.playerItemCtn.addChild(playerItem)
             this.playerItemArr.push(playerItem)
         }
         this.toPosX = titleBg.x
@@ -168,6 +205,9 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.addChild(tabFocus)
         blink2({ target: tabFocus, time: 500 })
         this.tabFocus = tabFocus
+
+
+
     };
     toPosX: number
     show(data) {
@@ -182,8 +222,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
         for (let i = 0; i < gamePlayerArr.length; i++) {
             let playerArr = gamePlayerArr[i];
             let pi = this.playerItemArr[i]
-            pi.setPlayerName(playerArr[0].hupuID, playerArr[1].hupuID)
-            pi.setScore(playerArr[0].score, playerArr[1].score)
+            pi.setData(playerArr[0], playerArr[1])
             let odd = i % 2
             if (odd) {
                 pi.x = -pi.width
@@ -202,7 +241,18 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.title.x = (1377 - this.title.width) * .5
 
 
-        this.tabFocus.x = this.tabIdxPosMap[processParam.idx]
+        let tabIdx = processParam.idx
+        this.tabFocus.x = this.tabIdxPosMap[tabIdx]
+        if (tabIdx == 8 || tabIdx == 9) {
+            this.final8Bg.visible = true
+            this.playerItemCtn.visible = false
+            this.flatBg.visible = false
+        }
+        else {
+            this.playerItemCtn.visible = true
+            this.flatBg.visible = true
+            this.final8Bg.visible = false
+        }
         console.log('this.tabIdxPosMap', this.tabFocus.x);
         this.p.addChild(this)
     }
