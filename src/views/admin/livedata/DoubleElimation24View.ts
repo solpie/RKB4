@@ -85,6 +85,7 @@ export default class DoubleElimination24View extends BaseGameView {
             syncDoc(gameDate, doc => {
                 data._ = ''
                 let processParam = ProcessView.showTab(doc.rec, data.tab, this.nameMapHupuId)
+                processParam.gameIdx = this.gameIdx
                 data.processParam = processParam
                 console.log('EVENT_SHOW_PROCESS', processParam);
                 $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)

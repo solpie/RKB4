@@ -32,9 +32,6 @@ class PlayerItem2 extends PIXI.Container {
         this.addChild(bg2)
         bg2.mask = mask2
 
-
-
-
         this.lAvt = new BaseAvatar('/img/panel/score/m4/avtMask.png', 84)
         this.lAvt.x = 295
         this.lAvt.y = 3
@@ -44,7 +41,6 @@ class PlayerItem2 extends PIXI.Container {
         this.rAvt.x = this.lAvt.x
         this.rAvt.y = 88
         bg2.addChild(this.rAvt)
-
 
         let ns = {
             fontFamily: FontName.MicrosoftYahei,
@@ -80,7 +76,6 @@ class PlayerItem2 extends PIXI.Container {
         let pos = xmap[idx]
         this.x = pos[0]
         this.y = pos[1]
-
 
         if (idx == 3
             || idx == 4
@@ -144,6 +139,7 @@ class PlayerItem extends PIXI.Container {
     rScoreText: PIXI.Text
     lAvt: BaseAvatar
     rAvt: BaseAvatar
+    gameIdxText: PIXI.Text
     constructor() {
         super()
         let flatBg = new PIXI.Graphics()
@@ -177,6 +173,13 @@ class PlayerItem extends PIXI.Container {
         this.rPlayerName = rpn
         bg.addChild(rpn)
 
+        ns.fill = '#435359'
+        let gtxt = new PIXI.Text("", ns)
+        this.gameIdxText = gtxt
+        gtxt.x = -160
+        gtxt.y = 15
+        bg.addChild(gtxt)
+
         ns.fontSize = '56px'
         ns.fill = '#fff'
         let lScore = new PIXI.Text('3', ns)
@@ -192,6 +195,7 @@ class PlayerItem extends PIXI.Container {
         bg.addChild(rScore)
 
 
+
         this.lAvt = new BaseAvatar('/img/panel/score/m4/avtMask.png', 88)
         this.lAvt.x = 310
         this.lAvt.y = 2
@@ -203,9 +207,11 @@ class PlayerItem extends PIXI.Container {
         bg.addChild(this.rAvt)
     }
 
+    odd:number
     setStrip(odd) {
+        this.odd = odd
         if (odd)
-            this.flatBg.alpha = .4
+            this.flatBg.alpha = .3
         else
             this.flatBg.alpha = .2
     }
@@ -225,6 +231,9 @@ class PlayerItem extends PIXI.Container {
     }
 
     setScore(l, r) {
+        this.lScoreText.visible =
+            this.rScoreText.visible = !(l == 0 && r == 0)
+
         this.lScoreText.text = l
         this.rScoreText.text = r
     }
@@ -239,13 +248,19 @@ class PlayerItem extends PIXI.Container {
         this.setScore(l.score, r.score)
         this.setAvatar(l.data.avatar, r.data.avatar)
     }
+    setGameIdx(gameIdx) {
+        this.gameIdxText.text = gameIdx
+    }
 
     setFocus(v) {
         if (v) {
-            this.flatBg.alpha = .7
-            setScale(this, 1.2)
+            this.flatBg.alpha = .6
+            this.x = -70
+            setScale(this, 1.1)
         }
         else {
+            this.setStrip(this.odd)
+            this.x = 0
             setScale(this, 1)
         }
     }
@@ -262,6 +277,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
     tabFocus: PIXI.Sprite
     final8Bg: PIXI.Sprite
     flatBg: PIXI.Graphics
+    vs: PIXI.Sprite
     create(parent: any) {
         this.p = parent
         let bg = newBitmap({ url: '/img/panel/process/bg.png' })
@@ -308,18 +324,18 @@ export class GameProcess extends PIXI.Container implements IPopup {
 
 
         this.playerItemCtn = new PIXI.Container()
+        this.playerItemCtn.x = titleBg.x
         this.addChild(this.playerItemCtn)
         this.playerItemArr = []
         for (let i = 0; i < 8; i++) {
             let playerItem = new PlayerItem()
             playerItem.y = titleBg.y + 80 + 105 * i
-            playerItem.x = titleBg.x
             playerItem.setStrip((i) % 2)
             this.playerItemCtn.addChild(playerItem)
             this.playerItemArr.push(playerItem)
         }
-        this.toPosX = titleBg.x
-
+        this.toPosX = 0
+        this.initVSFocus(this.playerItemCtn)
 
 
         this.playerItemArr2 = []
@@ -352,10 +368,16 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.tabFocus = tabFocus
     };
 
+    initVSFocus(ctn) {
+        let vs = newBitmap({ url: '/img/panel/process/vs.png' })
+        this.vs = vs
+        vs.x = 645
+        vs.y = 225
+        ctn.addChild(vs)
+    }
+
     toPosX: number
     show(data) {
-
-
         console.log('show process', data);
         let processParam = data.processParam
         let gamePlayerArr = processParam.gamePlayerArr
@@ -372,9 +394,9 @@ export class GameProcess extends PIXI.Container implements IPopup {
             this.title.text = processParam.title
             this.title.x = (1377 - this.title.width) * .5
 
-
             let tabIdx = processParam.idx
             this.tabFocus.x = this.tabIdxPosMap[tabIdx]
+            //            final  8
             if (tabIdx == 8 || tabIdx == 9) {
                 this.final8Bg.visible = true
                 this.playerItemCtn.visible = false
@@ -386,15 +408,23 @@ export class GameProcess extends PIXI.Container implements IPopup {
                     pi.setData(playerArr[0], playerArr[1])
                 }
             }
-            else {
+            else {//group
                 for (let pi of this.playerItemArr) {
                     pi.visible = false
                 }
 
+
+                this.vs.visible = false
                 for (let i = 0; i < gamePlayerArr.length; i++) {
                     let playerArr = gamePlayerArr[i];
                     let pi = this.playerItemArr[i]
                     pi.setData(playerArr[0], playerArr[1])
+                    if (processParam.gameIdx == processParam.start + i) {
+                        this.setFucosPlayerItem(pi)
+                    }
+                    else
+                        pi.setFocus(false)
+                    pi.setGameIdx(processParam.start + i)
                     let odd = i % 2
                     if (odd) {
                         pi.x = -pi.width
@@ -415,9 +445,14 @@ export class GameProcess extends PIXI.Container implements IPopup {
             console.log('this.tabIdxPosMap', this.tabFocus.x);
             this.p.addChild(this)
         }, true)
-
     }
-
+    setFucosPlayerItem(pi: PlayerItem) {
+        TweenEx.delayedCall(500, _ => {
+            this.vs.visible = true
+            this.vs.y = pi.y + 40
+            pi.setFocus(true)
+        })
+    }
     setFinal8() {
 
     }

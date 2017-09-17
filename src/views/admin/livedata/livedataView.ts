@@ -1,3 +1,4 @@
+import { GambleView } from './GambleView';
 import { EventDispatcher } from '../../utils/EventDispatcher';
 import { BaseGameView, getDoc, IBaseGameView } from './BaseGame';
 import { getAllPlayer } from '../../utils/HupuAPI';
@@ -6,6 +7,8 @@ import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
 let gmv = new GameMonthView()
+
+let gamble = new GambleView()
 export default class LiveDataView extends EventDispatcher {
     static EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
     static EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
@@ -37,6 +40,7 @@ export default class LiveDataView extends EventDispatcher {
         gmv['actPanel'] = '1'
         gmv['group'] = ''
         gmv['inputVS'] = ''
+        gmv['inputRoomId'] = ''
         gmv['inputScore'] = ''
         gmv['inputChampion'] = ''
         gmv['inputRollText'] = ''
@@ -206,6 +210,10 @@ export default class LiveDataView extends EventDispatcher {
 
     showPlayerProcess(name, player) {
         this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { player: player })
+    }
+
+    startGamble(roomId,left,right) {
+        gamble.startGamble(roomId,left,right)
     }
 
     testRandomGame() {

@@ -59,43 +59,51 @@ export class ProcessView {
             idx = 3
             start = 25
             end = 32
-            gamePlayerArr = getGamePlayer(rec, 25, 32, playerDataMap)
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'lose2') {
             title = '败者组02'
             idx = 4
             start = 33
             end = 40
-            gamePlayerArr = getGamePlayer(rec, 33, 40, playerDataMap)
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'win2') {
             title = '胜者组02'
             idx = 5
             start = 41
             end = 44
-            gamePlayerArr = getGamePlayer(rec, 41, 44, playerDataMap)
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'lose3') {
             title = '败者组03'
             idx = 6
-            gamePlayerArr = getGamePlayer(rec, 45, 48, playerDataMap)
+            start = 45
+            end = 48
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'lose4') {
             title = '败者组04'
             idx = 7
-            gamePlayerArr = getGamePlayer(rec, 49, 52, playerDataMap)
+            start = 49
+            end = 52
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'final8') {
             title = '8 强'
             idx = 8
-            gamePlayerArr = getGamePlayer(rec, 53, 62, playerDataMap)
+            start = 53
+            end = 62
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
         else if (tab == 'final') {
             title = '决 赛'
             idx = 9
-            gamePlayerArr = getGamePlayer(rec, 53, 62, playerDataMap)
+            start = 53
+            end = 62
+            gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
 
-        return { gamePlayerArr: gamePlayerArr, title: title, idx: idx }
+        return { gamePlayerArr: gamePlayerArr, title: title, idx: idx, start: start, gameIdx: 0 }
     }
 }
