@@ -80,6 +80,19 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SET_VS, vsStr => {
             this.setVS(vsStr)
         })
+        lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
+            syncDoc(gameDate, doc => {
+                console.log('sync doc', doc);
+                let game = doc.rec[this.gameIdx]
+                if (game) {
+                    let a = scoreStr.split(' ')
+                    if (a.length == 2) {
+                        game.score = [Number(a[0]), Number(a[1])]
+                    }
+                }
+                this.initView(doc)
+            }, true)
+        })
 
         lv.on(LVE.EVENT_SHOW_PROCESS, data => {
             syncDoc(gameDate, doc => {
@@ -95,28 +108,9 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SHOW_PLAYER_PROCESS, data => {
             syncDoc(gameDate, doc => {
                 data._ = ''
-                if (data.lastGame) {
-                    let lastGameIdx = this.gameIdx - 1
-                    let playerArr = doc.rec[lastGameIdx].player
-                    let p1 = ProcessView.showPlayerProcess(doc.rec, this.gameIdx, playerArr[0], this.nameMapHupuId)
-                    let p2 = ProcessView.showPlayerProcess(doc.rec, this.gameIdx, playerArr[1], this.nameMapHupuId)
-                    if (p1.gameIdx && p2.gameIdx) {
-                        data.text = '比赛预告:  [第' + p1.gameIdx + '场] ' + p1.player[0] + ' vs ' + p1.player[1]
-                        data.text += '   [第' + p2.gameIdx + '场] ' + p2.player[0] + ' vs ' + p2.player[1]
-                        data.visible = true
-                        $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
-                    }
-                }
-                else {
-                    let processParam = ProcessView.showPlayerProcess(doc.rec, this.gameIdx, data.player, this.nameMapHupuId)
-                    data.processParam = processParam
-                    if (processParam.player.length) {
-                        console.log('EVENT_SHOW_PLAYER_PROCESS', processParam);
-                        data.text = '比赛预告:  [第'+ processParam.gameIdx + '场] ' + processParam.player[0] + ' vs ' + processParam.player[1]
-                        data.visible = true
-                        $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
-                    }
-                }
+                data = ProcessView.showPlayerProcess2(data, doc, this.gameIdx, this.nameMapHupuId)
+                if (data.visible)
+                    $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
             })
         })
 

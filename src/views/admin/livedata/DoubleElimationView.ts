@@ -84,6 +84,7 @@ export default class DoubleEliminationView extends BaseGameView {
                 this.initView(doc)
             }, true)
         })
+        
         liveDataView.on(LiveDataView.EVENT_SHOW_POKER_PANEL, data => {
             data._ = 'null'
             $post(`/emit/${WebDBCmd.cs_showPoker}`, data)

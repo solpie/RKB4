@@ -30,6 +30,30 @@ export class ProcessView {
         return { player: [], gameIdx: 0 }
     }
 
+    static showPlayerProcess2(data, doc, gameIdx, playerDataMap) {
+        if (data.lastGame) {
+            let lastGameIdx = gameIdx - 1
+            let playerArr = doc.rec[lastGameIdx].player
+            let p1 = ProcessView.showPlayerProcess(doc.rec, gameIdx, playerArr[0], playerDataMap)
+            let p2 = ProcessView.showPlayerProcess(doc.rec, gameIdx, playerArr[1], playerDataMap)
+            if (p1.gameIdx && p2.gameIdx) {
+                data.text = '比赛预告:  [第' + p1.gameIdx + '场] ' + p1.player[0] + ' vs ' + p1.player[1]
+                data.text += '   [第' + p2.gameIdx + '场] ' + p2.player[0] + ' vs ' + p2.player[1]
+                data.visible = true
+            }
+        }
+        else {
+            let processParam = ProcessView.showPlayerProcess(doc.rec, gameIdx, data.player, playerDataMap)
+            data.processParam = processParam
+            if (processParam.player.length) {
+                console.log('EVENT_SHOW_PLAYER_PROCESS', processParam);
+                data.text = '比赛预告:  [第' + processParam.gameIdx + '场] ' + processParam.player[0] + ' vs ' + processParam.player[1]
+                data.visible = true
+            }
+        }
+        return data
+    }
+
     static showTab(rec, tab, playerDataMap) {
         let gamePlayerArr;
         let title;

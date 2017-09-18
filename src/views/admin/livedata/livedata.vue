@@ -2,13 +2,6 @@
     <div style="width:1920px">
         <el-col :span='8'>
             <el-collapse v-model="actPanel" accordion>
-                <!-- <el-collapse-item title="Group Rank" name="2"> -->
-                <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                                                                                                                <el-table-column prop="name" label="name" width="140"></el-table-column>
-                                                                                                                <el-table-column prop="win" label="胜场" width="80"></el-table-column>
-                                                                                                                <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                                                                                                            </el-table> -->
-                <!-- </el-collapse-item> -->
                 <el-collapse-item title="Player List" name="3">
                     L1 ~ L4
                     <br>
@@ -72,6 +65,15 @@
                     <el-button @click='_("setRFoul",rFoul+1)'>+1</el-button>
                     <el-button @click='_("setRFoul",rFoul-1)'>-1</el-button>
                 </el-col>
+                <el-col :span='8'>
+                    <span v-for='(item,idx) in gambleArr' v-bind:key="idx">
+                        <el-button @click='_("gambleAct","fin",item.topicId,1)'>{{item.left}}</el-button>
+                        <el-button @click='_("gambleAct","fin",item.topicId,2)'>{{item.right}}</el-button>
+                        <el-button @click='_("gambleAct","stop",item.topicId)'>封盘</el-button>
+                        <el-button @click='_("gambleAct","cancel",item.topicId)'>流盘</el-button>
+                        <br>
+                    </span>
+                </el-col>
             </el-row>
             <br>
             <el-row>
@@ -123,7 +125,7 @@
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>

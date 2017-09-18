@@ -45,6 +45,7 @@ export default class LiveDataView extends EventDispatcher {
         gmv['inputScore'] = ''
         gmv['inputChampion'] = ''
         gmv['inputRollText'] = ''
+        gmv['gambleArr'] = []
         //13-20
         gmv['pokerPlayerArrG1'] = [
             { name: 'p13', poker: 'LA', hupuID: '' },
@@ -54,6 +55,8 @@ export default class LiveDataView extends EventDispatcher {
             { name: 'p1', poker: 'LA', hupuID: '' },
         ]
         console.log('livedata view');
+
+        gamble.initGambleArr(gmv)
     }
 
     _(e, param) {
@@ -223,6 +226,11 @@ export default class LiveDataView extends EventDispatcher {
 
     startGamble(roomId, left, right) {
         gamble.startGamble(roomId, left, right)
+    }
+
+    gambleAct(act, topicId?, option?) {
+        gamble.gambleAct(act,topicId,option)
+
     }
 
     testRandomGame() {
