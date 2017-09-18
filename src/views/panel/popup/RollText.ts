@@ -29,8 +29,10 @@ export class RollText extends PIXI.Container implements IPopup {
         TweenEx.to(this, 50, { alpha: 1 })
         this.rollText.text = param.text
         this.rollText.x = ViewConst.STAGE_WIDTH - 100
-        let sec = (this.rollText.width + this.rollText.x) / 50
-        TweenEx.to(this.rollText, sec * 1000, { x: -this.rollText.width })
+        let sec = (this.rollText.width + this.rollText.x) / 80
+        TweenEx.to(this.rollText, sec * 1000, { x: -this.rollText.width }, _ => {
+            this.hide()
+        })
     }
 
     public hide() {

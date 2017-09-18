@@ -95,10 +95,28 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SHOW_PLAYER_PROCESS, data => {
             syncDoc(gameDate, doc => {
                 data._ = ''
-                let processParam = ProcessView.showPlayerProcess(doc.rec,this.gameIdx, data.player, this.nameMapHupuId)
-                data.processParam = processParam
-                console.log('EVENT_SHOW_PLAYER_PROCESS', processParam);
-                // $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+                if (data.lastGame) {
+                    let lastGameIdx = this.gameIdx - 1
+                    let playerArr = doc.rec[lastGameIdx].player
+                    let p1 = ProcessView.showPlayerProcess(doc.rec, this.gameIdx, playerArr[0], this.nameMapHupuId)
+                    let p2 = ProcessView.showPlayerProcess(doc.rec, this.gameIdx, playerArr[1], this.nameMapHupuId)
+                    if (p1.gameIdx && p2.gameIdx) {
+                        data.text = '比赛预告:  [第' + p1.gameIdx + '场] ' + p1.player[0] + ' vs ' + p1.player[1]
+                        data.text += '   [第' + p2.gameIdx + '场] ' + p2.player[0] + ' vs ' + p2.player[1]
+                        data.visible = true
+                        $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+                    }
+                }
+                else {
+                    let processParam = ProcessView.showPlayerProcess(doc.rec, this.gameIdx, data.player, this.nameMapHupuId)
+                    data.processParam = processParam
+                    if (processParam.player.length) {
+                        console.log('EVENT_SHOW_PLAYER_PROCESS', processParam);
+                        data.text = '比赛预告:  [第'+ processParam.gameIdx + '场] ' + processParam.player[0] + ' vs ' + processParam.player[1]
+                        data.visible = true
+                        $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+                    }
+                }
             })
         })
 

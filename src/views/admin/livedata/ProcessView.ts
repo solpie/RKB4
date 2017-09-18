@@ -24,8 +24,10 @@ export class ProcessView {
                 let lData = playerDataMap[r.player[0]]
                 let rData = playerDataMap[r.player[1]]
                 console.log(lData, rData);
+                return { player: [lData.hupuID, rData.hupuID], gameIdx: i + 1 }
             }
         }
+        return { player: [], gameIdx: 0 }
     }
 
     static showTab(rec, tab, playerDataMap) {

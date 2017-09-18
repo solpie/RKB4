@@ -217,6 +217,10 @@ export default class LiveDataView extends EventDispatcher {
         $post(`/emit/${WebDBCmd.cs_showImg}`, { _: null, visible: visible, name: name })
     }
 
+    showLastPlayerRoute() {
+        this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { lastGame: true })
+    }
+
     startGamble(roomId, left, right) {
         gamble.startGamble(roomId, left, right)
     }
