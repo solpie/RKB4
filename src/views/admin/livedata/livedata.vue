@@ -4,10 +4,10 @@
             <el-collapse v-model="actPanel" accordion>
                 <!-- <el-collapse-item title="Group Rank" name="2"> -->
                 <!-- <el-table stripe :data="curGroupRank" style="width: 100%" @row-click='rowClick'>
-                                                                                                        <el-table-column prop="name" label="name" width="140"></el-table-column>
-                                                                                                        <el-table-column prop="win" label="胜场" width="80"></el-table-column>
-                                                                                                        <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
-                                                                                                    </el-table> -->
+                                                                                                            <el-table-column prop="name" label="name" width="140"></el-table-column>
+                                                                                                            <el-table-column prop="win" label="胜场" width="80"></el-table-column>
+                                                                                                            <el-table-column prop="dtScore" label="净胜分" width="120"></el-table-column>
+                                                                                                        </el-table> -->
                 <!-- </el-collapse-item> -->
                 <el-collapse-item title="Player List" name="3">
                     L1 ~ L4
@@ -123,7 +123,7 @@
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                        <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                            <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
@@ -142,6 +142,10 @@
                 <el-button @click='_("showGameProcess",true,"final8")'>8强</el-button>
                 <el-button @click='_("showGameProcess",true,"final")'>决赛</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
+                <br>
+                <el-button @click='_("showImg",true,"bd1")'>媒体1</el-button>
+                <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
+                <el-button @click='_("showImg",false,"bd1")'>隐藏媒体1</el-button>
             </el-row>
             <el-row>
                 <hr>

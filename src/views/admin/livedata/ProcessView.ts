@@ -17,9 +17,9 @@ export class ProcessView {
 
     }
 
-    static showPlayerProcess(rec, player, playerDataMap) {
-        for (let i in rec) {
-            let r = rec[i]
+    static showPlayerProcess(rec, gameIdx, player, playerDataMap) {
+        for (let i = gameIdx - 1; i < 62; i++) {
+            let r = rec[i + 1]
             if (r.player[0] == player || r.player[1] == player) {
                 let lData = playerDataMap[r.player[0]]
                 let rData = playerDataMap[r.player[1]]

@@ -254,11 +254,15 @@ class PlayerItem extends PIXI.Container {
 
     setFocus(v) {
         if (v) {
+            this.flatBg.y = -5
             this.flatBg.alpha = .6
             this.x = -70
+            this.gameIdxText.x = -110
             setScale(this, 1.1)
         }
         else {
+            this.gameIdxText.x = -160
+            this.flatBg.y = 0
             this.setStrip(this.odd)
             this.x = 0
             setScale(this, 1)
@@ -449,7 +453,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
     setFucosPlayerItem(pi: PlayerItem) {
         TweenEx.delayedCall(500, _ => {
             this.vs.visible = true
-            this.vs.y = pi.y + 40
+            this.vs.y = pi.y + 30
             pi.setFocus(true)
         })
     }

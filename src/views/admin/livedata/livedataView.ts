@@ -24,6 +24,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_ROLL_TEXT = 'EVENT_ROLL_TEXT'
     static EVENT_SHOW_PROCESS = 'EVENT_SHOW_PROGRESS'
     static EVENT_SHOW_PLAYER_PROCESS = 'EVENT_SHOW_PLAYER_PROCESS'
+    static EVENT_SHOW_IMG = 'EVENT_SHOW_IMG'
     static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
     gameView: IBaseGameView
     gmv: GameMonthView
@@ -212,8 +213,12 @@ export default class LiveDataView extends EventDispatcher {
         this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { player: player })
     }
 
-    startGamble(roomId,left,right) {
-        gamble.startGamble(roomId,left,right)
+    showImg(visible, name) {
+        $post(`/emit/${WebDBCmd.cs_showImg}`, { _: null, visible: visible, name: name })
+    }
+
+    startGamble(roomId, left, right) {
+        gamble.startGamble(roomId, left, right)
     }
 
     testRandomGame() {

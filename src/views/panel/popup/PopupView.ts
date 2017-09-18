@@ -1,3 +1,4 @@
+import { StaticImg } from './StaticImg';
 import { GameProcess } from './GameProcess';
 import { RollText } from './RollText';
 import { Victory } from './Victory';
@@ -10,7 +11,7 @@ import { NoticePanel } from './NoticePanel';
 export interface IPopup {
     create: (parent) => void
     show: (param: any) => void
-    hide: () => void
+    hide: (param?: any) => void
 }
 export class PopupView {
     ctn: PIXI.Container
@@ -52,7 +53,7 @@ export class PopupView {
                     : this.hide(Victory)
             })
             .on(WebDBCmd.sc_showRollText, data => {
-                console.log('sc_showRollText', data,this.popupItemMap);
+                console.log('sc_showRollText', data, this.popupItemMap);
                 data.visible ?
                     this.show(RollText, data)
                     : this.hide(RollText)
@@ -62,6 +63,12 @@ export class PopupView {
                 data.visible ?
                     this.show(GameProcess, data)
                     : this.hide(GameProcess)
+            })
+            .on(WebDBCmd.sc_showImg, data => {
+                console.log('sc_showImg');
+                data.visible ?
+                    this.show(StaticImg, data)
+                    : this.hide(StaticImg, data)
             })
     }
     show(cls, param) {
@@ -75,8 +82,8 @@ export class PopupView {
         else throw 'check class def' + cls
     }
 
-    hide(cls) {
+    hide(cls, param?) {
         if (this.popupItemMap[cls.class])
-            this.popupItemMap[cls.class].hide()
+            this.popupItemMap[cls.class].hide(param)
     }
 }

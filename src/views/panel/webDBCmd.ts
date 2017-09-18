@@ -9,6 +9,8 @@ export const WebDBCmd = {
     sc_showNotice: ``,
     cs_showRollText: ``,//roll公告
     sc_showRollText: ``,
+    sc_showImg: ``,//static image
+    cs_showImg: ``,
     //poker panel
     sc_showPoker: ``,
     cs_showPoker: ``,

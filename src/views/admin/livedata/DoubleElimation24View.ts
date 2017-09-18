@@ -95,7 +95,7 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SHOW_PLAYER_PROCESS, data => {
             syncDoc(gameDate, doc => {
                 data._ = ''
-                let processParam = ProcessView.showPlayerProcess(doc.rec, data.player, this.nameMapHupuId)
+                let processParam = ProcessView.showPlayerProcess(doc.rec,this.gameIdx, data.player, this.nameMapHupuId)
                 data.processParam = processParam
                 console.log('EVENT_SHOW_PLAYER_PROCESS', processParam);
                 // $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
