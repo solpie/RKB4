@@ -32,6 +32,28 @@ app.get('/ranking/find/:idx', (req, res) => {
     })
 });
 
+app.post('/ranking/query/', (req, res) => {
+    let playerIdArr = req.body.playerIdArr
+    let season = req.body.season
+    rankDb.find({ idx: season }, (err, docs) => {
+        let ret = { err: err, doc: docs[0], playerArr: null }
+        let playerArr = []
+        console.log('season', docs);
+
+        if (docs.length) {
+            for (let p of docs[0].rankArr) {
+                for (let pid of playerIdArr) {
+                    if (p.player_id == pid) {
+                        playerArr.push(p)
+                    }
+                }
+            }
+        }
+        ret.playerArr = playerArr
+        res.send(ret)
+    })
+})
+
 app.post('/ranking/update/:idx', (req, res) => {
     let idx = req.params.idx
     let doc = req.body

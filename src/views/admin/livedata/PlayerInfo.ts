@@ -9,6 +9,7 @@ export class PlayerInfo{
     groupId: number
     level: number
     intro: string
+    ranking: number
     
     //
     data:any

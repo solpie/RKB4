@@ -78,7 +78,12 @@ const mergeGame = (rankArrOld: Array<RKPlayer>, rankArrNew: Array<RKPlayer>, pla
         for (let pOld of rankArrOld) {
             if (pNew.player_id == pOld.player_id) {
                 isNew = false
-                pOld.merge(pNew)
+                if (pOld) {
+                    pOld.merge(pNew)
+                }
+                else {
+                    console.log('pOld is what', pOld);
+                }
                 break;
             }
         }
@@ -393,6 +398,10 @@ export class RankModel {
             let rkp = new RKPlayer(p)
             rkp.load(p)
             this.playerMapSum[rkp.player_id] = rkp
+            if(this.playerMapSum[rkp.player_id]==0)
+            {
+                console.log('load rank 0',this.playerMapSum[rkp.player_id]);
+                }
             a.push(rkp)
         }
         this.rankMerge = a

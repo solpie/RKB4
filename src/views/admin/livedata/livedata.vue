@@ -7,9 +7,8 @@
                     <br>
                     <span v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
                         {{item.name}}
-                        <el-input v-model='item.poker' style="width:50px"></el-input>
                         <el-button @click='_("showPlayerProcess",true,item.name,item.poker)'>show</el-button>
-                        {{item.hupuID}}
+                        {{item.hupuID}} {{item.ranking}}
                         <br>
                     </span>
                     <hr> L5 ~ L10

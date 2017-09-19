@@ -64,10 +64,15 @@ export class RankingView {
         let start = page * 100
         for (let i = 0 + start; i < start + Math.min(playerArr.length, 100); i++) {
             let p: RKPlayer = playerArr[i];
-            p.ranking = i + 1
-            p.name = p.name.substring(0, 6)
-            p['beatRaitoStr'] = Math.floor(p.beatRaito * 100) / 100
-            a.push(p)
+            try {
+                p.ranking = i + 1
+                p.name = p.name.substring(0, 6)
+                p['beatRaitoStr'] = Math.floor(p.beatRaito * 100) / 100
+                a.push(p)
+            } catch (error) {
+                console.log('not a object', p);
+            }
+
         }
         return a
     }
@@ -157,6 +162,7 @@ export class RankingView {
         let p: RKPlayer
         for (let i = 0; i < rankArr.length; i++) {
             p = rankArr[i];
+            p.ranking = i + 1
             if (p.toDoc)
                 doc.rankArr.push(p.toDoc())
             else {
@@ -187,7 +193,7 @@ export class RankingView {
         $get('/ranking/find/' + season, res => {
             let curRankArr = this.rankModel.rankMerge.concat()
             this.rankModel.loadRank(res.doc.rankArr)
-            this.rankModel.mergeRank(this.rankModel.rankMerge,curRankArr)
+            this.rankModel.mergeRank(this.rankModel.rankMerge, curRankArr)
             this.lastRanking = this.viewRank(this.rankModel.rankMerge)
             console.log('load rank ', res, this.rankModel.rankMerge);
         })

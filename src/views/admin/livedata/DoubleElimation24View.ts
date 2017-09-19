@@ -12,6 +12,8 @@ import { routeBracket24 } from "../../panel/bracketM4/Bracket24Route";
 declare let io;
 let gameDate = '930'
 let playerDoc = '930.player'
+
+
 export default class DoubleElimination24View extends BaseGameView {
     nameMapHupuId = {}
     pokerMapPlayer = {}
@@ -20,6 +22,17 @@ export default class DoubleElimination24View extends BaseGameView {
     lHupuID = ''
     rHupuID = ''
     liveDataView
+
+    playerIdArr = [
+        44, 7686, 1001, 1754,
+        9118, 2849, 10368, 1163,
+        1906, 8449, 10207, 4257,
+        3715, 11470, 20, 4218,
+        4, 8066, 6487, 11082,
+        4752, 9097, 1900, 1213,
+        1679, 574, 1176, 8903,
+        7851, 2993, 5091, 361]
+
     constructor(liveDataView: LiveDataView) {
         super()
         this.liveDataView = liveDataView
@@ -169,16 +182,8 @@ export default class DoubleElimination24View extends BaseGameView {
         $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
     }
     getAllPlayer2(callback) {
-        let playerIdArr = [
-            44, 7686, 1001, 1754,
-            9118, 2849, 10368, 1163,
-            1906, 8449, 10207, 4257,
-            3715, 11470, 20, 4218,
-            4, 8066, 6487, 11082,
-            4752, 9097, 1900, 1213,
-            1679, 574, 1176, 8903,
-            7851, 2993, 5091, 361]
-        getPlayerInfoArr(playerIdArr, resArr => {
+
+        getPlayerInfoArr(this.playerIdArr, resArr => {
             let playerDataArr = []
             for (let res of resArr) {
                 playerDataArr.push(res.data)
@@ -189,21 +194,38 @@ export default class DoubleElimination24View extends BaseGameView {
     }
     initPlayer(callback) {
         syncDoc(playerDoc, doc => {
-            let playerOrderArr = doc.player
-            console.log('player 32', playerOrderArr);
-            let playerArr = []
-            for (let i = 0; i < 32; i++) {
-                let p = new PlayerInfo()
-                p.id = i + 1
-                p.hupuID = playerOrderArr[i].name
-                p.name = 'p' + (i + 1)
-                p['poker'] = ''
-                p.data = playerOrderArr[i]
-                playerArr.push(p)
-                this.nameMapHupuId[p.name] = p
-            }
-            this.initPokerSelectView(playerArr)
-            callback()
+            $post('/ranking/query/', { playerIdArr: this.playerIdArr, season: 's3' }, rankRes => {
+                let rankPlayerArr = rankRes.playerArr;
+                let _r = (playerId) => {
+                    for (let p of rankPlayerArr) {
+                        if (p.player_id == String(playerId))
+                            return p.ranking
+                    }
+                    return 0
+                }
+
+
+                let playerOrderArr = doc.player
+                let playerArr = []
+                for (let i = 0; i < 32; i++) {
+                    let p = new PlayerInfo()
+                    p.id = i + 1
+                    p.hupuID = playerOrderArr[i].name
+                    p.name = 'p' + (i + 1)
+                    p['poker'] = ''
+                    p.ranking = _r(playerOrderArr[i].player_id)
+                    console.log('player 32', p.hupuID, p.ranking);
+
+                    p.data = playerOrderArr[i]
+                    playerArr.push(p)
+                    this.nameMapHupuId[p.name] = p
+                }
+                console.log('player 32', playerArr);
+
+                this.initPokerSelectView(playerArr)
+                callback()
+            })
+
         })
     }
     initPokerSelectView(playerArr) {
