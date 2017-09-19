@@ -2,7 +2,7 @@ const gameDb = new nedb({ filename: './db/game.db', autoload: true })
 const rankDb = new nedb({ filename: './db/rank.db', autoload: true })
 
 app.get('/ranking/', (req, res) => {
-    gameDb.find({ idx: "s2" }, (err, docs) => {
+    gameDb.find({ idx: "s3" }, (err, docs) => {
         let ret = { err: err, doc: docs[0] }
         if (docs.length)
             res.send(ret)
@@ -16,6 +16,12 @@ app.get('/ranking/game/:idx', (req, res) => {
         if (docs.length)
             res.send(ret)
     })
+});
+
+app.get('/ranking/sync/:idx', (req, res) => {
+    let idx = req.params.idx
+    downLoadGameData(idx)
+    res.send('ok')
 });
 
 app.get('/ranking/find/:idx', (req, res) => {

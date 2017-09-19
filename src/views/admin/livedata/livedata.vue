@@ -66,6 +66,9 @@
                     <el-button @click='_("setRFoul",rFoul-1)'>-1</el-button>
                 </el-col>
                 <el-col :span='8'>
+                    <el-input v-model='inputRoomId' style="width:100px"></el-input>
+                    <el-button @click='_("startGamble",inputRoomId,lHupuID,rHupuID)'>开题</el-button>
+                    <br>
                     <span v-for='(item,idx) in gambleArr' v-bind:key="idx">
                         <el-button @click='_("gambleAct","fin",item.topicId,1)'>{{item.left}}</el-button>
                         <el-button @click='_("gambleAct","fin",item.topicId,2)'>{{item.right}}</el-button>
@@ -86,12 +89,9 @@
                     <el-input v-model='timeInput' style="width:50px">reset计时</el-input>
                     <el-button @click='_("setTimer",-2,timeInput)'>设置时间</el-button>
                     <el-button @click='_("commit")'>提交比赛</el-button>
-                    <br>
-                    <br>
-                    <el-input v-model='inputRoomId' style="width:100px"></el-input>
-                    <el-button @click='_("startGamble",inputRoomId,lHupuID,rHupuID)'>开题</el-button>
-                    <el-button @click='_("stopGamble")'>封盘</el-button>
                     <!-- <el-button @click='_("commit",true)'>提交比赛F</el-button> -->
+                    <br>
+                    <br>
                 </el-col>
                 <el-col :span='8'>
                     冠军：
@@ -125,7 +125,7 @@
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                                                        <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>

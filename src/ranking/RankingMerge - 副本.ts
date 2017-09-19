@@ -70,143 +70,126 @@ function sumGame(playerMap) {
 
 
 
-const mergeGame = (rankArrOld: Array<RKPlayer>, rankArrNew: Array<RKPlayer>, playerMapSum) => {
+const mergeGame = (rankArrOld, rankArrNew, playerMapSum) => {
     let rMerge = rankArrOld.concat()
-    let isNew;
-    for (let pNew of rankArrNew) {
-        isNew = true
-        for (let pOld of rankArrOld) {
-            if (pNew.player_id == pOld.player_id) {
-                isNew = false
-                pOld.merge(pNew)
-                break;
+
+    let rankByBeatRaito = (player: RKPlayer, playerMapSum) => {
+        let pInsertBeatRaito = genBeatRaito(player, playerMapSum)
+        let isInsert = false
+        for (let i = 0; i < rMerge.length; i++) {
+            let p: RKPlayer = rMerge[i];
+            if (p.player_id != player.player_id) {
+                if (player.realWeight > p.realWeight)
+                // if (genBeatRaito(p, playerMapSum) < pInsertBeatRaito) 
+                {//
+                    rMerge.splice(i, 0, player)
+                    isInsert = true
+                    break;
+                }
             }
         }
-        if (isNew) {
-            playerMapSum[pNew.player_id] = pNew
-            rankArrOld.push(pNew)
+        //todo 
+        if (!isInsert)
+            rMerge.push(player)
+    }
+
+    let rankByRelation = (playerIn: RKPlayer, playerRef: RKPlayer, playerMapSum) => {
+        let playerInLoseRaito = playerIn.losePlayerMap[playerRef.player_id]
+        if (playerIn.beatPlayerMap[playerRef.player_id])
+            playerInLoseRaito += playerIn.beatPlayerMap[playerRef.player_id]
+        let nearestPlayer;
+        let rankIdx = -1;
+        for (let losePlayerId in playerRef.beatPlayerMap) {
+            let losePlayer = playerMapSum[losePlayerId]
+            let loseRaito = losePlayer.losePlayerMap[playerRef.player_id]
+            if (losePlayer.beatPlayerMap[playerRef.player_id])
+                loseRaito += losePlayer.beatPlayerMap[playerRef.player_id]
+            let isA = isAwinB(playerIn, losePlayer, playerMapSum)
+            let isB = isAwinB(losePlayer, playerIn, playerMapSum)
+            // findWinPath(playerIn.player_id,losePlayer.player_id,playerMapSum)
+            // if (isA || isB) {
+            //     console.log('rankByRelationAB', playerIn.name, isA, losePlayer.name, isB);
+            // }
+            if (playerInLoseRaito > loseRaito && isA) {
+                let r = findRankIn(losePlayer, rMerge)
+                if (rankIdx < 0 || (r > 0 && r < rankIdx)) {
+                    rankIdx = r
+                }
+                console.log('rankByRelation lose raito', playerIn.name, playerInLoseRaito, losePlayer.name, loseRaito, rankIdx);
+            }
+        }
+
+        return rankIdx
+    }
+
+    for (let i = 0; i < rankArrNew.length; i++) {
+        let pNew = rankArrNew[i];
+        let rankIdx = -1;
+        for (let i = 0; i < rankArrOld.length; i++) {
+            let pOld = rankArrOld[i];
+            // let pOld = rankArrOld[rankArrOld.length - 1 - i];
+            if (pNew.player_id != pOld.player_id) {
+                if (findRankIn(pNew, rMerge) < 0) { //新人入榜
+                    if (isAwinB(pNew, pOld, playerMapSum)) { //和老人有交手
+                        // if()
+                        // rankByRelation(pNew, pOld, playerMapSum)
+                        // let oldARank = findRankIn(pNew, rankArrOld)
+                        // let oldBRank = findRankIn(pOld, rankArrOld)
+                        // if (oldARank < oldBRank) { //
+
+                        // } else {
+                        //     console.log('todo 修正交手排名');
+                        //     // rankArrOld.splice(oldBRank, 0)
+                        //     // break;
+                        // }
+                        // console.log('todo oldRank', pNew.name, oldARank, pOld.name, oldBRank);
+                    } else {
+                        console.log('rank by beatRaito', pNew.name);
+                        rankByBeatRaito(pNew, playerMapSum)
+                        break;
+                    }
+                } else { //relation
+                    //排名修正
+                    if (isAwinB(pNew, pOld, playerMapSum)) { //和老人有交手
+                        // if()
+                        let r = rankByRelation(pNew, pOld, playerMapSum)
+                        if (r > -1) {
+                            if (rankIdx < 0)
+                                rankIdx = r
+                            else if (r < rankIdx) {
+                                rankIdx = r
+                            }
+                        }
+                    }
+                }
+            } else {
+                //same player
+            }
+        }
+        if (rankIdx > -1) {
+            let oldRank = findRankIn(pNew, rMerge)
+            if (oldRank > -1) {
+                if (rankIdx < oldRank) {
+                    rMerge.splice(rankIdx, 0, pNew)
+                    rMerge.splice(oldRank + 1, 1)
+                } else {
+                    console.log('oldRank', oldRank, pNew.name, 'new Rank', rankIdx);
+                }
+            } else
+                rMerge.splice(rankIdx, 0, pNew)
+            if (rMerge[rankIdx + 1])
+                console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge[rankIdx + 1].name);
+            else
+                console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge.length);
         }
     }
-    return rankArrOld
+    let sumArr = []
+    for (let p of rMerge) {
+        sumArr.push(sumPlayer(playerMapSum[p.player_id]))
+    }
+    console.log('after merge', sumArr);
+    return sumArr
 }
-// const mergeGame = (rankArrOld, rankArrNew, playerMapSum) => {
-//     let rMerge = rankArrOld.concat()
-
-//     let rankByBeatRaito = (player: RKPlayer, playerMapSum) => {
-//         let pInsertBeatRaito = genBeatRaito(player, playerMapSum)
-//         let isInsert = false
-//         for (let i = 0; i < rMerge.length; i++) {
-//             let p: RKPlayer = rMerge[i];
-//             if (p.player_id != player.player_id) {
-//                 if (player.realWeight > p.realWeight)
-//                 // if (genBeatRaito(p, playerMapSum) < pInsertBeatRaito) 
-//                 {//
-//                     rMerge.splice(i, 0, player)
-//                     isInsert = true
-//                     break;
-//                 }
-//             }
-//         }
-//         //todo 
-//         if (!isInsert)
-//             rMerge.push(player)
-//     }
-
-//     let rankByRelation = (playerIn: RKPlayer, playerRef: RKPlayer, playerMapSum) => {
-//         let playerInLoseRaito = playerIn.losePlayerMap[playerRef.player_id]
-//         if (playerIn.beatPlayerMap[playerRef.player_id])
-//             playerInLoseRaito += playerIn.beatPlayerMap[playerRef.player_id]
-//         let nearestPlayer;
-//         let rankIdx = -1;
-//         for (let losePlayerId in playerRef.beatPlayerMap) {
-//             try {
-//                 let losePlayer = playerMapSum[losePlayerId]
-//                 let loseRaito = losePlayer.losePlayerMap[playerRef.player_id]
-//                 if (losePlayer.beatPlayerMap[playerRef.player_id])
-//                     loseRaito += losePlayer.beatPlayerMap[playerRef.player_id]
-//                 let isA = isAwinB(playerIn, losePlayer, playerMapSum)
-//                 let isB = isAwinB(losePlayer, playerIn, playerMapSum)
-//                 // findWinPath(playerIn.player_id,losePlayer.player_id,playerMapSum)
-//                 // if (isA || isB) {
-//                 //     console.log('rankByRelationAB', playerIn.name, isA, losePlayer.name, isB);
-//                 // }
-//                 if (playerInLoseRaito > loseRaito && isA) {
-//                     let r = findRankIn(losePlayer, rMerge)
-//                     if (rankIdx < 0 || (r > 0 && r < rankIdx)) {
-//                         rankIdx = r
-//                     }
-//                     console.log('rankByRelation lose raito', playerIn.name, playerInLoseRaito, losePlayer.name, loseRaito, rankIdx);
-//                 }
-//             } catch (error) {
-//                 console.log('losePlayer undefine:', losePlayerId);
-//             }
-
-//         }
-
-//         return rankIdx
-//     }
-
-//     for (let i = 0; i < rankArrNew.length; i++) {
-//         let pNew = rankArrNew[i];
-//         let rankIdx = -1;
-//         for (let i = 0; i < rankArrOld.length; i++) {
-//             let pOld = rankArrOld[i];
-//             // let pOld = rankArrOld[rankArrOld.length - 1 - i];
-//             if (pNew.player_id != pOld.player_id) {
-//                 // if (findRankIn(pNew, rMerge) < 0) { //新人入榜
-//                 if (isAwinB(pNew, pOld, playerMapSum)) { //和老人有交手
-//                     // if()
-//                     // rankByRelation(pNew, pOld, playerMapSum)
-//                     // let oldARank = findRankIn(pNew, rankArrOld)
-//                     // let oldBRank = findRankIn(pOld, rankArrOld)
-//                     // if (oldARank < oldBRank) { //
-
-//                     // } else {
-//                     //     console.log('todo 修正交手排名');
-//                     //     // rankArrOld.splice(oldBRank, 0)
-//                     //     // break;
-//                     // }
-//                     // console.log('todo oldRank', pNew.name, oldARank, pOld.name, oldBRank);
-//                 } else {
-//                     console.log('rank by beatRaito', pNew.name);
-//                     rankByBeatRaito(pNew, playerMapSum)
-//                     break;
-//                 }
-//                 // } else { //relation
-
-//                 // }
-//             } else {
-//                 //same player
-//             }
-//         }
-//         if (rankIdx > -1) {
-//             let oldRank = findRankIn(pNew, rMerge)
-//             if (oldRank > -1) {
-//                 if (rankIdx < oldRank) {
-//                     rMerge.splice(rankIdx, 0, pNew)
-//                     rMerge.splice(oldRank + 1, 1)
-//                 } else {
-//                     console.log('oldRank', oldRank, pNew.name, 'new Rank', rankIdx);
-//                 }
-//             } else
-//                 rMerge.splice(rankIdx, 0, pNew)
-//             if (rMerge[rankIdx + 1])
-//                 console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge[rankIdx + 1].name);
-//             else
-//                 console.log('rankByRelation Insert', pNew.name, 'rank in', rankIdx, rMerge.length);
-//         }
-//     }
-//     let sumArr = []
-//     for (let p of rMerge) {
-//         try {
-//             sumArr.push(sumPlayer(playerMapSum[p.player_id]))
-//             console.log('after merge', sumArr);
-//         } catch (error) {
-//             console.log('sumPlayer undefine:', p);
-//         }
-//     }
-//     return sumArr
-// }
 export class RankModel {
     doc: any
     playerMapSum: any
@@ -244,10 +227,6 @@ export class RankModel {
         this.curGameInfo = this.gameInfoMap[gameId]
         console.log('merge next', this.curVaildGameIdx);
         return this.mergeGameArr([gameId])
-    }
-
-    mergeRank(r1, r2) {
-        this.rankMerge = mergeGame(r1, r2, this.playerMapSum)
     }
 
     mergeGameArr(gameIdArr) {
@@ -308,13 +287,40 @@ export class RankModel {
         return rankArrLast
     }
 
+    rippleProp(playerArr: Array<RKPlayer>, prop, step = 50) {
+        let m = {}
+        let maxAct = 0
+        for (let i = 0; i < playerArr.length; i++) {
+            let p: RKPlayer = playerArr[i];
+            let propValue = Math.ceil(p[prop] / step) || 0
+            // console.log('propValue',p[prop],propValue);
+            if (!m[propValue])
+                m[propValue] = []
+            maxAct = Math.max(maxAct, propValue)
+            m[propValue].push(p)
+        }
+        let pA = []
+        for (let i = 0; i < maxAct; i++) {
+            if (m[i + 1])
+                pA = m[i + 1].concat(pA)
+        }
+        return pA
+    }
 
     fixActivity(times) {
+        // let a = []
+        // for (let i = 0; i < this.rankMerge.length; i++) {
+        //     let p: RKPlayer = this.rankMerge[i];
+        //     if (p.activity > times - 1) {
+        //         a.push(p)
+        //     }
+        // }
+        // return a
         return this.layerRank()
     }
 
     fixRankByActivity(playerArr: Array<RKPlayer>) {
-        return playerArr
+        return this.rippleProp(playerArr, 'activity')
     }
 
     queryPlayerArrInFight(playerIdArr) {
@@ -368,6 +374,54 @@ export class RankModel {
         return false
     }
 
+    flowUpPlayer(topCount, times = 1) {
+        //todo flow champion >1
+        if (times > 3)
+            return this.rippleProp(this.rankMerge, 'realWeight', 0.5)
+        let playerArr: Array<RKPlayer> = this.rankMerge.slice(0, topCount)
+        let exRW;
+        // let needEx = false
+        for (let p0 of playerArr) {
+            p0.exRealWeight = 0
+        }
+        for (let p of playerArr)
+            for (let op of playerArr) {
+                if (p.player_id != op.player_id && p.champion > 0) {
+                    let rank1 = findRankIn(p, this.rankMerge)
+                    let rank2 = findRankIn(op, this.rankMerge)
+                    if (rank1 > rank2) {
+                        //todo 2 beatRaito>80% 换位
+                        //低位是否赢过高位
+                        if (!this.hasPath(p.player_id, op.player_id, 0)) {
+                            if (!this.hasPath(p.player_id, op.player_id, 1)) {
+                            }
+                            else {
+                                //up
+                                exRW = p.exRealWeight
+                                p.exRealWeight = Math.abs(p.realWeight - op.realWeight) * p.beatPlayerMap[op.player_id] * .2 / p.zenPlayerMap[op.player_id].length
+                                p.exRealWeight *= (p.zenRealWeight / this.topZenRealWeight)
+                                // if (exRW != p.exRealWeight)
+                                //     needEx = true
+                                console.log('need up 2', rank1, p.name, 'high', rank2, op.name);
+                            }
+                        }
+                        else {
+                            //up
+
+                            exRW = p.exRealWeight
+                            p.exRealWeight = Math.abs(p.realWeight - op.realWeight) * p.beatPlayerMap[op.player_id] / p.zenPlayerMap[op.player_id].length * .8
+                            p.exRealWeight *= (p.zenRealWeight / this.topZenRealWeight)
+                            // if (exRW != p.exRealWeight)
+                            //     needEx = true
+                            console.log('need up', rank1, p.name, 'high', rank2, op.name);
+                        }
+                    }
+                }
+            }
+        // if (needEx) {
+        this.rankMerge = this.rippleProp(this.rankMerge, 'realWeight', 1)
+        return this.flowUpPlayer(topCount, times + 1)
+    }
     updateBestRank() {
         for (let i = 0; i < this.rankMerge.length; i++) {
             let p = this.rankMerge[i]
@@ -379,7 +433,7 @@ export class RankModel {
     curGameInfo: any = {}
     merge(limit) {
         this.curVaildGameIdx = -1
-        // let playerMapSum = this.playerMapSum = {}
+        let playerMapSum = this.playerMapSum = {}
         for (let i = 0; i < limit; i++) {
             this.mergeNext()
         }
@@ -392,7 +446,6 @@ export class RankModel {
             let p = playerArr[i];
             let rkp = new RKPlayer(p)
             rkp.load(p)
-            this.playerMapSum[rkp.player_id] = rkp
             a.push(rkp)
         }
         this.rankMerge = a
@@ -450,7 +503,7 @@ export class RankModel {
             return item.beatCount > 9
         })
         // console.log('layer count a3', a3.length);
-
+        
         let layers2 = []
         for (let l of layers) {
             layers2 = layers2.concat(l)

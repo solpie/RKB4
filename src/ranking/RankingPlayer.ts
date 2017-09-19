@@ -19,9 +19,8 @@ export class RKPlayer {
     champion = 0 //冠军次数
     runnerUp = 0 //亚军次数
     reward = 0//奖金 3月6前冠军两千
-    get avgReward()
-    {
-        return this.reward/this.activity
+    get avgReward() {
+        return this.reward / this.activity
     }
     gameCount = 0
 
@@ -41,6 +40,27 @@ export class RKPlayer {
     load(playerDoc) {
         for (let k in playerDoc) {
             this[k] = playerDoc[k]
+        }
+    }
+    
+    merge(rkp: RKPlayer) {
+        let _m = (m1, m2) => {
+            for (let k in m2) {
+                m1[k] = m2[k]
+            }
+        }
+        if (this.player_id == rkp.player_id) {
+            this.gameCount += rkp.gameCount
+            _m(this.gameIdMap, rkp.gameIdMap)
+            this.win += rkp.win
+            _m(this.beatPlayerMap, rkp.beatPlayerMap)
+            _m(this.losePlayerMap, rkp.losePlayerMap)
+            _m(this.zenPlayerMap, rkp.zenPlayerMap)
+            _m(this.meetPlayerMap, rkp.meetPlayerMap)
+            this.reward += rkp.reward
+            this.champion += rkp.champion
+            this.master += rkp.master
+            this.runnerUp += rkp.runnerUp
         }
     }
     get playerId() {

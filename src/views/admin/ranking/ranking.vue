@@ -86,6 +86,7 @@
                 <br> query:
                 <el-input v-model='inputQuery' style="width:250px"></el-input>
                 <el-button @click='_("queryPlayer",inputQuery)'>queryPlayer</el-button>
+                <el-button @click='_("fixActivity",-1)'>layer</el-button>
                 <el-button @click='_("fixActivity",3)'>fixActivity 3</el-button>
                 <el-button @click='_("fixActivity",2)'>fixActivity 2</el-button>
             </div>

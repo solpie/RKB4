@@ -13,14 +13,16 @@
 <template>
     <div id="app">
         <el-tabs type="border-card">
+            <el-tab-pane>
+                <span slot="label">
+                    <i class="el-icon-edit"></i>Ranking</span>
+                <Ranking></Ranking>
+            </el-tab-pane>
+
             <el-tab-pane label="月赛">
                 <LiveData></LiveData>
             </el-tab-pane>
-            <el-tab-pane>
-                <span slot="label">
-                    <i class="el-icon-edit"></i>Admin</span>
-                <Ranking></Ranking>
-            </el-tab-pane>
+
             <el-tab-pane label="线上控制台">
                 <Home></Home>
                 <Dashboard></Dashboard>

@@ -20,7 +20,7 @@ let getRoundList = (callback) => {
     apiUrl(url, callback)
 }
 
-function downLoadGameData() {
+function downLoadGameData(fromGameId) {
     let _downLoadGameData = (gameInfoArr, gameDataArr, callback) => {
         if (gameInfoArr.length) {
             let gameInfo = gameInfoArr.pop()
@@ -46,7 +46,7 @@ function downLoadGameData() {
             //     // console.log(gameData);
             //     gameInfoArr2017.push(gameData)
             // }
-            if (gameData.id > 421) { //s3
+            if (gameData.id >= fromGameId) { //s3
                 // console.log(gameData);
                 gameInfoArr2017.push(gameData)
             }
@@ -61,7 +61,7 @@ function downLoadGameData() {
         })
     })
 }
-// downLoadGameData()
+// downLoadGameData(422) //s2
 
 //global
 //{player_id:[{oneGameRec}]}

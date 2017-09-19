@@ -16,7 +16,7 @@ export class RankingView {
     lastGameidx = 0
     rankModel: RankModel
     relationArr = []
-    inputLimit = 2
+    inputLimit = 29
     inputQuery = '2017-03-01 4'
     gameInfo = {}
     curPlayer: any = { name: '' }
@@ -32,24 +32,23 @@ export class RankingView {
 
     constructor() {
         this.cview = collectionView
-        $get('/ranking/', res => {
+        $get('/ranking/game/s3', res => {
             console.log('get game doc', res);
             this.rankModel = new RankModel(res.doc)
             let limit = 1
-            this.lastRanking = this.viewRank(this.rankModel.merge(limit))
+            // this.lastRanking = this.viewRank(this.rankModel.merge(limit))
         })
     }
     //第250站 403 2017-07-15 :东莞-第238站 
     reMergeRank(limit) {
         let a = this.rankModel.merge(limit)
-        this.rankModel.flowUpPlayer(Math.min(a.length, 50))
+        // this.rankModel.flowUpPlayer(Math.min(a.length, 50))
         this.rankModel.updateBestRank()
         this.lastRanking = this.viewRank(this.rankModel.rankMerge)
     }
 
     mergeNext() {
         let a = this.rankModel.mergeNext()
-        this.rankModel.flowUpPlayer(Math.min(a.length, 50))
         this.rankModel.updateBestRank()
         this.lastRanking = this.viewRank(this.rankModel.rankMerge)
     }
@@ -62,7 +61,7 @@ export class RankingView {
         this.gameInfo = this.rankModel.curGameInfo
         this.lastGameidx = this.rankModel.curVaildGameIdx
         let a = []
-        let start = page*100
+        let start = page * 100
         for (let i = 0 + start; i < start + Math.min(playerArr.length, 100); i++) {
             let p: RKPlayer = playerArr[i];
             p.ranking = i + 1
@@ -75,11 +74,17 @@ export class RankingView {
 
     fixActivity(times) {
         // this.lastRanking = this.mergeRank.fixRankByActivity(this.lastRanking)
-        let a = this.rankModel.fixActivity(times)
-        this.rankModel.rankMerge = a
+        if (times < 0) {
+            let layer = this.rankModel.layerRank()
+            this.lastRanking = this.viewRank(this.rankModel.rankMerge)
+        }
+        else {
+            let a = this.rankModel.fixActivity(times)
+            this.rankModel.rankMerge = a
+            console.log('fixactivity', a);
+            this.lastRanking = this.viewRank(a)
+        }
         // this.lastRanking = a
-        console.log('fixactivity', a);
-        this.lastRanking = this.viewRank(a)
     }
 
     fixRelation(type, param) {
@@ -180,7 +185,9 @@ export class RankingView {
 
     loadRank(season) {
         $get('/ranking/find/' + season, res => {
+            let curRankArr = this.rankModel.rankMerge.concat()
             this.rankModel.loadRank(res.doc.rankArr)
+            this.rankModel.mergeRank(this.rankModel.rankMerge,curRankArr)
             this.lastRanking = this.viewRank(this.rankModel.rankMerge)
             console.log('load rank ', res, this.rankModel.rankMerge);
         })
@@ -202,7 +209,7 @@ export class RankingView {
             this.lastRanking = this.viewRank(this.rankModel.rankMerge)
         }
     }
-    
+
     curPage = 0
     page(dir) {
         this.lastRanking = this.viewRank(this.rankModel.rankMerge, this.curPage + dir)
