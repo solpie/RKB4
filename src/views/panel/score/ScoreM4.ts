@@ -252,21 +252,25 @@ export class ScoreM4 {
         rm.y = rAvatar.y
 
         let rs = {
-            fontFamily: FontName.MicrosoftYahei,
-            fontSize: '35px', fill: "#fff",
+            fontFamily: FontName.Impact,
+            fontSize: '30px', fill: "#fff",
+            dropShadow: true,
+            dropShadowAngle: Math.PI / 2,
+            dropShadowColor: 0x2b4555,
+            dropShadowDistance: 3,
         }
         let lRankingText = new PIXI.Text("", rs)
         // lRankingText.x = lRankingColor.x + 26
-        lRankingText.y = 956
+        lRankingText.y = 144
         ctn.addChild(lRankingText)
         this.lRankingText = lRankingText
 
+        rs.dropShadowColor = 0x353032
         let rRankingText = new PIXI.Text("", rs)
         // rRankingText.x = rRankingColor.x + 22
         rRankingText.y = lRankingText.y
         ctn.addChild(rRankingText)
         this.rRankingText = rRankingText
-
         let rewardStyle = {
             fontFamily: FontName.MicrosoftYahei,
             fontSize: '28px', fill: "#fff",
@@ -460,7 +464,7 @@ export class ScoreM4 {
             console.log('lPlayer ranking data', rankingData);
             // this._drawRankingColor(this.lRankingColor, rankingData.color)
             this.lRankingText.text = rankingData.text
-            this.lRankingText.x = 693 - this.lRankingText.width * .5
+            this.lRankingText.x = 632 - this.lRankingText.width * .5
         }
     }
 
@@ -493,7 +497,7 @@ export class ScoreM4 {
         if (rankingData) {
             // this._drawRankingColor(this.rRankingColor, rankingData.color)
             this.rRankingText.text = rankingData.text
-            this.rRankingText.x = 1235 - this.rRankingText.width * .5
+            this.rRankingText.x = 1293 - this.rRankingText.width * .5
         }
     }
 

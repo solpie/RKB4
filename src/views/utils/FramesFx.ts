@@ -3,14 +3,14 @@ export class FramesFx extends PIXI.Container {
     mc: any
     constructor(imgUrlBase, from, to, numPad = 2) {
         super()
-        let alienImages = [];
+        let imgArr = [];
         for (var i = from; i < to + 1; i++) {
-            alienImages.push(imgUrlBase + paddy(i, numPad) + '.png')
+            imgArr.push(imgUrlBase + paddy(i, numPad) + '.png')
         }
         let textureArray = [];
 
-        for (let i = 0; i < alienImages.length; i++) {
-            let texture = PIXI.Texture.fromImage(alienImages[i]);
+        for (let i = 0; i < imgArr.length; i++) {
+            let texture = PIXI.Texture.fromImage(imgArr[i]);
             textureArray.push(texture);
         };
 

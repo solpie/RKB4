@@ -8,6 +8,7 @@ import { ChampionM2 } from './ChampionM2';
 import { GamePlayerInfo } from './GamePlayerInfo';
 import { GroupRankM2 } from './GroupRankM2';
 import { NoticePanel } from './NoticePanel';
+import { Victory0 } from "./Victory0";
 export interface IPopup {
     create: (parent) => void
     show: (param: any) => void
@@ -49,8 +50,8 @@ export class PopupView {
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);
                 data.visible ?
-                    this.show(Victory, data)
-                    : this.hide(Victory)
+                    this.show(Victory0, data)
+                    : this.hide(Victory0)
             })
             .on(WebDBCmd.sc_showRollText, data => {
                 console.log('sc_showRollText', data, this.popupItemMap);

@@ -23,6 +23,7 @@ export class ScoreView {
         let gameId = getUrlQuerys('gameId')
         let isDark = getUrlQuerys('theme') == 'dark'
         let isMonth = getUrlQuerys('m') == '1'
+
         console.log(gameId, isDark)
         if (isMonth)
             this.scorePanel = new ScoreM4(stage, isDark)
@@ -33,8 +34,13 @@ export class ScoreView {
         // TweenEx.delayedCall(2000, _ => {
         this.localWS = this.initLocalWs()
         // })
-    }
 
+        if (getUrlQuerys('t') == '1')
+            this.test()
+    }
+    test() {
+        this.localWS.emit()
+    }
     initDefaultPlayer() {
         let p = 'http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg'
         this.scorePanel.setLeftPlayerInfo('Player 1', p, 78, 178, '', 0, {})
@@ -94,9 +100,9 @@ export class ScoreView {
                 console.log('sc_init', data);
                 if (data.leftPlayer) {
                     let p = data.leftPlayer
-                    this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, {})
+                    this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking })
                     p = data.rightPlayer
-                    this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, {})
+                    this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking })
                     this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
                     this.scorePanel.set35ScoreLight(data.winScore)
                     this.scorePanel.setLeftFoul(data.leftFoul)
@@ -134,8 +140,6 @@ export class ScoreView {
                     this.scorePanel.setTimer(data.sec)
                 }
             })
-
-
         return localWs
     }
 }

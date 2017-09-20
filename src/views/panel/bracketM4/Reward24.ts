@@ -8,24 +8,39 @@ const reward3: number = 10000
 const reward4: number = 5000
 export class RewardModel {
 
-    static getReward(rec, lPlayer, rPlayer) {
+    static getReward(rec, lPlayer, rPlayer, isArr = false) {
+        return RewardModel._getReward(rec, lPlayer, rPlayer, isArr)
+    }
+    static _getReward(rec, lPlayer, rPlayer, isArr = false) {
         let rData = routeBracket24(rec)
         let rewardPlayerMap = RewardModel.calcReward(rec, rData.winLoseMap)
         let lRewardArr = rewardPlayerMap[lPlayer]
         let rRewardArr = rewardPlayerMap[rPlayer]
-        let lSum = 0
-        if (lRewardArr) {
-            for (let r of lRewardArr) {
-                lSum += r
-            }
+        if (isArr) {
+            return [lRewardArr, rRewardArr]
         }
-        let rSum = 0
-        if (rRewardArr) {
-            for (let r of rRewardArr) {
-                rSum += r
+        else {
+            let lSum = 0
+            if (lRewardArr) {
+                for (let r of lRewardArr) {
+                    lSum += r
+                }
             }
+            let rSum = 0
+            if (rRewardArr) {
+                for (let r of rRewardArr) {
+                    rSum += r
+                }
+            }
+            return [lSum, rSum]
         }
-        return [lSum, rSum]
+    }
+    static sumRewardArr(rewardArr) {
+        let sum = 0
+        for (let r of rewardArr) {
+            sum += r
+        }
+        return sum
     }
 
     static calcReward(rec, winLoseMap) {

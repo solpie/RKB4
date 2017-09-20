@@ -111,8 +111,8 @@
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>
                 <br>
-                <el-button @click='_("showGamePlayerInfo",true)'>show GamePlayerInfo</el-button>
-                <el-button @click='_("showGamePlayerInfo",false)'>hide GamePlayerInfo</el-button>
+                <el-button @click='_("showGamePlayerInfo",true)'>show Victory</el-button>
+                <el-button @click='_("showGamePlayerInfo",false)'>hide Victory</el-button>
                 <br>
                 <el-button @click='_("initBracket")'>initBracket Data</el-button>
                 <br>
@@ -124,7 +124,7 @@
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                                        <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                                                            <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
@@ -167,7 +167,8 @@
                 <br>
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
                 <br>
-                <el-button @click='_("testRandomGame")'>testRandomGame</el-button>
+                <el-button @click='_("testRandomGame",62)'>testRandomGame</el-button>
+                <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
                 <br>
                 <a href="/panel.html?panel=poker"> /panel.html?panel=poker</a>
                 <br>

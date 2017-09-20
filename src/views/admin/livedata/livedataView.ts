@@ -173,7 +173,8 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     showGamePlayerInfo(v) {
-        gmv.showGamePlayerInfo(v)
+        let data: any = { visible: v, _: '' }
+        $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
     }
 
     showPokerPanel(visible, pokerNum) {
@@ -229,12 +230,12 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     gambleAct(act, topicId?, option?) {
-        gamble.gambleAct(act,topicId,option)
+        gamble.gambleAct(act, topicId, option)
 
     }
 
-    testRandomGame() {
-        this.emit('testRandomGame')
+    testRandomGame(endGameIdx) {
+        this.emit('testRandomGame',endGameIdx)
     }
 
 }

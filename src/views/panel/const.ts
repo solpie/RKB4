@@ -22,4 +22,6 @@ export const preLoadImgArr = [
     '/img/panel/process/final8Bg.png',
     '/img/panel/process/final8Line.png',
     '/img/panel/process/vs.png',
+    '/img/panel/score/m4/winBg.png',
+    '/img/panel/score/m4/winPlayerBg.png',
 ]

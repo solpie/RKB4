@@ -14,6 +14,9 @@ export function delayCall(delay, callback) {
 //     //     .to({ alpha: 0 }, blink)
 //     //     .to({ alpha: 1 }, blink);
 // }
+export function shake(options: { target: any, x, y, time:number,loop?:number }) {
+    
+}
 //time sec
 export function blink2(options: { target: any, time?: number, loop?: number, callback?: any }) {
     // target, time = 0.08, loop = 0, callback = null

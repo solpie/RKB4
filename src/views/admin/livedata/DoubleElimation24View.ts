@@ -1,6 +1,6 @@
 import { ProcessView } from './ProcessView';
 import { RewardModel } from '../../panel/bracketM4/Reward24';
-import { BaseGameView, syncDoc } from "./BaseGame";
+import { BaseGameView, syncDoc, buildPlayerData } from "./BaseGame";
 import LiveDataView from "./livedataView";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
@@ -132,8 +132,8 @@ export default class DoubleElimination24View extends BaseGameView {
             this.setGameInfo(gameIdx)
         })
 
-        lv.on("testRandomGame", _ => {
-            this.testRandomGame()
+        lv.on("testRandomGame", endGameIdx => {
+            this.testRandomGame(endGameIdx)
         })
 
         lv.on(WebDBCmd.cs_commit, data => {
@@ -182,7 +182,6 @@ export default class DoubleElimination24View extends BaseGameView {
         $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
     }
     getAllPlayer2(callback) {
-
         getPlayerInfoArr(this.playerIdArr, resArr => {
             let playerDataArr = []
             for (let res of resArr) {
@@ -215,8 +214,8 @@ export default class DoubleElimination24View extends BaseGameView {
                     p['poker'] = ''
                     p.ranking = _r(playerOrderArr[i].player_id)
                     console.log('player 32', p.hupuID, p.ranking);
-
                     p.data = playerOrderArr[i]
+                    p.data.ranking = p.ranking
                     playerArr.push(p)
                     this.nameMapHupuId[p.name] = p
                 }
@@ -234,15 +233,21 @@ export default class DoubleElimination24View extends BaseGameView {
     //clear data
     initBracket() {
         syncDoc(gameDate, doc => {
-            let rec = doc['rec'] = {}
+            let rec = doc['rec']
+            // = {}
             for (let i = 0; i < 62; i++) {
-                rec[i + 1] = { gameIdx: i + 1, player: ['', ''], score: [0, 0], foul: [0, 0] }
+                if (i < 16) {
+                    rec[i + 1].score = [0, 0]
+                    rec[i + 1].foul = [0, 0]
+                }
+                else
+                    rec[i + 1] = { gameIdx: i + 1, player: ['', ''], score: [0, 0], foul: [0, 0] }
             }
             doc['gameIdx'] = 1
-            for (let i = 0; i < 16; i++) {
-                let gameIdx = i + 1
-                rec[i + 1].player = ['p' + (gameIdx * 2 - 1), 'p' + gameIdx * 2]
-            }
+            // for (let i = 0; i < 16; i++) {
+            //     let gameIdx = i + 1
+            //     rec[i + 1].player = ['p' + (gameIdx * 2 - 1), 'p' + gameIdx * 2]
+            // }
         }, true)
     }
 
@@ -335,7 +340,12 @@ export default class DoubleElimination24View extends BaseGameView {
             rec.player = [this.lPlayer, this.rPlayer]
             this.gameIdx++
             doc.gameIdx = this.gameIdx
-            // this.emitVictory(doc)
+
+            let rewardArr = RewardModel.getReward(doc.rec, this.lPlayer, this.rPlayer, true)
+            let lReward = { rewardArr: rewardArr[0], reward: 0 }
+            let rReward = { rewardArr: rewardArr[1], reward: 0 }
+
+            this.emitVictory(doc, this.gameIdx - 1, lReward, rReward)
             this.emitBracket(doc)
             if (data.isEnd)
                 return
@@ -356,6 +366,25 @@ export default class DoubleElimination24View extends BaseGameView {
         }, true)
     }
 
+    emitVictory(doc, lastGameIdx, l, r) {
+        if (this.lScore != 0 || this.rScore != 0) {
+            let winPlayer: PlayerInfo;
+            let reward;
+            let isLeft = this.lScore > this.rScore
+            if (isLeft) {
+                reward = l
+                winPlayer = this.getPlayerInfo(this.lPlayer)
+            }
+            else {
+                reward = r
+                winPlayer = this.getPlayerInfo(this.rPlayer)
+            }
+            let sumMap = buildPlayerData(doc, true)
+            let rec = sumMap[winPlayer.name]
+            let data = { _: null, visible: true, winner: winPlayer.data, rec: rec, gameIdx: lastGameIdx, reward: reward, isLeft: isLeft }
+            $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+        }
+    }
     emitGameInfo(exDataCall?) {
         let data: any = { _: null }
         data.winScore = 3
@@ -407,9 +436,9 @@ export default class DoubleElimination24View extends BaseGameView {
     }
 
     ///////////
-    testRandomGame() {
+    testRandomGame(endGameIdx) {
         syncDoc(gameDate, doc => {
-            for (let i = 0; i < 62; i++) {
+            for (let i = 0; i < endGameIdx; i++) {
                 let g = doc['rec'][i + 1]
                 g.score = [1, 0]
                 console.log('gameIdx', i + 1, g);
