@@ -24,6 +24,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_ROLL_TEXT = 'EVENT_ROLL_TEXT'
     static EVENT_SHOW_PROCESS = 'EVENT_SHOW_PROGRESS'
     static EVENT_SHOW_PLAYER_PROCESS = 'EVENT_SHOW_PLAYER_PROCESS'
+    static EVENT_SHOW_FINAL4_REWARD = 'EVENT_SHOW_FINAL4_REWARD'
     static EVENT_SHOW_IMG = 'EVENT_SHOW_IMG'
     static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
     gameView: IBaseGameView
@@ -225,6 +226,10 @@ export default class LiveDataView extends EventDispatcher {
         this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { lastGame: true })
     }
 
+    showFinal4Reward() {
+        this.emit(LiveDataView.EVENT_SHOW_FINAL4_REWARD)
+    }
+
     startGamble(roomId, left, right) {
         gamble.startGamble(roomId, left, right)
     }
@@ -235,7 +240,7 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     testRandomGame(endGameIdx) {
-        this.emit('testRandomGame',endGameIdx)
+        this.emit('testRandomGame', endGameIdx)
     }
 
 }

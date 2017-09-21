@@ -1,3 +1,4 @@
+import { descendingProp } from '../../utils/JsFunc';
 import { routeBracket24 } from "./Bracket24Route";
 
 const winGroupReward: number = 2000
@@ -101,5 +102,26 @@ export class RewardModel {
         }
         console.log('total reward ', sum);
         return playerMap
+    }
+
+    static final4Reward(rec, playerDataMap, data) {
+        let playerArr1 = rec['59'].player
+        let playerArr2 = rec['60'].player
+        let rewardArr1 = this.getReward(rec, playerArr1[0], playerArr1[1])
+        let rewardArr2 = this.getReward(rec, playerArr2[0], playerArr2[1])
+        let playerArr = [
+            { player: playerArr1[0], reward: rewardArr1[0], data: null },
+            { player: playerArr1[1], reward: rewardArr1[1], data: null },
+            { player: playerArr2[0], reward: rewardArr2[0], data: null },
+            { player: playerArr2[1], reward: rewardArr2[1], data: null },
+        ]
+        playerArr = playerArr.sort(descendingProp('reward'))
+        data.text = ''
+        data.visible =true
+        for (let p of playerArr) {
+            p.data = playerDataMap[p.player]
+            data.text += `${p.data.hupuID} :￥${p.reward/1000},000       `
+        }
+        return playerArr
     }
 }

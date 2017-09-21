@@ -27,17 +27,19 @@ export class BaseAvatar extends PIXI.Container {
     }
     waitUrl: string
     load(url) {
-        if (this.isLoaded)
-            imgLoader.loadTex(url, tex => {
-                let avt = this.avt
-                avt.texture = tex
-                let s = this.avtWidth / tex.width
-                avt.x = avt.mask.x// - avt.texture.width * .5 * s
-                avt.scale.x = avt.scale.y = s
-                avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
-            })
-        else {
-            this.waitUrl = url
+        if (url) {
+            if (this.isLoaded)
+                imgLoader.loadTex(url, tex => {
+                    let avt = this.avt
+                    avt.texture = tex
+                    let s = this.avtWidth / tex.width
+                    avt.x = avt.mask.x// - avt.texture.width * .5 * s
+                    avt.scale.x = avt.scale.y = s
+                    avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
+                })
+            else {
+                this.waitUrl = url
+            }
         }
     }
 }

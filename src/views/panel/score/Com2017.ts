@@ -54,6 +54,8 @@ export const MatchType = {
 };
 
 export function simplifyName(n: string) {
+    if(!n)
+        return ''
     if (n.substring(0, 3) == '安云鹏')
         return '安云鹏'
     return n||''

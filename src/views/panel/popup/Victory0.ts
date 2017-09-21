@@ -47,7 +47,7 @@ export class Victory0 extends PIXI.Container implements IPopup {
             fontSize: '54px', fill: '#fff',
             fontWeight: 'bold',
             stroke: '#000',
-            strokeThickness: 2,
+            strokeThickness: 3,
             dropShadow: true,
             dropShadowAngle: Math.PI / 2,
             dropShadowColor: 0x0d5c92,

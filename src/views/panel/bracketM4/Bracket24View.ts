@@ -1,11 +1,9 @@
-import { Bracket24 } from './Bracket24';
 import { routeBracket24 } from './Bracket24Route';
 import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../webDBCmd";
 
 declare let io;
 export class Bracket24View {
-    bracket:Bracket24
     constructor() {
 
     }

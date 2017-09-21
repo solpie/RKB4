@@ -140,6 +140,14 @@ export class ScoreView {
                     this.scorePanel.setTimer(data.sec)
                 }
             })
+            .on(WebDBCmd.sc_showVictory, data => {
+                if (data.visible) {
+                    this.scorePanel.hide()
+                    TweenEx.delayedCall(2500, _ => {
+                        this.scorePanel.show()
+                    })
+                }
+            })
         return localWs
     }
 }

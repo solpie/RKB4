@@ -106,6 +106,34 @@
             </el-row>
             <el-row>
                 <hr>
+                <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
+                                                                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                滚动文字：
+                <el-input v-model="inputRollText" style="width:250px"></el-input>
+                <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
+                <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
+                <br>
+                <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
+                <el-button @click='_("showGameProcess",true,"auto")'>比赛进程</el-button>
+                <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
+                <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
+                <el-button @click='_("showGameProcess",true,"pre2")'>分组赛 2</el-button>
+                <el-button @click='_("showGameProcess",true,"lose1")'>败者组 1</el-button>
+                <el-button @click='_("showGameProcess",true,"win1")'>胜者组 1</el-button>
+                <br>
+                <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
+                <el-button @click='_("showGameProcess",true,"win2")'>胜者组 2</el-button>
+                <el-button @click='_("showGameProcess",true,"lose3")'>败者组 3</el-button>
+                <el-button @click='_("showGameProcess",true,"lose4")'>败者组 4</el-button>
+                <el-button @click='_("showGameProcess",true,"final8")'>8强</el-button>
+                <el-button @click='_("showGameProcess",true,"final")'>决赛</el-button>
+                <br>
+                <el-button @click='_("showFinal4Reward")'>四强奖金</el-button>
+                <br>
+                <el-button @click='_("showImg",true,"bd1")'>媒体1</el-button>
+                <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
+                <el-button @click='_("showImg",false,"bd1")'>隐藏媒体1</el-button>
+                <hr>
                 <el-button @click='_("initDoubleElimation")'>initDoubleElimation</el-button>
                 <el-button @click='_("initGameMonth",380)'>init Game Month</el-button>
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
@@ -118,40 +146,18 @@
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
-
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
-                <hr>
-                <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                                            <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
-                滚动文字：
-                <el-input v-model="inputRollText" style="width:250px"></el-input>
-                <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
-                <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
-                <br>
-                <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
-                <el-button @click='_("showGameProcess",true)'>比赛进程</el-button>
-                <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
-                <el-button @click='_("showGameProcess",true,"pre2")'>分组赛 2</el-button>
-                <el-button @click='_("showGameProcess",true,"lose1")'>败者组 1</el-button>
-                <el-button @click='_("showGameProcess",true,"win1")'>胜者组 1</el-button>
-                <br>
-                <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
-                <el-button @click='_("showGameProcess",true,"win2")'>胜者组 2</el-button>
-                <el-button @click='_("showGameProcess",true,"lose3")'>败者组 3</el-button>
-                <el-button @click='_("showGameProcess",true,"lose4")'>败者组 4</el-button>
-                <el-button @click='_("showGameProcess",true,"final8")'>8强</el-button>
-                <el-button @click='_("showGameProcess",true,"final")'>决赛</el-button>
-                <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
-                <br>
-                <el-button @click='_("showImg",true,"bd1")'>媒体1</el-button>
-                <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
-                <el-button @click='_("showImg",false,"bd1")'>隐藏媒体1</el-button>
             </el-row>
             <el-row>
                 <hr>
                 <el-button @click='_("syncPlayer")'>更新球员数据</el-button>
+
+                <el-button @click='_("testRandomGame",62)'>testRandomGame</el-button>
+                <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
+                <el-button @click='_("testRandomGame",52)'>testRandomGame 52 八强</el-button>
+
                 <el-button @click='_("reMapBracket")'>reMapBracket</el-button>
                 <!-- <el-button @click='_("showPokerPanel",true,8)'>show Poker 8</el-button> -->
                 <!-- <el-button @click='_("showPokerPanel",true,12)'>show Poker 12</el-button> -->
@@ -167,8 +173,6 @@
                 <br>
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
                 <br>
-                <el-button @click='_("testRandomGame",62)'>testRandomGame</el-button>
-                <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
                 <br>
                 <a href="/panel.html?panel=poker"> /panel.html?panel=poker</a>
                 <br>

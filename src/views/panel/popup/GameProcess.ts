@@ -101,10 +101,6 @@ class PlayerItem2 extends PIXI.Container {
         // let gameIdx
     }
     setData(l, r) {
-
-        // this.setPlayerName(l.hupuID, r.hupuID)
-        // this.setScore(l.score, r.score)
-        // this.setAvatar(l.data.avatar, r.data.avatar)
         this.lPlayerName.text = simplifyName(l.hupuID)
         fitWidth(this.lPlayerName, 270, 38)
         this.lPlayerName.x = 285 - this.lPlayerName.width
@@ -113,21 +109,27 @@ class PlayerItem2 extends PIXI.Container {
         fitWidth(this.rPlayerName, 270, 38)
         this.rPlayerName.x = 285 - this.rPlayerName.width
 
-        this.lAvt.load(l.data.avatar)
-        this.rAvt.load(r.data.avatar)
+        if (l.data.avatar)
+            this.lAvt.load(l.data.avatar)
+        if (r.data.avatar)
+            this.rAvt.load(r.data.avatar)
         // let dotFilter = new PIXI.filters['DropShadowFilter']()
         let lScore = l.score, rScore = r.score
         let lP = this.lAvt.parent
         let rP = this.rAvt.parent
-        if (lScore < rScore) {
-            //todo gray
-            lP.alpha = 0.5
-            rP.alpha = 1
-
+        if (lScore == 0 && rScore == 0) {
+            lP.alpha = rP.alpha = 1
         }
         else {
-            lP.alpha = 1
-            rP.alpha = 0.5
+            if (lScore < rScore) {
+                lP.alpha = 0.5
+                rP.alpha = 1
+
+            }
+            else {
+                lP.alpha = 1
+                rP.alpha = 0.5
+            }
         }
     }
 }
@@ -151,9 +153,28 @@ class PlayerItem extends PIXI.Container {
 
         let bg = newBitmap({ url: '/img/panel/process/playerBg.png' })
         this.addChild(bg)
+        let bg2 = newBitmap({ url: '/img/panel/process/playerBg.png' })
+        this.addChild(bg2)
 
         bg.x = (flatBg.width - 967) * .5
         bg.y = 8
+
+        bg2.x = bg.x
+        bg2.y = bg.y
+
+        let lMask = new PIXI.Graphics()
+        lMask.beginFill(0xffffff)
+            .drawRect(0, 0, 470, 84)
+        lMask.x = bg.x
+        this.addChild(lMask)
+        bg.mask = lMask
+
+        let rMask = new PIXI.Graphics()
+        rMask.beginFill(0xffffff)
+            .drawRect(470, 0, 470, 84)
+        rMask.x = bg.x
+        this.addChild(rMask)
+        bg2.mask = rMask
 
 
         let ns = {
@@ -171,14 +192,14 @@ class PlayerItem extends PIXI.Container {
         let rpn = new PIXI.Text('', ns)
         rpn.y = lpn.y
         this.rPlayerName = rpn
-        bg.addChild(rpn)
+        bg2.addChild(rpn)
 
         ns.fill = '#435359'
         let gtxt = new PIXI.Text("", ns)
         this.gameIdxText = gtxt
-        gtxt.x = -160
+        gtxt.x = bg.x - 160
         gtxt.y = 15
-        bg.addChild(gtxt)
+        this.addChild(gtxt)
 
         ns.fontSize = '56px'
         ns.fill = '#fff'
@@ -192,8 +213,7 @@ class PlayerItem extends PIXI.Container {
         rScore.x = 510
         rScore.y = lScore.y
         this.rScoreText = rScore
-        bg.addChild(rScore)
-
+        bg2.addChild(rScore)
 
 
         this.lAvt = new BaseAvatar('/img/panel/score/m4/avtMask.png', 88)
@@ -204,21 +224,16 @@ class PlayerItem extends PIXI.Container {
         this.rAvt = new BaseAvatar('/img/panel/score/m4/avtMaskR.png', 88)
         this.rAvt.x = 568
         this.rAvt.y = this.lAvt.y
-        bg.addChild(this.rAvt)
+        bg2.addChild(this.rAvt)
     }
 
-    odd:number
+    odd: number
     setStrip(odd) {
         this.odd = odd
         if (odd)
             this.flatBg.alpha = .3
         else
             this.flatBg.alpha = .2
-    }
-
-    _fitName(labal: PIXI.Text) {
-        if (labal.width > 300)
-            labal.style.fontSize = '40px'
     }
 
     setPlayerName(l, r) {
@@ -230,10 +245,26 @@ class PlayerItem extends PIXI.Container {
         this.rPlayerName.x = 670
     }
 
-    setScore(l, r) {
+    setScore(l, r, tabIdx) {
+        let v = !(l == 0 && r == 0)
         this.lScoreText.visible =
-            this.rScoreText.visible = !(l == 0 && r == 0)
+            this.rScoreText.visible = v
+        let lP = this.lAvt.parent
+        let rP = this.rAvt.parent
+        lP.alpha = rP.alpha = 1
+        if (v && (tabIdx == 2
+            || tabIdx == 4
+            || tabIdx == 6
+            || tabIdx == 7
+        )) {
+            if (l < r) {
+                lP.alpha = 0.5
 
+            }
+            else {
+                rP.alpha = 0.5
+            }
+        }
         this.lScoreText.text = l
         this.rScoreText.text = r
     }
@@ -243,9 +274,10 @@ class PlayerItem extends PIXI.Container {
         this.rAvt.load(r)
     }
 
-    setData(l, r) {
+    setData(l, r, tabIdx) {
         this.setPlayerName(l.hupuID, r.hupuID)
-        this.setScore(l.score, r.score)
+        this.setScore(l.score, r.score, tabIdx)
+
         this.setAvatar(l.data.avatar, r.data.avatar)
     }
     setGameIdx(gameIdx) {
@@ -253,15 +285,16 @@ class PlayerItem extends PIXI.Container {
     }
 
     setFocus(v) {
+        let flatBgX = (this.flatBg.width - 967) * .5
         if (v) {
             this.flatBg.y = -5
             this.flatBg.alpha = .6
             this.x = -70
-            this.gameIdxText.x = -110
+            this.gameIdxText.x = flatBgX - 110
             setScale(this, 1.1)
         }
         else {
-            this.gameIdxText.x = -160
+            this.gameIdxText.x = flatBgX - 160
             this.flatBg.y = 0
             this.setStrip(this.odd)
             this.x = 0
@@ -389,8 +422,10 @@ export class GameProcess extends PIXI.Container implements IPopup {
         let playerAvtArr = []
         for (let i = 0; i < gamePlayerArr.length; i++) {
             let playerArr = gamePlayerArr[i];
-            playerAvtArr.push(playerArr[0].data.avatar)
-            playerAvtArr.push(playerArr[1].data.avatar)
+            if (playerArr[0].data.avatar)
+                playerAvtArr.push(playerArr[0].data.avatar)
+            if (playerArr[1].data.avatar)
+                playerAvtArr.push(playerArr[1].data.avatar)
         }
         imgLoader.loadTexArr(playerAvtArr, _ => {
 
@@ -422,7 +457,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
                 for (let i = 0; i < gamePlayerArr.length; i++) {
                     let playerArr = gamePlayerArr[i];
                     let pi = this.playerItemArr[i]
-                    pi.setData(playerArr[0], playerArr[1])
+                    pi.setData(playerArr[0], playerArr[1], tabIdx)
                     if (processParam.gameIdx == processParam.start + i) {
                         this.setFucosPlayerItem(pi)
                     }

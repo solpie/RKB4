@@ -93,6 +93,7 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SET_VS, vsStr => {
             this.setVS(vsStr)
         })
+
         lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
             syncDoc(gameDate, doc => {
                 console.log('sync doc', doc);
@@ -110,11 +111,20 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SHOW_PROCESS, data => {
             syncDoc(gameDate, doc => {
                 data._ = ''
-                let processParam = ProcessView.showTab(doc.rec, data.tab, this.nameMapHupuId)
+                let processParam = ProcessView.showTab(doc.rec, data.tab, this.nameMapHupuId, this.gameIdx)
                 processParam.gameIdx = this.gameIdx
                 data.processParam = processParam
                 console.log('EVENT_SHOW_PROCESS', processParam);
                 $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)
+            })
+        })
+
+        lv.on(LVE.EVENT_SHOW_FINAL4_REWARD, _ => {
+            syncDoc(gameDate, doc => {
+                let data: any = { _: null }
+                let playerArr = RewardModel.final4Reward(doc.rec, this.nameMapHupuId,data)
+                $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+                
             })
         })
 
@@ -381,7 +391,10 @@ export default class DoubleElimination24View extends BaseGameView {
             }
             let sumMap = buildPlayerData(doc, true)
             let rec = sumMap[winPlayer.name]
-            let data = { _: null, visible: true, winner: winPlayer.data, rec: rec, gameIdx: lastGameIdx, reward: reward, isLeft: isLeft }
+            let data = {
+                _: null, visible: true, winner: winPlayer.data,
+                rec: rec, gameIdx: lastGameIdx, reward: reward, isLeft: isLeft
+            }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
         }
     }

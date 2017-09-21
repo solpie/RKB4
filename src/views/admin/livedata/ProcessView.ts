@@ -1,3 +1,4 @@
+import { GameType, GameTypeMap } from '../../panel/bracketM4/Bracket24Route';
 let getGamePlayer = (rec, start, end, playerDataMap) => {
     start--;
     let gamePlayerArr = []
@@ -6,8 +7,15 @@ let getGamePlayer = (rec, start, end, playerDataMap) => {
         let playerArr = rec[gameIdx].player
         let lPlayer = playerDataMap[playerArr[0]]
         let rPlayer = playerDataMap[playerArr[1]]
-        lPlayer.score = rec[gameIdx].score[0]
-        rPlayer.score = rec[gameIdx].score[1]
+        // try {
+        if (lPlayer)
+            lPlayer.score = rec[gameIdx].score[0]
+        else
+            lPlayer = { data: {} }
+        if (rPlayer)
+            rPlayer.score = rec[gameIdx].score[1]
+        else
+            rPlayer = { data: {} }
         gamePlayerArr.push([lPlayer, rPlayer])
     }
     return gamePlayerArr
@@ -37,8 +45,17 @@ export class ProcessView {
             let p1 = ProcessView.showPlayerProcess(doc.rec, gameIdx, playerArr[0], playerDataMap)
             let p2 = ProcessView.showPlayerProcess(doc.rec, gameIdx, playerArr[1], playerDataMap)
             if (p1.gameIdx && p2.gameIdx) {
-                data.text = '比赛预告:  [第' + p1.gameIdx + '场] ' + p1.player[0] + ' vs ' + p1.player[1]
-                data.text += '   [第' + p2.gameIdx + '场] ' + p2.player[0] + ' vs ' + p2.player[1]
+                let _ = (gameIdx) => {
+                    let gt = GameTypeMap[gameIdx]
+                    if (gt == GameType.lose)
+                        return '败者组'
+                    if (gt == GameType.win)
+                        return '胜者组'
+                }
+                let gameTypeStr1 = _(p1.gameIdx)
+                let gameTypeStr2 = _(p2.gameIdx)
+                data.text = '比赛预告:  [第' + p1.gameIdx + `场 - ${gameTypeStr1}] ` + p1.player[0] + ' vs ' + p1.player[1]
+                data.text += '   [第' + p2.gameIdx + `场 - ${gameTypeStr2}] ` + p2.player[0] + ' vs ' + p2.player[1]
                 data.visible = true
             }
         }
@@ -53,12 +70,33 @@ export class ProcessView {
         }
         return data
     }
-
-    static showTab(rec, tab, playerDataMap) {
+    
+    static showTab(rec, tab, playerDataMap, gameIdx) {
         let gamePlayerArr;
         let title;
         let idx
         let start, end;
+        let seMap = {
+            'pre1': [1, 8],
+            'pre2': [9, 16],
+            'lose1': [17, 24],
+            'win1': [25, 32],
+            'lose2': [33, 40],
+            'win2': [41, 44],
+            'lose3': [45, 48],
+            'lose4': [49, 52],
+            'final8': [53, 62],
+            'final': [53, 62],
+        }
+        if (tab == 'auto') {
+            for (let k in seMap) {
+                let se = seMap[k]
+                if (gameIdx >= se[0] && gameIdx <= se[1]) {
+                    tab = k
+                    break;
+                }
+            }
+        }
         if (tab == 'pre1') {
             title = '分组赛01'
             idx = 1
