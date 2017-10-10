@@ -254,3 +254,16 @@ export function cutText(textObj, width) {
         cutText(textObj, width)
     }
 }
+
+export function hideObj(obj) {
+    if (obj.parent) {
+        obj['__parent'] = obj.parent
+        obj.parent.removeChild(obj)
+    }
+}
+
+export function showObj(obj) {
+    if (obj.__parent) {
+        obj.__parent.addChild(obj)
+    }
+}

@@ -281,7 +281,7 @@ export class ScoreM4 {
         let rRewardTex = newBitmap({ url: '/img/panel/score/m4/rewardTex.png' })
         ctn.addChild(rRewardTex)
 
-        let lRewardText = new PIXI.Text('￥20,000', rewardStyle)
+        let lRewardText = new PIXI.Text('', rewardStyle)
         lRewardText.x = 695
         lRewardText.y = 238
         this.lRewardText = lRewardText
@@ -289,7 +289,7 @@ export class ScoreM4 {
 
         ctn.addChild(lRewardText)
 
-        let rRewardText = new PIXI.Text('￥20,000', rewardStyle)
+        let rRewardText = new PIXI.Text('', rewardStyle)
         this.rRewardText = rRewardText
         rRewardText.x = 1227 - rRewardText.width
         rRewardText.y = lRewardText.y
@@ -502,7 +502,6 @@ export class ScoreM4 {
     }
 
     setExPlayerInfo(data) {
-
         let lText = ''
         if (data.lReward == 0)
             lText = '￥000.00'
@@ -517,6 +516,14 @@ export class ScoreM4 {
 
         this.lRewardText.text = lText
         this.rRewardText.text = rText
+
+        if (data.lReward && data.rReward) {
+            
+        }
+        else {
+            this.lRewardText.text = ''
+            this.rRewardText.text = ''
+        }
     }
 
     getPlayerInfo(isLeft) {

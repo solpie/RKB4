@@ -5,7 +5,7 @@ import { TweenEx } from '../../utils/TweenEx';
 import { BaseAvatar } from '../base/BaseAvatar';
 import { ViewConst, FontName } from '../const';
 import { FramesFx } from '../../utils/FramesFx';
-import { alignCenter, newBitmap, newModal, setScale } from '../../utils/PixiEx';
+import { alignCenter, newBitmap, newModal, setScale, showObj } from '../../utils/PixiEx';
 import { IPopup } from './PopupView';
 import { GameType, GameTypeMap } from '../bracketM4/Bracket24Route';
 import { simplifyName } from "../score/Com2017";
@@ -56,7 +56,7 @@ export class Victory0 extends PIXI.Container implements IPopup {
         let playerName = new PIXI.Text('player name', pns)
         this.playerNameText = playerName
         playerName.x = 220
-        playerName.y =12
+        playerName.y = 12
         playerBg.addChild(playerName)
         pns.fontSize = '34px'
         let winLose = new PIXI.Text('1胜1负', pns)
@@ -89,18 +89,24 @@ export class Victory0 extends PIXI.Container implements IPopup {
         let playerData = param.winner
         this.playerNameText.text = simplifyName(playerData.name)
         fitWidth(this.playerNameText, 300, 54)
-        
+
         this.avt.load(playerData.avatar)
         let prefix = ""
-        if (GameTypeMap[param.gameIdx] == GameType.lose) {
-            prefix = '败者组'
+        if (param.gameType) {
+            prefix = param.gameType
         }
-        else if (GameTypeMap[param.gameIdx] == GameType.win) {
-            prefix = '胜者组'
+        else {
+            if (GameTypeMap[param.gameIdx] == GameType.lose) {
+                prefix = '败者组'
+            }
+            else if (GameTypeMap[param.gameIdx] == GameType.win) {
+                prefix = '胜者组'
+            }
+            else if (GameTypeMap[param.gameIdx] == GameType.pre) {
+                prefix = '分组赛'
+            }
         }
-        else if (GameTypeMap[param.gameIdx] == GameType.pre) {
-            prefix = '分组赛'
-        }
+
         this.winLoseText.text = prefix + "  " + param.rec.win + '胜  ' + param.rec.lose + '负'
         if (param.isLeft) {
             this.playerNameText.style.dropShadowColor = 0x0d5c92
@@ -110,26 +116,33 @@ export class Victory0 extends PIXI.Container implements IPopup {
             this.playerNameText.style.dropShadowColor = 0x353032
             this.winLoseText.style.dropShadowColor = 0x353032
         }
-        let rewardArr = param.reward.rewardArr
-        if (rewardArr.length == 0) {
-            this.rewardText.text = "￥000,00"
+        if (param.reward) {
+            this.rewardText.visible = true
+            showObj(this.rewardText)
+            let rewardArr = param.reward.rewardArr
+            if (rewardArr.length == 0) {
+                this.rewardText.text = "￥000,00"
+            }
+            else {
+                // this.rewardText.text = "￥" + param.reward.lastReward / 1000 + ",000"
+                let num = { reward: 0 }
+                let sumReward = RewardModel.sumRewardArr(rewardArr)
+                let lastReward = sumReward - rewardArr[rewardArr.length - 1]
+                let oneReward = rewardArr[rewardArr.length - 1]
+                new TweenEx(num).to({ reward: oneReward }, 600).update(_ => {
+                    this.rewardText.text = "￥" + Math.floor((lastReward + num.reward) / 1000) + ","
+                        + paddy(Math.floor((lastReward + num.reward) % 1000), 3)
+                    setScale(this.rewardText, 1 + Math.random() * .2)
+                })
+                    .start()
+                TweenEx.delayedCall(700, _ => {
+                    setScale(this.rewardText, 1)
+                    this.rewardText.text = "￥" + sumReward / 1000 + ",000"
+                })
+            }
         }
         else {
-            // this.rewardText.text = "￥" + param.reward.lastReward / 1000 + ",000"
-            let num = { reward: 0 }
-            let sumReward = RewardModel.sumRewardArr(rewardArr)
-            let lastReward = sumReward - rewardArr[rewardArr.length - 1]
-            let oneReward = rewardArr[rewardArr.length - 1]
-            new TweenEx(num).to({ reward: oneReward }, 600).update(_ => {
-                this.rewardText.text = "￥" + Math.floor((lastReward + num.reward) / 1000) + ","
-                    + paddy(Math.floor((lastReward + num.reward) % 1000), 3)
-                setScale(this.rewardText, 1 + Math.random() * .2)
-            })
-                .start()
-            TweenEx.delayedCall(700, _ => {
-                setScale(this.rewardText, 1)
-                this.rewardText.text = "￥" + sumReward / 1000 + ",000"
-            })
+            this.rewardText.visible = false
         }
         TweenEx.delayedCall(2500, _ => {
             this.hide()
