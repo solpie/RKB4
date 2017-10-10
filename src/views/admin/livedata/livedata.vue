@@ -107,7 +107,7 @@
             <el-row>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                                                                                                                                                        <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
@@ -146,6 +146,7 @@
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
+                <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
@@ -173,17 +174,29 @@
                 <br>
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
                 <br>
-                <br>
-                <a href="/panel.html?panel=poker"> /panel.html?panel=poker</a>
-                <br>
-                <a href="/panel.html?panel=bracket20&m2=1">/panel.html?panel=bracket20&m2=1</a>
-                <br>
-                <a href="/panel.html?panel=bracket20&m2=1&score=1">/panel.html?panel=bracket20&m2=1&score=1</a>
+            </el-row>
+            <el-row>
+                <input type="file" id="files" name="files[]" hidden />
+                <el-button @click="onFile">...</el-button>
+                <output id="list"></output>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->
     </div>
 </template>
+<style>
+#drop_zone {
+    border: 2px dashed #bbb;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    font: 20pt bold 'Vollkorn';
+    color: #bbb;
+}
+</style>
+
 <script>
 import LiveDataView from './livedataView'
 import DoubleEliminationView from './DoubleElimationView';
@@ -193,9 +206,16 @@ let livedataView = new LiveDataView()
 let doubleElimination24 = new DoubleElimination24View(livedataView)
 // let doubleElimination = new DoubleEliminationView(livedataView)
 livedataView.appendProp(doubleElimination24)
+
+import CommonView from './CommonView'
+let commonView = new CommonView(livedataView)
+livedataView.appendProp(commonView)
+
+let hasFileHandle = false
 export default {
     data() {
-        let g = doubleElimination24
+        // let g = doubleElimination24
+        let g = commonView
         return g
     },
     created() {
@@ -207,7 +227,37 @@ export default {
         },
         rowClick(row, event, col) {
             this._('getGameInfo', row, event, col)
+        },
+        onFile() {
+            // document.getElementById('files').ha
+            if (!hasFileHandle) {
+                hasFileHandle = true
+                document.getElementById('files').addEventListener('change', (evt) => {
+                    var files = evt.target.files; // FileList object
+                    // files is a FileList of File objects. List some properties.
+                    var output = [];
+                    for (var i = 0, f; f = files[i]; i++) {
+                        var reader = new FileReader();
+                        reader.addEventListener("load", function(event) {
+                            console.log("EVENT_ON_FILE", event.target.result)
+                            livedataView.emit('EVENT_ON_FILE', event.target.result)
+                        })
+
+                        reader.readAsText(f, 'utf-8')
+                        output.push('<li><strong>', f.name, '</strong> (', f.type || 'n/a', ') - ',
+                            f.size, ' bytes, last modified: ',
+                            f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                            '</li>');
+                    }
+                    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+                }, false);
+            }
+            document.getElementById('files').click()
         }
+
     }
 }
+
+
+
 </script>

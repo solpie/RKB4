@@ -9,12 +9,20 @@ const reward3: number = 10000
 const reward4: number = 5000
 export class RewardModel {
 
-    static getReward(rec, lPlayer, rPlayer, isArr = false) {
-        return RewardModel._getReward(rec, lPlayer, rPlayer, isArr)
+    static getReward(rec, lPlayer, rPlayer, isArr = false, playerDataMap = {}) {
+        return RewardModel._getReward(rec, lPlayer, rPlayer, isArr, playerDataMap)
     }
-    static _getReward(rec, lPlayer, rPlayer, isArr = false) {
+    static _getReward(rec, lPlayer, rPlayer, isArr = false, playerDataMap) {
         let rData = routeBracket24(rec)
         let rewardPlayerMap = RewardModel.calcReward(rec, rData.winLoseMap)
+        for (let k in rewardPlayerMap) {
+            if (playerDataMap[k]) {
+                let playerName = playerDataMap[k].hupuID
+                let r1 = RewardModel.sumRewardArr(rewardPlayerMap[k])
+                console.log('reward2', playerName,r1);
+            }
+
+        }
         let lRewardArr = rewardPlayerMap[lPlayer]
         let rRewardArr = rewardPlayerMap[rPlayer]
         if (isArr) {
@@ -96,15 +104,23 @@ export class RewardModel {
         let sum = 0
         for (let k in playerMap) {
             let rewardArr = playerMap[k]
+            let playerSum = 0
             for (let r of rewardArr) {
                 sum += r
+                playerSum += r
             }
+            // console.log('total reward ', k, playerSum);
         }
         console.log('total reward ', sum);
         return playerMap
     }
 
     static final4Reward(rec, playerDataMap, data) {
+        let rArr = RewardModel.getReward(rec, 'p1', 'p2', false,playerDataMap)
+
+        return rArr
+    }
+    static final4Reward2(rec, playerDataMap, data) {
         let playerArr1 = rec['59'].player
         let playerArr2 = rec['60'].player
         let rewardArr1 = this.getReward(rec, playerArr1[0], playerArr1[1])
@@ -117,10 +133,10 @@ export class RewardModel {
         ]
         playerArr = playerArr.sort(descendingProp('reward'))
         data.text = ''
-        data.visible =true
+        data.visible = true
         for (let p of playerArr) {
             p.data = playerDataMap[p.player]
-            data.text += `${p.data.hupuID} :￥${p.reward/1000},000       `
+            data.text += `${p.data.hupuID} :￥${p.reward / 1000},000       `
         }
         return playerArr
     }

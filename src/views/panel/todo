@@ -1,69 +1,35 @@
 
------自动开题
-Cookie: u=18800316|54Gs6JC9Xw==|0c57|e1e1f1ab551a4f5feb9c1a94e938da7c|551a4f5feb9c1a94|54Gs6JC9Xw==; us=e0f1a7d137d00241f782758f8d968830739a320abb4873bfe6381498b804744c16974a776635ea0de4c8d74a4906956e2228636554ca861c5c51f515d23b90e7; ua=88515621;
+OCT
+女篮数据
+14号 凉亭数据 自由
+创建比赛rec
 
-出预测题 POST
-http://www.liangle.com/manage/yang/pbk/event/{room_id}
-left_nickname
-right_nickname
-返回结果中有预测题topic_id
+21 16人双败
 
-封盘  PUT
-http://www.liangle.com/manage/topic/stop/{topic_id}
-
-流盘 PUT
-http://www.liangle.com/manage/topic/cancel/{topic_id}
-
-开奖 PUT
-http://www.liangle.com/manage/topic/finish/{topic_id}
-option 选项1 或者2
-
-----------
-----测试
-dist 
-static 
-web.db
-rank.db
-comp1 _m4
+比分面板 实名主 id副
+剩余去战团
 
 8 冠军title
 9 右上角天猫搜索交替凌士
 10 3球胜改 输即淘汰
 直播间桌子挡板
-[   ]前四奖金 跑马灯
-[   ]2 比赛全流程,跑马灯
-[   ]5 获胜 金钱数字 动画
-[   ]3 写死实力榜
-[   ]1 封盘，自动开题（延时） ，开直播间
-[   ]切换场景广告更换logo
-[   ]11 媒体支持面板
-[   ]进程group标序号
-[   ]4 route 62
-[   ]进程focus
-[   ]7 叠三成名字描边
-[   ]8强标序号
 提交比赛 =》上一场球员下一场对阵
-实力榜规则 交手记录操作 整理给产品
 凉亭 8强单败
+
+实力榜 参赛第二次显示排行
+面板 区分冠军球员
 ----
 冠军冲脸抽卡ssr
 
 
 冠军排序
-都输给过谁【list】 捞起
 
 RKB3胜者组 败者组
 ·凉亭
 ··自由赛程RKB4（自定义球员）
 ··八强单淘
 
-·金赏
-跑马灯
 
-胜败组只显示轮次
-获胜显示下一场
-
-冠军赛 预告 对位 候选排名，剩余城市
 ---                                                                                                                                                                        --
 本地球员头像
 上下展开

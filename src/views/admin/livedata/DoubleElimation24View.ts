@@ -41,7 +41,7 @@ export default class DoubleElimination24View extends BaseGameView {
         })
         // EVENT_INIT_DOUBLE_ELIMATION
 
-        this.init()
+        // this.init()
     }
 
     initWS() {
@@ -124,7 +124,6 @@ export default class DoubleElimination24View extends BaseGameView {
                 let data: any = { _: null }
                 let playerArr = RewardModel.final4Reward(doc.rec, this.nameMapHupuId,data)
                 $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
-                
             })
         })
 
@@ -212,7 +211,6 @@ export default class DoubleElimination24View extends BaseGameView {
                     }
                     return 0
                 }
-
 
                 let playerOrderArr = doc.player
                 let playerArr = []
