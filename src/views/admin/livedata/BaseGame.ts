@@ -1,4 +1,5 @@
 import { $post, $get } from "../../utils/WebJsFunc";
+import { WebDBCmd } from "../../panel/webDBCmd";
 
 export interface IBaseGameView {
     gameIdx: number
@@ -31,7 +32,17 @@ export class BaseGameView implements IBaseGameView {
     public time: number = 0
     public winScore: number = 2
     constructor() { }
+    //action
+    protected emitScoreFoul(sf: { lScore: number, rScore: number, lFoul: number, rFoul: number }) {
+        let data: any = { _: null }
+        data.leftScore = sf.lScore
+        data.rightScore = sf.rScore
+        data.leftFoul = sf.lFoul
+        data.rightFoul = sf.rFoul
+        $post(`/emit/${WebDBCmd.cs_score}`, data)
+    }
 
+    //set doc
     protected setScore(scoreStr, callback?) {
         let a = scoreStr.split(' ')
         if (a.length == 2) {

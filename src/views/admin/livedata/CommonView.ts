@@ -39,6 +39,10 @@ export default class CommonView extends BaseGameView {
                 this.initView(doc)
             })
         })
+        
+        lv.on(LVE.EVENT_UPDATE_SCORE, data => {
+            this.emitScoreFoul(data)
+        })
 
         lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
             console.log('EVENT_SET_SCORE', scoreStr);
@@ -141,7 +145,7 @@ export default class CommonView extends BaseGameView {
         console.log('game title:', gameCfg.gameTitle);
         dbIdx = gameCfg.dbIdx;
         this.dbIdx = dbIdx
-        
+
         let playerArr = gameCfg.playerArr
         for (let p of gameCfg.playerArr) {
             this.playerMap[p.playerId] = p

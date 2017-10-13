@@ -94,6 +94,10 @@ export default class DoubleElimination24View extends BaseGameView {
             this.setVS(vsStr)
         })
 
+        lv.on(LVE.EVENT_UPDATE_SCORE, data => {
+            this.emitScoreFoul(data)
+        })
+        
         lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
             syncDoc(gameDate, doc => {
                 console.log('sync doc', doc);
@@ -122,7 +126,7 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SHOW_FINAL4_REWARD, _ => {
             syncDoc(gameDate, doc => {
                 let data: any = { _: null }
-                let playerArr = RewardModel.final4Reward(doc.rec, this.nameMapHupuId,data)
+                let playerArr = RewardModel.final4Reward(doc.rec, this.nameMapHupuId, data)
                 $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
             })
         })

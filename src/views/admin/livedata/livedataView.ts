@@ -14,6 +14,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_NEW_GAME = 'EVENT_NEW_GAME'
     static EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
+    static EVENT_UPDATE_SCORE = 'EVENT_UPDATE_SCORE'
     static EVENT_SET_VS = 'EVENT_SET_VS'
     static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
     static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
@@ -94,12 +95,11 @@ export default class LiveDataView extends EventDispatcher {
 
     emitScore() {
         let data: any = { _: null }
-        data.leftScore = this.$vm.lScore
-        data.rightScore = this.$vm.rScore
-        data.leftFoul = this.$vm.lFoul
-        data.rightFoul = this.$vm.rFoul
-        this.emit(WebDBCmd.cs_score, data)
-        $post(`/emit/${WebDBCmd.cs_score}`, data)
+        data.lScore = this.$vm.lScore
+        data.rScore = this.$vm.rScore
+        data.lFoul = this.$vm.lFoul
+        data.rFoul = this.$vm.rFoul
+        this.emit(LiveDataView.EVENT_UPDATE_SCORE, data)
     }
 
     setTimer(state, sec?) {
@@ -204,7 +204,7 @@ export default class LiveDataView extends EventDispatcher {
         let playerArr = JSON.parse(jsonStr)
         this.emit(LiveDataView.EVENT_CUSTOM_PLAYER, playerArr)
     }
-    
+
     newGame(vsStr) {
         this.emit(LiveDataView.EVENT_NEW_GAME, vsStr)
     }
