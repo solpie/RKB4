@@ -39,7 +39,7 @@ export default class CommonView extends BaseGameView {
                 this.initView(doc)
             })
         })
-        
+
         lv.on(LVE.EVENT_UPDATE_SCORE, data => {
             this.emitScoreFoul(data)
         })
@@ -110,8 +110,6 @@ export default class CommonView extends BaseGameView {
                 data.winScore = 2
                 this.gameTitle = '车轮战' + gameIdxStr
             }
-
-            data.winScore = 3
             data.gameIdx = this.gameIdx
             let lPlayerData = this.getPlayerInfo(this.lPlayer).data
             let rPlayerData = this.getPlayerInfo(this.rPlayer).data
