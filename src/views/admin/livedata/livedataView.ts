@@ -11,6 +11,7 @@ let gmv = new GameMonthView()
 let gamble = new GambleView()
 export default class LiveDataView extends EventDispatcher {
     static EVENT_SET_GAME_INFO = 'EVENT_SET_GAME_INFO'
+    static EVENT_NEW_GAME = 'EVENT_NEW_GAME'
     static EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
     static EVENT_SET_VS = 'EVENT_SET_VS'
@@ -123,7 +124,6 @@ export default class LiveDataView extends EventDispatcher {
 
     getGameInfo(row) {
         let gameIdx = row.gameIdx
-        // gmv.setGameInfo(gameIdx, false)
         this.emit(LiveDataView.EVENT_SET_GAME_INFO, gameIdx)
         console.log('getGameInfo', row);
     }
@@ -199,9 +199,14 @@ export default class LiveDataView extends EventDispatcher {
     initDoubleElimation() {
         this.emit(LiveDataView.EVENT_INIT_DOUBLE_ELIMATION)
     }
+
     setPlayerArr(jsonStr) {
         let playerArr = JSON.parse(jsonStr)
         this.emit(LiveDataView.EVENT_CUSTOM_PLAYER, playerArr)
+    }
+    
+    newGame(vsStr) {
+        this.emit(LiveDataView.EVENT_NEW_GAME, vsStr)
     }
 
     showRollText(text, visible = true) {
@@ -240,7 +245,7 @@ export default class LiveDataView extends EventDispatcher {
         gamble.gambleAct(act, topicId, option)
 
     }
- 
+
     testRandomGame(endGameIdx) {
         this.emit('testRandomGame', endGameIdx)
     }

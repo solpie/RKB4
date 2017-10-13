@@ -318,32 +318,37 @@ export class ScoreM4 {
     }
 
     //1 车轮 2 大师 3 决赛    
-    setGameIdx(gameIdx, matchType) {
-        console.log('isMaster', matchType)
+    setGameIdx(gameIdx, matchType, gameInfoData?) {
         let gameIdxStr = paddy(gameIdx, 2)
-        if (gameIdx == 61) {
-            this.gameIdx.text = '败者组决赛'
-        }
-        else if (gameIdx == 60) {
-            this.gameIdx.text = '胜者组决赛'
-        }
-        else if (gameIdx == 62) {
-            this.gameIdx.text = '决赛'
+        if (gameInfoData && gameInfoData.gameTitle) {
+            this.gameIdx.text = gameInfoData.gameTitle 
         }
         else {
-            let gt = GameTypeMap[gameIdx]
-            if (gt == 10) {
-                this.gameIdx.text = '分组赛' + gameIdxStr
+            console.log('isMaster', matchType)
+            if (gameIdx == 61) {
+                this.gameIdx.text = '败者组决赛'
             }
-            else if (gt == 11) {
-                this.gameIdx.text = '胜者组' + gameIdxStr
+            else if (gameIdx == 60) {
+                this.gameIdx.text = '胜者组决赛'
             }
-            else if (gt == 12) {
-                this.gameIdx.text = '败者组' + gameIdxStr
+            else if (gameIdx == 62) {
+                this.gameIdx.text = '决赛'
+            }
+            else {
+                let gt = GameTypeMap[gameIdx]
+                if (gt == 10) {
+                    this.gameIdx.text = '分组赛' + gameIdxStr
+                }
+                else if (gt == 11) {
+                    this.gameIdx.text = '胜者组' + gameIdxStr
+                }
+                else if (gt == 12) {
+                    this.gameIdx.text = '败者组' + gameIdxStr
+                }
             }
         }
-
         this.gameIdx.x = 960 - this.gameIdx.width * .5
+
     }
 
     _showWinScore() {
@@ -518,7 +523,7 @@ export class ScoreM4 {
         this.rRewardText.text = rText
 
         if (data.lReward && data.rReward) {
-            
+
         }
         else {
             this.lRewardText.text = ''

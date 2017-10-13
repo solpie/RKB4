@@ -13,9 +13,10 @@ export interface IBaseGameView {
     gameType: number
     start: () => void
     pause: () => void
-    commit: (data:any) => void
+    commit: (data: any) => void
 }
 export class BaseGameView implements IBaseGameView {
+    public dbIdx: string;
     public gameType: number;
     public start() { };
     public pause() { };
@@ -29,8 +30,38 @@ export class BaseGameView implements IBaseGameView {
     public rFoul: number = 0
     public time: number = 0
     public winScore: number = 2
-    constructor()
-    { }
+    constructor() { }
+
+    protected setScore(scoreStr, callback?) {
+        let a = scoreStr.split(' ')
+        if (a.length == 2) {
+            console.log('length ', 2, this.dbIdx);
+            if (this.dbIdx) {
+                console.log('dbIdx ', this.dbIdx);
+                syncDoc(this.dbIdx, doc => {
+                    let game = doc['rec'][this.gameIdx]
+                    game.score = [Number(a[0]), Number(a[1])]
+                    if (callback)
+                        callback(doc)
+                }, true)
+            }
+        }
+    }
+
+    protected setVS(vsStr, callback?) {
+        if (this.dbIdx) {
+            let a = vsStr.split(' ')
+            if (a.length == 2) {
+                syncDoc(this.dbIdx, doc => {
+                    let game = doc['rec'][this.gameIdx]
+                    game.player = a
+                    if (callback)
+                        callback(doc)
+                }, true)
+            }
+        }
+    }
+
 }
 
 export class RecData {

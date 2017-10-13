@@ -149,7 +149,7 @@ export default class DoubleElimination24View extends BaseGameView {
             console.log('Double Elimation 24', 'cs_commit', data);
             this.commit(data)
         })
-        
+
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
             this.emitGameInfo2()

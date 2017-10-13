@@ -103,7 +103,7 @@ export class ScoreView {
                     this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking })
                     p = data.rightPlayer
                     this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking })
-                    this.scorePanel.setGameIdx(data.gameIdx, data.matchType)
+                    this.scorePanel.setGameIdx(data.gameIdx, data.matchType, data)
                     this.scorePanel.set35ScoreLight(data.winScore)
                     this.scorePanel.setLeftFoul(data.leftFoul)
                     this.scorePanel.setRightFoul(data.rightFoul)

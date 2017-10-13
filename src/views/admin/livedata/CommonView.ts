@@ -3,6 +3,7 @@ import LiveDataView from "./livedataView";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { PlayerInfo } from "./PlayerInfo";
+import { paddy } from "../../utils/JsFunc";
 
 let LVE = LiveDataView
 let dbIdx;
@@ -12,6 +13,7 @@ export default class CommonView extends BaseGameView {
     gameInfoTable = []
     lHupuID = ''
     rHupuID = ''
+    gameTitle = null//'车轮战'
     constructor(liveDataView: LiveDataView) {
         super()
         liveDataView.on(LVE.EVENT_ON_FILE, data => {
@@ -24,23 +26,87 @@ export default class CommonView extends BaseGameView {
         //     this.loadGameCfg(data)
         // })
         lv.on(WebDBCmd.cs_init, data => {
-            console.log('commonview cs_init', data);
+            console.log('commonview cs_init', data, this['inputRollText']);
             this.emitGameInfo()
         })
         lv.on(WebDBCmd.cs_commit, data => {
             console.log('commonview', 'cs_commit', data);
             this.commit()
         })
+
         lv.on(LVE.EVENT_SET_VS, vsStr => {
+            this.setVS(vsStr, doc => {
+                this.initView(doc)
+            })
+        })
+
+        lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
+            console.log('EVENT_SET_SCORE', scoreStr);
+            this.setScore(scoreStr, doc => {
+                console.log('set score:', doc);
+                this.initView(doc)
+            })
+        })
+
+        lv.on(LVE.EVENT_NEW_GAME, vsStr => {
             this.newGame(vsStr)
+        })
+
+        lv.on(LVE.EVENT_INIT_BRACKET, _ => {
+            this.clearBracket()
+        })
+        lv.on(LVE.EVENT_SET_GAME_INFO, gameIdx => {
+            this.setGameInfo(gameIdx)
         })
     }
 
+    clearBracket() {
+        syncDoc(dbIdx, doc => {
+            if (doc.rec)
+                for (let r in doc.rec) {
+                    let game = doc.rec[r]
+                    game.score = [0, 0]
+                    game.foul = [0, 0]
+                }
+            this.initView(doc)
+        }, true)
+    }
 
+    setGameInfo(gameIdx) {
+        syncDoc(dbIdx, doc => {
+            let rec = doc['rec'][gameIdx]
+            this.gameIdx = gameIdx
+            this.lPlayer = rec.player[0]
+            this.rPlayer = rec.player[1]
+            this.lScore = Number(rec.score[0]) || 0
+            this.rScore = Number(rec.score[1]) || 0
+            this.lFoul = Number(rec.foul[0]) || 0
+            this.rFoul = Number(rec.foul[1]) || 0
+            this.lHupuID = this.getHupuId(this.lPlayer)
+            this.rHupuID = this.getHupuId(this.rPlayer)
+        })
+    }
 
     emitGameInfo(doc?) {
         let _ = (doc) => {
+
+
             let data: any = { _: null }
+
+            let gameIdxStr = paddy(this.gameIdx, 2)
+            if (this['inputRollText'] == '8') {
+                data.winScore = 3
+                this.gameTitle = '淘汰赛'
+            }
+            else if (this['inputRollText'] == 'f') {
+                data.winScore = 5
+                this.gameTitle = '决赛'
+            }
+            else {
+                data.winScore = 2
+                this.gameTitle = '车轮战' + gameIdxStr
+            }
+
             data.winScore = 3
             data.gameIdx = this.gameIdx
             let lPlayerData = this.getPlayerInfo(this.lPlayer).data
@@ -53,6 +119,7 @@ export default class CommonView extends BaseGameView {
             data.rightFoul = this.rFoul
             data.leftPlayer = lPlayerData
             data.rightPlayer = rPlayerData
+            data.gameTitle = this.gameTitle
             $post(`/emit/${WebDBCmd.cs_init}`, data)
         }
         if (doc)
@@ -73,10 +140,13 @@ export default class CommonView extends BaseGameView {
         let gameCfg = JSON.parse(data)
         console.log('game title:', gameCfg.gameTitle);
         dbIdx = gameCfg.dbIdx;
+        this.dbIdx = dbIdx
+        
         let playerArr = gameCfg.playerArr
         for (let p of gameCfg.playerArr) {
             this.playerMap[p.playerId] = p
-            p.avatar = 'http://i3.hoopchina.com.cn/user/106/18978106/18978106-1479305581.jpg@194h_194w_2e'
+            // p.avatar = 'http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg'
+            p.avatar = gameCfg.avatarUrlBase + p.playerId + '.png'
             let data = JSON.parse(JSON.stringify(p))
             p.data = data
         }
@@ -105,6 +175,8 @@ export default class CommonView extends BaseGameView {
             let p1 = a[0]
             let p2 = a[1]
             this.setPlayer(p1, p2)
+            this.lFoul = this.rFoul = 0
+            this.lScore = this.rScore = 0
             syncDoc(dbIdx, doc => {
                 if (!doc.rec)
                     doc.rec = {}
@@ -126,9 +198,17 @@ export default class CommonView extends BaseGameView {
             rec.foul = [this.lFoul, this.rFoul]
             rec.player = [this.lPlayer, this.rPlayer]
             this.emitVictory(doc)
+            this.initView(doc)
         }, true)
     }
-
+    buildGameData(doc) {
+        let playedMap = {}
+        for (let idx in doc.rec) {
+            let game = doc.rec[idx]
+            playedMap[game.player[0]] = true
+            playedMap[game.player[1]] = true
+        }
+    }
     emitVictory(doc) {
         if (this.lScore != 0 || this.rScore != 0) {
             let winPlayer: PlayerInfo;
