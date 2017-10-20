@@ -292,6 +292,7 @@ export class ScoreM4 {
         let rRewardText = new PIXI.Text('', rewardStyle)
         this.rRewardText = rRewardText
         rRewardText.x = 1227 - rRewardText.width
+        rRewardText.x = 1120 - rRewardText.width
         rRewardText.y = lRewardText.y
         ctn.addChild(rRewardText)
 
@@ -321,7 +322,7 @@ export class ScoreM4 {
     setGameIdx(gameIdx, matchType, gameInfoData?) {
         let gameIdxStr = paddy(gameIdx, 2)
         if (gameInfoData && gameInfoData.gameTitle) {
-            this.gameIdx.text = gameInfoData.gameTitle 
+            this.gameIdx.text = gameInfoData.gameTitle
         }
         else {
             console.log('isMaster', matchType)
@@ -522,13 +523,15 @@ export class ScoreM4 {
         this.lRewardText.text = lText
         this.rRewardText.text = rText
 
-        if (data.lReward && data.rReward) {
+        if (data.lReward != null || data.rReward != null) {
 
         }
         else {
             this.lRewardText.text = ''
             this.rRewardText.text = ''
         }
+
+        // this.rRewardText.x = 1227 -  this.rRewardText.width
     }
 
     getPlayerInfo(isLeft) {

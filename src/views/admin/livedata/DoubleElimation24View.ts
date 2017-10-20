@@ -1,3 +1,4 @@
+import { dumpObj } from '../../utils/JsFunc';
 import { ProcessView } from './ProcessView';
 import { RewardModel } from '../../panel/bracketM4/Reward24';
 import { BaseGameView, syncDoc, buildPlayerData } from "./BaseGame";
@@ -23,27 +24,60 @@ export default class DoubleElimination24View extends BaseGameView {
     rHupuID = ''
     liveDataView
 
+
     playerIdArr = [
-        44, 7686, 1001, 1754,
-        9118, 2849, 10368, 1163,
-        1906, 8449, 10207, 4257,
-        3715, 11470, 20, 4218,
-        4, 8066, 6487, 11082,
-        4752, 9097, 1900, 1213,
-        1679, 574, 1176, 8903,
-        7851, 2993, 5091, 361]
+        2849, 9118, 6612, 6277,
+        17795, 7821, 6418, 1868,
+        1213, 8066, 19010, 3367,
+        1001, 4, 2596, 1176,
+        8052, 7, 1906, 7686,
+        327, 11082, 9405, 14565,
+        150, 10207, 2525, 16767,
+        1754, 17109, 2660, 16980
+    ]
 
     constructor(liveDataView: LiveDataView) {
         super()
+        this.dbIdx = gameDate
         this.liveDataView = liveDataView
         liveDataView.on(LiveDataView.EVENT_INIT_DOUBLE_ELIMATION, _ => {
             this.init()
         })
+
+
+
         // EVENT_INIT_DOUBLE_ELIMATION
 
-        // this.init()
+        this.init()
     }
+    getPlayerRankMap(callback) {
+        $post('/ranking/query/', { playerIdArr: this.playerIdArr, season: 's3' }, rankRes => {
+            let rankPlayerArr = rankRes.playerArr;
+            console.log("rank query", rankPlayerArr);
 
+            let qPid, p, ranking, rankMap = {}
+            for (qPid of this.playerIdArr) {
+                let missing = true
+                for (p of rankPlayerArr) {
+                    if ((qPid + "") == (p.player_id + "")) {
+                        missing = false
+                        rankMap[p.player_id] = p.ranking
+                        console.log(p.name, p.ranking);
+                        // break;
+                    }
+                }
+                if (missing) {
+                    if (qPid == 19010)
+                        rankMap[qPid] = 73
+
+                    if (qPid == 3367)
+                        rankMap[qPid] = 151
+                    console.log('missing', qPid)
+                }
+            }
+            callback(rankMap)
+        })
+    }
     initWS() {
         io.connect('/rkb')
             .on('connect', () => {
@@ -65,7 +99,6 @@ export default class DoubleElimination24View extends BaseGameView {
                 doc.player = playerDataArr
             }, true)
         })
-
     }
     init() {
         let lv = this.liveDataView
@@ -91,25 +124,19 @@ export default class DoubleElimination24View extends BaseGameView {
         })
 
         lv.on(LVE.EVENT_SET_VS, vsStr => {
-            this.setVS(vsStr)
+            this.setVS(vsStr, doc => {
+                this.initView(doc)
+            })
         })
 
         lv.on(LVE.EVENT_UPDATE_SCORE, data => {
             this.emitScoreFoul(data)
         })
-        
+
         lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
-            syncDoc(gameDate, doc => {
-                console.log('sync doc', doc);
-                let game = doc.rec[this.gameIdx]
-                if (game) {
-                    let a = scoreStr.split(' ')
-                    if (a.length == 2) {
-                        game.score = [Number(a[0]), Number(a[1])]
-                    }
-                }
+            this.setScore(scoreStr, doc => {
                 this.initView(doc)
-            }, true)
+            })
         })
 
         lv.on(LVE.EVENT_SHOW_PROCESS, data => {
@@ -134,9 +161,14 @@ export default class DoubleElimination24View extends BaseGameView {
         lv.on(LVE.EVENT_SHOW_PLAYER_PROCESS, data => {
             syncDoc(gameDate, doc => {
                 data._ = ''
-                data = ProcessView.showPlayerProcess2(data, doc, this.gameIdx, this.nameMapHupuId)
-                if (data.visible)
-                    $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+                if (data.curGame) {
+                    ProcessView.curPlayerRoute(doc,this.gameIdx)
+                }
+                else {
+                    data = ProcessView.showPlayerProcess2(data, doc, this.gameIdx, this.nameMapHupuId)
+                    if (data.visible)
+                        $post(`/emit/${WebDBCmd.cs_showRollText}`, data)
+                }
             })
         })
 
@@ -162,17 +194,6 @@ export default class DoubleElimination24View extends BaseGameView {
         this.initWS()
     }
 
-    setVS(vsStr) {
-        let a = vsStr.split(' ')
-        if (a.length == 2) {
-            let p1 = a[0]
-            let p2 = a[1]
-            syncDoc(gameDate, doc => {
-                let r = doc['rec'][this.gameIdx]
-                r.player = [p1, p2]
-            }, true)
-        }
-    }
 
     emitGameInfo2(doc?) {
         let _ = (doc) => {
@@ -206,17 +227,8 @@ export default class DoubleElimination24View extends BaseGameView {
         })
     }
     initPlayer(callback) {
-        syncDoc(playerDoc, doc => {
-            $post('/ranking/query/', { playerIdArr: this.playerIdArr, season: 's3' }, rankRes => {
-                let rankPlayerArr = rankRes.playerArr;
-                let _r = (playerId) => {
-                    for (let p of rankPlayerArr) {
-                        if (p.player_id == String(playerId))
-                            return p.ranking
-                    }
-                    return 0
-                }
-
+        this.getPlayerRankMap(rankMap => {
+            syncDoc(playerDoc, doc => {
                 let playerOrderArr = doc.player
                 let playerArr = []
                 for (let i = 0; i < 32; i++) {
@@ -225,7 +237,7 @@ export default class DoubleElimination24View extends BaseGameView {
                     p.hupuID = playerOrderArr[i].name
                     p.name = 'p' + (i + 1)
                     p['poker'] = ''
-                    p.ranking = _r(playerOrderArr[i].player_id)
+                    p.ranking = rankMap[playerOrderArr[i].player_id]
                     console.log('player 32', p.hupuID, p.ranking);
                     p.data = playerOrderArr[i]
                     p.data.ranking = p.ranking
@@ -236,9 +248,10 @@ export default class DoubleElimination24View extends BaseGameView {
 
                 this.initPokerSelectView(playerArr)
                 callback()
+                // })
             })
-
         })
+
     }
     initPokerSelectView(playerArr) {
         this['pokerPlayerArrG1'] = playerArr
@@ -401,6 +414,7 @@ export default class DoubleElimination24View extends BaseGameView {
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
         }
     }
+
     emitGameInfo(exDataCall?) {
         let data: any = { _: null }
         data.winScore = 3

@@ -1,4 +1,4 @@
-import { GameType, GameTypeMap } from '../../panel/bracketM4/Bracket24Route';
+import { GameType, GameTypeMap, routeCallback } from '../../panel/bracketM4/Bracket24Route';
 let getGamePlayer = (rec, start, end, playerDataMap) => {
     start--;
     let gamePlayerArr = []
@@ -70,7 +70,7 @@ export class ProcessView {
         }
         return data
     }
-    
+
     static showTab(rec, tab, playerDataMap, gameIdx) {
         let gamePlayerArr;
         let title;
@@ -170,4 +170,58 @@ export class ProcessView {
 
         return { gamePlayerArr: gamePlayerArr, title: title, idx: idx, start: start, gameIdx: 0 }
     }
+
+    static curPlayerRoute(doc, gameIdx) {
+        let rec = doc.rec
+        let playerArr = rec[gameIdx].player
+        // let 
+        console.log('cur player route game ', gameIdx, playerArr);
+
+        let p1From, p2From;
+        if (gameIdx > 16) {
+            for (let idx = 1; idx < gameIdx; idx++) {
+                let gamePlayerArr = rec[idx].player
+                // console.log('game',idx,gamePlayerArr);
+                if (playerArr[0] == gamePlayerArr[0]
+                    || playerArr[0] == gamePlayerArr[1]) {
+                    p1From = idx
+                }
+                if (playerArr[1] == gamePlayerArr[0]
+                    || playerArr[1] == gamePlayerArr[1]) {
+                    p2From = idx
+                }
+            }
+            console.log('cur player route p1', p1From, 'p2', p2From);
+        }
+
+        let winIdx2 = 0;
+        let winFromIdxArr = []
+        routeCallback((gameIdx2, winIdx, winPos, loseIdx, losePos) => {
+            if (gameIdx == gameIdx2) {
+                console.log('win to', winIdx);
+                console.log('lose to', loseIdx);
+                // if (!winIdx2) {
+                winIdx2 = winIdx
+                // }
+                if (winIdx) {
+                    let winPlayer = rec[winIdx].player
+                    console.log('win player', winPlayer);
+                }
+            }
+            if (gameIdx2 == 62) {
+                if (winIdx2 > 0)
+                    routeCallback((gameIdx3, winIdx3, winPos3, loseIdx3, losePos3) => {
+                        if (winIdx3 == winIdx2 || loseIdx3 == winIdx2) {
+                            winFromIdxArr.push(gameIdx3)
+                            // if (winFromIdxArr.length == 2)
+                            console.log('win from', winFromIdxArr);
+                        }
+                    })
+            }
+        })
+        // console.log('win to', winIdx);
+
+
+    }
+
 }

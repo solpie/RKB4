@@ -107,13 +107,14 @@
             <el-row>
                 <hr>
                 <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                                                                                                                                        <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
+                                                                                                                                                                                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
                 <br>
                 <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
+                <el-button @click='_("showCurPlayerRoute")'>当前晋级图</el-button>
                 <el-button @click='_("showGameProcess",true,"auto")'>比赛进程</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
                 <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
@@ -159,14 +160,6 @@
                 <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
                 <el-button @click='_("testRandomGame",52)'>testRandomGame 52 八强</el-button>
 
-                <el-button @click='_("reMapBracket")'>reMapBracket</el-button>
-                <!-- <el-button @click='_("showPokerPanel",true,8)'>show Poker 8</el-button> -->
-                <!-- <el-button @click='_("showPokerPanel",true,12)'>show Poker 12</el-button> -->
-                <!-- <el-button @click='_("showPokerPanel",false)'>hide</el-button> -->
-                翻完hide
-                <el-button @click='_("showPokerPanel",true,0)'>reset</el-button>
-                <el-button @click='_("resetPokerPicker")'>resetPokerPicker</el-button>
-                <!-- <el-button @click='_("")'>resetPokerPicker</el-button> -->
             </el-row>
             <el-row>
                 <hr>
@@ -179,6 +172,8 @@
                 <input type="file" id="files" name="files[]" hidden />
                 <el-button @click="onFile">...</el-button>
                 <output id="list"></output>
+
+                <el-button @click='_("dumpPlayer",inputRollText)'>dump player</el-button>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->
@@ -198,25 +193,52 @@
 </style>
 
 <script>
+
+const getUrlQuerys = (sParam) => {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
 import LiveDataView from './livedataView'
 import DoubleEliminationView from './DoubleElimationView';
-import DoubleElimination24View from './DoubleElimation24View';
 
 let livedataView = new LiveDataView()
 
-// let doubleElimination24 = new DoubleElimination24View(livedataView)
-// let doubleElimination = new DoubleEliminationView(livedataView)
-// livedataView.appendProp(doubleElimination24)
+let act = getUrlQuerys('act')
+
+console.log('active ', act)
+import DoubleElimination24View from './DoubleElimation24View';
 
 import CommonView from './CommonView'
-let commonView = new CommonView(livedataView)
-livedataView.appendProp(commonView)
+// if (act == 'm5') {
+    let doubleElimination24 = new DoubleElimination24View(livedataView)
+    livedataView.appendProp(doubleElimination24)
+// }
+// else {
+//     let commonView = new CommonView(livedataView)
+//     livedataView.appendProp(commonView)
+// }
+
+
 
 let hasFileHandle = false
 export default {
     data() {
-        // let g = doubleElimination24
-        let g = commonView
+        let g;
+        // if (act == 'm5')
+            g = doubleElimination24
+        // else
+        //     g = commonView
         return g
     },
     created() {

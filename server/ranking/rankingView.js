@@ -38,12 +38,13 @@ app.post('/ranking/query/', (req, res) => {
     rankDb.find({ idx: season }, (err, docs) => {
         let ret = { err: err, doc: docs[0], playerArr: null }
         let playerArr = []
-        console.log('season', docs);
+        console.log('season', docs, playerIdArr);
 
         if (docs.length) {
-            for (let p of docs[0].rankArr) {
-                for (let pid of playerIdArr) {
-                    if (p.player_id == pid) {
+            for (let pid of playerIdArr) {
+                console.log('query', pid);
+                for (let p of docs[0].rankArr) {
+                    if ((p.player_id + "") == (pid + "")) {
                         playerArr.push(p)
                     }
                 }

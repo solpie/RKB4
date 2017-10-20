@@ -13,7 +13,6 @@ export default class CommonView extends BaseGameView {
     gameInfoTable = []
     lHupuID = ''
     rHupuID = ''
-    gameTitle = null//'车轮战'
     constructor(liveDataView: LiveDataView) {
         super()
         liveDataView.on(LVE.EVENT_ON_FILE, data => {
@@ -59,6 +58,7 @@ export default class CommonView extends BaseGameView {
         lv.on(LVE.EVENT_INIT_BRACKET, _ => {
             this.clearBracket()
         })
+
         lv.on(LVE.EVENT_SET_GAME_INFO, gameIdx => {
             this.setGameInfo(gameIdx)
         })
@@ -90,26 +90,44 @@ export default class CommonView extends BaseGameView {
             this.rHupuID = this.getHupuId(this.rPlayer)
         })
     }
-
+    getGameTitle(gameIdx) {
+        let gameIdxStr = paddy(gameIdx, 2)
+        let gameTitle, winScore;
+        if (this['inputRollText'] == '8') {
+            winScore = 3
+            gameTitle = '淘汰赛'
+        }
+        else if (this['inputRollText'] == 'f') {
+            winScore = 5
+            gameTitle = '决赛'
+            gameIdxStr = ''
+        }
+        else if (this['inputRollText'] == 'l') {
+            winScore = 3
+            gameTitle = '败者组'
+            // gameIdxStr = gameIdxStr
+        }
+        else if (this['inputRollText'] == 'w') {
+            winScore = 3
+            gameTitle = '胜者组'
+            // gameIdxStr = gameIdxStr
+        }
+        else {
+            winScore = 3
+            gameTitle = '双败赛'
+        }
+        this.gameTitle = gameTitle
+        return { gameTitle: gameTitle, winScore: winScore, gameIdxStr: gameIdxStr }
+    }
     emitGameInfo(doc?) {
         let _ = (doc) => {
 
 
             let data: any = { _: null }
+            let gameTitle = this.getGameTitle(this.gameIdx)
+            data.winScore = gameTitle.winScore
+            data.gameTitle = gameTitle.gameTitle + gameTitle.gameIdxStr
 
-            let gameIdxStr = paddy(this.gameIdx, 2)
-            if (this['inputRollText'] == '8') {
-                data.winScore = 3
-                this.gameTitle = '淘汰赛'
-            }
-            else if (this['inputRollText'] == 'f') {
-                data.winScore = 5
-                this.gameTitle = '决赛'
-            }
-            else {
-                data.winScore = 2
-                this.gameTitle = '车轮战' + gameIdxStr
-            }
             data.gameIdx = this.gameIdx
             let lPlayerData = this.getPlayerInfo(this.lPlayer).data
             let rPlayerData = this.getPlayerInfo(this.rPlayer).data
@@ -121,7 +139,7 @@ export default class CommonView extends BaseGameView {
             data.rightFoul = this.rFoul
             data.leftPlayer = lPlayerData
             data.rightPlayer = rPlayerData
-            data.gameTitle = this.gameTitle
+            // data.gameTitle = this.gameTitle
             $post(`/emit/${WebDBCmd.cs_init}`, data)
         }
         if (doc)
@@ -135,7 +153,12 @@ export default class CommonView extends BaseGameView {
     getPlayerInfo(playerId) {
         return this.playerMap[playerId]
     }
-
+    createDoc(dbIdx) {
+        syncDoc(dbIdx, doc => {
+            doc.gameIdx = 0
+            doc.rec = {}
+        }, true)
+    }
     loadGameCfg(data) {
         // let a2=a.split("\n");let pArr = [];for(let p of a2){let a3 = p.split("\t");pArr.push({playerId:'p'+a3[0],name:a3[1],height:a3[2],weight:a3[3]})}
         this.isLoadedCfg = true
@@ -148,18 +171,22 @@ export default class CommonView extends BaseGameView {
         for (let p of gameCfg.playerArr) {
             this.playerMap[p.playerId] = p
             // p.avatar = 'http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg'
-            p.avatar = gameCfg.avatarUrlBase + p.playerId + '.png'
+            if (gameCfg.avatarUrlBase)
+                p.avatar = gameCfg.avatarUrlBase + p.playerId + '.png'
             let data = JSON.parse(JSON.stringify(p))
             p.data = data
         }
         console.log('player count:', playerArr.length);
         //setGameInfo
         syncDoc(dbIdx, doc => {
-            let game = doc.rec[doc.gameIdx]
-            this.gameIdx = doc.gameIdx
-            this.setPlayer(game.player[0], game.player[1])
-
-            this.initView(doc)
+            if (doc.rec && doc.gameIdx) {
+                let game = doc.rec[doc.gameIdx]
+                this.gameIdx = doc.gameIdx
+                this.setPlayer(game.player[0], game.player[1])
+                this.initView(doc)
+            }
+            else
+                this.createDoc(dbIdx)
         })
     }
 
@@ -188,6 +215,7 @@ export default class CommonView extends BaseGameView {
                     score: [0, 0],
                     foul: [0, 0],
                 }
+                this.initView(doc)
             }, true)
         }
     }
@@ -226,9 +254,10 @@ export default class CommonView extends BaseGameView {
             }
             let sumMap = buildPlayerData(doc, true)
             let rec = sumMap[winPlayer.playerId]
+            let gameTitle = this.getGameTitle(this.gameIdx)
             let data = {
                 _: null, visible: true, winner: winPlayer.data,
-                gameType: '车轮战',
+                gameTitle: gameTitle.gameTitle,
                 rec: rec, gameIdx: this.gameIdx, reward: reward, isLeft: isLeft
             }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)

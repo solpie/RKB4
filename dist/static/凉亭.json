@@ -1,0 +1,24 @@
+{
+    "date": "2017-10-18",
+    "dbIdx": "1014",
+    "gameTitle": "路人王凉亭坳",
+    "avatarUrlBase": "http://127.0.0.1:8088/img/player/lt/",
+    "playerArr": [
+        { "playerId": "p1", "name": "张丽君", "height": "163", "weight": "52" },
+        { "playerId": "p2", "name": "罗婷婷", "height": "159", "weight": "55" },
+        { "playerId": "p3", "name": "张婷", "height": "162", "weight": "54" },
+        { "playerId": "p4", "name": "谭温雪", "height": "167", "weight": "56" },
+        { "playerId": "p5", "name": "夏瑜涔", "height": "165", "weight": "53" },
+        { "playerId": "p6", "name": "蒋慧霞", "height": "158", "weight": "48" },
+        { "playerId": "p7", "name": "谢云飞", "height": "154", "weight": "46" },
+        { "playerId": "p8", "name": "谢如玉", "height": "159", "weight": "49" },
+        { "playerId": "p9", "name": "张辉燕", "height": "162", "weight": "49" },
+        { "playerId": "p10", "name": "韩慧玲", "height": "150", "weight": "46" },
+        { "playerId": "p11", "name": "张丽萍", "height": "153", "weight": "46" },
+        { "playerId": "p12", "name": "尹睿", "height": "147", "weight": "47" },
+        { "playerId": "p13", "name": "李婷婷", "height": "143", "weight": "46" },
+        { "playerId": "p14", "name": "张蓉", "height": "138", "weight": "42" },
+        { "playerId": "p15", "name": "张翔翔", "height": "161", "weight": "48" },
+        { "playerId": "p16", "name": "李芸", "height": "159", "weight": "51" }
+    ]
+}

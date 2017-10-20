@@ -1,11 +1,12 @@
 import { GambleView } from './GambleView';
 import { EventDispatcher } from '../../utils/EventDispatcher';
 import { BaseGameView, getDoc, IBaseGameView } from './BaseGame';
-import { getAllPlayer } from '../../utils/HupuAPI';
+import { getAllPlayer, getPlayerInfoArr } from '../../utils/HupuAPI';
 import { MatchType } from '../../panel/score/Com2017';
 import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
+import { dumpObj } from '../../utils/JsFunc';
 let gmv = new GameMonthView()
 
 let gamble = new GambleView()
@@ -163,11 +164,9 @@ export default class LiveDataView extends EventDispatcher {
 
     setScore(scoreStr) {
         this.emit(LiveDataView.EVENT_SET_SCORE, scoreStr)
-        // gmv.setScore(scoreStr)
     }
 
     initBracket() {
-        // gmv.initMaster()
         this.emit(LiveDataView.EVENT_INIT_BRACKET)
     }
 
@@ -217,6 +216,30 @@ export default class LiveDataView extends EventDispatcher {
         this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab })
     }
 
+    dumpPlayer(playerArrStr) {
+        let a = playerArrStr.split(',')
+        console.log('player arr', a);
+        getPlayerInfoArr(a, arr => {
+            let p2 = []
+            let idx = 1
+            for (let res of arr) {
+                console.log('', res.data.name, res.data.player_id);
+                let d = res.data
+                p2.push({
+                    playerId: `p` + (p2.length + 1),
+                    name: d.name,
+                    avatar: d.avatar,
+                    height: d.height,
+                    weight: d.weight
+                })
+
+            }
+            console.log('PlayerInfoArr', JSON.stringify(p2));
+            console.log(dumpObj(p2, 1))
+        })
+        // 4,1754,6874,1703,44,949,1213,1176,2849,2660,2095,4218,3715,1945
+    }
+
     syncPlayer() {
         this.emit(LiveDataView.EVENT_SYNC_PLAYER)
     }
@@ -227,6 +250,10 @@ export default class LiveDataView extends EventDispatcher {
 
     showImg(visible, name) {
         $post(`/emit/${WebDBCmd.cs_showImg}`, { _: null, visible: visible, name: name })
+    }
+
+    showCurPlayerRoute() {
+        this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { curGame: true })
     }
 
     showLastPlayerRoute() {

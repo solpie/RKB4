@@ -31,6 +31,7 @@ export class BaseGameView implements IBaseGameView {
     public rFoul: number = 0
     public time: number = 0
     public winScore: number = 2
+    gameTitle = null//'车轮战'
     constructor() { }
     //action
     protected emitScoreFoul(sf: { lScore: number, rScore: number, lFoul: number, rFoul: number }) {

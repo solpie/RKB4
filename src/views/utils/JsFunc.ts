@@ -1,6 +1,7 @@
 //Array.sort(ascendingProp('prop'))
 //升序
 // import {escape} from "querystring";
+import { countMap } from '../../ranking/com';
 declare let escape;
 export function ascendingProp(prop) {
     return function (a, b) {
@@ -203,4 +204,34 @@ export function paddy(number, p, c?) {
     var pad_char = typeof c !== 'undefined' ? c : '0';
     var pad = new Array(1 + p).join(pad_char);
     return (pad + number).slice(-pad.length);
+}
+
+export function dumpObj(arr, level) {
+    var dumped_text = "";
+    if (!level) level = 0;
+
+    var level_padding = "";
+    for (var j = 0; j < level + 1; j++) level_padding += "    ";
+
+    if (typeof (arr) == 'object') {
+        let i = 0
+        for (var item in arr) {
+            var value = arr[item];
+
+            if (typeof (value) == 'object') {
+                dumped_text += level_padding + "{\n";
+                dumped_text += dumpObj(value, level + 1);
+                dumped_text += `},`
+            } else {
+                if (i == countMap(arr) - 1)
+                    dumped_text += level_padding + `"` + item + `": "` + value + `"\n`;
+                else
+                    dumped_text += level_padding + `"` + item + `": "` + value + `",\n`;
+                i++
+            }
+        }
+    } else {
+        dumped_text = "===>" + arr + "<===(" + typeof (arr) + ")";
+    }
+    return dumped_text;
 }

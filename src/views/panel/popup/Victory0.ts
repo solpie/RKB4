@@ -91,9 +91,10 @@ export class Victory0 extends PIXI.Container implements IPopup {
         fitWidth(this.playerNameText, 300, 54)
 
         this.avt.load(playerData.avatar)
+        let gameTitle = ''
         let prefix = ""
-        if (param.gameType) {
-            prefix = param.gameType
+        if (param.gameTitle) {
+            gameTitle = param.gameTitle + "  " + param.rec.win + '胜  ' + param.rec.lose + '负'
         }
         else {
             if (GameTypeMap[param.gameIdx] == GameType.lose) {
@@ -105,9 +106,11 @@ export class Victory0 extends PIXI.Container implements IPopup {
             else if (GameTypeMap[param.gameIdx] == GameType.pre) {
                 prefix = '分组赛'
             }
+            gameTitle = prefix + "  " + param.rec.win + '胜  ' + param.rec.lose + '负'
+
         }
 
-        this.winLoseText.text = prefix + "  " + param.rec.win + '胜  ' + param.rec.lose + '负'
+        this.winLoseText.text = gameTitle
         if (param.isLeft) {
             this.playerNameText.style.dropShadowColor = 0x0d5c92
             this.winLoseText.style.dropShadowColor = 0x0d5c92

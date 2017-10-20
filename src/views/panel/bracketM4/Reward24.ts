@@ -64,7 +64,7 @@ export class RewardModel {
             let winRewardArr = playerMap[winPlayer]
             let loseRewardArr = playerMap[losePlayer]
 
-            if (gameIdx > 16) {
+            if (gameIdx > 0) {
                 if (gameIdx == 62) {
                     winRewardArr.push(reward1)
                     loseRewardArr.push(reward2)
@@ -90,7 +90,7 @@ export class RewardModel {
 
             let lScore = r.score[0]
             let rScore = r.score[1]
-            console.log('reward idx', gameIdx);
+            // console.log('reward idx', gameIdx);
 
             if (lScore != 0 || rScore != 0) {
                 if (lScore > rScore) {
