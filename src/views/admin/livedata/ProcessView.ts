@@ -171,7 +171,7 @@ export class ProcessView {
         return { gamePlayerArr: gamePlayerArr, title: title, idx: idx, start: start, gameIdx: 0 }
     }
 
-    static curPlayerRoute(doc, gameIdx) {
+    static curPlayerRoute(doc, gameIdx, callback) {
         let rec = doc.rec
         let playerArr = rec[gameIdx].player
         // let 
@@ -191,11 +191,13 @@ export class ProcessView {
                     p2From = idx
                 }
             }
-            console.log('cur player route p1', p1From, 'p2', p2From);
+            console.log('cur player route p1 from ', p1From, 'p2 from', p2From);
         }
 
         let winToIdx = 0;
         let loseToIdx = 0;
+        let losePlayer = []
+        let winPlayer = []
         let winFromIdxArr = []
         routeCallback((gameIdx2, winIdx, winPos, loseIdx, losePos) => {
             if (gameIdx == gameIdx2) {
@@ -206,24 +208,43 @@ export class ProcessView {
                 loseToIdx = loseIdx
                 // }
                 if (winIdx) {
-                    let winPlayer = rec[winIdx].player
-                    console.log('win player', winPlayer);
+                    winPlayer = rec[winIdx].player
+                    console.log('win player at ', winToIdx, winPlayer);
+                }
+                if (loseToIdx) {
+                    losePlayer = rec[loseToIdx].player
+                    console.log('lose player at ', loseToIdx, losePlayer);
                 }
             }
+
+            // let find
             if (gameIdx2 == 62) {
                 if (winToIdx > 0)
                     routeCallback((gameIdx3, winIdx3, winPos3, loseIdx3, losePos3) => {
                         if (winIdx3 == winToIdx || loseIdx3 == winToIdx) {
                             winFromIdxArr.push(gameIdx3)
-                            if (winFromIdxArr.length == 2)
+                            // console.log('game', gameIdx3, 'player', rec[gameIdx3].player)
+                            if (winFromIdxArr.length == 2) {
                                 console.log(winIdx3, 'win from', winFromIdxArr);
+                                let from = []
+                                if (p1From) {
+                                    from = [rec[p1From].player, rec[p2From].player]
+                                }
+                                let d = {
+                                    from: from,
+                                    lose: losePlayer,
+                                    win: winPlayer
+                                }
+                                console.log('player route:', d);
+                                callback(d)
+                            }
                         }
                     })
             }
         })
         // console.log('win to', winIdx);
 
-
+        // return
     }
 
 }

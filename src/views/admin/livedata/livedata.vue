@@ -114,7 +114,7 @@
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
                 <br>
                 <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
-                <el-button @click='_("showCurPlayerRoute")'>当前晋级图</el-button>
+                <el-button @click='_("showCurPlayerRoute",true)'>当前晋级图</el-button>
                 <el-button @click='_("showGameProcess",true,"auto")'>比赛进程</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
                 <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
@@ -219,18 +219,18 @@ let livedataView = new LiveDataView();
 import DoubleElimination24View from "./DoubleElimation24View";
 
 import CommonView from "./CommonView";
-// let doubleElimination24 = new DoubleElimination24View(livedataView)
-// livedataView.appendProp(doubleElimination24)
+let doubleElimination24 = new DoubleElimination24View(livedataView)
+livedataView.appendProp(doubleElimination24)
 
-let commonView = new CommonView(livedataView);
-livedataView.appendProp(commonView);
+// let commonView = new CommonView(livedataView);
+// livedataView.appendProp(commonView);
 
 let hasFileHandle = false;
 export default {
   data() {
     let g;
-    // g = doubleElimination24
-    g = commonView;
+    g = doubleElimination24
+    // g = commonView;
     return g;
   },
   created() {

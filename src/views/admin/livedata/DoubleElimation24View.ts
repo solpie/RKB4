@@ -48,7 +48,7 @@ export default class DoubleElimination24View extends BaseGameView {
 
         // EVENT_INIT_DOUBLE_ELIMATION
 
-        // this.init()
+        this.init()
     }
     getPlayerRankMap(callback) {
         $post('/ranking/query/', { playerIdArr: this.playerIdArr, season: 's3' }, rankRes => {
@@ -162,7 +162,17 @@ export default class DoubleElimination24View extends BaseGameView {
             syncDoc(gameDate, doc => {
                 data._ = ''
                 if (data.curGame) {
-                    ProcessView.curPlayerRoute(doc,this.gameIdx)
+                    ProcessView.curPlayerRoute(doc, this.gameIdx, (d) => {
+                        // data.from = d.from
+                        // data.cur = d.cur
+                        // data.win = d.win
+                        // data.lose = d.lose
+                        d._ = ''
+                        d.visible = true
+                        d.playerRoute = true
+                        console.log('emit cs_showGameProcess', d);
+                        $post(`/emit/${WebDBCmd.cs_showGameProcess}`, d)
+                    })
                 }
                 else {
                     data = ProcessView.showPlayerProcess2(data, doc, this.gameIdx, this.nameMapHupuId)

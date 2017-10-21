@@ -60,7 +60,7 @@ export class PopupView {
                     : this.hide(RollText)
             })
             .on(WebDBCmd.sc_showGameProcess, data => {
-                console.log('sc_showGameProcess');
+                console.log('sc_showGameProcess',data);
                 data.visible ?
                     this.show(GameProcess, data)
                     : this.hide(GameProcess)

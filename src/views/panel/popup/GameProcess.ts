@@ -1,3 +1,4 @@
+import { PlayerRoute } from './PlayerRoute';
 import { imgLoader } from '../../utils/ImgLoader';
 import { BaseAvatar } from '../base/BaseAvatar';
 import { blink2 } from '../../utils/Fx';
@@ -306,6 +307,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
     static class = 'GameProcess'
     p: PIXI.Container
     title: PIXI.Text
+    titleCtn: PIXI.Sprite
     playerItemCtn: PIXI.Container
     playerItemArr: Array<PlayerItem>
 
@@ -315,14 +317,23 @@ export class GameProcess extends PIXI.Container implements IPopup {
     final8Bg: PIXI.Sprite
     flatBg: PIXI.Graphics
     vs: PIXI.Sprite
+
+    playerRoute: PlayerRoute
+
+
     create(parent: any) {
         this.p = parent
         let bg = newBitmap({ url: '/img/panel/process/bg.png' })
         this.addChild(bg)
 
+
+        this.playerRoute = new PlayerRoute()
+        this.addChild(this.playerRoute)
+
         let titleBg = newBitmap({ url: '/img/panel/process/title.png' })
         titleBg.x = (ViewConst.STAGE_WIDTH - 1377) * .5
         titleBg.y = 122
+        this.titleCtn = titleBg
 
         let titleTex = newBitmap({ url: '/img/panel/process/titleTex.png' })
         titleTex.x = 520
@@ -403,6 +414,10 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.addChild(tabFocus)
         blink2({ target: tabFocus, time: 500 })
         this.tabFocus = tabFocus
+
+
+
+        // this.playerRoute.
     };
 
     initVSFocus(ctn) {
@@ -415,76 +430,107 @@ export class GameProcess extends PIXI.Container implements IPopup {
 
     toPosX: number
     show(data) {
-        console.log('show process', data);
-        let processParam = data.processParam
-        let gamePlayerArr = processParam.gamePlayerArr
-
-        let playerAvtArr = []
-        for (let i = 0; i < gamePlayerArr.length; i++) {
-            let playerArr = gamePlayerArr[i];
-            if (playerArr[0].data.avatar)
-                playerAvtArr.push(playerArr[0].data.avatar)
-            if (playerArr[1].data.avatar)
-                playerAvtArr.push(playerArr[1].data.avatar)
+        console.log('show process data:', data);
+        if (data.playerRoute) {
+            this.showPlayerRoute(data)
         }
-        imgLoader.loadTexArr(playerAvtArr, _ => {
+        else {
+            let processParam = data.processParam
+            let gamePlayerArr = processParam.gamePlayerArr
 
-            // for(let p)
-            this.title.text = processParam.title
-            this.title.x = (1377 - this.title.width) * .5
-
-            let tabIdx = processParam.idx
-            this.tabFocus.x = this.tabIdxPosMap[tabIdx]
-            //            final  8
-            if (tabIdx == 8 || tabIdx == 9) {
-                this.final8Bg.visible = true
-                this.playerItemCtn.visible = false
-                this.flatBg.visible = false
-
-                for (let i = 0; i < gamePlayerArr.length; i++) {
-                    let playerArr = gamePlayerArr[i];
-                    let pi = this.playerItemArr2[i]
-                    pi.setData(playerArr[0], playerArr[1])
-                }
+            let playerAvtArr = []
+            for (let i = 0; i < gamePlayerArr.length; i++) {
+                let playerArr = gamePlayerArr[i];
+                if (playerArr[0].data.avatar)
+                    playerAvtArr.push(playerArr[0].data.avatar)
+                if (playerArr[1].data.avatar)
+                    playerAvtArr.push(playerArr[1].data.avatar)
             }
-            else {//group
-                for (let pi of this.playerItemArr) {
-                    pi.visible = false
-                }
+            imgLoader.loadTexArr(playerAvtArr, _ => {
+                // for(let p)
+                this.setTitle(processParam.title)
+                this.titleCtn.y = 122
 
+                let tabIdx = processParam.idx
+                this.tabFocus.x = this.tabIdxPosMap[tabIdx]
+                //            final  8
+                if (tabIdx == 8 || tabIdx == 9) {
+                    this.final8Bg.visible = true
+                    this.playerItemCtn.visible = false
+                    this.flatBg.visible = false
 
-                this.vs.visible = false
-                for (let i = 0; i < gamePlayerArr.length; i++) {
-                    let playerArr = gamePlayerArr[i];
-                    let pi = this.playerItemArr[i]
-                    pi.setData(playerArr[0], playerArr[1], tabIdx)
-                    if (processParam.gameIdx == processParam.start + i) {
-                        this.setFucosPlayerItem(pi)
+                    for (let i = 0; i < gamePlayerArr.length; i++) {
+                        let playerArr = gamePlayerArr[i];
+                        let pi = this.playerItemArr2[i]
+                        pi.setData(playerArr[0], playerArr[1])
                     }
-                    else
-                        pi.setFocus(false)
-                    pi.setGameIdx(processParam.start + i)
-                    let odd = i % 2
-                    if (odd) {
-                        pi.x = -pi.width
+                }
+                else {//group
+                    for (let pi of this.playerItemArr) {
+                        pi.visible = false
                     }
-                    else
-                        pi.x = ViewConst.STAGE_WIDTH
-                    pi.visible = true
-                }
 
-                for (let i = 0; i < this.playerItemArr.length; i++) {
-                    let pi = this.playerItemArr[i]
-                    TweenEx.to(pi, 200, { x: this.toPosX })
+                    this.vs.visible = false
+                    for (let i = 0; i < gamePlayerArr.length; i++) {
+                        let playerArr = gamePlayerArr[i];
+                        let pi = this.playerItemArr[i]
+                        pi.setData(playerArr[0], playerArr[1], tabIdx)
+                        if (processParam.gameIdx == processParam.start + i) {
+                            this.setFucosPlayerItem(pi)
+                        }
+                        else
+                            pi.setFocus(false)
+                        pi.setGameIdx(processParam.start + i)
+                        let odd = i % 2
+                        if (odd) {
+                            pi.x = -pi.width
+                        }
+                        else
+                            pi.x = ViewConst.STAGE_WIDTH
+                        pi.visible = true
+                    }
+
+                    for (let i = 0; i < this.playerItemArr.length; i++) {
+                        let pi = this.playerItemArr[i]
+                        TweenEx.to(pi, 200, { x: this.toPosX })
+                    }
+
+                    this.showPanel(GameProcess.PANEL_GROUP)
                 }
-                this.playerItemCtn.visible = true
-                this.flatBg.visible = true
-                this.final8Bg.visible = false
-            }
-            console.log('this.tabIdxPosMap', this.tabFocus.x);
-            this.p.addChild(this)
-        }, true)
+                console.log('this.tabIdxPosMap', this.tabFocus.x);
+                this.p.addChild(this)
+            }, true)
+        }
     }
+
+    setTitle(text) {
+        this.title.text = text
+        this.title.x = (1377 - this.title.width) * .5
+    }
+
+    showPlayerRoute(param) {
+        this.titleCtn.y = 243
+        this.setTitle('Route')
+        this.showPanel(GameProcess.PANEL_PLAYER_ROUTE)
+    }
+    static PANEL_GROUP = 1
+    static PANEL_8 = 2
+    static PANEL_PLAYER_ROUTE = 3
+    showPanel(type) {
+        this.playerRoute.visible = false
+        this.playerItemCtn.visible = false
+        this.flatBg.visible = false
+        this.final8Bg.visible = false
+        if (type == GameProcess.PANEL_PLAYER_ROUTE) {
+            this.playerRoute.visible = true
+        }
+        else if (type == GameProcess.PANEL_GROUP) {
+            this.playerItemCtn.visible = true
+            this.flatBg.visible = true
+        }
+        this.p.addChild(this)
+    }
+
     setFucosPlayerItem(pi: PlayerItem) {
         TweenEx.delayedCall(500, _ => {
             this.vs.visible = true
