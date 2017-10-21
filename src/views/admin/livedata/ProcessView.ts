@@ -194,14 +194,16 @@ export class ProcessView {
             console.log('cur player route p1', p1From, 'p2', p2From);
         }
 
-        let winIdx2 = 0;
+        let winToIdx = 0;
+        let loseToIdx = 0;
         let winFromIdxArr = []
         routeCallback((gameIdx2, winIdx, winPos, loseIdx, losePos) => {
             if (gameIdx == gameIdx2) {
                 console.log('win to', winIdx);
                 console.log('lose to', loseIdx);
                 // if (!winIdx2) {
-                winIdx2 = winIdx
+                winToIdx = winIdx
+                loseToIdx = loseIdx
                 // }
                 if (winIdx) {
                     let winPlayer = rec[winIdx].player
@@ -209,12 +211,12 @@ export class ProcessView {
                 }
             }
             if (gameIdx2 == 62) {
-                if (winIdx2 > 0)
+                if (winToIdx > 0)
                     routeCallback((gameIdx3, winIdx3, winPos3, loseIdx3, losePos3) => {
-                        if (winIdx3 == winIdx2 || loseIdx3 == winIdx2) {
+                        if (winIdx3 == winToIdx || loseIdx3 == winToIdx) {
                             winFromIdxArr.push(gameIdx3)
-                            // if (winFromIdxArr.length == 2)
-                            console.log('win from', winFromIdxArr);
+                            if (winFromIdxArr.length == 2)
+                                console.log(winIdx3, 'win from', winFromIdxArr);
                         }
                     })
             }

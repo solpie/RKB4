@@ -48,7 +48,7 @@ export default class DoubleElimination24View extends BaseGameView {
 
         // EVENT_INIT_DOUBLE_ELIMATION
 
-        this.init()
+        // this.init()
     }
     getPlayerRankMap(callback) {
         $post('/ranking/query/', { playerIdArr: this.playerIdArr, season: 's3' }, rankRes => {

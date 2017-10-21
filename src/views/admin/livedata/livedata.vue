@@ -181,102 +181,107 @@
 </template>
 <style>
 #drop_zone {
-    border: 2px dashed #bbb;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    padding: 25px;
-    text-align: center;
-    font: 20pt bold 'Vollkorn';
-    color: #bbb;
+  border: 2px dashed #bbb;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 25px;
+  text-align: center;
+  font: 20pt bold "Vollkorn";
+  color: #bbb;
 }
 </style>
 
 <script>
+// const getUrlQuerys = (sParam) => {
+//     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+//         sURLVariables = sPageURL.split('&'),
+//         sParameterName,
+//         i;
 
-const getUrlQuerys = (sParam) => {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
+//     for (i = 0; i < sURLVariables.length; i++) {
+//         sParameterName = sURLVariables[i].split('=');
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
+//         if (sParameterName[0] === sParam) {
+//             return sParameterName[1] === undefined ? true : sParameterName[1];
+//         }
+//     }
+// };
 
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
-        }
-    }
-};
+import LiveDataView from "./livedataView";
+import DoubleEliminationView from "./DoubleElimationView";
 
-import LiveDataView from './livedataView'
-import DoubleEliminationView from './DoubleElimationView';
+let livedataView = new LiveDataView();
 
-let livedataView = new LiveDataView()
+// let act = getUrlQuerys("act");
 
-let act = getUrlQuerys('act')
+// console.log("active ", act);
+import DoubleElimination24View from "./DoubleElimation24View";
 
-console.log('active ', act)
-import DoubleElimination24View from './DoubleElimation24View';
+import CommonView from "./CommonView";
+// let doubleElimination24 = new DoubleElimination24View(livedataView)
+// livedataView.appendProp(doubleElimination24)
 
-import CommonView from './CommonView'
-// if (act == 'm5') {
-    let doubleElimination24 = new DoubleElimination24View(livedataView)
-    livedataView.appendProp(doubleElimination24)
-// }
-// else {
-//     let commonView = new CommonView(livedataView)
-//     livedataView.appendProp(commonView)
-// }
+let commonView = new CommonView(livedataView);
+livedataView.appendProp(commonView);
 
-
-
-let hasFileHandle = false
+let hasFileHandle = false;
 export default {
-    data() {
-        let g;
-        // if (act == 'm5')
-            g = doubleElimination24
-        // else
-        //     g = commonView
-        return g
+  data() {
+    let g;
+    // g = doubleElimination24
+    g = commonView;
+    return g;
+  },
+  created() {
+    livedataView.$vm = this;
+  },
+  methods: {
+    _: (e, ...param) => {
+      livedataView._(e, param);
     },
-    created() {
-        livedataView.$vm = this
+    rowClick(row, event, col) {
+      this._("getGameInfo", row, event, col);
     },
-    methods: {
-        _: (e, ...param) => {
-            livedataView._(e, param)
-        },
-        rowClick(row, event, col) {
-            this._('getGameInfo', row, event, col)
-        },
-        onFile() {
-            if (!hasFileHandle) {
-                hasFileHandle = true
-                document.getElementById('files').addEventListener('change', (evt) => {
-                    var files = evt.target.files; // FileList object
-                    // files is a FileList of File objects. List some properties.
-                    var output = [];
-                    for (var i = 0, f; f = files[i]; i++) {
-                        var reader = new FileReader();
-                        reader.addEventListener("load", function(event) {
-                            console.log("EVENT_ON_FILE", event.target.result)
-                            livedataView.emit('EVENT_ON_FILE', event.target.result)
-                        })
+    onFile() {
+      if (!hasFileHandle) {
+        hasFileHandle = true;
+        document.getElementById("files").addEventListener(
+          "change",
+          evt => {
+            var files = evt.target.files; // FileList object
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            for (var i = 0, f; (f = files[i]); i++) {
+              var reader = new FileReader();
+              reader.addEventListener("load", function(event) {
+                console.log("EVENT_ON_FILE", event.target.result);
+                livedataView.emit("EVENT_ON_FILE", event.target.result);
+              });
 
-                        reader.readAsText(f, 'utf-8')
-                        output.push('<li><strong>', f.name, '</strong> (', f.type || 'n/a', ') - ',
-                            f.size, ' bytes, last modified: ',
-                            f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                            '</li>');
-                    }
-                    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-                }, false);
+              reader.readAsText(f, "utf-8");
+              output.push(
+                "<li><strong>",
+                f.name,
+                "</strong> (",
+                f.type || "n/a",
+                ") - ",
+                f.size,
+                " bytes, last modified: ",
+                f.lastModifiedDate
+                  ? f.lastModifiedDate.toLocaleDateString()
+                  : "n/a",
+                "</li>"
+              );
             }
-            document.getElementById('files').click()
-        }
-
+            document.getElementById("list").innerHTML =
+              "<ul>" + output.join("") + "</ul>";
+          },
+          false
+        );
+      }
+      document.getElementById("files").click();
     }
-}
+  }
+};
 </script>

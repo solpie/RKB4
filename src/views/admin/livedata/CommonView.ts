@@ -175,6 +175,7 @@ export default class CommonView extends BaseGameView {
                 p.avatar = gameCfg.avatarUrlBase + p.playerId + '.png'
             let data = JSON.parse(JSON.stringify(p))
             p.data = data
+            // console.log(p.playerId.replace('p',""), p.name);
         }
         console.log('player count:', playerArr.length);
         //setGameInfo
