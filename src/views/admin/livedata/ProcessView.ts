@@ -171,7 +171,7 @@ export class ProcessView {
         return { gamePlayerArr: gamePlayerArr, title: title, idx: idx, start: start, gameIdx: 0 }
     }
 
-    static curPlayerRoute(doc, gameIdx, callback) {
+    static curPlayerRoute(doc, playerDataMap, gameIdx, callback) {
         let rec = doc.rec
         let playerArr = rec[gameIdx].player
         // let 
@@ -199,6 +199,8 @@ export class ProcessView {
         let losePlayer = []
         let winPlayer = []
         let winFromIdxArr = []
+
+        let curPlayer = rec[gameIdx].player
         routeCallback((gameIdx2, winIdx, winPos, loseIdx, losePos) => {
             if (gameIdx == gameIdx2) {
                 console.log('win to', winIdx);
@@ -216,7 +218,17 @@ export class ProcessView {
                     console.log('lose player at ', loseToIdx, losePlayer);
                 }
             }
-
+            let _getData = (arr) => {
+                let a = []
+                for (let p of arr) {
+                    if (p) {
+                        a.push(playerDataMap[p])
+                    }
+                    else
+                        a.push('')
+                }
+                return a
+            }
             // let find
             if (gameIdx2 == 62) {
                 if (winToIdx > 0)
@@ -228,12 +240,16 @@ export class ProcessView {
                                 console.log(winIdx3, 'win from', winFromIdxArr);
                                 let from = []
                                 if (p1From) {
-                                    from = [rec[p1From].player, rec[p2From].player]
+                                    from = [
+                                        _getData(rec[p1From].player),
+                                        _getData(rec[p2From].player)
+                                    ]
                                 }
                                 let d = {
                                     from: from,
-                                    lose: losePlayer,
-                                    win: winPlayer
+                                    lose:  _getData(losePlayer),
+                                    cur:  _getData(curPlayer),
+                                    win:  _getData(winPlayer)
                                 }
                                 console.log('player route:', d);
                                 callback(d)

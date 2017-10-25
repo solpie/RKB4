@@ -30,6 +30,13 @@ export class GambleView {
         console.log('gambleArr', gmv.gambleArr);
     }
 
+    cleanGamble() {
+        syncDoc(docGamble, doc => {
+            doc['topicIdArr'] = []
+            this._initGmv(this.gmv, doc)
+        }, true)
+    }
+    
     startGamble(roomId, left, right) {
         $post('/autoGamble/start', { roomId: roomId, leftPlayer: left, rightPlayer: right }, (res) => {
             console.log('gamble start', res);

@@ -227,7 +227,8 @@ export default class LiveDataView extends EventDispatcher {
                 let d = res.data
                 p2.push({
                     playerId: `p` + (p2.length + 1),
-                    name: d.name,
+                    name: d.nickname,
+                    realName: d.name,
                     avatar: d.avatar,
                     height: d.height,
                     weight: d.weight
@@ -252,8 +253,8 @@ export default class LiveDataView extends EventDispatcher {
         $post(`/emit/${WebDBCmd.cs_showImg}`, { _: null, visible: visible, name: name })
     }
 
-    showCurPlayerRoute() {
-        this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { curGame: true })
+    showCurPlayerRoute(isFx) {
+        this.emit(LiveDataView.EVENT_SHOW_PLAYER_PROCESS, { curGame: true, isFx: isFx })
     }
 
     showLastPlayerRoute() {
@@ -267,10 +268,12 @@ export default class LiveDataView extends EventDispatcher {
     startGamble(roomId, left, right) {
         gamble.startGamble(roomId, left, right)
     }
+    cleanGamble() {
+        gamble.cleanGamble()
+    }
 
     gambleAct(act, topicId?, option?) {
         gamble.gambleAct(act, topicId, option)
-
     }
 
     testRandomGame(endGameIdx) {

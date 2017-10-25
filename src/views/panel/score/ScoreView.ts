@@ -99,17 +99,17 @@ export class ScoreView {
             .on(`${WebDBCmd.sc_init}`, (data) => {
                 console.log('sc_init', data);
                 if (data.leftPlayer) {
+                    this.scorePanel.setExPlayerInfo(data)
                     let p = data.leftPlayer
-                    this.scorePanel.setLeftPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking })
+                    this.scorePanel.setLeftPlayerInfo(p.realName, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking }, p.name)
                     p = data.rightPlayer
-                    this.scorePanel.setRightPlayerInfo(p.name, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking })
+                    this.scorePanel.setRightPlayerInfo(p.realName, p.avatar, p.weight, p.height, p.groupId, p.level, { text: p.ranking }, p.name)
                     this.scorePanel.setGameIdx(data.gameIdx, data.matchType, data)
                     this.scorePanel.set35ScoreLight(data.winScore)
                     this.scorePanel.setLeftFoul(data.leftFoul)
                     this.scorePanel.setRightFoul(data.rightFoul)
                     this.scorePanel.setLeftScore(data.leftScore)
                     this.scorePanel.setRightScore(data.rightScore)
-                    this.scorePanel.setExPlayerInfo(data)
                     // if (data.gameTitle) {
                     //     this.scorePanel.setGameTitle(data.gameTitle)
                     // }

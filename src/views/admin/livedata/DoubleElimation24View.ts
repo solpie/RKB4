@@ -162,15 +162,14 @@ export default class DoubleElimination24View extends BaseGameView {
             syncDoc(gameDate, doc => {
                 data._ = ''
                 if (data.curGame) {
-                    ProcessView.curPlayerRoute(doc, this.gameIdx, (d) => {
-                        // data.from = d.from
-                        // data.cur = d.cur
-                        // data.win = d.win
-                        // data.lose = d.lose
+                    ProcessView.curPlayerRoute(doc, this.nameMapHupuId, this.gameIdx, (d) => {
                         d._ = ''
                         d.visible = true
                         d.playerRoute = true
+                        d.isFx = data.isFx
                         console.log('emit cs_showGameProcess', d);
+                        let tabData = ProcessView.showTab(doc.rec, 'auto', this.nameMapHupuId, this.gameIdx)
+                        d.tabData = tabData
                         $post(`/emit/${WebDBCmd.cs_showGameProcess}`, d)
                     })
                 }
@@ -230,6 +229,8 @@ export default class DoubleElimination24View extends BaseGameView {
         getPlayerInfoArr(this.playerIdArr, resArr => {
             let playerDataArr = []
             for (let res of resArr) {
+                res.data.realName = res.data.name
+                res.data.name = res.data.nickname
                 playerDataArr.push(res.data)
             }
             console.log('get all player info', resArr);

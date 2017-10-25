@@ -87,7 +87,7 @@ export class Victory0 extends PIXI.Container implements IPopup {
     show(param: any) {
         this.alpha = 1
         let playerData = param.winner
-        this.playerNameText.text = simplifyName(playerData.name)
+        this.playerNameText.text = simplifyName(playerData.realName)
         fitWidth(this.playerNameText, 300, 54)
 
         this.avt.load(playerData.avatar)

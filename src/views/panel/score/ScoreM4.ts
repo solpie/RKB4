@@ -35,6 +35,9 @@ export class ScoreM4 {
     rPlayerHeight: PIXI.Text
     rPlayerWeight: PIXI.Text
 
+    lPlayerHupuID: PIXI.Text
+    rPlayerHupuID: PIXI.Text
+
     lAvatar: PIXI.Sprite
     rAvatar: PIXI.Sprite
 
@@ -59,7 +62,7 @@ export class ScoreM4 {
     rRewardText: PIXI.Text
 
     constructor(stage: PIXI.Container, isDark = false) {
-        let bg = newBitmap({ url: '/img/panel/score/m4/bg.png' })
+        let bg = newBitmap({ url: '/img/panel/score/m5/bg.png' })
         stage.addChild(bg)
         this.ctn = bg
         let ctn = new PIXI.Container
@@ -190,7 +193,7 @@ export class ScoreM4 {
         ctn.addChild(rplayerName)
         let pis = {
             fontFamily: FontName.Impact,
-            fontSize: '28px', fill: '#fff',
+            fontSize: '28px', fill: '#ddd',
             // stroke: '#000',
             // strokeThickness: 2,
             dropShadow: true,
@@ -304,15 +307,26 @@ export class ScoreM4 {
         rRewardTex.x = rRewardText.x
         rRewardTex.y = rRewardText.y + 5
         rRewardTex.mask = rRewardText
+
+
+        let hupuIDStyle = {
+            fontFamily: FontName.MicrosoftYahei,
+            fontSize: '25px', fill: "#ccc",
+        }
+
+        let lPlayerHupuID = new PIXI.Text('', hupuIDStyle)
+        this.lPlayerHupuID = lPlayerHupuID
+        lPlayerHupuID.x = lRewardText.x
+        lPlayerHupuID.y = lRewardText.y
+        ctn.addChild(lPlayerHupuID)
+
+        let rPlayerHupuID = new PIXI.Text('', hupuIDStyle)
+        this.rPlayerHupuID = rPlayerHupuID
+        rPlayerHupuID.x = rRewardText.x
+        rPlayerHupuID.y = rRewardText.y
+        ctn.addChild(rPlayerHupuID)
     }
 
-    _drawRankingColor(g: PIXI.Graphics, col) {
-        g.beginFill(col)
-            .moveTo(25, 0)
-            .lineTo(75, 0)
-            .lineTo(100, 50)
-            .lineTo(0, 50)
-    }
 
     set35ScoreLight(winScore) {
         this.winScoreText.text = winScore + '球胜'
@@ -373,14 +387,24 @@ export class ScoreM4 {
     }
 
     setScoreFoul(data) {
-        if ('leftScore' in data)
+        if ('leftScore' in data) {
             this.setLeftScore(data.leftScore)
-        if ('rightScore' in data)
+            this.showMoney()
+        }
+        if ('rightScore' in data) {
             this.setRightScore(data.rightScore)
+            this.showMoney
+        }
         if ('leftFoul' in data)
             this.setLeftFoul(data.leftFoul)
         if ('rightFoul' in data)
             this.setRightFoul(data.rightFoul)
+    }
+
+    showMoney() {
+        this.setExPlayerInfo(this.tmpRewardData)
+        this.lPlayerHupuID.visible = false
+        this.rPlayerHupuID.visible = false
     }
 
     setRightScore(v) {
@@ -445,11 +469,12 @@ export class ScoreM4 {
         }
     }
     //player
-    setLeftPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number, rankingData: any) {
+    setLeftPlayerInfo(realName: string, avatar: string, weight, height, ftId: string, level: Number, rankingData: any, hupuID: string = '') {
+
         this._lFtId = ftId
         this._loadFrame(level, this.lFrame)
         //cm kg
-        this.lPlayerName.text = simplifyName(name)
+        this.lPlayerName.text = simplifyName(realName)
         this.cutName(this.lPlayerName, this._NAME_WIDTH)
         this.lPlayerName.x = 595 - this.lPlayerName.width
         imgLoader.loadTex(avatar, tex => {
@@ -462,9 +487,13 @@ export class ScoreM4 {
         })
         this.lPlayerHeight.text = height + ' cm   |    ' + weight + ' kg'
         // this.lPlayerWeight.text = weight + ' kg'
-        alignCenter(this.lPlayerHeight, 515)
+        alignCenter(this.lPlayerHeight, 545)
         // this.lPlayerWeight.x = 535 - this.lPlayerWeight.width
-
+        if (hupuID) {
+            this.lRewardText.text = ''
+            this.lPlayerHupuID.visible = true
+            this.lPlayerHupuID.text = simplifyName(hupuID)
+        }
         // this._loadFt(ftId, this.lFtImg)
         if (rankingData) {
             console.log('lPlayer ranking data', rankingData);
@@ -479,10 +508,10 @@ export class ScoreM4 {
 
 
     _NAME_WIDTH = 280
-    setRightPlayerInfo(name: string, avatar: string, weight, height, ftId: string, level: Number, rankingData: any) {
+    setRightPlayerInfo(realName: string, avatar: string, weight, height, ftId: string, level: Number, rankingData: any, hupuID: string = '') {
         this._rFtId = ftId
         this._loadFrame(level, this.rFrame)
-        this.rPlayerName.text = simplifyName(name)
+        this.rPlayerName.text = simplifyName(realName)
         this.cutName(this.rPlayerName, this._NAME_WIDTH)
         // loadRes(avatar, (img) => {
         imgLoader.loadTex(avatar, tex => {
@@ -495,8 +524,13 @@ export class ScoreM4 {
         });
 
         this.rPlayerHeight.text = height + ' cm   |    ' + weight + ' kg'
-        alignCenter(this.rPlayerHeight, 1400)
-
+        alignCenter(this.rPlayerHeight, 1370)
+        if (hupuID) {
+            this.rRewardText.text = ''
+            this.rPlayerHupuID.visible = true
+            this.rPlayerHupuID.text = simplifyName(hupuID)
+            this.rPlayerHupuID.x = 1225 - this.rPlayerHupuID.width
+        }
         // this.rPlayerWeight.text = weight
         // this.rPlayerHeight.x = 1420 - this.rPlayerHeight.width
         // this.rPlayerWeight.x = 1558 - this.rPlayerWeight.width
@@ -506,8 +540,9 @@ export class ScoreM4 {
             this.rRankingText.x = 1293 - this.rRankingText.width * .5
         }
     }
-
+    tmpRewardData = null
     setExPlayerInfo(data) {
+        this.tmpRewardData = data
         let lText = ''
         if (data.lReward == 0)
             lText = '￥000.00'

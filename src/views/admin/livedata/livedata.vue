@@ -22,9 +22,9 @@
                     </span>
                 </el-collapse-item>
                 <el-collapse-item title="Game List" name="1">
-                    <el-table stripe :data="gameInfoTable" style="width: 100%" @row-click='rowClick'>
+                    <el-table stripe :data="gameInfoTable" style="width: 100%;height:800px;overflow-y: scroll;" @row-click='rowClick'>
                         <el-table-column prop="idx" label="#" width="60"></el-table-column>
-                        <el-table-column prop="vs" label="vs" width="100"></el-table-column>
+                        <el-table-column prop="vs" label="vs" width="110"></el-table-column>
                         <el-table-column prop="lPlayer" label="L" width="120"></el-table-column>
                         <el-table-column prop="score" label="" width="80"></el-table-column>
                         <el-table-column prop="rPlayer" label="R"></el-table-column>
@@ -67,6 +67,7 @@
                 <el-col :span='8'>
                     <el-input v-model='inputRoomId' style="width:100px"></el-input>
                     <el-button @click='_("startGamble",inputRoomId,lHupuID,rHupuID)'>开题</el-button>
+                    ----------------<el-button @click='_("cleanGamble")'>清除</el-button>
                     <br>
                     <span v-for='(item,idx) in gambleArr' v-bind:key="idx">
                         <el-button @click='_("gambleAct","fin",item.topicId,1)'>{{item.left}}</el-button>
@@ -114,7 +115,8 @@
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
                 <br>
                 <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
-                <el-button @click='_("showCurPlayerRoute",true)'>当前晋级图</el-button>
+                <el-button @click='_("showCurPlayerRoute",true)'>当前晋级图(fx)</el-button>
+                <el-button @click='_("showCurPlayerRoute",false)'>当前晋级图</el-button>
                 <el-button @click='_("showGameProcess",true,"auto")'>比赛进程</el-button>
                 <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
                 <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
@@ -189,6 +191,7 @@
   text-align: center;
   font: 20pt bold "Vollkorn";
   color: #bbb;
+  
 }
 </style>
 
