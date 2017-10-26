@@ -327,15 +327,14 @@ export class GameProcess extends PIXI.Container implements IPopup {
                 this.tabFocus.x = this.tabIdxPosMap[tabIdx]
                 //            final  8
                 if (tabIdx == 8 || tabIdx == 9) {
-                    this.final8Bg.visible = true
-                    this.playerItemCtn.visible = false
-                    this.flatBg.visible = false
+
 
                     for (let i = 0; i < gamePlayerArr.length; i++) {
                         let playerArr = gamePlayerArr[i];
                         let pi = this.playerItemArr2[i]
                         pi.setData(playerArr[0], playerArr[1])
                     }
+                    this.showPanel(GameProcess.PANEL_8)
                 }
                 else {//group
                     for (let pi of this.playerItemArr) {
@@ -394,6 +393,12 @@ export class GameProcess extends PIXI.Container implements IPopup {
         this.playerRoute.show(param)
         this.bgCtn.visible = false
         this.showPanel(GameProcess.PANEL_PLAYER_ROUTE)
+
+        if (param.isFx) {
+            TweenEx.delayedCall(5500, _ => {
+                this.hide()
+            })
+        }
     }
     static PANEL_GROUP = 1
     static PANEL_8 = 2
@@ -409,6 +414,15 @@ export class GameProcess extends PIXI.Container implements IPopup {
         else if (type == GameProcess.PANEL_GROUP) {
             this.playerItemCtn.visible = true
             this.flatBg.visible = true
+            this.bgCtn.visible = true
+
+        }
+        else if (type == GameProcess.PANEL_8) {
+            this.bgCtn.visible = true
+
+            this.final8Bg.visible = true
+            this.playerItemCtn.visible = false
+            this.flatBg.visible = false
         }
         this.p.addChild(this)
     }

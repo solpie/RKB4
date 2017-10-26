@@ -120,6 +120,7 @@ export class RewardModel {
 
         return rArr
     }
+    
     static final4Reward2(rec, playerDataMap, data) {
         let playerArr1 = rec['59'].player
         let playerArr2 = rec['60'].player

@@ -62,8 +62,8 @@ export class GambleView {
         else if (act == 'fin') {
             this.finGamble(topicId, option)
         }
-
     }
+
     finGamble(topicId, option) {
         $post('/autoGamble/fin', { topicId: topicId, option: option }, (res) => {
             console.log('gamble cancel', res);

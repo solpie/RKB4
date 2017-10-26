@@ -403,6 +403,19 @@ export default class DoubleElimination24View extends BaseGameView {
         }, true)
     }
 
+    dumpReward() {
+        syncDoc(gameDate, doc => {
+            for (let i = 0; i < 16; i++) {
+                let pg1 = 'p' + (i * 2 + 1)
+                let pg2 = 'p' + (i * 2 + 2)
+                let p1 = this.getHupuId(pg1)
+                let p2 = this.getHupuId(pg2)
+                let r = RewardModel.getReward(doc.rec, pg1, pg2, true)
+                console.log(p1, p2, r);
+            }
+        })
+    }
+
     emitVictory(doc, lastGameIdx, l, r) {
         if (this.lScore != 0 || this.rScore != 0) {
             let winPlayer: PlayerInfo;

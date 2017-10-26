@@ -22,7 +22,7 @@ export class StaticImg extends PIXI.Container implements IPopup {
     create(parent) {
         this.p = parent
         this.imgConfMap['bd1'] = new ImgConf('bd1',
-            0, ViewConst.STAGE_HEIGHT - 190,
+            0, ViewConst.STAGE_HEIGHT - 504,
             '/img/bd/bd1.png')
         this.imgConfMap['bd2'] = new ImgConf('bd2',
             0, ViewConst.STAGE_HEIGHT - 190,

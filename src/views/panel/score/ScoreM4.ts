@@ -403,8 +403,23 @@ export class ScoreM4 {
 
     showMoney() {
         this.setExPlayerInfo(this.tmpRewardData)
+        blink2({
+            target: this.lRewardText, time: 150, loop: 5, callback: _ => {
+            }
+        })
+        blink2({
+            target: this.rRewardText, time: 150, loop: 5, callback: _ => {
+            }
+        })
+        TweenEx.delayedCall(4000, _ => {
+            this.lPlayerHupuID.visible = true
+            this.rPlayerHupuID.visible = true
+            this.lRewardText.text = ''
+            this.rRewardText.text = ''
+        })
         this.lPlayerHupuID.visible = false
         this.rPlayerHupuID.visible = false
+
     }
 
     setRightScore(v) {
