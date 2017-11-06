@@ -2,20 +2,37 @@ import { GameType, GameTypeMap, routeCallback } from '../../panel/bracketM4/Brac
 let getGamePlayer = (rec, start, end, playerDataMap) => {
     start--;
     let gamePlayerArr = []
+    console.log('getGamePlayer', start, end);
+    let lPlayer, rPlayer
     for (let i = start; i < end; i++) {
         let gameIdx = i + 1
         let playerArr = rec[gameIdx].player
-        let lPlayer = playerDataMap[playerArr[0]]
-        let rPlayer = playerDataMap[playerArr[1]]
-        // try {
-        if (lPlayer)
+
+        if (playerDataMap[playerArr[0]]) {
+            lPlayer = JSON.parse(JSON.stringify(playerDataMap[playerArr[0]]))
             lPlayer.score = rec[gameIdx].score[0]
-        else
+        }
+        else {
             lPlayer = { data: {} }
-        if (rPlayer)
+        }
+        if (playerDataMap[playerArr[1]])
+        {
+            rPlayer = JSON.parse(JSON.stringify(playerDataMap[playerArr[1]]))
             rPlayer.score = rec[gameIdx].score[1]
-        else
+        }   
+        else {
             rPlayer = { data: {} }
+        }
+        // try {
+        // if (lPlayer)
+        //     lPlayer.score = rec[gameIdx].score[0]
+        // else
+        //     lPlayer = { data: {} }
+        // if (rPlayer)
+        //     rPlayer.score = rec[gameIdx].score[1]
+        // else
+        //     rPlayer = { data: {} }
+        console.log('rec[gameIdx]', rec[gameIdx], lPlayer.score, rPlayer.score);
         gamePlayerArr.push([lPlayer, rPlayer])
     }
     return gamePlayerArr
@@ -167,7 +184,7 @@ export class ProcessView {
             end = 62
             gamePlayerArr = getGamePlayer(rec, start, end, playerDataMap)
         }
-
+        console.log('gamePlayerArr', gamePlayerArr);
         return { gamePlayerArr: gamePlayerArr, title: title, idx: idx, start: start, gameIdx: 0 }
     }
 
@@ -247,9 +264,9 @@ export class ProcessView {
                                 }
                                 let d = {
                                     from: from,
-                                    lose:  _getData(losePlayer),
-                                    cur:  _getData(curPlayer),
-                                    win:  _getData(winPlayer)
+                                    lose: _getData(losePlayer),
+                                    cur: _getData(curPlayer),
+                                    win: _getData(winPlayer)
                                 }
                                 console.log('player route:', d);
                                 callback(d)

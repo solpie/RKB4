@@ -115,18 +115,25 @@ export class PlayerGroup extends PIXI.Container {
         this.lAvt.visible = this.rAvt.visible = true
         let lP = this.lAvt.parent
         let rP = this.rAvt.parent
-        if (lScore == 0 && rScore == 0) {
+        console.log('socre', lScore, rScore);
+        if (lScore == undefined || rScore == undefined) {
             lP.alpha = rP.alpha = 1
         }
         else {
-            if (lScore < rScore) {
-                lP.alpha = 0.5
-                rP.alpha = 1
+            if (lScore == 0 && rScore == 0) {
+                lP.alpha = rP.alpha = 1
             }
             else {
-                lP.alpha = 1
-                rP.alpha = 0.5
+                if (lScore < rScore) {
+                    lP.alpha = 0.5
+                    rP.alpha = 1
+                }
+                else {
+                    lP.alpha = 1
+                    rP.alpha = 0.5
+                }
             }
+
         }
     }
 

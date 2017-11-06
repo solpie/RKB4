@@ -327,8 +327,6 @@ export class GameProcess extends PIXI.Container implements IPopup {
                 this.tabFocus.x = this.tabIdxPosMap[tabIdx]
                 //            final  8
                 if (tabIdx == 8 || tabIdx == 9) {
-
-
                     for (let i = 0; i < gamePlayerArr.length; i++) {
                         let playerArr = gamePlayerArr[i];
                         let pi = this.playerItemArr2[i]
