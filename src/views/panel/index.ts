@@ -67,6 +67,10 @@ else if (panel == 'backend') {
     s = window['stage'] = initPIXI()
     new BackendView(s)
 }
+else if (panel == 'monitor') {
+    s = window['stage'] = initPIXI()
+    new BackendView(s)
+}
 else if (panel == 'poker') {
     // document.removeChild()
     // var element = document.getElementById("panel");

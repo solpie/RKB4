@@ -1,3 +1,4 @@
+import { StatisticsView } from '../statistics/StatisticsView';
 import { ScoreM4 } from './ScoreM4';
 import { ScoreM2 } from './ScoreM2';
 import { WebDBCmd } from '../webDBCmd';
@@ -19,10 +20,12 @@ export class ScoreView {
     eventPanel: any
     delayTimeMS: number = 0
     localWS: any
+    statisticsView: StatisticsView
     constructor(stage: PIXI.Container) {
         let gameId = getUrlQuerys('gameId')
         let isDark = getUrlQuerys('theme') == 'dark'
         let isMonth = getUrlQuerys('m') == '1'
+        let isMonitor = getUrlQuerys('monitor') == '1'
 
         console.log(gameId, isDark)
         if (isMonth)
@@ -35,8 +38,14 @@ export class ScoreView {
         this.localWS = this.initLocalWs()
         // })
 
+        if (isMonitor) {
+            this.initMonitor(stage)
+        }
+
         if (getUrlQuerys('t') == '1')
             this.test()
+
+
     }
     test() {
         this.localWS.emit()
@@ -47,6 +56,9 @@ export class ScoreView {
         this.scorePanel.setRightPlayerInfo('Player 2', p, 78, 178, '', 0, {})
     }
 
+    initMonitor(stage) {
+        this.statisticsView = new StatisticsView(stage)
+    }
 
     isInit = false
     initLocalWs() {
@@ -114,9 +126,16 @@ export class ScoreView {
                     //     this.scorePanel.setGameTitle(data.gameTitle)
                     // }
                 }
+
+                if (this.statisticsView)
+                    this.statisticsView.reset()
+
             })
             .on(`${WebDBCmd.sc_score}`, (data) => {
                 this.scorePanel.setScoreFoul(data)
+                if (this.statisticsView) {
+                    this.statisticsView.setScore(data)
+                }
             })
             .on(`${WebDBCmd.sc_showScore}`, (data) => {
                 data.visible ? this.scorePanel.show()
@@ -147,6 +166,9 @@ export class ScoreView {
                         this.scorePanel.show()
                     })
                 }
+
+                if (this.statisticsView)
+                    this.statisticsView.reset()
             })
         return localWs
     }
