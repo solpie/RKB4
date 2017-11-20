@@ -1,3 +1,4 @@
+import { VictoryM2 } from './VictoryM2';
 import { StaticImg } from './StaticImg';
 import { GameProcess } from './GameProcess';
 import { RollText } from './RollText';
@@ -49,9 +50,16 @@ export class PopupView {
             })
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);
-                data.visible ?
-                    this.show(Victory0, data)
-                    : this.hide(Victory0)
+                if (data.panel == 'M2') {
+                    data.visible ?
+                        this.show(VictoryM2, data)
+                        : this.hide(VictoryM2)
+                }
+                else {
+                    data.visible ?
+                        this.show(Victory0, data)
+                        : this.hide(Victory0)
+                }
             })
             .on(WebDBCmd.sc_showRollText, data => {
                 console.log('sc_showRollText', data, this.popupItemMap);
@@ -60,7 +68,7 @@ export class PopupView {
                     : this.hide(RollText)
             })
             .on(WebDBCmd.sc_showGameProcess, data => {
-                console.log('sc_showGameProcess',data);
+                console.log('sc_showGameProcess', data);
                 data.visible ?
                     this.show(GameProcess, data)
                     : this.hide(GameProcess)

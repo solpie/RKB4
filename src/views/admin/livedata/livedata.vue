@@ -196,45 +196,29 @@
 </style>
 
 <script>
-// const getUrlQuerys = (sParam) => {
-//     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-//         sURLVariables = sPageURL.split('&'),
-//         sParameterName,
-//         i;
-
-//     for (i = 0; i < sURLVariables.length; i++) {
-//         sParameterName = sURLVariables[i].split('=');
-
-//         if (sParameterName[0] === sParam) {
-//             return sParameterName[1] === undefined ? true : sParameterName[1];
-//         }
-//     }
-// };
 
 import LiveDataView from "./livedataView";
 import DoubleEliminationView from "./DoubleElimationView";
 
 let livedataView = new LiveDataView();
+let _data;
 
-// let act = getUrlQuerys("act");
-
-// console.log("active ", act);
 import DoubleElimination24View from "./DoubleElimation24View";
 
 import CommonView from "./CommonView";
-let doubleElimination24 = new DoubleElimination24View(livedataView)
-livedataView.appendProp(doubleElimination24)
 
-// let commonView = new CommonView(livedataView);
-// livedataView.appendProp(commonView);
+// let doubleElimination24 = new DoubleElimination24View(livedataView)
+// livedataView.appendProp(doubleElimination24)
+// _data = doubleElimination24
+
+let commonView = new CommonView(livedataView);
+livedataView.appendProp(commonView);
+_data = commonView
 
 let hasFileHandle = false;
 export default {
   data() {
-    let g;
-    g = doubleElimination24
-    // g = commonView;
-    return g;
+    return _data;
   },
   created() {
     livedataView.$vm = this;

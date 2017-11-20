@@ -1,107 +1,22 @@
 {
     "date": "2017-10-21",
     "dbIdx": "1021",
+    "panel": "M2",
     "gameTitle": "特步",
     "avatarUrlBase": "",
     "playerArr": [{
-            "playerId": "p1",
-            "name": "鬼手林坤8023",
-            "avatar": "http://i3.hoopchina.com.cn/user/271/29904271/29904271-1500670124.jpg@194h_194w_2e",
-            "height": "180",
-            "weight": "68"
-        }, {
-            "playerId": "p2",
-            "name": "刘宇9号",
-            "avatar": "http://i1.hoopchina.com.cn/user/278/28414278/28414278-1491587235.jpg@194h_194w_2e",
-            "height": "188",
-            "weight": "79"
-        }, {
-            "playerId": "p3",
-            "name": "失落的六号",
-            "avatar": "http://i3.hoopchina.com.cn/user/182/6429182/6429182_big_1.jpg",
-            "height": "176",
-            "weight": "70"
-        }, {
-            "playerId": "p4",
-            "name": "泡椒top13",
-            "avatar": "http://i2.hoopchina.com.cn/user/25/7a/3b/257a3be235b31818fcd198a5105a3e9a001.jpg@194h_194w_2e",
-            "height": "183",
-            "weight": "75"
-        }, {
-            "playerId": "p5",
-            "name": "带伤上阵也不怕",
-            "avatar": "http://i4.hoopchina.com.cn/user/8e/ba/01/8eba012ac7f5e78d8711e57c91533e0a001.jpg@194h_194w_2e",
-            "height": "198",
-            "weight": "90"
-        }, {
-            "playerId": "p6",
-            "name": "NGFNGN",
-            "avatar": "http://i2.hoopchina.com.cn/user/238/26355238/26355238-1490764527.jpeg@194h_194w_2e",
-            "height": "190",
-            "weight": "90"
-        }, {
-            "playerId": "p7",
-            "name": "打铁不算多",
-            "avatar": "http://i1.hoopchina.com.cn/user/917/16834917/16834917_big_1.jpg",
-            "height": "182",
-            "weight": "70"
-        }, {
-            "playerId": "p8",
-            "name": "安云鹏别让我瞧不起你",
-            "avatar": "http://i3.hoopchina.com.cn/user/848/30200848/30200848-1484448902.jpg@194h_194w_2e",
-            "height": "189",
-            "weight": "92"
-        }, {
-            "playerId": "p9",
-            "name": "qqppz10",
-            "avatar": "http://i2.hoopchina.com.cn/user/4/16436004/16436004-1481248758.jpg@194h_194w_2e",
-            "height": "180",
-            "weight": "85"
-        }, {
-            "playerId": "p10",
-            "name": "方良超",
-            "avatar": "http://i2.hoopchina.com.cn/user/1b/ea/78/1bea78d65ef3e2b69882dece07a1f371001.jpg@194h_194w_2e",
-            "height": "174",
-            "weight": "75"
-        }, {
-            "playerId": "p11",
-            "name": "7号唐日辉同学",
-            "avatar": "http://i1.hoopchina.com.cn/user/446/29152446/29152446-1503043044.jpg@194h_194w_2e",
-            "height": "185",
-            "weight": "78"
-        }, {
-            "playerId": "p12",
-            "name": "新锐宋教练",
-            "avatar": "http://i1.hoopchina.com.cn/user/28/c4/78/28c4787dd71b34c6ddd3e2be942b7904001.jpg@194h_194w_2e",
-            "height": "183",
-            "weight": "75"
-        }, {
-            "playerId": "p13",
-            "name": "平常心myd",
-            "avatar": "http://i1.hoopchina.com.cn/user/66/49/0b/66490b7672d4ea4d6a2334f517fa2188001.jpg@194h_194w_2e",
-            "height": "190",
-            "weight": "86"
-        },
-        {
-            "playerId": "p14",
-            "name": "郝天佶",
-            "avatar": "http://i3.hoopchina.com.cn/user/520/17208520/17208520-1454901641.jpeg@194h_194w_2e",
-            "height": "190",
-            "weight": "100"
-        },
-        {
-            "playerId": "p15",
-            "name": "刘书同同",
-            "avatar": "http://i2.hoopchina.com.cn/user/936/17590936/17590936-1506498317.jpg@194h_194w_2e",
-            "height": "187",
-            "weight": "81"
-        },
-        {
-            "playerId": "p16",
-            "name": "洋仔117",
-            "avatar": "http://i2.hoopchina.com.cn/user/88/f6/c3/88f6c3db68d0e26a485172b37fd275e8001.jpg@194h_194w_2e",
-            "height": "180",
-            "weight": "78"
-        }
-    ]
+        "playerId": "p1",
+        "realName": "鬼手",
+        "name": "鬼手林坤8023",
+        "avatar": "http://i3.hoopchina.com.cn/user/271/29904271/29904271-1500670124.jpg@194h_194w_2e",
+        "height": "180",
+        "weight": "68"
+    }, {
+        "playerId": "p2",
+        "realName": "王贵寿",
+        "name": "鬼手林坤228023",
+        "avatar": "http://i1.hoopchina.com.cn/user/278/28414278/28414278-1491587235.jpg@194h_194w_2e",
+        "height": "188",
+        "weight": "79"
+    }]
 }

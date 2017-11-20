@@ -69,9 +69,13 @@ export class Score2017 {
     gameIdx: PIXI.Text
 
     lPlayerName: PIXI.Text
-    lPlayerInfo: PIXI.Text
+    lPlayerHupuID: PIXI.Text
+    rPlayerHupuID: PIXI.Text
+    lPlayerHeight: PIXI.Text
+    lPlayerWeight: PIXI.Text
     rPlayerName: PIXI.Text
-    rPlayerInfo: PIXI.Text
+    rPlayerHeight: PIXI.Text
+    rPlayerWeight: PIXI.Text
 
     lAvatar: PIXI.Sprite
     rAvatar: PIXI.Sprite
@@ -219,7 +223,7 @@ export class Score2017 {
 
         let lpi = new PIXI.Text("", pis)
         lpi.y = 200
-        this.lPlayerInfo = lpi
+        this.lPlayerHeight = lpi
         ctn.addChild(lpi)
 
         let rpn = new PIXI.Text("", pns)
@@ -231,7 +235,7 @@ export class Score2017 {
         let rpi = new PIXI.Text("", pis)
         rpi.x = rpn.x
         rpi.y = lpi.y
-        this.rPlayerInfo = rpi
+        this.rPlayerHeight = rpi
         ctn.addChild(rpi)
 
         let lm = new PIXI.Graphics()
@@ -437,8 +441,8 @@ export class Score2017 {
             height = 0
         if (!weight)
             weight = 0
-        this.lPlayerInfo.text = height + 'CM ' + weight + "KG"
-        this.lPlayerInfo.x = 500 - this.lPlayerInfo.width
+        this.lPlayerHeight.text = height + 'CM ' + weight + "KG"
+        this.lPlayerHeight.x = 500 - this.lPlayerHeight.width
 
         // this.lFtName.text = ft
         this._fixFtName(this.lFtName, getFtName(ftId))
@@ -479,7 +483,7 @@ export class Score2017 {
             height = 0
         if (!weight)
             weight = 0
-        this.rPlayerInfo.text = height + 'CM ' + weight + "KG"
+        this.rPlayerHeight.text = height + 'CM ' + weight + "KG"
 
         // this.rFtName.text = ft
         this._fixFtName(this.rFtName, getFtName(ftId))
@@ -489,12 +493,12 @@ export class Score2017 {
         let player: any = {}
         if (isLeft) {
             player.name = this.lPlayerName.text
-            player.info = this.lPlayerInfo.text
+            player.info = this.lPlayerHeight.text
             player.ftId = this._lFtId
         }
         else {
             player.name = this.rPlayerName.text
-            player.info = this.rPlayerInfo.text
+            player.info = this.rPlayerHeight.text
             player.ftId = this._rFtId
         }
         return player

@@ -131,6 +131,8 @@ export class ScoreM4 {
         let tts = {
             fontFamily: FontName.DigiLED,
             fontSize: '38px', fill: "#de172f",
+            dropShadow: true,
+            dropShadowAngle: 90,
             fontWeight: 'normal'
         }
         let t = new TextTimer('', tts)

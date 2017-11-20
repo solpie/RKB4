@@ -9,6 +9,7 @@ import { TimerState } from "../const";
 import { getHupuWS } from "../../utils/HupuAPI";
 import { TweenEx } from "../../utils/TweenEx";
 import { ScoreM3 } from "./ScoreM3";
+import { ScoreM32 } from './ScoreM32';
 declare let io;
 function logEvent(...a) {
     let d = new Date()
@@ -16,7 +17,7 @@ function logEvent(...a) {
     console.info(t, a)
 }
 export class ScoreView {
-    scorePanel: ScoreM4
+    scorePanel: any
     eventPanel: any
     delayTimeMS: number = 0
     localWS: any
@@ -31,7 +32,7 @@ export class ScoreView {
         if (isMonth)
             this.scorePanel = new ScoreM4(stage, isDark)
         else {
-            // this.scorePanel = new Score2017(stage, isDark)
+            this.scorePanel = new ScoreM32(stage, isDark)
             // this.initRemote()
         }
         // TweenEx.delayedCall(2000, _ => {

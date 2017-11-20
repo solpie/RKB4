@@ -13,6 +13,7 @@ export default class CommonView extends BaseGameView {
     gameInfoTable = []
     lHupuID = ''
     rHupuID = ''
+    panelVersion = 'M4'
     constructor(liveDataView: LiveDataView) {
         super()
         liveDataView.on(LVE.EVENT_ON_FILE, data => {
@@ -166,7 +167,7 @@ export default class CommonView extends BaseGameView {
         console.log('game title:', gameCfg.gameTitle);
         dbIdx = gameCfg.dbIdx;
         this.dbIdx = dbIdx
-
+        this.panelVersion = gameCfg.panel;
         let playerArr = gameCfg.playerArr
         for (let p of gameCfg.playerArr) {
             this.playerMap[p.playerId] = p
@@ -259,6 +260,7 @@ export default class CommonView extends BaseGameView {
             let data = {
                 _: null, visible: true, winner: winPlayer.data,
                 gameTitle: gameTitle.gameTitle,
+                panel:this.panelVersion,
                 rec: rec, gameIdx: this.gameIdx, reward: reward, isLeft: isLeft
             }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
