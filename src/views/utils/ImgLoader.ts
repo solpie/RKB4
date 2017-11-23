@@ -26,5 +26,9 @@ class ImgLoader {
         }
         recur()
     }
+
+    getTex(url) {
+        return this._texMap[url]
+    }
 }
 export const imgLoader = window['imgLoader'] = new ImgLoader()

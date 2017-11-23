@@ -20,9 +20,11 @@ export function getFtLogoUrl2(ftId) {
 export function getFtLogoUrlgray(ftId) {
     return '/img/ft/' + ftId + 'g.png'
 }
+
 export function getFtLogoUrlm(ftId) {
     return '/img/ft/' + ftId + 'm.png'
 }
+
 const ftName = {
     '1': 'Gambia',
     '2': 'TSH',
@@ -58,5 +60,7 @@ export function simplifyName(n: string) {
         return ''
     if (n.substring(0, 3) == '安云鹏')
         return '安云鹏'
+    if (n == 'qqppz10')
+        return '烧烤哥'
     return n||''
 }

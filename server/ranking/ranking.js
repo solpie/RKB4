@@ -61,7 +61,7 @@ function downLoadGameData(fromGameId) {
         })
     })
 }
-// downLoadGameData(422) //s2
+// downLoadGameData(531) //s2
 
 //global
 //{player_id:[{oneGameRec}]}

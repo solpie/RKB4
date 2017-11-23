@@ -42,38 +42,6 @@
                         <el-table-column prop="player_id" label="pid" width="80"></el-table-column>
                     </el-table>
                 </el-collapse-item>
-                <el-collapse-item title="统帅榜" name="2">
-                    <el-table stripe :data="lastTongzhiRanking" style="width: 100%" @row-click='rowClick'>
-                        <el-table-column prop="ranking" label="#" width="60">
-                            <template scope="scope">
-                                {{ scope.$index+1}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="name" label="名" width="150"></el-table-column>
-                        <el-table-column prop="lastRanking" label="ranking" width="150"></el-table-column>
-                        <el-table-column label="奖" width="150">
-                            <template scope="scope">
-                                {{ scope.row.rewardFactor*(500-10*scope.$index) }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="rewardFactor" label="foc" width="80"></el-table-column>
-                        <el-table-column label="rankReward" width="150">
-                            <template scope="scope">
-                                {{ 500-10*scope.$index }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="vHeima" label="黑马" width="150"></el-table-column>
-                        <el-table-column prop="vTuLong" label="屠龙" width="150"></el-table-column>
-                        <el-table-column prop="masterCon" label="控场" width="150"></el-table-column>
-                        <el-table-column prop="vTongZhiLi" label="统治力" width="150">
-                            <!-- <template scope="scope">
-                                                                    {{ scope.row.vTongZhiLi }}
-                                                                </template> -->
-                        </el-table-column>
-                        <el-table-column prop="activity" label="活" width="60"></el-table-column>
-                        <el-table-column prop="age" label="年龄" width="60"></el-table-column>
-                    </el-table>
-                </el-collapse-item>
             </el-collapse>
         </el-col>
         <el-col :span='8'>

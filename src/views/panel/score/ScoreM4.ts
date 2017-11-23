@@ -1,3 +1,4 @@
+import { fitWidth } from '../bracket/BracketGroup';
 import { TweenEx } from '../../utils/TweenEx';
 import { imgLoader } from '../../utils/ImgLoader';
 import { getFtName, simplifyName } from './Com2017';
@@ -467,17 +468,6 @@ export class ScoreM4 {
         this.setLeftFoul(0);
         this.setRightFoul(0);
     }
-    _fixFtName(label: PIXI.Text, name: string) {
-        if (name.toUpperCase() == "GREENLIGHT") {
-            name = "GREENLIGHT"
-            label.style.fontSize = '13px'
-        }
-        else {
-            label.style.fontSize = '22px'
-        }
-        label.text = name
-        label.y = 280 - label.height * .5
-    }
 
     cutName(n: PIXI.Text, width) {
         if (n.width > width) {
@@ -493,6 +483,7 @@ export class ScoreM4 {
         //cm kg
         this.lPlayerName.text = simplifyName(realName)
         this.cutName(this.lPlayerName, this._NAME_WIDTH)
+        // fitWidth(this.lPlayerName, this._NAME_WIDTH, 40)
         this.lPlayerName.x = 595 - this.lPlayerName.width
         imgLoader.loadTex(avatar, tex => {
             let avt = this.lAvatar
@@ -510,12 +501,17 @@ export class ScoreM4 {
             this.lRewardText.text = ''
             this.lPlayerHupuID.visible = true
             this.lPlayerHupuID.text = simplifyName(hupuID)
+            fitWidth(this.lPlayerHupuID, 173, 25)
+
         }
         // this._loadFt(ftId, this.lFtImg)
         if (rankingData) {
             console.log('lPlayer ranking data', rankingData);
             // this._drawRankingColor(this.lRankingColor, rankingData.color)
-            this.lRankingText.text = rankingData.text
+            if (rankingData.text > 0)
+                this.lRankingText.text = rankingData.text
+            else
+                this.lRankingText.text = ''
             this.lRankingText.x = 632 - this.lRankingText.width * .5
         }
     }
@@ -530,6 +526,7 @@ export class ScoreM4 {
         this._loadFrame(level, this.rFrame)
         this.rPlayerName.text = simplifyName(realName)
         this.cutName(this.rPlayerName, this._NAME_WIDTH)
+        // fitWidth(this.rPlayerName, this._NAME_WIDTH, 40)
         // loadRes(avatar, (img) => {
         imgLoader.loadTex(avatar, tex => {
             let avt = this.rAvatar
@@ -546,6 +543,8 @@ export class ScoreM4 {
             this.rRewardText.text = ''
             this.rPlayerHupuID.visible = true
             this.rPlayerHupuID.text = simplifyName(hupuID)
+            fitWidth(this.rPlayerHupuID, 173, 25)
+
             this.rPlayerHupuID.x = 1225 - this.rPlayerHupuID.width
         }
         // this.rPlayerWeight.text = weight
@@ -553,11 +552,16 @@ export class ScoreM4 {
         // this.rPlayerWeight.x = 1558 - this.rPlayerWeight.width
         if (rankingData) {
             // this._drawRankingColor(this.rRankingColor, rankingData.color)
-            this.rRankingText.text = rankingData.text
+            if (rankingData.text > 0)
+                this.rRankingText.text = rankingData.text
+            else
+                this.rRankingText.text = ''
             this.rRankingText.x = 1293 - this.rRankingText.width * .5
         }
     }
+
     tmpRewardData = null
+    
     setExPlayerInfo(data) {
         this.tmpRewardData = data
         let lText = ''

@@ -10,6 +10,8 @@ import { GamePlayerInfo } from './GamePlayerInfo';
 import { GroupRankM2 } from './GroupRankM2';
 import { NoticePanel } from './NoticePanel';
 import { Victory0 } from "./Victory0";
+import { FxImg } from './FxImg';
+import { TweenEx } from '../../utils/TweenEx';
 export interface IPopup {
     create: (parent) => void
     show: (param: any) => void
@@ -56,9 +58,20 @@ export class PopupView {
                         : this.hide(VictoryM2)
                 }
                 else {
-                    data.visible ?
-                        this.show(Victory0, data)
-                        : this.hide(Victory0)
+                    if (data.visible) {
+                        if (data.rec.straight > 1) {
+                            TweenEx.delayedCall(1500, _ => {
+                                this.show(Victory0, data)
+                            })
+                            this.show(FxImg, data)
+                        }
+                        else
+                            this.show(Victory0, data)
+                    }
+                    else {
+                        this.hide(FxImg)
+                        this.hide(Victory0)
+                    }
                 }
             })
             .on(WebDBCmd.sc_showRollText, data => {

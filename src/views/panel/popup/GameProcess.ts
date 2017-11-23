@@ -117,6 +117,7 @@ class PlayerItem extends PIXI.Container {
         fitWidth(this.lPlayerName, 270, 38)
         this.lPlayerName.x = 295 - this.lPlayerName.width
         this.rPlayerName.text = simplifyName(r)
+
         fitWidth(this.rPlayerName, 270, 38)
         this.rPlayerName.x = 670
     }

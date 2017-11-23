@@ -25,6 +25,7 @@ function _mkGroup(parameters) {
 }
 export function fitWidth(label: PIXI.Text, width, size) {
     console.log(label.width, width)
+    label.style['fontSize'] = size + 'px'
     if (label.width > width) {
         // label.style = { font: size + 'px' }
         // label.text = label.text

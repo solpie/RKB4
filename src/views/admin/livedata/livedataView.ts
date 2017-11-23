@@ -280,4 +280,14 @@ export default class LiveDataView extends EventDispatcher {
         this.emit('testRandomGame', endGameIdx)
     }
 
+    addPlayerRankData(p) {
+        let playerData = JSON.parse(JSON.stringify(p))
+        console.log('player id ', playerData);
+        let season = 's3'
+
+        playerData.ranking = 90
+        $post('/ranking/add/' + season, { player: playerData }, (res) => {
+            console.log('ranking update', res);
+        })
+    }
 }

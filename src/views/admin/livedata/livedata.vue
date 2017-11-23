@@ -8,7 +8,9 @@
                     <span v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
                         {{item.name}}
                         <el-button @click='_("showPlayerProcess",true,item.name,item.poker)'>show</el-button>
-                        {{item.hupuID}} {{item.ranking}}
+                        <!-- <el-button @click='_("addPlayerRankData",item.data)'>add</el-button> -->
+                        {{item.hupuID}} {{item.ranking}}    |   {{item.data.player_id}}
+
                         <br>
                     </span>
                     <hr> L5 ~ L10
@@ -191,12 +193,10 @@
   text-align: center;
   font: 20pt bold "Vollkorn";
   color: #bbb;
-  
 }
 </style>
 
 <script>
-
 import LiveDataView from "./livedataView";
 import DoubleEliminationView from "./DoubleElimationView";
 
@@ -207,13 +207,13 @@ import DoubleElimination24View from "./DoubleElimation24View";
 
 import CommonView from "./CommonView";
 
-// let doubleElimination24 = new DoubleElimination24View(livedataView)
-// livedataView.appendProp(doubleElimination24)
-// _data = doubleElimination24
+let doubleElimination24 = new DoubleElimination24View(livedataView);
+livedataView.appendProp(doubleElimination24);
+_data = doubleElimination24;
 
-let commonView = new CommonView(livedataView);
-livedataView.appendProp(commonView);
-_data = commonView
+// let commonView = new CommonView(livedataView);
+// livedataView.appendProp(commonView);
+// _data = commonView
 
 let hasFileHandle = false;
 export default {

@@ -14,8 +14,8 @@ export function delayCall(delay, callback) {
 //     //     .to({ alpha: 0 }, blink)
 //     //     .to({ alpha: 1 }, blink);
 // }
-export function shake(options: { target: any, x, y, time:number,loop?:number }) {
-    
+export function shake(options: { target: any, x, y, time: number, loop?: number }) {
+
 }
 //time sec
 export function blink2(options: { target: any, time?: number, loop?: number, callback?: any }) {
@@ -25,7 +25,7 @@ export function blink2(options: { target: any, time?: number, loop?: number, cal
     let callback = options.callback
     let loop = options.loop || Infinity
     function to1(a) {
-        if (target.visible && loop > 0)
+        if (target.visible && target.parent && loop > 0)
             new TweenEx(target)
                 .to({ alpha: a }, time)
                 .call(() => {
@@ -44,6 +44,17 @@ export function blink2(options: { target: any, time?: number, loop?: number, cal
 }
 //time ms
 export function blink3(target, time = 80, loop = false) {
+    var blink = time;
+    new TweenEx(target)
+        .to({ alpha: 1 }, blink)
+        .to({ alpha: 0 }, blink)
+        .to({ alpha: 1 }, blink)
+        .to({ alpha: 0 }, blink)
+        .to({ alpha: 1 }, blink)
+        .start()
+}
+
+export function blinkAndStop(target, time = 80, loop = false) {
     var blink = time;
     new TweenEx(target)
         .to({ alpha: 1 }, blink)

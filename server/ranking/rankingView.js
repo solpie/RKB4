@@ -68,3 +68,44 @@ app.post('/ranking/update/:idx', (req, res) => {
         res.send({ err: err, numReplaced: numReplaced })
     })
 })
+
+app.post('/ranking/add/:idx', (req, res) => {
+
+    let idx = req.params.idx
+    let player = req.body.player
+    console.log('/ranking/add', idx, player);
+    rankDb.find({ idx: idx }, (err, docs) => {
+        let doc = docs[0]
+        let def = {
+            "gameIdMap": {},
+            "win": 1,
+            "beatPlayerMap": {},
+            "zenPlayerMap": {},
+            "losePlayerMap": {},
+            "meetPlayerMap": {},
+            "section": 0,
+            "bestRanking": 0,
+            "master": 0,
+            "champion": 0,
+            "runnerUp": 0,
+            "reward": 0,
+            "gameCount": 4,
+            "ranking": 1190,
+            "activity": 1,
+            "beatCount": 1,
+            "beatRaito": 0.5,
+            "player_id": "19457",
+            "name": "",
+            "beatRaitoStr": 0.5
+        }
+        def.player_id = player.player_id
+        def.name = player.name
+        def.ranking = player.ranking
+        doc.rankArr.unshift(def)
+            // res.send(def)
+        rankDb.update({ idx: idx }, doc, {}, (err, numReplaced) => {
+            res.send({ err: err, numReplaced: numReplaced })
+        })
+    })
+
+})

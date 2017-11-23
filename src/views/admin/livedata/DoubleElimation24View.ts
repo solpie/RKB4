@@ -26,14 +26,14 @@ export default class DoubleElimination24View extends BaseGameView {
 
 
     playerIdArr = [
-        2849, 9118, 6612, 6277,
-        17795, 7821, 6418, 1868,
-        1213, 8066, 19010, 3367,
-        1001, 4, 2596, 1176,
-        8052, 7, 1906, 7686,
-        327, 11082, 9405, 14565,
-        150, 10207, 2525, 16767,
-        1754, 17109, 2660, 16980
+        19457, 17109, 10207, 11470,
+        349, 4, 13268, 17392,
+        9118, 2849, 1213, 6874,
+        16767, 2644, 8903, 1868,
+        606, 17795, 574, 2187,
+        21164, 5091, 25, 3367,
+        1754, 18441, 7821, 19634,
+        949, 20375, 10368, 2285
     ]
 
     constructor(liveDataView: LiveDataView) {
@@ -67,14 +67,21 @@ export default class DoubleElimination24View extends BaseGameView {
                     }
                 }
                 if (missing) {
-                    if (qPid == 19010)
-                        rankMap[qPid] = 73
+                    // if (qPid == 19010)
+                    //     rankMap[qPid] = 73
 
-                    if (qPid == 3367)
-                        rankMap[qPid] = 151
+                    // if (qPid == 3367)
+                    //     rankMap[qPid] = 151
                     console.log('missing', qPid)
                 }
             }
+            rankMap[20375] = -1
+            rankMap[19634] = -1
+            rankMap[21164] = -1
+            rankMap[17392] = -1
+            rankMap[13268] = -1
+            rankMap[19457] = -1
+                 
             callback(rankMap)
         })
     }
