@@ -131,7 +131,9 @@ export class ScoreM4 {
 
         let tts = {
             fontFamily: FontName.DigiLED,
-            fontSize: '38px', fill: "#de172f",
+            fontSize: '38px',
+            fill: "#ffcb3a",
+            // fill: "#de172f",
             dropShadow: true,
             dropShadowAngle: 90,
             fontWeight: 'normal'
@@ -561,7 +563,7 @@ export class ScoreM4 {
     }
 
     tmpRewardData = null
-    
+
     setExPlayerInfo(data) {
         this.tmpRewardData = data
         let lText = ''
