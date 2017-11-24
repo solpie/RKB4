@@ -34,11 +34,19 @@ export class HomeView {
             this.gameArr = this.gameDataArr
         })
         this.onSelGameId(79)
-
+        window.onkeyup = (e) => {
+            console.log('key up', e.key, e.keyCode);
+            if (e.key == 'ArrowLeft' || e.keyCode == 37) {
+                this.combo(true,true)
+            }
+            else if (e.key == 'ArrowRight' || e.keyCode == 39) {
+                this.combo(false,true)
+            }
+        }
     }
-    combo() {
+    combo(isLeft, v) {
         console.log('combo');
-        $post(`/emit/${WebDBCmd.cs_showCombo}`, { _: null, isCombo: true })
+        $post(`/emit/${WebDBCmd.cs_showCombo}`, { _: null, visible: v, isCombo: true, isLeft: isLeft })
     }
     onSelGameId(gameId) {
         console.log('onselgameId', gameId);

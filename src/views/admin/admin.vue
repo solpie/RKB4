@@ -25,7 +25,7 @@
 
             <el-tab-pane label="线上控制台">
                 <Home></Home>
-                <Dashboard></Dashboard>
+                <!-- <Dashboard></Dashboard> -->
             </el-tab-pane>
 
         </el-tabs>

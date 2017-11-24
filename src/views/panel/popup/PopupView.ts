@@ -12,6 +12,7 @@ import { NoticePanel } from './NoticePanel';
 import { Victory0 } from "./Victory0";
 import { FxImg } from './FxImg';
 import { TweenEx } from '../../utils/TweenEx';
+import { ComboSp } from './ComboSp';
 export interface IPopup {
     create: (parent) => void
     show: (param: any) => void
@@ -53,8 +54,8 @@ export class PopupView {
             .on(WebDBCmd.sc_showCombo, data => {
                 console.log('sc_showCombo', data);
                 data.visible ?
-                    this.show(FxImg, data)
-                    : this.hide(FxImg)
+                    this.show(ComboSp, data)
+                    : this.hide(ComboSp)
             })
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);

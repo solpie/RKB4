@@ -16,6 +16,9 @@ let gkUrl = '/img/fx/m6/giantKilling.png'
 let championUrl = '/img/fx/m6/champion.png'
 
 export class FxImg extends PIXI.Container implements IPopup {
+    static class = 'FxImg'
+    p: any
+
     killSp: PIXI.Sprite
     killNum: PIXI.Sprite
     killCtn: PIXI.Container
@@ -66,7 +69,7 @@ export class FxImg extends PIXI.Container implements IPopup {
         this.p = parent
     };
     static isShowFxImg(data) {
-        let stateMap: any = { state: 0, isPerfect: false, isGk: false }
+        let stateMap: any = { state: 0, isPerfect: false, isGk: data.isGk }
         let rec = data.rec
         console.log('is show fx img', rec);
         let texArr = []
@@ -96,12 +99,14 @@ export class FxImg extends PIXI.Container implements IPopup {
             texArr.push(perfectUrl)
             stateMap.isPerfect = true
         }
+        if(stateMap.isGk)
+        {
+            texArr.push(gkUrl)
+        }
         return stateMap
     }
-    _showCombo() {
-        // FxImg
-        console.log('show combo');
-    }
+
+
     _showWin(param) {
         let stateMap = FxImg.isShowFxImg(param)
 
@@ -175,17 +180,11 @@ export class FxImg extends PIXI.Container implements IPopup {
         })
     }
     show(param: any) {
-        if (param.isCombo) {
-            this._showCombo()
-        }
-        else
-            this._showWin(param)
+        this._showWin(param)
     };
     hide(param?: any) {
         if (this.parent)
             this.p.removeChild(this)
     };
-    static class = 'FxImg'
-    p: any
 
 }

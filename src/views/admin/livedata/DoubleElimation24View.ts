@@ -431,17 +431,23 @@ export default class DoubleElimination24View extends BaseGameView {
             if (isLeft) {
                 reward = l
                 winPlayer = this.getPlayerInfo(this.lPlayer)
+                losePlayer = this.getPlayerInfo(this.rPlayer)
             }
             else {
                 reward = r
                 winPlayer = this.getPlayerInfo(this.rPlayer)
+                losePlayer = this.getPlayerInfo(this.lPlayer)
+
             }
             let sumMap = buildPlayerData(doc, true)
             let rec = sumMap[winPlayer.name]
             rec.score = [this.lScore, this.rScore]
+            let isGk = winPlayer.ranking > losePlayer.ranking
+            console.log('win player ranking',winPlayer.ranking);
             let loseRec = sumMap[winPlayer.name]
             let data = {
                 _: null, visible: true, winner: winPlayer.data,
+                isGk:isGk,
                 rec: rec, gameIdx: lastGameIdx, reward: reward, isLeft: isLeft
             }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)

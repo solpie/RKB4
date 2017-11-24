@@ -22,7 +22,8 @@
         <el-button @click='_("test","hhh",3)'>onClk</el-button>
 
          -->
-        <el-button @click='_("combo")'>combo</el-button>
+        <el-button @click='_("combo",true,true)'>combo L</el-button>
+        <el-button @click='_("combo",false,true)'>combo R</el-button>
     </div>
 </template>
 <script>
