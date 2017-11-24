@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>A simple clock</title>
+    <style>
+        .out {
+            font-size: 100px;
+            font-family: "微软雅黑";
+            color: #fff;
+        }
+        
+        .sh {
+            font-size: 150px;
+            font-family: "微软雅黑";
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body translate="no">
+
+    <div class="sh">Shanghai</div>
+    <div id="output" class="out"></div>
+
+    <script>
+        var d
+        setInterval(
+            c = function() {
+                var d = new Date()
+                output.innerText = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+            }, 1000);
+        c();
+    </script>
+</body>
+
+</html>
