@@ -50,6 +50,12 @@ export class PopupView {
                     this.show(NoticePanel, data)
                     : this.hide(NoticePanel)
             })
+            .on(WebDBCmd.sc_showCombo, data => {
+                console.log('sc_showCombo', data);
+                data.visible ?
+                    this.show(FxImg, data)
+                    : this.hide(FxImg)
+            })
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);
                 if (data.panel == 'M2') {
@@ -59,7 +65,8 @@ export class PopupView {
                 }
                 else {
                     if (data.visible) {
-                        if (data.rec.straight > 1) {
+                        let stateMap = FxImg.isShowFxImg(data)
+                        if (stateMap.texArr.length > 0) {
                             TweenEx.delayedCall(1500, _ => {
                                 this.show(Victory0, data)
                             })

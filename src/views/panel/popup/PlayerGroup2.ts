@@ -97,7 +97,17 @@ export class PlayerGroup extends PIXI.Container {
         }
         // let gameIdx
     }
-    setData(l, r) {
+    setData(l, r, isShowRealName = false) {
+        // this._setData(l,r,is)
+        if (isShowRealName) {
+            l.hupuID = l.data.realName
+            r.hupuID = r.data.realName
+
+            console.log('set real name', l, r);
+        }
+        this._setData(l, r)
+    }
+    _setData(l, r) {
         this.lPlayerName.text = simplifyName(l.hupuID)
         fitWidth(this.lPlayerName, 270, 38)
         this.lPlayerName.x = 285 - this.lPlayerName.width
@@ -133,7 +143,6 @@ export class PlayerGroup extends PIXI.Container {
                     rP.alpha = 0.5
                 }
             }
-
         }
     }
 

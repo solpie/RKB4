@@ -213,7 +213,9 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     showGameProcess(visible, tab) {
-        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab })
+        let isShowRealName = this.$vm.inputRollText == '1'
+        // console.log('isShowRealName',isShowRealName);
+        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab,isShowRealName:!isShowRealName })
     }
 
     dumpPlayer(playerArrStr) {

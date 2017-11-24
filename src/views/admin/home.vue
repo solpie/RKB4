@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-select v-model="selGameId" placeholder="比赛选择" @change="onSelGameId">
+        <!-- <el-select v-model="selGameId" placeholder="比赛选择" @change="onSelGameId">
             <el-option v-for="item in gameArr" :key="item.value" :label="item.text" :value="item.value">
             </el-option>
         </el-select>
@@ -19,8 +19,10 @@
         <hr>
         <a href="/dev/panel.html?panel=bracket&m=1"> /dev/panel.html?panel=bracket&m=1</a>
         <a href="/dev/panel.html?panel=score&m=1"> /dev/panel.html?panel=score&m=1</a>
-        <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->
         <el-button @click='_("test","hhh",3)'>onClk</el-button>
+
+         -->
+        <el-button @click='_("combo")'>combo</el-button>
     </div>
 </template>
 <script>

@@ -49,6 +49,10 @@ export const WebDBCmd = {
     sc_score: ``,
     cs_showScore: ``,//显示隐藏比分面板
     sc_showScore: ``,
+    //m6 fx
+    cs_showCombo: ``,//连击
+    sc_showCombo: ``,
+    
     //create panel web page
     cs_panelCreated: ``,
     sc_panelCreated: ``,

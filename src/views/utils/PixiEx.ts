@@ -247,6 +247,9 @@ export function setScale(obj, s) {
 export function alignCenter(obj, posX) {
     obj.x = posX - obj.width * .5
 }
+export function alignScrCenter(obj) {
+    obj.x = (ViewConst.STAGE_WIDTH - obj.width) * .5
+}
 
 export function cutText(textObj, width) {
     if (textObj.width > width) {

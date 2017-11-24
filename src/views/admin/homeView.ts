@@ -1,5 +1,7 @@
 import { getRoundList, getRtmpInfo } from "../utils/HupuAPI";
 import { ascendingProp } from "../utils/JsFunc";
+import { WebDBCmd } from "../panel/webDBCmd";
+import { $post } from "../utils/WebJsFunc";
 
 export class HomeView {
     gameDataArr = []
@@ -34,7 +36,10 @@ export class HomeView {
         this.onSelGameId(79)
 
     }
-
+    combo() {
+        console.log('combo');
+        $post(`/emit/${WebDBCmd.cs_showCombo}`, { _: null, isCombo: true })
+    }
     onSelGameId(gameId) {
         console.log('onselgameId', gameId);
         this.links = [

@@ -44,8 +44,6 @@ export default class DoubleElimination24View extends BaseGameView {
             this.init()
         })
 
-
-
         // EVENT_INIT_DOUBLE_ELIMATION
 
         this.init()
@@ -81,7 +79,7 @@ export default class DoubleElimination24View extends BaseGameView {
             rankMap[17392] = -1
             rankMap[13268] = -1
             rankMap[19457] = -1
-                 
+
             callback(rankMap)
         })
     }
@@ -151,6 +149,7 @@ export default class DoubleElimination24View extends BaseGameView {
                 data._ = ''
                 let processParam = ProcessView.showTab(doc.rec, data.tab, this.nameMapHupuId, this.gameIdx)
                 processParam.gameIdx = this.gameIdx
+                processParam['isShowRealName'] = data.isShowRealName
                 data.processParam = processParam
                 console.log('EVENT_SHOW_PROCESS', processParam);
                 $post(`/emit/${WebDBCmd.cs_showGameProcess}`, data)
@@ -426,6 +425,7 @@ export default class DoubleElimination24View extends BaseGameView {
     emitVictory(doc, lastGameIdx, l, r) {
         if (this.lScore != 0 || this.rScore != 0) {
             let winPlayer: PlayerInfo;
+            let losePlayer: PlayerInfo;
             let reward;
             let isLeft = this.lScore > this.rScore
             if (isLeft) {
@@ -438,6 +438,8 @@ export default class DoubleElimination24View extends BaseGameView {
             }
             let sumMap = buildPlayerData(doc, true)
             let rec = sumMap[winPlayer.name]
+            rec.score = [this.lScore, this.rScore]
+            let loseRec = sumMap[winPlayer.name]
             let data = {
                 _: null, visible: true, winner: winPlayer.data,
                 rec: rec, gameIdx: lastGameIdx, reward: reward, isLeft: isLeft

@@ -150,8 +150,16 @@ class PlayerItem extends PIXI.Container {
         this.lAvt.load(l)
         this.rAvt.load(r)
     }
-
-    setData(l, r, tabIdx) {
+    setData(l, r, tabIdx, isShowRealName = false) {
+        // this._setData(l,r,is)
+        if (isShowRealName) {
+            l.hupuID = l.data.realName
+            r.hupuID = r.data.realName
+        }
+        this._setData(l, r, tabIdx)
+    }
+    // _setData(l, r) {
+    _setData(l, r, tabIdx) {
         this.setPlayerName(l.hupuID, r.hupuID)
         this.setScore(l.score, r.score, tabIdx)
 
@@ -331,7 +339,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
                     for (let i = 0; i < gamePlayerArr.length; i++) {
                         let playerArr = gamePlayerArr[i];
                         let pi = this.playerItemArr2[i]
-                        pi.setData(playerArr[0], playerArr[1])
+                        pi.setData(playerArr[0], playerArr[1], processParam.isShowRealName)
                     }
                     this.showPanel(GameProcess.PANEL_8)
                 }
@@ -344,7 +352,7 @@ export class GameProcess extends PIXI.Container implements IPopup {
                     for (let i = 0; i < gamePlayerArr.length; i++) {
                         let playerArr = gamePlayerArr[i];
                         let pi = this.playerItemArr[i]
-                        pi.setData(playerArr[0], playerArr[1], tabIdx)
+                        pi.setData(playerArr[0], playerArr[1], tabIdx,processParam.isShowRealName)
                         if (processParam.gameIdx == processParam.start + i) {
                             this.setFucosPlayerItem(pi)
                         }
