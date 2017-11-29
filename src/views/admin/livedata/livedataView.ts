@@ -215,31 +215,55 @@ export default class LiveDataView extends EventDispatcher {
     showGameProcess(visible, tab) {
         let isShowRealName = this.$vm.inputRollText == '1'
         // console.log('isShowRealName',isShowRealName);
-        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab,isShowRealName:!isShowRealName })
+        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab, isShowRealName: !isShowRealName })
     }
 
     dumpPlayer(playerArrStr) {
         let a = playerArrStr.split(',')
         console.log('player arr', a);
-        getPlayerInfoArr(a, arr => {
-            let p2 = []
-            let idx = 1
-            for (let res of arr) {
-                console.log('', res.data.name, res.data.player_id);
-                let d = res.data
-                p2.push({
-                    playerId: `p` + (p2.length + 1),
-                    name: d.nickname,
-                    realName: d.name,
-                    avatar: d.avatar,
-                    height: d.height,
-                    weight: d.weight
-                })
+        if (a && a.length > 1)
+            getPlayerInfoArr(a, arr => {
+                let p2 = []
+                let idx = 1
+                for (let res of arr) {
+                    console.log('', res.data.name, res.data.player_id);
+                    let d = res.data
+                    p2.push({
+                        playerId: `p` + (p2.length + 1),
+                        name: d.nickname,
+                        realName: d.name,
+                        avatar: d.avatar,
+                        height: d.height,
+                        weight: d.weight
+                    })
 
-            }
-            console.log('PlayerInfoArr', JSON.stringify(p2));
-            console.log(dumpObj(p2, 1))
-        })
+                }
+                console.log('PlayerInfoArr', JSON.stringify(p2));
+                console.log(dumpObj(p2, 1))
+            })
+        else {
+            getAllPlayer(playerArrStr, res2 => {
+                let p2 = []
+                let idx = 1
+                for (let p of res2.data) {
+                    // console.log('', p.name, p.player_id);
+                    let d = p
+                    p2.push({
+                        playerId: `p` + (p2.length + 1),
+                        name: d.nickname,
+                        realName: d.name,
+                        avatar: d.avatar,
+                        height: d.height,
+                        weight: d.weight
+                    })
+                    console.log(JSON.stringify(p2[p2.length - 1]));
+
+                }
+                // console.log('PlayerInfoArr', JSON.stringify(p2));
+                // console.log(dumpObj(p2, 1))
+
+            })
+        }
         // 4,1754,6874,1703,44,949,1213,1176,2849,2660,2095,4218,3715,1945
     }
 

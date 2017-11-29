@@ -63,7 +63,7 @@ export class VictoryM2 extends PIXI.Container {
         console.log('show Victory', param);
         this.winLoseText.text = param.rec.win + '胜' + param.rec.lose + '负'
         let win = param.winner
-        this.nameText.text = win.name
+        this.nameText.text = win.realName
         this.infoText.text = win.height + 'cm / ' + win.weight + 'kg / ' + (win.age || '18') + '岁'
         this.locationText.text = win.school
         console.log('show victory', param)

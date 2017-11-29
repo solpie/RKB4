@@ -3,6 +3,8 @@ var request = require('request');
 request = request.defaults({ jar: true })
 
 let gambleStart = (roomId, left, right, cb) => {
+    console.log('roomId', roomId, left, right);
+
     var startUrl = 'http://www.liangle.com/manage/yang/pbk/event/' + roomId
         // request
     var requestify = require('requestify');

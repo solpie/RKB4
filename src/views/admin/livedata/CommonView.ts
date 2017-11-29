@@ -96,7 +96,7 @@ export default class CommonView extends BaseGameView {
         let gameTitle, winScore;
         if (this['inputRollText'] == '8') {
             winScore = 3
-            gameTitle = '淘汰赛'
+            gameTitle = '分组赛'
         }
         else if (this['inputRollText'] == 'f') {
             winScore = 5
@@ -114,8 +114,8 @@ export default class CommonView extends BaseGameView {
             // gameIdxStr = gameIdxStr
         }
         else {
-            winScore = 3
-            gameTitle = '双败赛'
+            winScore = 2
+            gameTitle = '小组赛'
         }
         this.gameTitle = gameTitle
         return { gameTitle: gameTitle, winScore: winScore, gameIdxStr: gameIdxStr }
@@ -132,8 +132,10 @@ export default class CommonView extends BaseGameView {
             data.gameIdx = this.gameIdx
             let lPlayerData = this.getPlayerInfo(this.lPlayer).data
             let rPlayerData = this.getPlayerInfo(this.rPlayer).data
-            lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
-            rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+            lPlayerData.rankingData = { ranking: lPlayerData.rank, color: 0xffff00 }
+            rPlayerData.rankingData = { ranking: rPlayerData.rank, color: 0xffff00 }
+            lPlayerData.ranking = lPlayerData.rank
+            rPlayerData.ranking = rPlayerData.rank
             data.leftScore = this.lScore
             data.rightScore = this.rScore
             data.leftFoul = this.lFoul
@@ -271,7 +273,7 @@ export default class CommonView extends BaseGameView {
         for (let k in this.playerMap) {
             let o = this.playerMap[k]
             if (o.playerId == playerId)
-                return o.name
+                return o.realName
         }
         return ''
     }

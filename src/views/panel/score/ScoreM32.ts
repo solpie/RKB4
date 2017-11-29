@@ -9,6 +9,7 @@ import { ViewConst, FontName } from "../const";
 import { paddy, loadImg } from "../../utils/JsFunc";
 import { blink2 } from "../../utils/Fx";
 import { FoulTextM2 } from "./FoulTextM2";
+import { GameTypeMap } from '../bracketM4/Bracket24Route';
 const skin = {
     light: {
         bg: '/img/panel/score/m3/bg2.png',
@@ -338,30 +339,63 @@ export class ScoreM32 {
     winSectionArr = [7, 8]
     loseSectionArr = [5, 6, 9, 10, 12]
     //1 车轮 2 大师 3 决赛    
-    setGameIdx(gameIdx, matchType) {
-        gameIdx = Number(gameIdx)
-        console.log('isMaster', matchType, gameIdx)
-        if (matchType == 2) {
-            if (this.winSectionArr.indexOf(gameIdx) > -1)
-                this.gameIdx.text = '胜者组' + paddy(gameIdx, 2) + '场'
-            else if (this.loseSectionArr.indexOf(gameIdx) > -1)
-                this.gameIdx.text = '败者组' + paddy(gameIdx, 2) + '场'
-            else if (gameIdx == 11)
-                this.gameIdx.text = '胜者组决赛'
-            else if (gameIdx == 13)
+    // setGameIdx(gameIdx, matchType, gameInfoData?) { }
+
+    setGameIdx(gameIdx, matchType, gameInfoData?) {
+        let gameIdxStr = paddy(gameIdx, 2)
+        if (gameInfoData && gameInfoData.gameTitle) {
+            this.gameIdx.text = gameInfoData.gameTitle
+        }
+        else {
+            console.log('isMaster', matchType)
+            if (gameIdx == 61) {
                 this.gameIdx.text = '败者组决赛'
-            else if (gameIdx == 14)
+            }
+            else if (gameIdx == 60) {
+                this.gameIdx.text = '胜者组决赛'
+            }
+            else if (gameIdx == 62) {
                 this.gameIdx.text = '决赛'
-            else
-                this.gameIdx.text = '大师赛' + paddy(gameIdx, 2) + '场'
+            }
+            else {
+                let gt = GameTypeMap[gameIdx]
+                if (gt == 10) {
+                    this.gameIdx.text = '分组赛' + gameIdxStr
+                }
+                else if (gt == 11) {
+                    this.gameIdx.text = '胜者组' + gameIdxStr
+                }
+                else if (gt == 12) {
+                    this.gameIdx.text = '败者组' + gameIdxStr
+                }
+            }
         }
-        else if (matchType == 1) {
-            this.gameIdx.text = '车轮战' + paddy(gameIdx, 2) + '场'
-        }
-        else if (matchType == 3) {
-            this.gameIdx.text = '决赛'
-        }
-        this.gameIdx.x = 962 - this.gameIdx.width * .5
+        this.gameIdx.x = 960 - this.gameIdx.width * .5
+
+
+        // gameIdx = Number(gameIdx)
+        // console.log('isMaster', matchType, gameIdx)
+        // if (matchType == 2) {
+        //     if (this.winSectionArr.indexOf(gameIdx) > -1)
+        //         this.gameIdx.text = '胜者组' + paddy(gameIdx, 2) + '场'
+        //     else if (this.loseSectionArr.indexOf(gameIdx) > -1)
+        //         this.gameIdx.text = '败者组' + paddy(gameIdx, 2) + '场'
+        //     else if (gameIdx == 11)
+        //         this.gameIdx.text = '胜者组决赛'
+        //     else if (gameIdx == 13)
+        //         this.gameIdx.text = '败者组决赛'
+        //     else if (gameIdx == 14)
+        //         this.gameIdx.text = '决赛'
+        //     else
+        //         this.gameIdx.text = '大师赛' + paddy(gameIdx, 2) + '场'
+        // }
+        // else if (matchType == 1) {
+        //     this.gameIdx.text = '车轮战' + paddy(gameIdx, 2) + '场'
+        // }
+        // else if (matchType == 3) {
+        //     this.gameIdx.text = '决赛'
+        // }
+        // this.gameIdx.x = 962 - this.gameIdx.width * .5
     }
     _showWinScore() {
         this.winScoreText.visible = true
@@ -463,11 +497,11 @@ export class ScoreM32 {
             nickName: nickName, name: name, avatar: avatar,
             height: height,
             weight: weight,
-            rankingData:rankingData
+            rankingData: rankingData
         })
     }
     _setLeftPlayer(data: any) {
-        console.log('left player',data);
+        console.log('left player', data);
         this.lPlayerHupuID.text = data.nickName
         this.lPlayerHupuID.x = 595 - this.lPlayerHupuID.width
         this.cutName(this.lPlayerHupuID, this._NAME_WIDTH)
@@ -509,7 +543,7 @@ export class ScoreM32 {
             nickName: nickName, name: name, avatar: avatar,
             height: height,
             weight: weight,
-            rankingData:rankingData
+            rankingData: rankingData
         })
     }
     _setRightPlayerInfo(data: any) {
