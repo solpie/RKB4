@@ -22,18 +22,21 @@ export default class DoubleElimination24View extends BaseGameView {
     delayEmitGameInfo = 0
     lHupuID = ''
     rHupuID = ''
+
+    lName = ''
+    rName = ''
     liveDataView
 
 
     playerIdArr = [
-        19457, 17109, 10207, 11470,
-        349, 4, 13268, 17392,
-        9118, 2849, 1213, 6874,
-        16767, 2644, 8903, 1868,
-        606, 17795, 574, 2187,
-        21164, 5091, 25, 3367,
-        1754, 18441, 7821, 19634,
-        949, 20375, 10368, 2285
+        8066, 15619, 614, 16767,
+        6874, 3836, 2988, 20375,
+        8449, 9118, 7479, 2849,
+        4257, 8052, 753, 23231,
+        23877, 5091, 17085, 17795,
+        1176, 3073, 14124, 10207,
+        1906, 7686, 8204, 1163,
+        10368, 8646, 13359, 18441
     ]
 
     constructor(liveDataView: LiveDataView) {
@@ -48,42 +51,7 @@ export default class DoubleElimination24View extends BaseGameView {
 
         this.init()
     }
-    getPlayerRankMap(callback) {
-        $post('/ranking/query/', { playerIdArr: this.playerIdArr, season: 's3' }, rankRes => {
-            let rankPlayerArr = rankRes.playerArr;
-            console.log("rank query", rankPlayerArr);
 
-            let qPid, p, ranking, rankMap = {}
-            for (qPid of this.playerIdArr) {
-                let missing = true
-                for (p of rankPlayerArr) {
-                    if ((qPid + "") == (p.player_id + "")) {
-                        missing = false
-                        rankMap[p.player_id] = p.ranking
-                        console.log(p.name, p.ranking);
-                        // break;
-                    }
-                }
-                if (missing) {
-                    // if (qPid == 19010)
-                    //     rankMap[qPid] = 73
-
-                    // if (qPid == 3367)
-                    //     rankMap[qPid] = 151
-                    console.log('missing', qPid)
-                }
-            }
-            rankMap[20375] = -1
-            rankMap[19634] = -1
-            rankMap[21164] = -1
-
-            rankMap[17392] = -1
-            rankMap[13268] = -1
-            rankMap[19457] = -1
-
-            callback(rankMap)
-        })
-    }
     initWS() {
         io.connect('/rkb')
             .on('connect', () => {
@@ -245,29 +213,26 @@ export default class DoubleElimination24View extends BaseGameView {
         })
     }
     initPlayer(callback) {
-        this.getPlayerRankMap(rankMap => {
-            syncDoc(playerDoc, doc => {
-                let playerOrderArr = doc.player
-                let playerArr = []
-                for (let i = 0; i < 32; i++) {
-                    let p = new PlayerInfo()
-                    p.id = i + 1
-                    p.hupuID = playerOrderArr[i].name
-                    p.name = 'p' + (i + 1)
-                    p['poker'] = ''
-                    p.ranking = rankMap[playerOrderArr[i].player_id]
-                    console.log('player 32', p.hupuID, p.ranking);
-                    p.data = playerOrderArr[i]
-                    p.data.ranking = p.ranking
-                    playerArr.push(p)
-                    this.nameMapHupuId[p.name] = p
-                }
-                console.log('player 32', playerArr);
+        syncDoc(playerDoc, doc => {
+            let playerOrderArr = doc.player
+            let playerArr = []
+            for (let i = 0; i < 32; i++) {
+                let p = new PlayerInfo()
+                p.id = i + 1
+                p.hupuID = playerOrderArr[i].name
+                p.name = 'p' + (i + 1)
+                p.realName = playerOrderArr[i].realName
+                p.ranking = 0
+                console.log('player 32', p.hupuID, p.name, playerOrderArr[i].realName);
+                p.data = playerOrderArr[i]
+                p.data.ranking = p.ranking
+                playerArr.push(p)
+                this.nameMapHupuId[p.name] = p
+            }
+            console.log('player 32', playerArr);
 
-                this.initPokerSelectView(playerArr)
-                callback()
-                // })
-            })
+            this.initPokerSelectView(playerArr)
+            callback()
         })
 
     }
@@ -314,8 +279,8 @@ export default class DoubleElimination24View extends BaseGameView {
                     row.gameIdx = Number(idx)
                     row.idx = row.gameIdx
                     row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
-                    row.lPlayer = this.getHupuId(rec.player[0])
-                    row.rPlayer = this.getHupuId(rec.player[1])
+                    row.lPlayer = this.getRealName(rec.player[0])
+                    row.rPlayer = this.getRealName(rec.player[1])
                     row.score = rec.score[0] + " : " + rec.score[1]
                     // console.log('row', row);
                     rowArr.push(row)
@@ -348,6 +313,14 @@ export default class DoubleElimination24View extends BaseGameView {
             let o = this.nameMapHupuId[k]
             if (o.name == groupName)
                 return o.hupuID
+        }
+        return ''
+    }
+    getRealName(groupName) {
+        for (let k in this.nameMapHupuId) {
+            let o = this.nameMapHupuId[k]
+            if (o.name == groupName)
+                return o.realName
         }
         return ''
     }

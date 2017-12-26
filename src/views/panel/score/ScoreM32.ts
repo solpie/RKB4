@@ -298,7 +298,7 @@ export class ScoreM32 {
         this._drawRankingColor(rRankingColor, 0xdddddd)
         rRankingColor.x = rm.x + 45
         rRankingColor.y = lm.y + 120
-        ctn.addChild(rRankingColor)
+        // ctn.addChild(rRankingColor)
 
         let lRankingColor = new PIXI.Graphics()
         this._drawRankingColor(lRankingColor, 0xdddddd)
@@ -306,7 +306,7 @@ export class ScoreM32 {
         lRankingColor.y = lm.y + 120
         this.lRankingColor = lRankingColor
         this.rRankingColor = rRankingColor
-        ctn.addChild(lRankingColor)
+        // ctn.addChild(lRankingColor)
 
         let rs = {
             fontFamily: FontName.MicrosoftYahei,

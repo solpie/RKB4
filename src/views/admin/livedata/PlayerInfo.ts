@@ -10,6 +10,7 @@ export class PlayerInfo{
     level: number
     intro: string
     ranking: number
+    realName:string
     
     //
     data:any

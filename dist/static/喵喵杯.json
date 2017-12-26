@@ -1,0 +1,24 @@
+{
+    "date": "2017-10-18",
+    "dbIdx": "1014",
+    "gameTitle": "苗苗杯",
+    "avatarUrlBase": "http://127.0.0.1:8088/img/player/mm/",
+    "playerArr": [
+        { "playerId": "p1", "realName": "刘淇", "name": "刘淇", "height": "176", "weight": "46", "age": "13" },
+        { "playerId": "p2", "realName": "孟洋", "name": "孟洋", "height": "182", "weight": "68", "age": "14" },
+        { "playerId": "p3", "realName": "王心铄", "name": "王心铄", "height": "150", "weight": "35", "age": "11" },
+        { "playerId": "p4", "realName": "刘宇尧", "name": "刘宇尧", "height": "151", "weight": "40", "age": "12" },
+        { "playerId": "p5", "realName": "孙靖昊", "name": "孙靖昊", "height": "167", "weight": "51", "age": "12" },
+        { "playerId": "p6", "realName": "王鸣鹤", "name": "王鸣鹤", "height": "160", "weight": "36", "age": "13" },
+        { "playerId": "p7", "realName": "王泽睿", "name": "王泽睿", "height": "192", "weight": "70", "age": "15" },
+        { "playerId": "p8", "realName": "岳畅", "name": "岳畅", "height": "172", "weight": "80", "age": "13" },
+        { "playerId": "p9", "realName": "张博", "name": "张博", "height": "177", "weight": "63", "age": "14" },
+        { "playerId": "p10", "realName": "孙鑫", "name": "孙鑫", "height": "155", "weight": "55", "age": "13" },
+        { "playerId": "p11", "realName": "于家骐", "name": "于家骐", "height": "178", "weight": "62", "age": "15" },
+        { "playerId": "p12", "realName": "扈之贺", "name": "扈之贺", "height": "165", "weight": "70", "age": "13" },
+        { "playerId": "p13", "realName": "杨天翔", "name": "杨天翔", "height": "195", "weight": "70", "age": "15" },
+        { "playerId": "p14", "realName": "张鑫彧", "name": "张鑫彧", "height": "172", "weight": "83", "age": "12" },
+        { "playerId": "p15", "realName": "阚一鸣", "name": "阚一鸣", "height": "186", "weight": "80", "age": "16" },
+        { "playerId": "p16", "realName": "彭帅棋", "name": "彭帅棋", "height": "183", "weight": "65", "age": "15" }
+    ]
+}

@@ -113,6 +113,11 @@ export default class CommonView extends BaseGameView {
             gameTitle = '胜者组'
             // gameIdxStr = gameIdxStr
         }
+        else if (this['inputRollText'] == '单淘') {
+            winScore = 3
+            gameTitle = '单淘赛'
+            // gameIdxStr = gameIdxStr
+        }
         else {
             winScore = 2
             gameTitle = '小组赛'

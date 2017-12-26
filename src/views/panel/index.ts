@@ -19,6 +19,7 @@ import { preLoadImgArr, ViewConst } from './const';
 import { ScoreView } from './score/ScoreView';
 import { PopupView } from './popup/PopupView';
 import { initThree } from "./threeCanvas";
+import { StatisticsView } from "./statistics/StatisticsView";
 
 // import io from 'socket.io-client';
 // window['io'] = io
@@ -69,7 +70,7 @@ else if (panel == 'backend') {
 }
 else if (panel == 'monitor') {
     s = window['stage'] = initPIXI()
-    new BackendView(s)
+    new StatisticsView(s)
 }
 else if (panel == 'poker') {
     // document.removeChild()
