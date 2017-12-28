@@ -45,8 +45,6 @@ export class ScoreView {
 
         if (getUrlQuerys('t') == '1')
             this.test()
-
-
     }
     test() {
         this.localWS.emit()
@@ -161,15 +159,14 @@ export class ScoreView {
                 }
             })
             .on(WebDBCmd.sc_showVictory, data => {
+                if (this.statisticsView)
+                    this.statisticsView.reset()
                 if (data.visible) {
                     this.scorePanel.hide()
                     TweenEx.delayedCall(2500, _ => {
                         this.scorePanel.show()
                     })
                 }
-
-                if (this.statisticsView)
-                    this.statisticsView.reset()
             })
         return localWs
     }

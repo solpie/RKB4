@@ -178,7 +178,6 @@ export default class DoubleElimination24View extends BaseGameView {
         this.initWS()
     }
 
-
     emitGameInfo2(doc?) {
         let _ = (doc) => {
             this.emitGameInfo(data => {
@@ -442,10 +441,13 @@ export default class DoubleElimination24View extends BaseGameView {
         //     data.matchType = 1
         if (this.gameIdx < 63) {
             data.gameIdx = this.gameIdx
-            let lPlayerData = this.getPlayerInfo(this.lPlayer).data
-            let rPlayerData = this.getPlayerInfo(this.rPlayer).data
-            lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
-            rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+            let lPlayer = this.getPlayerInfo(this.lPlayer)
+            let rPlayer = this.getPlayerInfo(this.rPlayer)
+
+            let lPlayerData = lPlayer.data
+            let rPlayerData = rPlayer.data
+            // lPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
+            // rPlayerData.rankingData = { ranking: 12, color: 0xffff00 }
             data.leftScore = this.lScore
             data.rightScore = this.rScore
             data.leftFoul = this.lFoul
@@ -456,20 +458,38 @@ export default class DoubleElimination24View extends BaseGameView {
                 exDataCall(data)
             }
             //test
-            // data.leftPlayer.name += this.lHupuID
-            // data.rightPlayer.name += this.rHupuID
             console.log('setGameInfo', data);
 
-            if (this.delayEmitGameInfo > 0) {
-                setTimeout(_ => {
-                    this.delayEmitGameInfo = 0
+
+            this.getPlayerRank(lPlayerData, rPlayerData, rankingArr => {
+                console.log('getPlayerRank', rankingArr);
+                lPlayer.ranking = lPlayerData.ranking = rankingArr[0]
+                rPlayer.ranking = rPlayerData.ranking = rankingArr[1]
+                if (this.delayEmitGameInfo > 0) {
+                    setTimeout(_ => {
+                        this.delayEmitGameInfo = 0
+                        $post(`/emit/${WebDBCmd.cs_init}`, data)
+                    }, this.delayEmitGameInfo);
+                }
+                else
                     $post(`/emit/${WebDBCmd.cs_init}`, data)
-                }, this.delayEmitGameInfo);
-            }
-            else
-                $post(`/emit/${WebDBCmd.cs_init}`, data)
+            })
         }
 
+    }
+
+    getPlayerRank(lPlayer, rPlayer, callback) {
+        getPlayerInfoArr([lPlayer.player_id, rPlayer.player_id], res => {
+            console.log('player rank', res);
+            let lRanking = 0, rRanking = 0;
+            for (let d of res) {
+                if (d.data.player_id == lPlayer.player_id)
+                    lRanking = d.data.powerRank
+                if (d.data.player_id == rPlayer.player_id)
+                    rRanking = d.data.powerRank
+            }
+            callback([lRanking, rRanking])
+        })
     }
 
     getPlayerInfo(groupName) {

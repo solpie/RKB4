@@ -171,6 +171,8 @@
                 <br>
                 <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
                 <br>
+                <a href="/panel.html?panel=score&m=1&monitor=1">/panel.html?panel=score&m=1&monitor=1</a>
+                <br>
                 <a href="/panel.html?panel=score&m=0">/panel.html?panel=score&m=0</a>
                 <br>
             </el-row>

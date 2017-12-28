@@ -1,4 +1,6 @@
 import { Statistics } from './Statistics';
+import { WebDBCmd } from '../webDBCmd';
+import { $post } from '../../utils/WebJsFunc';
 declare let io;
 export class StatisticsView {
     statistics: Statistics
@@ -17,7 +19,20 @@ export class StatisticsView {
         if ('rightFoul' in data)
             this.statistics.setRightFoul(data.rightFoul)
     }
-
+    initLocal() {
+        let localWs = io.connect(`/rkb`)
+        localWs.on('connect', (msg) => {
+            // if (!this.isInit) {
+            // this.isInit = true
+            setTimeout(_ => {
+                $post(`/emit/${WebDBCmd.cs_bracket24Created}`, { _: null })
+            }, 3000)
+            console.log('connect', window.location.host)
+        })
+            .on(`${WebDBCmd.sc_init}`, (data) => {
+                
+            })
+    }
     reset() {
         this.statistics.setLeftScore(0)
         this.statistics.setRightScore(0)
