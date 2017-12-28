@@ -332,7 +332,7 @@ export default class DoubleElimination24View extends BaseGameView {
             for (let i = 0; i < 62; i++) {
                 let r = cloneDoc.rec[i + 1]
                 r.poker = r.player
-                let a = [this.getHupuId(r.player[0]), this.getHupuId(r.player[1])]
+                let a = [this.getRealName(r.player[0]), this.getRealName(r.player[1])]
                 r.player = a
             }
             $post(`/emit/${WebDBCmd.cs_bracket24Init}`, { _: null, rec: cloneDoc.rec })

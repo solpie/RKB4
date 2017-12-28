@@ -219,8 +219,8 @@ export class PlayerRoute extends PIXI.Container {
         this.p1['avt'].load(cur[0].data.avatar)
         this.p2['avt'].load(cur[1].data.avatar)
 
-        this.p1['label'].text = simplifyName(cur[0].hupuID)
-        this.p2['label'].text = simplifyName(cur[1].hupuID)
+        this.p1['label'].text = simplifyName(cur[0].realName)
+        this.p2['label'].text = simplifyName(cur[1].realName)
         this.p2['label'].x = 290 - this.p2['label'].width
     }
 }

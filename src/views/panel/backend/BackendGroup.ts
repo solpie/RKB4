@@ -54,7 +54,7 @@ export class BackendGroup extends PIXI.Container {
     }
 
     setRec(recData) {
-        // console.log('recData', recData);
+        console.log('recData', recData);
         this.lPlayerName.text = recData.player[0]
         cutText(this.lPlayerName, 180)
         this.rPlayerName.text = recData.player[1]
