@@ -36,7 +36,7 @@ export default class DoubleElimination24View extends BaseGameView {
         23877, 5091, 17085, 17795,
         1176, 3073, 14124, 10207,
         1906, 7686, 8204, 1163,
-        10368, 8646, 13359, 18441
+        22070, 8646, 13359, 18441
     ]
 
     constructor(liveDataView: LiveDataView) {
