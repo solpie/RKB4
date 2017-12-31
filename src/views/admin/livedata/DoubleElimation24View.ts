@@ -415,7 +415,7 @@ export default class DoubleElimination24View extends BaseGameView {
             let sumMap = buildPlayerData(doc, true)
             let rec = sumMap[winPlayer.name]
             rec.score = [this.lScore, this.rScore]
-            let isGk = (winPlayer.ranking > losePlayer.ranking) || winPlayer.ranking == -1
+            let isGk = (winPlayer.ranking > losePlayer.ranking && losePlayer.ranking != 0) || (winPlayer.ranking == 0)
             console.log('win player ranking', winPlayer.ranking);
             let loseRec = sumMap[winPlayer.name]
             let data = {
