@@ -222,8 +222,9 @@ export default class DoubleElimination24View extends BaseGameView {
                 p.name = 'p' + (i + 1)
                 p.realName = playerOrderArr[i].realName
                 p.ranking = 0
-                console.log('player 32', p.hupuID, p.name, playerOrderArr[i].realName);
+                // console.log('player 32', p.hupuID, p.name, playerOrderArr[i].realName);
                 p.data = playerOrderArr[i]
+                console.log( p.name,p.data.player_id, playerOrderArr[i].realName);
                 p.data.ranking = p.ranking
                 playerArr.push(p)
                 this.nameMapHupuId[p.name] = p

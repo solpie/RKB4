@@ -52,14 +52,14 @@ export class CollectionView {
     }
     constructor() {
         this.collectionModel = new RKPCollectionModel()
-        $get('/ranking/game/' + 's3', res => {
-            console.log('load rank ', res);
-            let gameDataArr = res.doc.gameArr
-            this.gameDataArr = []
-            for (let gameData of gameDataArr) {
-                this.gameDataArr.push(gameData)
-            }
-        })
+        // $get('/ranking/game/' + 's3', res => {
+        //     console.log('load rank ', res);
+        //     let gameDataArr = res.doc.gameArr
+        //     this.gameDataArr = []
+        //     for (let gameData of gameDataArr) {
+        //         this.gameDataArr.push(gameData)
+        //     }
+        // })
     }
 
     genBattle(dateStr, gameCount, rankPlayerArr) {

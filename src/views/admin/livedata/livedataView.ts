@@ -307,13 +307,13 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     addPlayerRankData(p) {
-        let playerData = JSON.parse(JSON.stringify(p))
-        console.log('player id ', playerData);
-        let season = 's3'
+        // let playerData = JSON.parse(JSON.stringify(p))
+        // console.log('player id ', playerData);
+        // let season = 's3'
 
-        playerData.ranking = 90
-        $post('/ranking/add/' + season, { player: playerData }, (res) => {
-            console.log('ranking update', res);
-        })
+        // playerData.ranking = 90
+        // $post('/ranking/add/' + season, { player: playerData }, (res) => {
+        //     console.log('ranking update', res);
+        // })
     }
 }

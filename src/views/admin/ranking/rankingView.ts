@@ -32,12 +32,12 @@ export class RankingView {
 
     constructor() {
         this.cview = collectionView
-        $get('/ranking/game/s3', res => {
-            console.log('get game doc', res);
-            this.rankModel = new RankModel(res.doc)
-            let limit = 1
-            // this.lastRanking = this.viewRank(this.rankModel.merge(limit))
-        })
+        // $get('/ranking/game/s3', res => {
+        //     console.log('get game doc', res);
+        //     this.rankModel = new RankModel(res.doc)
+        //     let limit = 1
+        //     // this.lastRanking = this.viewRank(this.rankModel.merge(limit))
+        // })
     }
     //第250站 403 2017-07-15 :东莞-第238站 
     reMergeRank(limit) {

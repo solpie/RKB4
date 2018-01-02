@@ -211,14 +211,19 @@ import DoubleElimination24View from "./DoubleElimation24View";
 
 import CommonView from "./CommonView";
 
-let doubleElimination24 = new DoubleElimination24View(livedataView);
-livedataView.appendProp(doubleElimination24);
-_data = doubleElimination24;
+// let doubleElimination24 = new DoubleElimination24View(livedataView);
+// livedataView.appendProp(doubleElimination24);
+// _data = doubleElimination24;
 
 
 // let commonView = new CommonView(livedataView);
 // livedataView.appendProp(commonView);
 // _data = commonView
+
+import Final2TeamView from './Final2TeamView'
+let finalView = new Final2TeamView(livedataView)
+livedataView.appendProp(finalView)
+_data = finalView
 
 let hasFileHandle = false;
 export default {
