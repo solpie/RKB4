@@ -9,7 +9,7 @@ export class BloodBar extends PIXI.Container {
         this.bloodArr = []
         let bloodType = isSmall ? '1' : '2';
         let bloodMax = isSmall ? 3 : 5;
-        let bloodInvert = isSmall ? 75 : 65;
+        let bloodInvert = isSmall ? 75 : 62;
         imgLoader.loadTex(`/img/panel/final2/score/blood${bloodType}.png`, tex => {
             let invert = bloodInvert
             for (let i = 0; i < bloodMax; i++) {

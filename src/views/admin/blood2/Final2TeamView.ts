@@ -12,8 +12,10 @@ export default class Final2TeamView extends BaseGameView {
     isLoadedCfg = false
     playerMap = {}
     gameInfoTable = []
-    lHupuID = ''
-    rHupuID = ''
+    lRealName = ''
+    rRealName = ''
+    lHupuID =''
+    rHupuID =''
     panelVersion = 'F2'
     liveDataView
     constructor(liveDataView: LiveDataView) {
@@ -36,6 +38,7 @@ export default class Final2TeamView extends BaseGameView {
             }
             console.log('init player data', doc, this.playerMap);
         })
+        
         syncDoc(dbIdx, doc => {
             console.log('game db', doc);
         })
@@ -91,32 +94,29 @@ export default class Final2TeamView extends BaseGameView {
         let recMap = doc.rec
         let rowArr: any = []
         for (let idx in recMap) {
-            // console.log('idx', idx, recMap);
-            // if (Number(idx) < 63) {
             let rec = recMap[idx]
             if (rec) {
                 let row = { idx: 0, gameIdx: 0, vs: '', score: '', rPlayer: '', lPlayer: '' }
                 row.gameIdx = Number(idx)
                 row.idx = row.gameIdx
                 row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
-                row.lPlayer = this.getHupuId(rec.player[0])
-                row.rPlayer = this.getHupuId(rec.player[1])
+                row.lPlayer = this.getRealName(rec.player[0])
+                row.rPlayer = this.getRealName(rec.player[1])
                 row.score = rec.score[0] + " : " + rec.score[1]
                 // console.log('row', row);
                 rowArr.push(row)
             }
-            // }
         }
         this.gameInfoTable = rowArr
     }
     setPlayer(lPlayerId, rPlayerId) {
         this.lPlayer = lPlayerId
         this.rPlayer = rPlayerId
-        this.lHupuID = this.getHupuId(this.lPlayer)
-        this.rHupuID = this.getHupuId(this.rPlayer)
+        this.lRealName = this.getRealName(this.lPlayer)
+        this.rRealName = this.getRealName(this.rPlayer)
     }
 
-    getHupuId(playerId) {
+    getRealName(playerId) {
         for (let k in this.playerMap) {
             let o = this.playerMap[k]
             if (o.playerId == playerId)

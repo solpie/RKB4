@@ -35,7 +35,8 @@
             </el-collapse>
         </el-col>
         <el-col :span='14'>
-            [{{lPlayer}}]{{lHupuID}} vs [{{rPlayer}}] {{rHupuID}}
+                    小组赛第{{gameIdx}}场
+            [{{lPlayer}}]{{lRealName}} vs [{{rPlayer}}] {{rRealName}}
             <el-row>
                 <el-col :span='4'>
                     L Score
@@ -46,14 +47,13 @@
                     <el-button @click='_("setLFoul",lFoul+1)'>+1</el-button>
                     <el-button @click='_("setLFoul",lFoul-1)'>-1</el-button>
                 </el-col>
-                <el-col :span='4'>
-                    小组赛第{{gameIdx}}场
+                <el-col :span='6'>
                     <span style="fontSize:40px">
                         Score
                         <br>
                         <span style="color:blue">{{lScore}}</span> :
                         <span style="color:red">{{rScore}}</span>
-                        <br> Foul {{lFoul}} :{{rFoul}}
+                        <br> Bonus {{lFoul}} :{{rFoul}}
                     </span>
                 </el-col>
 
@@ -117,14 +117,6 @@
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
                 <br>
                 <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
-                <el-button @click='_("showCurPlayerRoute",true)'>当前晋级图(fx)</el-button>
-                <el-button @click='_("showCurPlayerRoute",false)'>当前晋级图</el-button>
-                <el-button @click='_("showGameProcess",true,"auto")'>比赛进程</el-button>
-                <el-button @click='_("showGameProcess",false)'>隐藏</el-button>
-                <el-button @click='_("showGameProcess",true,"pre1")'>分组赛 1</el-button>
-                <el-button @click='_("showGameProcess",true,"pre2")'>分组赛 2</el-button>
-                <el-button @click='_("showGameProcess",true,"lose1")'>败者组 1</el-button>
-                <el-button @click='_("showGameProcess",true,"win1")'>胜者组 1</el-button>
                 <br>
                 <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
                 <br>
@@ -132,8 +124,6 @@
                 <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
                 <el-button @click='_("showImg",false,"bd1")'>隐藏媒体1</el-button>
                 <hr>
-                <el-button @click='_("initDoubleElimation")'>initDoubleElimation</el-button>
-                <el-button @click='_("initGameMonth",380)'>init Game Month</el-button>
                 <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
                 <br>
                 <br>
@@ -187,10 +177,10 @@ import LiveDataView from "../livedata/livedataView";
 let livedataView = new LiveDataView();
 let _data;
 
-import Final2TeamView from './Final2TeamView'
-let finalView = new Final2TeamView(livedataView)
-livedataView.appendProp(finalView)
-_data = finalView
+import Final2TeamView from "./Final2TeamView";
+let finalView = new Final2TeamView(livedataView);
+livedataView.appendProp(finalView);
+_data = finalView;
 
 let hasFileHandle = false;
 export default {

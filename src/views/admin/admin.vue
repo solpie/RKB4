@@ -17,7 +17,7 @@
                 <Blood2></Blood2>
             </el-tab-pane>
             <el-tab-pane label="月赛">
-                <LiveData></LiveData>
+                <!-- <LiveData></LiveData> -->
             </el-tab-pane>
 
             <!-- <el-tab-pane>
