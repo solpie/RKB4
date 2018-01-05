@@ -127,13 +127,6 @@
                 <el-button @click='_("showGameProcess",true,"win1")'>胜者组 1</el-button>
                 <br>
                 <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
-                <el-button @click='_("showGameProcess",true,"win2")'>胜者组 2</el-button>
-                <el-button @click='_("showGameProcess",true,"lose3")'>败者组 3</el-button>
-                <el-button @click='_("showGameProcess",true,"lose4")'>败者组 4</el-button>
-                <el-button @click='_("showGameProcess",true,"final8")'>8强</el-button>
-                <el-button @click='_("showGameProcess",true,"final")'>决赛</el-button>
-                <br>
-                <el-button @click='_("showFinal4Reward")'>四强奖金</el-button>
                 <br>
                 <el-button @click='_("showImg",true,"bd1")'>媒体1</el-button>
                 <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
@@ -159,28 +152,16 @@
             <el-row>
                 <hr>
                 <el-button @click='_("syncPlayer")'>更新球员数据</el-button>
-
                 <el-button @click='_("testRandomGame",62)'>testRandomGame</el-button>
                 <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
                 <el-button @click='_("testRandomGame",52)'>testRandomGame 52 八强</el-button>
-
             </el-row>
             <el-row>
                 <hr>
-                <a href="/panel.html?panel=backend"> /panel.html?panel=backend</a>
-                <br>
-                <a href="/panel.html?panel=score&m=1">/panel.html?panel=score&m=1</a>
-                <br>
-                <a href="/panel.html?panel=score&m=1&monitor=1">/panel.html?panel=score&m=1&monitor=1</a>
-                <br>
-                <a href="/panel.html?panel=score&m=0">/panel.html?panel=score&m=0</a>
+                <a href="/panel.html?panel=f2"> /panel.html?panel=f2</a>
                 <br>
             </el-row>
             <el-row>
-                <input type="file" id="files" name="files[]" hidden />
-                <el-button @click="onFile">...</el-button>
-                <output id="list"></output>
-
                 <el-button @click='_("dumpPlayer",inputRollText)'>dump player</el-button>
             </el-row>
         </el-col>
@@ -201,29 +182,15 @@
 </style>
 
 <script>
-import LiveDataView from "./livedataView";
-import DoubleEliminationView from "./DoubleElimationView";
+import LiveDataView from "../livedata/livedataView";
 
 let livedataView = new LiveDataView();
 let _data;
 
-import DoubleElimination24View from "./DoubleElimation24View";
-
-import CommonView from "./CommonView";
-
-let doubleElimination24 = new DoubleElimination24View(livedataView);
-livedataView.appendProp(doubleElimination24);
-_data = doubleElimination24;
-
-
-// let commonView = new CommonView(livedataView);
-// livedataView.appendProp(commonView);
-// _data = commonView
-
-// import Final2TeamView from './Final2TeamView'
-// let finalView = new Final2TeamView(livedataView)
-// livedataView.appendProp(finalView)
-// _data = finalView
+import Final2TeamView from './Final2TeamView'
+let finalView = new Final2TeamView(livedataView)
+livedataView.appendProp(finalView)
+_data = finalView
 
 let hasFileHandle = false;
 export default {
@@ -239,45 +206,6 @@ export default {
     },
     rowClick(row, event, col) {
       this._("getGameInfo", row, event, col);
-    },
-    onFile() {
-      if (!hasFileHandle) {
-        hasFileHandle = true;
-        document.getElementById("files").addEventListener(
-          "change",
-          evt => {
-            var files = evt.target.files; // FileList object
-            // files is a FileList of File objects. List some properties.
-            var output = [];
-            for (var i = 0, f; (f = files[i]); i++) {
-              var reader = new FileReader();
-              reader.addEventListener("load", function(event) {
-                console.log("EVENT_ON_FILE", event.target.result);
-                livedataView.emit("EVENT_ON_FILE", event.target.result);
-              });
-
-              reader.readAsText(f, "utf-8");
-              output.push(
-                "<li><strong>",
-                f.name,
-                "</strong> (",
-                f.type || "n/a",
-                ") - ",
-                f.size,
-                " bytes, last modified: ",
-                f.lastModifiedDate
-                  ? f.lastModifiedDate.toLocaleDateString()
-                  : "n/a",
-                "</li>"
-              );
-            }
-            document.getElementById("list").innerHTML =
-              "<ul>" + output.join("") + "</ul>";
-          },
-          false
-        );
-      }
-      document.getElementById("files").click();
     }
   }
 };

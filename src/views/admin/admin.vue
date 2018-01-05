@@ -13,6 +13,9 @@
 <template>
     <div id="app">
         <el-tabs type="border-card">
+            <el-tab-pane label="Final2">
+                <Blood2></Blood2>
+            </el-tab-pane>
             <el-tab-pane label="月赛">
                 <LiveData></LiveData>
             </el-tab-pane>

@@ -26,8 +26,10 @@ Vue.component('Dashboard', Dashboard)
 import LiveData from './livedata/livedata.vue'
 Vue.component('LiveData', LiveData)
 
-import Ranking from './ranking/ranking.vue'
-Vue.component('Ranking', Ranking)
+import Blood2 from './blood2/blood2.vue'
+Vue.component('Blood2',Blood2)
+// import Ranking from './ranking/ranking.vue'
+// Vue.component('Ranking', Ranking)
 
 document.write(`<div id='app'></div>`)
 let $vm = new Vue({

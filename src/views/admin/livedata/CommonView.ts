@@ -91,6 +91,7 @@ export default class CommonView extends BaseGameView {
             this.rHupuID = this.getHupuId(this.rPlayer)
         })
     }
+
     getGameTitle(gameIdx) {
         let gameIdxStr = paddy(gameIdx, 2)
         let gameTitle, winScore;
@@ -127,8 +128,6 @@ export default class CommonView extends BaseGameView {
     }
     emitGameInfo(doc?) {
         let _ = (doc) => {
-
-
             let data: any = { _: null }
             let gameTitle = this.getGameTitle(this.gameIdx)
             data.winScore = gameTitle.winScore
@@ -289,6 +288,7 @@ export default class CommonView extends BaseGameView {
             doc.gameIdx = 0
         }, true)
     }
+    
     initView(doc) {
         let recMap = doc.rec
         let rowArr: any = []

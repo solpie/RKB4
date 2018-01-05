@@ -20,6 +20,7 @@ import { ScoreView } from './score/ScoreView';
 import { PopupView } from './popup/PopupView';
 import { initThree } from "./threeCanvas";
 import { StatisticsView } from "./statistics/StatisticsView";
+import { Final2ScoreView } from './final2/Final2ScoreView';
 
 // import io from 'socket.io-client';
 // window['io'] = io
@@ -71,6 +72,12 @@ else if (panel == 'backend') {
 else if (panel == 'monitor') {
     s = window['stage'] = initPIXI()
     new StatisticsView(s)
+}
+else if (panel == 'f2') {
+    s = window['stage'] = initPIXI()
+    let scoreView = new Final2ScoreView(s)
+    localWS = scoreView.localWS
+    // new PopupView(s, localWS)
 }
 else if (panel == 'poker') {
     // document.removeChild()

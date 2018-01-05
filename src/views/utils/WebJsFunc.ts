@@ -95,7 +95,7 @@ let xhr = (url, method, data, callback) => {
     http.onreadystatechange = () => {//Call a function when the state changes.
         if (http.readyState == 4 && http.status == 200) {
             let ct = http.getResponseHeader('content-type')
-            console.log('http.response', ct, http.response);
+            // console.log('http.response', ct, http.response);
             let res = http.response
             if (ct.search('json') > -1)
                 res = JSON.parse(http.response)
