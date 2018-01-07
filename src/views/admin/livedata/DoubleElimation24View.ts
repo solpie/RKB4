@@ -49,7 +49,7 @@ export default class DoubleElimination24View extends BaseGameView {
 
         // EVENT_INIT_DOUBLE_ELIMATION
 
-        this.init()
+        // this.init()
     }
 
     initWS() {

@@ -58,6 +58,6 @@ export class MateAvatar extends PIXI.Container {
 
     setData(data) {
         this.playerName.text = data.name
-
+        this.avt.load(data.avatar)
     }
 }

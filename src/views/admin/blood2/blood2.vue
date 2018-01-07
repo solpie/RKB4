@@ -49,7 +49,7 @@
                 </el-col>
                 <el-col :span='6'>
                     <span style="fontSize:40px">
-                        Score
+                        Blood
                         <br>
                         <span style="color:blue">{{lScore}}</span> :
                         <span style="color:red">{{rScore}}</span>
@@ -90,6 +90,7 @@
                     <br>
                     <el-input v-model='timeInput' style="width:50px">reset计时</el-input>
                     <el-button @click='_("setTimer",-2,timeInput)'>设置时间</el-button>
+                    <!-- <el-button @click='_("commit")'>提交比赛</el-button> -->
                     <el-button @click='_("commit")'>提交比赛</el-button>
                     <!-- <el-button @click='_("commit",true)'>提交比赛F</el-button> -->
                     <br>

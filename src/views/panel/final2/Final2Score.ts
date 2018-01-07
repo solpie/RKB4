@@ -75,7 +75,7 @@ export class Final2Score extends PIXI.Container {
         let ps = {
             fontFamily: FontName.MicrosoftYahei,
             fontSize: '30px',
-            fill: '#fff',
+            fill: '#eee',
             fontWeight: 'bold'
         }
 
@@ -105,7 +105,7 @@ export class Final2Score extends PIXI.Container {
         let tts = {
             fontFamily: FontName.DigiLED,
             fontSize: '50px',
-            fill: "#fff",
+            fill: "#ccc",
             // fill: "#de172f",
             dropShadow: true,
             dropShadowAngle: 90,
@@ -129,26 +129,55 @@ export class Final2Score extends PIXI.Container {
         let lBns = new PIXI.Text('0', bs)
         lBns.x = 860
         lBns.y = 1022
+        this.lBonus = lBns
         this.addChild(lBns)
 
         let rBns = new PIXI.Text('0', bs)
         rBns.x = 1040
         rBns.y = lBns.y
+        this.rBonus = rBns
         this.addChild(rBns)
 
         this.test()
     }
 
-    test()
-    {
+    test() {
         this.tips.setText('南方队请求暂停')
     }
+
     setInit(data) {
+        let i = 0
+        for (let p of data.lTeamInfo.playerArr) {
+            if (p.pid != data.lPlayer) {
+                let lMa = this.lMateAvtArr[i]
+                lMa.setData(p)
+                i++
+            } else {
+                this.lPlayerName.text = p.name
+                this.lPlayerAvt.load(p.avatar)
+            }
+        }
+
+
+        i = 0
+        for (let p of data.rTeamInfo.playerArr) {
+            if (p.pid != data.rPlayer) {
+                let ma = this.rMateAvtArr[i]
+                ma.setData(p)
+                i++
+            } else {
+                this.rPlayerName.text = p.name
+                this.rPlayerAvt.load(p.avatar)
+            }
+        }
+
     }
 
     setScoreFoul(data) {
         this.lBar.setBlood(data.leftScore)
         this.rBar.setBlood(data.rightScore)
+        this.lBonus.text = data.leftFoul
+        this.rBonus.text = data.rightFoul
     }
 
     resetTimer() {
