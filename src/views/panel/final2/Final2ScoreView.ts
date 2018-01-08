@@ -1,15 +1,35 @@
 import { Final2Score } from './Final2Score';
 import { WebDBCmd } from '../webDBCmd';
-import { TimerState } from '../const';
+import { TimerState, FontName } from '../const';
+import { TweenEx } from '../../utils/TweenEx';
 declare let $;
 declare let io;
 export class Final2ScoreView {
     localWS
     scorePanel: Final2Score
     constructor(stage) {
-        this.localWS = this.initLocalWs()
-        this.scorePanel = new Final2Score()
-        stage.addChild(this.scorePanel)
+
+        //preload font
+        let f1 = this.preLoadFont(FontName.DigiLED)
+        stage.addChild(f1)
+        let f2 = this.preLoadFont(FontName.Impact)
+        stage.addChild(f2)
+        TweenEx.delayedCall(2000, _ => {
+            this.localWS = this.initLocalWs()
+            this.scorePanel = new Final2Score()
+            stage.removeChild(f1)
+            stage.removeChild(f2)
+            stage.addChild(this.scorePanel)
+        })
+    }
+    preLoadFont(fontName) {
+        let tts = {
+            fontFamily: fontName,
+        }
+        let t = new PIXI.Text('', tts)
+        t.text = '0'
+        t.alpha = 0
+        return t
     }
     initLocalWs() {
         let localWs = io.connect(`/rkb`)
@@ -25,9 +45,9 @@ export class Final2ScoreView {
                 console.log('sc_showRollText', data);
                 // this.scorePanel.setScoreFoul(data)
                 // if (data.visible)
-                    this.scorePanel.showTips(data)
+                this.scorePanel.showTips(data)
                 // else {
-                    // this.scorePanel.tips.hide()
+                // this.scorePanel.tips.hide()
                 // }
             })
             .on(`${WebDBCmd.sc_setTimer}`, (data) => {

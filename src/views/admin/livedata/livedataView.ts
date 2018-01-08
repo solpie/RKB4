@@ -16,6 +16,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_INIT_BRACKET = 'EVENT_INIT_BRACKET'
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
     static EVENT_UPDATE_SCORE = 'EVENT_UPDATE_SCORE'
+    static EVENT_SET_ROUND_END = 'EVENT_SET_ROUND_END'
     static EVENT_SET_VS = 'EVENT_SET_VS'
     static EVENT_SAVE_PLAYER = 'EVENT_SAVE_PLAYER'
     static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
@@ -93,6 +94,10 @@ export default class LiveDataView extends EventDispatcher {
 
     setGameInfo(param) {
         this.emit(WebDBCmd.cs_init, param)
+    }
+
+    setRoundEnd() {
+        this.emit(LiveDataView.EVENT_SET_ROUND_END)
     }
 
     emitScore() {

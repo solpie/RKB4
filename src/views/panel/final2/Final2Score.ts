@@ -184,14 +184,12 @@ export class Final2Score extends PIXI.Container {
             }
         }
 
-
         if (data.is3Blood) {
             this.lPlayerAvt.x = 468
             this.rPlayerAvt.x = 1343
             this.lPlayerName.x = this.lPlayerAvt.x + 60 - this.lPlayerName.width * .5
-            this.rPlayerName.x = this.rPlayerAvt.x + 50- this.rPlayerName.width * .5
+            this.rPlayerName.x = this.rPlayerAvt.x + 50 - this.rPlayerName.width * .5
         }
-
     }
 
     setScoreFoul(data) {

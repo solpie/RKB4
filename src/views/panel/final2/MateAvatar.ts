@@ -35,7 +35,7 @@ export class MateAvatar extends PIXI.Container {
         }
         setScale(this, 0.85)
 
-        let pn = new PIXI.Text('利君沙', ps)
+        let pn = new PIXI.Text('p', ps)
         this.playerName = pn
         pn.x = 3
         pn.y = 61
@@ -66,8 +66,6 @@ export class MateAvatar extends PIXI.Container {
         this.avt.load(data.avatar)
         this.bloodNum.text = data.blood
 
-
-        // colorMatrix.contrast(2);
         if (data.blood < 1) {
             if (!this.grayFilter) {
                 this.grayFilter = new PIXI.filters.ColorMatrixFilter();
@@ -77,10 +75,5 @@ export class MateAvatar extends PIXI.Container {
         }
         else
             this.filters = []
-
-
-        // var grayFilter = new  PIXI.GrayFilter();
-        // slice.filters = [ grayFilter];
-        // stage.addChild(slice);
     }
 }

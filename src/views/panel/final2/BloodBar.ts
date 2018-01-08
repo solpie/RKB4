@@ -27,15 +27,13 @@ export class BloodBar extends PIXI.Container {
                     b.x = 865 - i * invert
                     b.scale.x = -1
                 }
-                else {
+                else
                     b.x = 1055 + i * invert
-                }
                 b.y = 975
                 this.addChild(b)
                 this.bloodArr.push(b)
             }
-            if (this.initNum > 0)
-            {
+            if (this.initNum > 0) {
                 this.setBlood(this.initNum)
             }
         })

@@ -23,6 +23,7 @@ export default class Final2TeamView extends BaseGameView {
     teamArr = [{ playerArr: [] }]
     constructor(liveDataView: LiveDataView) {
         super()
+        this.dbIdx = dbIdx
         this.liveDataView = liveDataView
         this.initFinal2()
     }
@@ -41,19 +42,32 @@ export default class Final2TeamView extends BaseGameView {
             }
             this.teamArr = doc.teamArr
             console.log('init player data', doc, this.playerMap);
+
+            syncDoc(dbIdx, doc => {
+                console.log('game db', doc);
+                this.initDocToView(doc)
+            })
         })
 
-        syncDoc(dbIdx, doc => {
-            console.log('game db', doc);
-            this.initDocToView(doc)
-        })
+
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
             this.emitGameInfo(data)
         })
 
         lv.on(LVE.EVENT_UPDATE_SCORE, data => {
-            this.emitScoreFoul(data)
+            this.onScore(data)
+        })
+
+        lv.on(LVE.EVENT_SET_VS, vsStr => {
+            let a = vsStr.split(' ')
+            if (a.length == 2) {
+                vsStr = 'p' + a[0] + ' p' + a[1]
+                this.setVS(vsStr, doc => {
+                    this.initDocToView(doc)
+                })
+            }
+
         })
 
         lv.on(LVE.EVENT_SYNC_PLAYER, _ => {
@@ -80,6 +94,14 @@ export default class Final2TeamView extends BaseGameView {
             this.newGame(vsStr)
         })
 
+        lv.on(LVE.EVENT_SET_ROUND_END, _ => {
+            syncDoc(dbIdx, doc => {
+                let rec = doc.rec[this.gameIdx]
+                console.log('set round end', rec);
+            }, true)
+            // console.log('');
+        })
+
         lv.on(WebDBCmd.cs_commit, data => {
             console.log('cs_commit', data);
             this.commit(data)
@@ -87,6 +109,12 @@ export default class Final2TeamView extends BaseGameView {
 
     }
 
+    onScore(data) {
+        let lPlayerData = this.getPlayerInfo(this.lPlayer)
+        let rPlayerData = this.getPlayerInfo(this.rPlayer)
+        console.log('player ', lPlayerData, rPlayerData);
+        this.emitScoreFoul(data)
+    }
     onSavePlayer() {
         syncDoc(playerDocIdx, doc => {
             doc.teamArr = this.teamArr
@@ -127,7 +155,7 @@ export default class Final2TeamView extends BaseGameView {
             rPlayerData.blood = this.rScore
             doc.teamArr = this.teamArr
             // this.teamArr
-        },true)
+        }, true)
         syncDoc(dbIdx, doc => {
             let rec = doc['rec'][this.gameIdx]
             rec.player = [this.lPlayer, this.rPlayer]
@@ -136,11 +164,11 @@ export default class Final2TeamView extends BaseGameView {
             rec.score = [lScore, rScore]
             rec.blood = [this.lScore, this.rScore]
 
-      
+
             // this.gameIdx++
             // doc.gameIdx = this.gameIdx
             // console.log('commit rec', rec);
-            this.initDocToView(doc) 
+            this.initDocToView(doc)
         }, true)
     }
 
@@ -161,6 +189,7 @@ export default class Final2TeamView extends BaseGameView {
                 data.rRanking = rankingArr[1]
                 $post(`/emit/${WebDBCmd.cs_init}`, data)
             })
+            this.emitScoreFoul(this)
             // $post(`/emit/${WebDBCmd.cs_init}`, data)
         })
     }
@@ -222,8 +251,8 @@ export default class Final2TeamView extends BaseGameView {
             this.rScore = Number(rec.blood[1]) || 0
             this.lFoul = Number(rec.bonus[0]) || 0
             this.rFoul = Number(rec.bonus[1]) || 0
-            this.lHupuID = this.getRealName(this.lPlayer)
-            this.rHupuID = this.getRealName(this.rPlayer)
+            this.lRealName = this.lHupuID = this.getRealName(this.lPlayer)
+            this.rRealName = this.rHupuID = this.getRealName(this.rPlayer)
         })
     }
 

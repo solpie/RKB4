@@ -92,6 +92,7 @@
                     <el-button @click='_("setTimer",-2,timeInput)'>设置时间</el-button>
                     <!-- <el-button @click='_("commit")'>提交比赛</el-button> -->
                     <el-button @click='_("commit")'>提交比赛</el-button>
+                    <el-button @click='_("setRoundEnd")'>结算点</el-button>
                     <!-- <el-button @click='_("commit",true)'>提交比赛F</el-button> -->
                     <br>
                     <br>
