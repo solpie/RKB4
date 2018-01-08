@@ -21,6 +21,15 @@ export class Final2ScoreView {
                 console.log('sc_score', data);
                 this.scorePanel.setScoreFoul(data)
             })
+            .on(`${WebDBCmd.sc_showRollText}`, (data) => {
+                console.log('sc_showRollText', data);
+                // this.scorePanel.setScoreFoul(data)
+                // if (data.visible)
+                    this.scorePanel.showTips(data)
+                // else {
+                    // this.scorePanel.tips.hide()
+                // }
+            })
             .on(`${WebDBCmd.sc_setTimer}`, (data) => {
                 console.log('webdbcmd', data);
                 let s = data.state

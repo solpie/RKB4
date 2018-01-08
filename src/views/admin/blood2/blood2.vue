@@ -97,15 +97,7 @@
                     <br>
                 </el-col>
                 <el-col :span='8'>
-                    冠军：
-                    <el-button @click='_("showChampion","hide")'>Hide Champion</el-button>
-                    <el-input v-model="inputChampion" style="width:450px"></el-input>
-                    <br>
-                    <el-button @click='_("showChampion",lPlayer,inputChampion)'>{{lHupuID}}</el-button>
-                    <el-button @click='_("showChampion",rPlayer,inputChampion)'>{{rHupuID}}</el-button>
-                    <br>
-                    <el-input v-model="inputPlayerArr" style="width:250px"></el-input>
-                    <el-button @click='_("setPlayerArr",inputPlayerArr)'>set Player Arr</el-button>
+              
                 </el-col>
             </el-row>
             <el-row>
@@ -125,7 +117,8 @@
                 <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
                 <el-button @click='_("showImg",false,"bd1")'>隐藏媒体1</el-button>
                 <hr>
-                <el-button @click='_("setGameInfo")'>setGameInfo</el-button>
+                <el-button @click='_("setGameInfo",3)'>setGameInfo 3</el-button>
+                <el-button @click='_("setGameInfo",5)'>setGameInfo 5</el-button>
                 <br>
                 <br>
                 <el-button @click='_("showGamePlayerInfo",true)'>show Victory</el-button>
@@ -142,10 +135,16 @@
             </el-row>
             <el-row>
                 <hr>
-                <el-button @click='_("syncPlayer")'>更新球员数据</el-button>
-                <el-button @click='_("testRandomGame",62)'>testRandomGame</el-button>
-                <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
-                <el-button @click='_("testRandomGame",52)'>testRandomGame 52 八强</el-button>
+                       <li v-for='(team,idx) in teamArr' v-bind:key="idx">
+                     <span v-for='(p,idx) in team.playerArr' v-bind:key="idx">
+                         {{p.name}} 
+                        <el-input v-model="p.blood" style="width:35px"></el-input>
+                     </span>
+                        </li>
+                <el-button @click='_("savePlayer")'>更新血量</el-button>
+                <el-button @click='_("savePlayer")'>更新血量</el-button>
+                <el-button @click='_("savePlayer")'>更新血量</el-button>
+                <el-button @click='_("syncPlayer")'>下载球员数据</el-button>
             </el-row>
             <el-row>
                 <hr>

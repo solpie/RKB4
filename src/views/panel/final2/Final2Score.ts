@@ -50,12 +50,6 @@ export class Final2Score extends PIXI.Container {
         this.lPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
         this.rPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
 
-        this.lBar = new BloodBar(true, true)
-        this.addChild(this.lBar)
-
-        this.rBar = new BloodBar(false)
-        this.addChild(this.rBar)
-
         let lMateAvtCtn = new PIXI.Container()
         this.addChild(lMateAvtCtn)
         for (let i = 0; i < 4; i++) {
@@ -74,18 +68,18 @@ export class Final2Score extends PIXI.Container {
 
         let ps = {
             fontFamily: FontName.MicrosoftYahei,
-            fontSize: '30px',
+            fontSize: '28px',
             fill: '#eee',
             fontWeight: 'bold'
         }
 
-        let lpn = new PIXI.Text('王佳委', ps)
+        let lpn = new PIXI.Text('P1', ps)
         lpn.x = 478
-        lpn.y = 1020
+        lpn.y = 1024
         this.lPlayerName = lpn
         this.addChild(lpn)
 
-        let rpn = new PIXI.Text('王佳委', ps)
+        let rpn = new PIXI.Text('P2', ps)
         rpn.x = 1390
         rpn.y = lpn.y
         this.rPlayerName = rpn
@@ -94,12 +88,14 @@ export class Final2Score extends PIXI.Container {
         ps.fontSize = '22px'
         ps.fill = '#bbb'
         let lpr = new PIXI.Text('实力榜:18', ps)
+        this.lPlayerRank = lpr
         lpr.x = 580
         this.addChild(lpr)
 
         let rpr = new PIXI.Text('实力榜:1', ps)
-        rpr.x = 1260
+        rpr.x = 1240
         rpr.y = lpr.y = 1029
+        this.rPlayerRank = rpr
         this.addChild(rpr)
 
         let tts = {
@@ -142,10 +138,23 @@ export class Final2Score extends PIXI.Container {
     }
 
     test() {
-        this.tips.setText('南方队请求暂停')
+        // this.tips.setText('南方队请求暂停')
     }
 
     setInit(data) {
+        // if (data.is3Blood) {
+        if (!this.lBar) {
+            this.lBar = new BloodBar(true, data.is3Blood)
+            this.addChild(this.lBar)
+            this.rBar = new BloodBar(false, data.is3Blood)
+            this.addChild(this.rBar)
+        }
+        else {
+            this.lBar.initBar(data.is3Blood)
+            this.rBar.initBar(data.is3Blood)
+        }
+
+        // }
         let i = 0
         for (let p of data.lTeamInfo.playerArr) {
             if (p.pid != data.lPlayer) {
@@ -155,6 +164,8 @@ export class Final2Score extends PIXI.Container {
             } else {
                 this.lPlayerName.text = p.name
                 this.lPlayerAvt.load(p.avatar)
+                this.lPlayerRank.text = '实力榜:' + (data.lRanking || 0)
+                this.lBar.setBlood(p.blood)
             }
         }
 
@@ -168,7 +179,17 @@ export class Final2Score extends PIXI.Container {
             } else {
                 this.rPlayerName.text = p.name
                 this.rPlayerAvt.load(p.avatar)
+                this.rPlayerRank.text = '实力榜:' + (data.rRanking || 0)
+                this.rBar.setBlood(p.blood)
             }
+        }
+
+
+        if (data.is3Blood) {
+            this.lPlayerAvt.x = 468
+            this.rPlayerAvt.x = 1343
+            this.lPlayerName.x = this.lPlayerAvt.x + 60 - this.lPlayerName.width * .5
+            this.rPlayerName.x = this.rPlayerAvt.x + 50- this.rPlayerName.width * .5
         }
 
     }
@@ -192,7 +213,10 @@ export class Final2Score extends PIXI.Container {
         this.timer.toggleTimer(v)
     }
 
-    showTips(str) {
-
+    showTips(data) {
+        if (data.visible)
+            this.tips.setText(data.text)
+        else
+            this.tips.hide()
     }
 }

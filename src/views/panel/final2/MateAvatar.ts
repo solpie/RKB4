@@ -6,8 +6,11 @@ export class MateAvatar extends PIXI.Container {
     avt: BaseAvatar
     playerName: PIXI.Text
     bloodNum: PIXI.Text
+    isLeft: Boolean
     constructor(isLeft) {
         super()
+        this.isLeft = isLeft
+
         let bgUrl = isLeft ? 'L' : 'R';
         this.avt = new BaseAvatar(`/img/panel/final2/score/mateMask${bgUrl}.png`, 76)
         this.avt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
@@ -55,9 +58,29 @@ export class MateAvatar extends PIXI.Container {
         }
 
     }
-
+    grayFilter: any
     setData(data) {
         this.playerName.text = data.name
+        if (this.isLeft)
+            this.playerName.x = this.playerName.width
         this.avt.load(data.avatar)
+        this.bloodNum.text = data.blood
+
+
+        // colorMatrix.contrast(2);
+        if (data.blood < 1) {
+            if (!this.grayFilter) {
+                this.grayFilter = new PIXI.filters.ColorMatrixFilter();
+                this.grayFilter.blackAndWhite(true)
+            }
+            this.filters = [this.grayFilter];
+        }
+        else
+            this.filters = []
+
+
+        // var grayFilter = new  PIXI.GrayFilter();
+        // slice.filters = [ grayFilter];
+        // stage.addChild(slice);
     }
 }

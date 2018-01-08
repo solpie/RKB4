@@ -17,6 +17,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
     static EVENT_UPDATE_SCORE = 'EVENT_UPDATE_SCORE'
     static EVENT_SET_VS = 'EVENT_SET_VS'
+    static EVENT_SAVE_PLAYER = 'EVENT_SAVE_PLAYER'
     static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
     static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
     static EVENT_SHOW_POKER_PLAYER = 'EVENT_SHOW_POKER_PLAYER'
@@ -90,8 +91,8 @@ export default class LiveDataView extends EventDispatcher {
         this.emitScore()
     }
 
-    setGameInfo() {
-        this.emit(WebDBCmd.cs_init, {})
+    setGameInfo(param) {
+        this.emit(WebDBCmd.cs_init, param)
     }
 
     emitScore() {
@@ -277,6 +278,10 @@ export default class LiveDataView extends EventDispatcher {
 
     showImg(visible, name) {
         $post(`/emit/${WebDBCmd.cs_showImg}`, { _: null, visible: visible, name: name })
+    }
+
+    savePlayer() {
+        this.emit(LiveDataView.EVENT_SAVE_PLAYER)
     }
 
     showCurPlayerRoute(isFx) {

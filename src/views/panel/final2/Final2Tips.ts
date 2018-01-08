@@ -1,5 +1,6 @@
 import { newBitmap } from "../../utils/PixiEx";
 import { FontName } from "../const";
+import { TweenEx } from '../../utils/TweenEx';
 
 export class Fianl2Tips extends PIXI.Container {
     tips: PIXI.Text
@@ -19,10 +20,24 @@ export class Fianl2Tips extends PIXI.Container {
         this.tips = t
         t.y = 858
         this.addChild(t)
+
+        this.alpha = 0
+        // this.y = 200
     }
 
     setText(str) {
+        this.alpha = 0
+        this.y = 100
         this.tips.text = str
         this.tips.x = 960 - this.tips.width * .5
+
+        TweenEx.to(this, 150, {
+            y: 0, alpha: 1
+        })
+    }
+    hide() {
+        TweenEx.to(this, 200, {
+            alpha: 0
+        })
     }
 }

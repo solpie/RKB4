@@ -36,8 +36,10 @@ export const syncPlayerData = (playerDoc) => {
                 playerData.avatar = d.data.avatar
                 playerData.name = d.data.name
                 teamInfo.playerArr.push(playerData)
+                playerData.player_id = d.data.player_id
                 playerData.pid = 'p' + teamInfo.id + teamInfo.playerArr.length
 
+                playerData.blood = 2
                 playerData.score = 0
                 playerData.kill = 0
                 playerData.death = 0
@@ -92,6 +94,7 @@ export function getPlayerArrByPlayerId(lPlayerId: string, rPlayerId: string, cb)
             }
             if (t.id == rtStr) {
                 rTeamInfo = t
+                console.log('team', t);
             }
         }
         cb(lTeamInfo,rTeamInfo)
