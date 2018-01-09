@@ -185,7 +185,8 @@ export default class LiveDataView extends EventDispatcher {
 
     showGamePlayerInfo(v) {
         let data: any = { visible: v, _: '' }
-        $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+        this.emit(WebDBCmd.cs_showVictory,data)
+        // $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
     }
 
     showPokerPanel(visible, pokerNum) {

@@ -34,12 +34,14 @@ export class BaseGameView implements IBaseGameView {
     gameTitle = null//'车轮战'
     constructor() { }
     //action
-    protected emitScoreFoul(sf: { lScore: number, rScore: number, lFoul: number, rFoul: number }) {
+    protected emitScoreFoul(sf: { lScore: number, rScore: number, lFoul: number, rFoul: number }, exData?) {
         let data: any = { _: null }
         data.leftScore = sf.lScore
         data.rightScore = sf.rScore
-        data.leftFoul = sf.lFoul
-        data.rightFoul = sf.rFoul
+        data.leftFoul = sf.lFoul||0
+        data.rightFoul = sf.rFoul||0
+        if (exData)
+            exData(data)
         $post(`/emit/${WebDBCmd.cs_score}`, data)
     }
 
@@ -68,7 +70,7 @@ export class BaseGameView implements IBaseGameView {
                     let game = doc['rec'][this.gameIdx]
                     game.player = a
                     if (callback)
-                        callback(doc,game)
+                        callback(doc, game)
                 }, true)
             }
         }

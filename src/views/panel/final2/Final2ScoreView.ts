@@ -2,11 +2,13 @@ import { Final2Score } from './Final2Score';
 import { WebDBCmd } from '../webDBCmd';
 import { TimerState, FontName } from '../const';
 import { TweenEx } from '../../utils/TweenEx';
+import { TeamVictory } from './TeamVictory';
 declare let $;
 declare let io;
 export class Final2ScoreView {
     localWS
     scorePanel: Final2Score
+    teamVictory: TeamVictory
     constructor(stage) {
 
         //preload font
@@ -20,6 +22,10 @@ export class Final2ScoreView {
             stage.removeChild(f1)
             stage.removeChild(f2)
             stage.addChild(this.scorePanel)
+
+            let teamVictory = new TeamVictory(stage)
+            this.teamVictory = teamVictory
+            // stage.addChild(teamVictory)
         })
     }
 
@@ -68,6 +74,10 @@ export class Final2ScoreView {
                 if ('sec' in data) {
                     this.scorePanel.setTimer(data.sec)
                 }
+            })
+            .on(WebDBCmd.sc_showVictory, data => {
+                console.log('sc_showVictory', data);
+                this.teamVictory.show()
             })
     }
 }

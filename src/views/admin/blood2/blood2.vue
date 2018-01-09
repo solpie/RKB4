@@ -132,8 +132,8 @@
                 <el-button @click='_("setGameInfo",5)'>setGameInfo 5</el-button>
                 <br>
                 <br>
-                <el-button @click='_("showGamePlayerInfo",true)'>show Victory</el-button>
-                <el-button @click='_("showGamePlayerInfo",false)'>hide Victory</el-button>
+                <el-button @click='_("showGamePlayerInfo",true)'>队伍胜利 </el-button>
+                <el-button @click='_("showGamePlayerInfo",false)'>隐藏</el-button>
                 <br>
                 <el-button @click='_("initBracket")'>initBracket Data</el-button>
                 <br>

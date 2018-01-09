@@ -193,8 +193,8 @@ export class Final2Score extends PIXI.Container {
     }
 
     setScoreFoul(data) {
-        this.lBar.setBlood(data.leftScore)
-        this.rBar.setBlood(data.rightScore)
+        this.lBar.setBlood(data.leftBlood)
+        this.rBar.setBlood(data.rightBlood)
         this.lBonus.text = data.leftFoul
         this.rBonus.text = data.rightFoul
     }

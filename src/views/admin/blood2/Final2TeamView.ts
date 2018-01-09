@@ -1,6 +1,6 @@
 import { BaseGameView, syncDoc } from '../livedata/BaseGame';
 import LiveDataView from "../livedata/livedataView";
-import { syncPlayerData, getPlayerArrByPlayerId } from "./Final2TeamConst";
+import { syncPlayerData, getPlayerArrByPlayerId, kdaBuilder } from "./Final2TeamConst";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { getPlayerInfoArr } from '../../utils/HupuAPI';
@@ -54,6 +54,10 @@ export default class Final2TeamView extends BaseGameView {
             // console.log('DoubleElimination cs_init', data);
             this.emitGameInfo(data)
         })
+        lv.on(WebDBCmd.cs_showVictory, data => {
+            console.log('WebDBCmd.cs_showVictory',data);
+            this.emitVictory(data)
+        })
 
         lv.on(LVE.EVENT_UPDATE_SCORE, data => {
             this.onEmitScore(data)
@@ -101,10 +105,8 @@ export default class Final2TeamView extends BaseGameView {
 
         lv.on(LVE.EVENT_SET_ROUND_END, _ => {
             syncDoc(dbIdx, doc => {
-                let rec = doc.rec[this.gameIdx]
-                console.log('set round end', rec);
-            }, true)
-            // console.log('');
+                kdaBuilder(doc, this.gameIdx)
+            })
         })
 
         lv.on(WebDBCmd.cs_commit, data => {
@@ -117,11 +119,12 @@ export default class Final2TeamView extends BaseGameView {
     onEmitScore(data?) {
         if (!data)
             data = {}
-        data.lScore = this.lBlood - this.rScore
-        data.rScore = this.rBlood - this.lScore
-        console.log('lB', this.lBlood, 'lS', this.lScore);
 
-        this.emitScoreFoul(data)
+        this.emitScoreFoul(data, emitData => {
+            emitData.leftBlood = this.lBlood - this.rScore
+            emitData.rightBlood = this.rBlood - this.lScore
+            console.log('lB', this.lBlood, 'lS', this.lScore);
+        })
     }
     onSavePlayer() {
         syncDoc(playerDocIdx, doc => {
@@ -163,6 +166,7 @@ export default class Final2TeamView extends BaseGameView {
             // let rScore = this.lPlayerBloodStart - this.lScore
             rec.score = [this.lScore, this.rScore]
             // rec.bonus = [thi]
+            doc.gameIdx = this.gameIdx
             syncDoc(playerDocIdx, pdoc => {
                 let lPlayerData = this.getPlayerInfo(this.lPlayer)
                 let rPlayerData = this.getPlayerInfo(this.rPlayer)
@@ -174,6 +178,10 @@ export default class Final2TeamView extends BaseGameView {
                 this.initDocToView(doc)
             }, true)
         }, true)
+    }
+
+    emitVictory(data) {
+        $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
     }
 
     emitGameInfo(param) {
@@ -218,7 +226,7 @@ export default class Final2TeamView extends BaseGameView {
                 let r: any = doc['rec'][this.gameIdx] = {
                     player: [p1, p2],
                     score: [0, 0],
-                    blood: [lPlayerData.blood, rPlayerData.blood],
+                    blood: [Number(lPlayerData.blood), Number(rPlayerData.blood)],
                     bonus: [0, 0],
                 }
                 this.initDocToView(doc)

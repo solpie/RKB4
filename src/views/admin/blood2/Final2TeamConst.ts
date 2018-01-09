@@ -1,5 +1,6 @@
 import { getPlayerInfoArr } from "../../utils/HupuAPI";
 import { syncDoc } from "../livedata/BaseGame";
+import { countMap } from '../../../ranking/com';
 
 export class PlayerDoc2 {
     bonus: number
@@ -102,11 +103,72 @@ export function getPlayerArrByPlayerId(lPlayerId: string, rPlayerId: string, cb)
     })
 }
 
-export function kdaBuilder(doc) {
+export function kdaBuilder(doc, gameIdx) {
     let lTeamPlayerNum = 5
     let rTeamPlayerNum = 5
-    for (let i = 0; i < 1000; i++) {
-        let rec = doc.rec[i];
+    // let gameIdx = doc.gameIdx
+    let CurVsTeam = ''
+    let playerMap = {}
+    let lTeamScore = 0, rTeamScore = 0
 
+    let _playerData = (pid) => {
+        if (!playerMap[pid])
+            playerMap[pid] = {
+                k: 0, d: 0, a: 0, score: 0
+                , blood: -1
+                , scorePlayerMap: {}//damage by who
+                , killMap: {}//kill who
+            }
+        return playerMap[pid]
+    }
+    for (let i = 0; i < gameIdx; i++) {
+        console.log('gameIdx', gameIdx);
+        let rec = doc.rec[i + 1];
+        let lPlayerId = rec.player[0]
+        let rPlayerId = rec.player[1]
+        let lTeamId = getTeamId(rec.player[0])
+        let rTeamId = getTeamId(rec.player[1])
+        let v = lTeamId + ' vs ' + rTeamId
+        if (CurVsTeam != v) {
+            CurVsTeam = v
+            playerMap = {}
+        }
+
+        let lScore = Number(rec.score[0])
+        let rScore = Number(rec.score[1])
+        let lBlood = Number(rec.blood[0])
+        let rBlood = Number(rec.blood[1])
+        let lPlayerData = _playerData(lPlayerId)
+        let rPlayerData = _playerData(rPlayerId)
+
+        lPlayerData.score += lScore
+        rPlayerData.score += rScore
+
+        lTeamScore += lScore
+        rTeamScore += rScore
+        lPlayerData.blood = lBlood - rScore
+        rPlayerData.blood = rBlood - lScore
+
+        if (lScore > 0 && rBlood > 0)
+            rPlayerData.scorePlayerMap[lPlayerId] = 1
+        if (rScore > 0 && lBlood > 0)
+            lPlayerData.scorePlayerMap[rPlayerId] = 1
+        
+        if (lPlayerData.blood == 0) {
+            rPlayerData.k++
+            rPlayerData.killMap[lPlayerId] = 1
+        }
+        if (rPlayerData.blood == 0) {
+            lPlayerData.k++
+            lPlayerData.killMap[rPlayerId] = 1
+        }
+    }
+    console.log('player round kda map', playerMap);
+    for (let pid in playerMap) {
+        let playerData = playerMap[pid]
+        let countKiller = countMap(playerData.scorePlayerMap)
+        if (playerData.blood == 0 && countKiller > 1) {
+            console.log('kill by multi', pid, playerData.scorePlayerMap);
+        }
     }
 }
