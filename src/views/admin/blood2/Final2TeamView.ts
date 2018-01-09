@@ -16,8 +16,8 @@ export default class Final2TeamView extends BaseGameView {
     rRealName = ''
     lHupuID = ''
     rHupuID = ''
-    lPlayerBloodStart = 2
-    rPlayerBloodStart = 2
+    lBlood = 2
+    rBlood = 2
 
     liveDataView
     teamArr = [{ playerArr: [] }]
@@ -56,18 +56,23 @@ export default class Final2TeamView extends BaseGameView {
         })
 
         lv.on(LVE.EVENT_UPDATE_SCORE, data => {
-            this.onScore(data)
+            this.onEmitScore(data)
         })
 
+        lv.on(LVE.EVENT_SET_BLOOD, bloodStr => {
+            this.onSetBlood(bloodStr)
+        })
         lv.on(LVE.EVENT_SET_VS, vsStr => {
             let a = vsStr.split(' ')
             if (a.length == 2) {
                 vsStr = 'p' + a[0] + ' p' + a[1]
-                this.setVS(vsStr, doc => {
+                this.setVS(vsStr, (doc, game) => {
+                    let lPlayerData = this.getPlayerInfo(this.lPlayer)
+                    let rPlayerData = this.getPlayerInfo(this.rPlayer)
+                    game.blood = [lPlayerData.blood, rPlayerData.blood]
                     this.initDocToView(doc)
                 })
             }
-
         })
 
         lv.on(LVE.EVENT_SYNC_PLAYER, _ => {
@@ -109,10 +114,13 @@ export default class Final2TeamView extends BaseGameView {
 
     }
 
-    onScore(data) {
-        let lPlayerData = this.getPlayerInfo(this.lPlayer)
-        let rPlayerData = this.getPlayerInfo(this.rPlayer)
-        console.log('player ', lPlayerData, rPlayerData);
+    onEmitScore(data?) {
+        if (!data)
+            data = {}
+        data.lScore = this.lBlood - this.rScore
+        data.rScore = this.rBlood - this.lScore
+        console.log('lB', this.lBlood, 'lS', this.lScore);
+
         this.emitScoreFoul(data)
     }
     onSavePlayer() {
@@ -148,27 +156,23 @@ export default class Final2TeamView extends BaseGameView {
     }
 
     commit(data?) {
-        syncDoc(playerDocIdx, doc => {
-            let lPlayerData = this.getPlayerInfo(this.lPlayer)
-            let rPlayerData = this.getPlayerInfo(this.rPlayer)
-            lPlayerData.blood = this.lScore
-            rPlayerData.blood = this.rScore
-            doc.teamArr = this.teamArr
-            // this.teamArr
-        }, true)
         syncDoc(dbIdx, doc => {
             let rec = doc['rec'][this.gameIdx]
             rec.player = [this.lPlayer, this.rPlayer]
-            let lScore = this.rPlayerBloodStart - this.rScore
-            let rScore = this.lPlayerBloodStart - this.lScore
-            rec.score = [lScore, rScore]
-            rec.blood = [this.lScore, this.rScore]
+            // let lScore = this.rPlayerBloodStart - this.rScore
+            // let rScore = this.lPlayerBloodStart - this.lScore
+            rec.score = [this.lScore, this.rScore]
+            // rec.bonus = [thi]
+            syncDoc(playerDocIdx, pdoc => {
+                let lPlayerData = this.getPlayerInfo(this.lPlayer)
+                let rPlayerData = this.getPlayerInfo(this.rPlayer)
+                lPlayerData.blood = this.lBlood - this.rScore
+                rPlayerData.blood = this.rBlood - this.lScore
+                pdoc.teamArr = this.teamArr
 
-
-            // this.gameIdx++
-            // doc.gameIdx = this.gameIdx
-            // console.log('commit rec', rec);
-            this.initDocToView(doc)
+                this.lScore = this.rScore = 0
+                this.initDocToView(doc)
+            }, true)
         }, true)
     }
 
@@ -188,8 +192,9 @@ export default class Final2TeamView extends BaseGameView {
                 data.lRanking = rankingArr[0]
                 data.rRanking = rankingArr[1]
                 $post(`/emit/${WebDBCmd.cs_init}`, data)
+                this.onEmitScore()
             })
-            this.emitScoreFoul(this)
+
             // $post(`/emit/${WebDBCmd.cs_init}`, data)
         })
     }
@@ -203,13 +208,17 @@ export default class Final2TeamView extends BaseGameView {
             this.setPlayer(p1, p2)
             this.lFoul = this.rFoul = 0
             this.lScore = this.rScore = 0
+            let lPlayerData = this.getPlayerInfo(this.lPlayer)
+            let rPlayerData = this.getPlayerInfo(this.rPlayer)
+
             syncDoc(dbIdx, doc => {
                 if (!doc.rec)
                     doc.rec = {}
                 doc.gameIdx = this.gameIdx
                 let r: any = doc['rec'][this.gameIdx] = {
                     player: [p1, p2],
-                    blood: [2, 2],
+                    score: [0, 0],
+                    blood: [lPlayerData.blood, rPlayerData.blood],
                     bonus: [0, 0],
                 }
                 this.initDocToView(doc)
@@ -229,9 +238,9 @@ export default class Final2TeamView extends BaseGameView {
                     row.gameIdx = Number(idx)
                     row.idx = row.gameIdx
                     row.vs = `[${rec.player[0]} : ${rec.player[1]}]`
-                    row.lPlayer = this.getRealName(rec.player[0])
-                    row.rPlayer = this.getRealName(rec.player[1])
-                    row.score = rec.blood[0] + " : " + rec.blood[1]
+                    row.lPlayer = this.getRealName(rec.player[0]) + '#' + rec.blood[0]
+                    row.rPlayer = this.getRealName(rec.player[1]) + '#' + rec.blood[1]
+                    row.score = rec.score[0] + " : " + rec.score[1]
                     // console.log('row', row);
                     rowArr.push(row)
                     // }
@@ -247,8 +256,10 @@ export default class Final2TeamView extends BaseGameView {
             this.gameIdx = gameIdx
             this.lPlayer = rec.player[0]
             this.rPlayer = rec.player[1]
-            this.lScore = Number(rec.blood[0]) || 0
-            this.rScore = Number(rec.blood[1]) || 0
+            this.lScore = Number(rec.score[0]) || 0
+            this.rScore = Number(rec.score[1]) || 0
+            this.lBlood = Number(rec.blood[0]) || 0
+            this.rBlood = Number(rec.blood[1]) || 0
             this.lFoul = Number(rec.bonus[0]) || 0
             this.rFoul = Number(rec.bonus[1]) || 0
             this.lRealName = this.lHupuID = this.getRealName(this.lPlayer)
@@ -261,6 +272,17 @@ export default class Final2TeamView extends BaseGameView {
         this.rPlayer = rPlayerId
         this.lRealName = this.getRealName(this.lPlayer)
         this.rRealName = this.getRealName(this.rPlayer)
+    }
+
+    onSetBlood(bloodStr) {
+        let a = bloodStr.split(' ')
+        if (a.length == 2) {
+            syncDoc(dbIdx, doc => {
+                let rec = doc.rec[this.gameIdx]
+                rec.blood = [Number(a[0]), Number(a[1])]
+                this.initDocToView(doc)
+            }, true)
+        }
     }
 
     getRealName(playerId) {
@@ -276,30 +298,16 @@ export default class Final2TeamView extends BaseGameView {
     initRecData() {
         syncDoc(dbIdx, doc => {
             let rec: any = {}
-
-            // for (let i = 0; i < a.length; i++) {
-            //     let s = a[i]
-            //     let a2 = s.split('-')
-            //     let gameIdx = i + 1
-            //     rec[gameIdx] = {
-            //         gameIdx: i + 1, team: ['t' + a2[0], 't' + a2[1]],
-            //         roundArr: [
-            //             {
-            //                 player: ['p1', 'p2'],
-            //                 blood: [2, 2],
-            //                 bonus: [0, 0]
-            //             }]
-            //     }
-            // }
             if (!doc.rec)
                 doc.rec = {}
             else
                 for (let gameIdx in doc.rec) {
                     let r = doc.rec[gameIdx]
                     r.blood = [2, 2]
+                    r.score = [0, 0]
                     r.bonus = [0, 0]
                 }
-            doc.gameIdx = 0
+            doc.gameIdx = 1
             this.initDocToView(doc)
         }, true)
     }

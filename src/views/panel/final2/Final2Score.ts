@@ -165,7 +165,7 @@ export class Final2Score extends PIXI.Container {
                 this.lPlayerName.text = p.name
                 this.lPlayerAvt.load(p.avatar)
                 this.lPlayerRank.text = '实力榜:' + (data.lRanking || 0)
-                this.lBar.setBlood(p.blood)
+                // this.lBar.setBlood(p.blood)
             }
         }
 
@@ -180,7 +180,7 @@ export class Final2Score extends PIXI.Container {
                 this.rPlayerName.text = p.name
                 this.rPlayerAvt.load(p.avatar)
                 this.rPlayerRank.text = '实力榜:' + (data.rRanking || 0)
-                this.rBar.setBlood(p.blood)
+                // this.rBar.setBlood(p.blood)
             }
         }
 

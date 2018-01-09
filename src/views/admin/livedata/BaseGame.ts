@@ -68,7 +68,7 @@ export class BaseGameView implements IBaseGameView {
                     let game = doc['rec'][this.gameIdx]
                     game.player = a
                     if (callback)
-                        callback(doc)
+                        callback(doc,game)
                 }, true)
             }
         }

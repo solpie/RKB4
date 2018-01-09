@@ -44,6 +44,7 @@ export const syncPlayerData = (playerDoc) => {
                 playerData.kill = 0
                 playerData.death = 0
                 playerData.assist = 0
+                playerData.beatByPlayerMap = {}
             }
             console.log(teamInfo)
             finCount++
@@ -97,6 +98,15 @@ export function getPlayerArrByPlayerId(lPlayerId: string, rPlayerId: string, cb)
                 console.log('team', t);
             }
         }
-        cb(lTeamInfo,rTeamInfo)
+        cb(lTeamInfo, rTeamInfo)
     })
+}
+
+export function kdaBuilder(doc) {
+    let lTeamPlayerNum = 5
+    let rTeamPlayerNum = 5
+    for (let i = 0; i < 1000; i++) {
+        let rec = doc.rec[i];
+
+    }
 }

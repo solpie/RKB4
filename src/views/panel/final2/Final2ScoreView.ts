@@ -22,15 +22,16 @@ export class Final2ScoreView {
             stage.addChild(this.scorePanel)
         })
     }
+
     preLoadFont(fontName) {
-        let tts = {
+        let t = new PIXI.Text('', {
             fontFamily: fontName,
-        }
-        let t = new PIXI.Text('', tts)
+        })
         t.text = '0'
         t.alpha = 0
         return t
     }
+
     initLocalWs() {
         let localWs = io.connect(`/rkb`)
             .on(`${WebDBCmd.sc_init}`, (data) => {

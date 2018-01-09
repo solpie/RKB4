@@ -49,11 +49,14 @@
                 </el-col>
                 <el-col :span='6'>
                     <span style="fontSize:40px">
-                        Blood
+                        Score
                         <br>
                         <span style="color:blue">{{lScore}}</span> :
                         <span style="color:red">{{rScore}}</span>
-                        <br> Bonus {{lFoul}} :{{rFoul}}
+                        <br> Blood <br>
+                         {{lBlood}} :{{rBlood}}
+                        <br> Bonus <br>
+                         {{lFoul}} :{{rFoul}}
                     </span>
                 </el-col>
 
@@ -98,7 +101,14 @@
                     <br>
                 </el-col>
                 <el-col :span='8'>
-              
+                    
+                <el-col :span='4'>
+                    left KDA
+                </el-col>
+                <el-col :span='4'>
+                    right KDA
+                </el-col>
+                    
                 </el-col>
             </el-row>
             <el-row>
@@ -133,6 +143,7 @@
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
+                <el-button @click='_("setBlood",inputScore)'>修改初始血</el-button>
             </el-row>
             <el-row>
                 <hr>
