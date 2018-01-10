@@ -15,11 +15,11 @@ export class PlayerDoc2 {
 
 export const finalData = {
     teamArr: [
-        { id: '1', name: '中原队', playerIdArr: [2525, 753, 1213, 11082, 20375] },
-        { id: '2', name: '东北队', playerIdArr: [1163, 4257, 17109, 8066, 1754] },
-        { id: '3', name: '南方队', playerIdArr: [9931, 6874, 2660, 574, 2849] },
-        { id: '4', name: '长三角队', playerIdArr: [160, 4, 16767, 9118, 16980] },
-        { id: '5', name: '明星队', playerIdArr: [160, 4, 16767, 9118, 16980] }
+        { id: '1', name: '南方队', playerIdArr: [9931, 6874, 2660, 574, 2849] },
+        { id: '2', name: '中原队', playerIdArr: [2525, 753, 1213, 11082, 20375] },
+        { id: '3', name: '明星队', playerIdArr: [160, 4, 16767, 9118, 16980] },
+        { id: '4', name: '包邮队', playerIdArr: [160, 4, 16767, 9118, 16980] },
+        { id: '5', name: '东北队', playerIdArr: [1163, 4257, 17109, 8066, 1754] },
     ]
 }
 
@@ -81,6 +81,13 @@ export function getTeamId(playerId: string) {
     let tStr = playerId.substring(1, 2)
     return tStr
 }
+export function getTeamInfo(teamId: string) {
+    for (let t of finalData.teamArr) {
+        if (t.id == teamId) {
+            return t
+        }
+    }
+}
 
 let dbIdx = '1.20.player'
 export function getPlayerArrByPlayerId(lPlayerId: string, rPlayerId: string, cb) {
@@ -114,20 +121,24 @@ export function kdaBuilder(doc, gameIdx) {
     let _playerData = (pid) => {
         if (!playerMap[pid])
             playerMap[pid] = {
-                k: 0, d: 0, a: 0, score: 0
+                k: 0, d: 0, a: 0, score: 0,
+                dmgPerc: 0//damage%
+                , isLeft: false
                 , blood: -1
                 , scorePlayerMap: {}//damage by who
                 , killMap: {}//kill who
             }
         return playerMap[pid]
     }
+
+    let lTeamId, rTeamId
     for (let i = 0; i < gameIdx; i++) {
         console.log('gameIdx', gameIdx);
         let rec = doc.rec[i + 1];
         let lPlayerId = rec.player[0]
         let rPlayerId = rec.player[1]
-        let lTeamId = getTeamId(rec.player[0])
-        let rTeamId = getTeamId(rec.player[1])
+        lTeamId = getTeamId(rec.player[0])
+        rTeamId = getTeamId(rec.player[1])
         let v = lTeamId + ' vs ' + rTeamId
         if (CurVsTeam != v) {
             CurVsTeam = v
@@ -146,6 +157,10 @@ export function kdaBuilder(doc, gameIdx) {
 
         lTeamScore += lScore
         rTeamScore += rScore
+
+        lPlayerData.isLeft = true
+        rPlayerData.isLeft = false
+
         lPlayerData.blood = lBlood - rScore
         rPlayerData.blood = rBlood - lScore
 
@@ -153,14 +168,16 @@ export function kdaBuilder(doc, gameIdx) {
             rPlayerData.scorePlayerMap[lPlayerId] = 1
         if (rScore > 0 && lBlood > 0)
             lPlayerData.scorePlayerMap[rPlayerId] = 1
-        
+
         if (lPlayerData.blood == 0) {
             rPlayerData.k++
             rPlayerData.killMap[lPlayerId] = 1
+            lPlayerData.d++
         }
         if (rPlayerData.blood == 0) {
             lPlayerData.k++
             lPlayerData.killMap[rPlayerId] = 1
+            rPlayerData.d++
         }
     }
     console.log('player round kda map', playerMap);
@@ -169,6 +186,30 @@ export function kdaBuilder(doc, gameIdx) {
         let countKiller = countMap(playerData.scorePlayerMap)
         if (playerData.blood == 0 && countKiller > 1) {
             console.log('kill by multi', pid, playerData.scorePlayerMap);
+            for (let pid2 in playerData.scorePlayerMap) {
+                _playerData(pid2).a++
+            }
         }
+
+        if (playerData.score != 0)
+            playerData.dmgPerc = Math.floor(100 * playerData.score / (playerData.isLeft ? lTeamScore : rTeamScore))
+    }
+
+    let lTeamInfo = getTeamInfo(lTeamId)
+    let rTeamInfo = getTeamInfo(rTeamId)
+    let winTeamInfo
+    if (lTeamScore > rTeamScore) {
+        winTeamInfo = lTeamInfo
+    }
+    else {
+        winTeamInfo = rTeamInfo
+    }
+    return {
+        kda: playerMap
+        , lTeamScore: lTeamScore
+        , rTeamScore: rTeamScore
+        , lTeamInfo: lTeamInfo
+        , rTeamInfo: rTeamInfo
+        , winTeamInfo: winTeamInfo
     }
 }

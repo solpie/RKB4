@@ -55,7 +55,7 @@ export default class Final2TeamView extends BaseGameView {
             this.emitGameInfo(data)
         })
         lv.on(WebDBCmd.cs_showVictory, data => {
-            console.log('WebDBCmd.cs_showVictory',data);
+            console.log('WebDBCmd.cs_showVictory', data);
             this.emitVictory(data)
         })
 
@@ -104,9 +104,8 @@ export default class Final2TeamView extends BaseGameView {
         })
 
         lv.on(LVE.EVENT_SET_ROUND_END, _ => {
-            syncDoc(dbIdx, doc => {
-                kdaBuilder(doc, this.gameIdx)
-            })
+
+            this.emitVictory({})
         })
 
         lv.on(WebDBCmd.cs_commit, data => {
@@ -119,7 +118,6 @@ export default class Final2TeamView extends BaseGameView {
     onEmitScore(data?) {
         if (!data)
             data = {}
-
         this.emitScoreFoul(data, emitData => {
             emitData.leftBlood = this.lBlood - this.rScore
             emitData.rightBlood = this.rBlood - this.lScore
@@ -181,7 +179,21 @@ export default class Final2TeamView extends BaseGameView {
     }
 
     emitVictory(data) {
-        $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+        getPlayerArrByPlayerId(this.lPlayer, this.rPlayer, (lTeamInfo, rTeamInfo) => {
+            // data.lPlayer = this.lPlayer
+            // data.rPlayer = this.rPlayer
+            data.lTeamInfo = lTeamInfo
+            data.rTeamInfo = rTeamInfo
+            syncDoc(dbIdx, doc => {
+                let ret = kdaBuilder(doc, this.gameIdx)
+                data.kdaMap = ret.kda
+                data.lTeamScore = ret.lTeamScore
+                data.rTeamScore = ret.rTeamScore
+                data.winTeamInfo = ret.winTeamInfo
+                $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+            })
+        })
+
     }
 
     emitGameInfo(param) {

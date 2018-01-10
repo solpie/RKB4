@@ -47,8 +47,8 @@ export class Final2Score extends PIXI.Container {
         rAvt.y = lAvt.y
         this.addChild(rAvt)
 
-        this.lPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
-        this.rPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
+        // this.lPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
+        // this.rPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
 
         let lMateAvtCtn = new PIXI.Container()
         this.addChild(lMateAvtCtn)

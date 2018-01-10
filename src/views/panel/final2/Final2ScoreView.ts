@@ -77,7 +77,10 @@ export class Final2ScoreView {
             })
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);
-                this.teamVictory.show()
+                if (data.visible)
+                    this.teamVictory.show(data)
+                else
+                    this.teamVictory.hide()
             })
     }
 }
