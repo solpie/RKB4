@@ -3,13 +3,18 @@ import { WebDBCmd } from '../webDBCmd';
 import { TimerState, FontName } from '../const';
 import { TweenEx } from '../../utils/TweenEx';
 import { TeamVictory } from './TeamVictory';
+import { Game3v3 } from './Game3v3';
+import { getUrlQuerys } from '../../utils/WebJsFunc';
 declare let $;
 declare let io;
 export class Final2ScoreView {
     localWS
     scorePanel: Final2Score
     teamVictory: TeamVictory
+    game3v3: Game3v3
+    stage: any
     constructor(stage) {
+        this.stage = stage
 
         //preload font
         let f1 = this.preLoadFont(FontName.DigiLED)
@@ -18,17 +23,25 @@ export class Final2ScoreView {
         stage.addChild(f2)
         TweenEx.delayedCall(2000, _ => {
             this.localWS = this.initLocalWs()
-            this.scorePanel = new Final2Score()
             stage.removeChild(f1)
             stage.removeChild(f2)
-            stage.addChild(this.scorePanel)
-
-            let teamVictory = new TeamVictory(stage)
-            this.teamVictory = teamVictory
+            this.initPanel()
             // stage.addChild(teamVictory)
         })
     }
+    initPanel() {
+        let is3v3 = getUrlQuerys('g3') == 1
+        if (is3v3) {
+            this.show3v3()
+        }
+        else {
+            this.scorePanel = new Final2Score()
+            this.stage.addChild(this.scorePanel)
+            let teamVictory = new TeamVictory(this.stage)
+            this.teamVictory = teamVictory
+        }
 
+    }
     preLoadFont(fontName) {
         let t = new PIXI.Text('', {
             fontFamily: fontName,
@@ -75,6 +88,13 @@ export class Final2ScoreView {
                     this.scorePanel.setTimer(data.sec)
                 }
             })
+            .on(WebDBCmd.sc_3v3Init, data => {
+                this.show3v3(data)
+            })
+            .on(WebDBCmd.sc_timeOut, data => {
+                console.log('sc_timeOut', data);
+                this.scorePanel.setTimeOut(data)
+            })
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);
                 if (data.visible)
@@ -82,5 +102,14 @@ export class Final2ScoreView {
                 else
                     this.teamVictory.hide()
             })
+    }
+
+
+    show3v3(data?) {
+        if (!this.game3v3) {
+            this.game3v3 = new Game3v3()
+            this.stage.addChild(this.game3v3)
+        }
+        this.game3v3.setTeamInfo(data)
     }
 }

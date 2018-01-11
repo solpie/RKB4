@@ -12,6 +12,9 @@ export class Final2Score extends PIXI.Container {
     lPlayerName: PIXI.Text
     rPlayerName: PIXI.Text
 
+    lTeamName: PIXI.Text
+    rTeamName: PIXI.Text
+
     lPlayerRank: PIXI.Text
     rPlayerRank: PIXI.Text
 
@@ -26,6 +29,9 @@ export class Final2Score extends PIXI.Container {
     rMateAvtArr: Array<MateAvatar> = []
 
     tips: Fianl2Tips
+
+    lTimeOutText: PIXI.Text
+    rTimeOutText: PIXI.Text
     constructor() {
         super()
         this.tips = new Fianl2Tips()
@@ -47,9 +53,6 @@ export class Final2Score extends PIXI.Container {
         rAvt.y = lAvt.y
         this.addChild(rAvt)
 
-        // this.lPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
-        // this.rPlayerAvt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
-
         let lMateAvtCtn = new PIXI.Container()
         this.addChild(lMateAvtCtn)
         for (let i = 0; i < 4; i++) {
@@ -61,7 +64,7 @@ export class Final2Score extends PIXI.Container {
 
             let maL = new MateAvatar(true)
             this.lMateAvtArr.push(maL)
-            maL.x = 200 + i * 80
+            maL.x = 182 + i * 80
             maL.y = maR.y
             lMateAvtCtn.addChildAt(maL, 0)
         }
@@ -98,11 +101,42 @@ export class Final2Score extends PIXI.Container {
         this.rPlayerRank = rpr
         this.addChild(rpr)
 
+        let ltn = new PIXI.Text('中原队', ps)
+        ltn.x = 737 - 381
+        ltn.y = 920
+        this.lTeamName = ltn
+        this.addChild(ltn)
+
+        let rtn = new PIXI.Text('南方队', ps)
+        rtn.x = 1120 + 380
+        rtn.y = ltn.y
+        this.rTeamName = rtn
+        this.addChild(rtn)
+
+        //team time up
+
+        let ps2 = {
+            fontFamily: FontName.MicrosoftYahei,
+            fontSize: '25px',
+            fill: '#bdbdbd',
+            fontWeight: 'bold'
+        }
+        let lt = new PIXI.Text('0', ps2)
+        this.lTimeOutText = lt
+        lt.x = 275
+        lt.y = 917
+        this.addChild(lt)
+
+        let rt = new PIXI.Text('0', ps2)
+        this.rTimeOutText = rt
+        rt.x = 1708
+        rt.y = lt.y
+        this.addChild(rt)
+
         let tts = {
             fontFamily: FontName.DigiLED,
             fontSize: '50px',
             fill: "#ccc",
-            // fill: "#de172f",
             dropShadow: true,
             dropShadowAngle: 90,
             fontWeight: 'normal'
@@ -122,6 +156,7 @@ export class Final2Score extends PIXI.Container {
             fill: '#ba2228',
             fontWeight: 'bold'
         }
+
         let lBns = new PIXI.Text('0', bs)
         lBns.x = 860
         lBns.y = 1022
@@ -134,6 +169,7 @@ export class Final2Score extends PIXI.Container {
         this.rBonus = rBns
         this.addChild(rBns)
 
+
         this.test()
     }
 
@@ -142,7 +178,6 @@ export class Final2Score extends PIXI.Container {
     }
 
     setInit(data) {
-        // if (data.is3Blood) {
         if (!this.lBar) {
             this.lBar = new BloodBar(true, data.is3Blood)
             this.addChild(this.lBar)
@@ -187,9 +222,16 @@ export class Final2Score extends PIXI.Container {
         if (data.is3Blood) {
             this.lPlayerAvt.x = 468
             this.rPlayerAvt.x = 1343
-            this.lPlayerName.x = this.lPlayerAvt.x + 60 - this.lPlayerName.width * .5
-            this.rPlayerName.x = this.rPlayerAvt.x + 50 - this.rPlayerName.width * .5
+            // this.lPlayerName.x = this.lPlayerAvt.x + 60 - this.lPlayerName.width * .5
+            // this.rPlayerName.x = this.rPlayerAvt.x + 50 - this.rPlayerName.width * .5
         }
+        else {
+            this.lPlayerAvt.x = 468 - 38
+            this.rPlayerAvt.x = 1343 + 38
+        }
+
+        this.lPlayerName.x = this.lPlayerAvt.x + 60 - this.lPlayerName.width * .5
+        this.rPlayerName.x = this.rPlayerAvt.x + 50 - this.rPlayerName.width * .5
     }
 
     setScoreFoul(data) {
@@ -206,7 +248,11 @@ export class Final2Score extends PIXI.Container {
     setTimer(v) {
         this.timer.setTimeBySec(v)
     }
-
+    setTimeOut(data) {
+        this.lTimeOutText.text = data.lTimeOut
+        this.rTimeOutText.text = data.rTimeOut
+    }
+    
     toggleTimer(v) {
         this.timer.toggleTimer(v)
     }

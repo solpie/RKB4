@@ -17,8 +17,10 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SET_SCORE = 'EVENT_SET_SCORE'
     static EVENT_SET_BLOOD = 'EVENT_SET_BLOOD'
     static EVENT_UPDATE_SCORE = 'EVENT_UPDATE_SCORE'
+    static EVENT_UPDATE_TIME_OUT = 'EVENT_UPDATE_TIME_OUT'
     static EVENT_SET_ROUND_END = 'EVENT_SET_ROUND_END'
     static EVENT_SET_VS = 'EVENT_SET_VS'
+    static EVENT_SET_3V3 = 'EVENT_SET_3V3'
     static EVENT_SAVE_PLAYER = 'EVENT_SAVE_PLAYER'
     static EVENT_SHOW_CHAMPION = 'EVENT_SHOW_CHAMPION'
     static EVENT_SHOW_POKER_PANEL = 'EVENT_SHOW_POKER_PANEL'
@@ -93,6 +95,22 @@ export default class LiveDataView extends EventDispatcher {
         this.emitScore()
     }
 
+    setLTimeOut(t) {
+        this.$vm.lTimeOut = Number(t)
+        this.emit(LiveDataView.EVENT_UPDATE_TIME_OUT)
+    }
+
+    setRTimeOut(t) {
+        this.$vm.rTimeOut = Number(t)
+        this.emit(LiveDataView.EVENT_UPDATE_TIME_OUT)
+    }
+
+    setTimeOutReset() {
+        this.$vm.lTimeOut = 3
+        this.$vm.rTimeOut = 3
+        this.emit(LiveDataView.EVENT_UPDATE_TIME_OUT)
+    }
+
     setGameInfo(param) {
         this.emit(WebDBCmd.cs_init, param)
     }
@@ -108,6 +126,10 @@ export default class LiveDataView extends EventDispatcher {
         data.lFoul = this.$vm.lFoul
         data.rFoul = this.$vm.rFoul
         this.emit(LiveDataView.EVENT_UPDATE_SCORE, data)
+    }
+
+    emitTimeOut() {
+        this.emit(LiveDataView.EVENT_UPDATE_SCORE)
     }
 
     setTimer(state, sec?) {
@@ -175,6 +197,9 @@ export default class LiveDataView extends EventDispatcher {
     setBlood(bloodStr) {
         this.emit(LiveDataView.EVENT_SET_BLOOD, bloodStr)
     }
+    set3V3(vsStr) {
+        this.emit(LiveDataView.EVENT_SET_3V3, vsStr)
+    }
     initBracket() {
         this.emit(LiveDataView.EVENT_INIT_BRACKET)
     }
@@ -185,7 +210,7 @@ export default class LiveDataView extends EventDispatcher {
 
     showGamePlayerInfo(v) {
         let data: any = { visible: v, _: '' }
-        this.emit(WebDBCmd.cs_showVictory,data)
+        this.emit(WebDBCmd.cs_showVictory, data)
         // $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
     }
 

@@ -10,7 +10,6 @@
                         <el-button @click='_("showPlayerProcess",true,item.name,item.poker)'>show</el-button>
                         <!-- <el-button @click='_("addPlayerRankData",item.data)'>add</el-button> -->
                         <!-- {{item.hupuID}} {{item.ranking}}    |   {{item.data.player_id}} -->
-
                         <br>
                     </span>
                     <hr> L5 ~ L10
@@ -46,17 +45,27 @@
                     <br> L Foul
                     <el-button @click='_("setLFoul",lFoul+1)'>+1</el-button>
                     <el-button @click='_("setLFoul",lFoul-1)'>-1</el-button>
+                    <br>
+                    <br>
+                    <br> TimeOut
+                    <el-button @click='_("setLTimeOut",lTimeOut+1)'>+1</el-button>
+                    <el-button @click='_("setLTimeOut",lTimeOut-1)'>-1</el-button>
                 </el-col>
                 <el-col :span='6'>
-                    <span style="fontSize:40px">
+                    <span style="font-size:30px">
                         Score
                         <br>
-                        <span style="color:blue">{{lScore}}</span> :
-                        <span style="color:red">{{rScore}}</span>
+                        <span style="color:blue" class="big">{{lScore}}</span> :
+                        <span style="color:red" class="big">{{rScore}}</span>
                         <br> Blood <br>
+                        <span class="big">
                          {{lBlood}} :{{rBlood}}
+                        </span>
                         <br> Bonus <br>
                          {{lFoul}} :{{rFoul}}
+                        <br>
+                         TimeOut <br>
+                         {{lTimeOut}} :{{rTimeOut}}
                     </span>
                 </el-col>
 
@@ -68,6 +77,12 @@
                     <br> R Foul
                     <el-button @click='_("setRFoul",rFoul+1)'>+1</el-button>
                     <el-button @click='_("setRFoul",rFoul-1)'>-1</el-button>
+                    <br>
+                    <br>
+                    <br> R Time
+                    <el-button @click='_("setRTimeOut",rTimeOut+1)'>+1</el-button>
+                    <el-button @click='_("setRTimeOut",rTimeOut-1)'>-1</el-button>
+                    <el-button @click='_("setTimeOutReset")'>reset</el-button>
                 </el-col>
                 <el-col :span='8'>
                     <el-input v-model='inputRoomId' style="width:100px"></el-input>
@@ -108,7 +123,6 @@
                 <el-col :span='4'>
                     right KDA
                 </el-col>
-                    
                 </el-col>
             </el-row>
             <el-row>
@@ -139,6 +153,7 @@
                 <br>
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
+                <el-button @click='_("set3V3",inputVS)'>3v3对阵</el-button>
                 <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
@@ -180,6 +195,9 @@
   text-align: center;
   font: 20pt bold "Vollkorn";
   color: #bbb;
+}
+big {
+  font-size: 40px;
 }
 </style>
 

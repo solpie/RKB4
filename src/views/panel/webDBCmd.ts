@@ -29,6 +29,9 @@ export const WebDBCmd = {
     sc_showGameProcess: ``,
     cs_bracket24Init: ``,
     sc_bracket24Init: ``,
+    //
+    cs_3v3Init: ``,
+    sc_3v3Init: ``,
     cs_startGame: ``,
     sc_startGame: ``,
     cs_showGroupRank: ``,//小组排名
@@ -47,6 +50,9 @@ export const WebDBCmd = {
     sc_commit: ``,
     cs_score: ``,
     sc_score: ``,
+    //
+    cs_timeOut: ``,
+    sc_timeOut: ``,
     cs_showScore: ``,//显示隐藏比分面板
     sc_showScore: ``,
     //m6 fx

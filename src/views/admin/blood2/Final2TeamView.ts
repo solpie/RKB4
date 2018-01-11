@@ -1,6 +1,6 @@
 import { BaseGameView, syncDoc } from '../livedata/BaseGame';
 import LiveDataView from "../livedata/livedataView";
-import { syncPlayerData, getPlayerArrByPlayerId, kdaBuilder } from "./Final2TeamConst";
+import { syncPlayerData, getPlayerArrByPlayerId, kdaBuilder, getTeamInfo } from './Final2TeamConst';
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { getPlayerInfoArr } from '../../utils/HupuAPI';
@@ -18,7 +18,8 @@ export default class Final2TeamView extends BaseGameView {
     rHupuID = ''
     lBlood = 2
     rBlood = 2
-
+    lTimeOut = 0
+    rTimeOut = 0
     liveDataView
     teamArr = [{ playerArr: [] }]
     constructor(liveDataView: LiveDataView) {
@@ -63,6 +64,14 @@ export default class Final2TeamView extends BaseGameView {
             this.onEmitScore(data)
         })
 
+        lv.on(LVE.EVENT_UPDATE_TIME_OUT, _ => {
+            this.onTimeOut()
+        })
+
+        lv.on(LVE.EVENT_SET_3V3, vsStr => {
+            this.on3v3(vsStr)
+        })
+
         lv.on(LVE.EVENT_SET_BLOOD, bloodStr => {
             this.onSetBlood(bloodStr)
         })
@@ -104,7 +113,6 @@ export default class Final2TeamView extends BaseGameView {
         })
 
         lv.on(LVE.EVENT_SET_ROUND_END, _ => {
-
             this.emitVictory({})
         })
 
@@ -113,6 +121,23 @@ export default class Final2TeamView extends BaseGameView {
             this.commit(data)
         })
 
+    }
+
+    on3v3(vsStr) {
+        let a = vsStr.split(' ')
+        if (a.length == 2) {
+            let lTeamInfo = getTeamInfo(a[0])
+            let rTeamInfo = getTeamInfo(a[1])
+            let data: any = { _: null }
+            data.lTeamInfo = lTeamInfo
+            data.rTeamInfo = rTeamInfo
+            $post(`/emit/${WebDBCmd.cs_3v3Init}`, data)
+        }
+    }
+
+    onTimeOut() {
+        let data: any = { _: '', lTimeOut: this.lTimeOut, rTimeOut: this.rTimeOut }
+        $post(`/emit/${WebDBCmd.cs_timeOut}`, data)
     }
 
     onEmitScore(data?) {
@@ -124,6 +149,7 @@ export default class Final2TeamView extends BaseGameView {
             console.log('lB', this.lBlood, 'lS', this.lScore);
         })
     }
+
     onSavePlayer() {
         syncDoc(playerDocIdx, doc => {
             doc.teamArr = this.teamArr

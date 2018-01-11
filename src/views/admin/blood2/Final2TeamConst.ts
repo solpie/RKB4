@@ -15,11 +15,11 @@ export class PlayerDoc2 {
 
 export const finalData = {
     teamArr: [
-        { id: '1', name: '南方队', playerIdArr: [9931, 6874, 2660, 574, 2849] },
-        { id: '2', name: '中原队', playerIdArr: [2525, 753, 1213, 11082, 20375] },
-        { id: '3', name: '明星队', playerIdArr: [160, 4, 16767, 9118, 16980] },
-        { id: '4', name: '包邮队', playerIdArr: [160, 4, 16767, 9118, 16980] },
-        { id: '5', name: '东北队', playerIdArr: [1163, 4257, 17109, 8066, 1754] },
+        { id: '1', name: '南方.', playerIdArr: [9931, 6874, 2660, 574, 2849] },
+        { id: '2', name: '中原.義', playerIdArr: [2525, 753, 1213, 11082, 20375] },
+        { id: '3', name: '明星.獒', playerIdArr: [160, 4, 16767, 9118, 16980] },
+        { id: '4', name: '包邮.勇', playerIdArr: [160, 4, 16767, 9118, 16980] },
+        { id: '5', name: '东北.忠', playerIdArr: [1163, 4257, 17109, 8066, 1754] },
     ]
 }
 

@@ -1,7 +1,7 @@
 import { newBitmap, alignCenter, alignScrCenter } from '../../utils/PixiEx';
 import { TeamVictoryItem } from './TeamVictoryItem';
 import { TweenEx } from '../../utils/TweenEx';
-import { imgLoader } from "../../utils/ImgLoader";
+import { imgLoader } from '../../utils/ImgLoader';
 import { FontName, ViewConst } from "../const";
 
 export class TeamVictory extends PIXI.Container {
@@ -32,6 +32,7 @@ export class TeamVictory extends PIXI.Container {
                 '/img/panel/final2/victory/team4.png',
                 '/img/panel/final2/victory/team5.png',
                 '/img/panel/final2/victory/bar.png',
+                '/img/panel/final2/victory/blood.png',
             ], _ => {
                 let bg = newBitmap({ url: '/img/panel/final2/victory/bg.png' })
                 this.addChild(bg)
@@ -47,9 +48,10 @@ export class TeamVictory extends PIXI.Container {
                 let tex = newBitmap({ url: '/img/panel/final2/victory/teamTex.png' })
 
                 this.teamLogo = new PIXI.Sprite()
-                this.teamLogo.x = 880
-                this.teamLogo.y = 100
+                this.teamLogo.x = 903
+                this.teamLogo.y = 240
                 this.addChild(this.teamLogo)
+                this.teamLogo.scale.x = this.teamLogo.scale.y = .5
 
                 let bs = {
                     fontFamily: FontName.MicrosoftYahei,
@@ -82,9 +84,9 @@ export class TeamVictory extends PIXI.Container {
                     fontFamily: FontName.Impact,
                     fontSize: '75px',
                     dropShadow: true,
-                    dropShadowDistance:12,
-                    dropShadowAngle:70,
-                    dropShadowColor:'#444',
+                    dropShadowDistance: 12,
+                    dropShadowAngle: 70,
+                    dropShadowColor: '#222',
                     fill: '#ffc382',
                     fontWeight: 'bold'
                 }
@@ -122,8 +124,10 @@ export class TeamVictory extends PIXI.Container {
             this.teamTextShadow.text = this.teamText.text
             this.teamTextShadow.x = this.teamText.x
             //score
-
             this.scoreText.text = data.lTeamScore + " : " + data.rTeamScore
+            imgLoader.loadTex(`/img/panel/final2/victory/team${data.winTeamInfo.id}.png`, teamLogoTex => {
+                this.teamLogo.texture = teamLogoTex
+            })
             // this.scoreText.x = 0.5 * (ViewConst.STAGE_WIDTH - this.teamText.width)
             alignScrCenter(this.scoreText)
             imgLoader.loadTexArr(avtArr, _ => {
