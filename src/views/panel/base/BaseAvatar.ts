@@ -6,6 +6,7 @@ export class BaseAvatar extends PIXI.Container {
     avt: PIXI.Sprite
     avtWidth
     isLoaded = false
+    isRemote = true
     constructor(maskUrl, width) {
         super()
         this.avtWidth = width
@@ -36,7 +37,7 @@ export class BaseAvatar extends PIXI.Container {
                     avt.x = avt.mask.x// - avt.texture.width * .5 * s
                     avt.scale.x = avt.scale.y = s
                     avt.y = avt.mask.y - (avt.height - avt.mask.height) * .5
-                })
+                }, this.isRemote)
             else {
                 this.waitUrl = url
             }

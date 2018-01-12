@@ -39,6 +39,7 @@ export default class Final2TeamView extends BaseGameView {
             for (let team of doc.teamArr) {
                 for (let p of team.playerArr) {
                     this.playerMap[p.pid] = p
+                    console.log(p.pid, p.name,p.avatar);
                 }
             }
             this.teamArr = doc.teamArr

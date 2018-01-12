@@ -134,8 +134,13 @@ export default class LiveDataView extends EventDispatcher {
 
     setTimer(state, sec?) {
         let data: any = { _: null, state: state }
-        if (sec)
+        if (sec) {
+            if (sec.search('-') > -1) {
+                let a = sec.split('-')
+                sec = Number(a[0]) * 60 + Number(a[1])
+            }
             data['sec'] = sec
+        }
         $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
     }
 
@@ -188,7 +193,6 @@ export default class LiveDataView extends EventDispatcher {
     setVS(vsStr) {
         // gmv.setVS(vsStr)
         this.emit(LiveDataView.EVENT_SET_VS, vsStr)
-
     }
 
     setScore(scoreStr) {

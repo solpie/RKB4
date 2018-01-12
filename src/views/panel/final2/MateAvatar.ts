@@ -13,6 +13,7 @@ export class MateAvatar extends PIXI.Container {
 
         let bgUrl = isLeft ? 'L' : 'R';
         this.avt = new BaseAvatar(`/img/panel/final2/score/mateMask${bgUrl}.png`, 76)
+        // this.avt.isRemote = false
         // this.avt.load('http://w1.hoopchina.com.cn/huputv/resource/img/amateur.jpg')
         this.addChild(this.avt)
 

@@ -41,12 +41,14 @@ export class Final2Score extends PIXI.Container {
         this.addChild(bg)
 
         let lAvt = new BaseAvatar('/img/panel/final2/score/avatarMaskL.png', 110)
+        // lAvt.isRemote = false
         this.lPlayerAvt = lAvt
         lAvt.x = 470
-        lAvt.y = 918
+        lAvt.y = 917
         this.addChild(lAvt)
 
         let rAvt = new BaseAvatar('/img/panel/final2/score/avatarMaskR.png', 110)
+        // rAvt.isRemote = false
         this.rPlayerAvt = rAvt
         // rAvt.x = 1343
         rAvt.x = 1375
@@ -59,7 +61,7 @@ export class Final2Score extends PIXI.Container {
             let maR = new MateAvatar(false)
             this.rMateAvtArr.push(maR)
             maR.x = 1500 + i * 80
-            maR.y = 959
+            maR.y = 976
             this.addChild(maR)
 
             let maL = new MateAvatar(true)
@@ -90,24 +92,24 @@ export class Final2Score extends PIXI.Container {
 
         ps.fontSize = '22px'
         ps.fill = '#bbb'
-        let lpr = new PIXI.Text('实力榜:18', ps)
+        let lpr = new PIXI.Text('', ps)
         this.lPlayerRank = lpr
         lpr.x = 580
         this.addChild(lpr)
 
-        let rpr = new PIXI.Text('实力榜:1', ps)
+        let rpr = new PIXI.Text('', ps)
         rpr.x = 1240
         rpr.y = lpr.y = 1029
         this.rPlayerRank = rpr
         this.addChild(rpr)
 
-        let ltn = new PIXI.Text('中原队', ps)
+        let ltn = new PIXI.Text('', ps)
         ltn.x = 737 - 381
-        ltn.y = 920
+        ltn.y = 923
         this.lTeamName = ltn
         this.addChild(ltn)
 
-        let rtn = new PIXI.Text('南方队', ps)
+        let rtn = new PIXI.Text('', ps)
         rtn.x = 1120 + 380
         rtn.y = ltn.y
         this.rTeamName = rtn
@@ -124,7 +126,7 @@ export class Final2Score extends PIXI.Container {
         let lt = new PIXI.Text('0', ps2)
         this.lTimeOutText = lt
         lt.x = 275
-        lt.y = 917
+        lt.y = 920
         this.addChild(lt)
 
         let rt = new PIXI.Text('0', ps2)
@@ -190,6 +192,9 @@ export class Final2Score extends PIXI.Container {
         }
 
         // }
+        this.lTeamName.text = data.lTeamInfo.hz + data.lTeamInfo.name
+        this.lTeamName.x = 420 - this.lTeamName.width
+        this.rTeamName.text = data.rTeamInfo.hz + data.rTeamInfo.name
         let i = 0
         for (let p of data.lTeamInfo.playerArr) {
             if (p.pid != data.lPlayer) {
@@ -199,10 +204,11 @@ export class Final2Score extends PIXI.Container {
             } else {
                 this.lPlayerName.text = p.name
                 this.lPlayerAvt.load(p.avatar)
-                this.lPlayerRank.text = '实力榜:' + (data.lRanking || 0)
+                this.lPlayerRank.text = '实力榜:' + (data.lRanking || 'ss')
                 // this.lBar.setBlood(p.blood)
             }
         }
+
 
 
         i = 0
@@ -214,7 +220,7 @@ export class Final2Score extends PIXI.Container {
             } else {
                 this.rPlayerName.text = p.name
                 this.rPlayerAvt.load(p.avatar)
-                this.rPlayerRank.text = '实力榜:' + (data.rRanking || 0)
+                this.rPlayerRank.text = '实力榜:' + (data.rRanking || 'ss')
                 // this.rBar.setBlood(p.blood)
             }
         }
@@ -240,6 +246,10 @@ export class Final2Score extends PIXI.Container {
         this.lBonus.text = data.leftFoul
         this.rBonus.text = data.rightFoul
     }
+    setTimeOut(data) {
+        this.lTimeOutText.text = data.lTimeOut
+        this.rTimeOutText.text = data.rTimeOut
+    }
 
     resetTimer() {
         this.timer.resetTimer()
@@ -248,11 +258,7 @@ export class Final2Score extends PIXI.Container {
     setTimer(v) {
         this.timer.setTimeBySec(v)
     }
-    setTimeOut(data) {
-        this.lTimeOutText.text = data.lTimeOut
-        this.rTimeOutText.text = data.rTimeOut
-    }
-    
+
     toggleTimer(v) {
         this.timer.toggleTimer(v)
     }

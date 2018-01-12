@@ -10,9 +10,9 @@ export class Game3v3 extends PIXI.Container {
     lTeamName: PIXI.Text
     rTeamName: PIXI.Text
 
-    timeText: TextTimer
-    lScore: PIXI.Container
-    rScore: PIXI.Container
+    timer: TextTimer
+    lScore: PIXI.Text
+    rScore: PIXI.Text
     constructor() {
         super()
 
@@ -28,12 +28,13 @@ export class Game3v3 extends PIXI.Container {
             fill: '#eee',
             fontWeight: 'bold'
         }
-        this.timeText = new TextTimer('', s)
+        this.timer = new TextTimer('', s)
         // this.timeText.x = 203
-        this.timeText.x = 200
-        this.timeText.y = 122
-        ctn.addChild(this.timeText)
-        this.timeText.setTimeBySec(15 * 60)
+        this.timer.isMin = true
+        this.timer.x = 200
+        this.timer.y = 122
+        ctn.addChild(this.timer)
+        this.timer.setTimeBySec(15 * 60)
         // this.timeText.y = 128
         ctn.x = 1485
         ctn.y = 810
@@ -42,12 +43,12 @@ export class Game3v3 extends PIXI.Container {
 
         this.lScore = new PIXI.Text('0', s)
         this.lScore.x = 265
-        this.lScore.y = 5
+        this.lScore.y = 7
         ctn.addChild(this.lScore)
 
         this.rScore = new PIXI.Text('0', s)
         this.rScore.x = 262
-        this.rScore.y = 64
+        this.rScore.y = 66
         ctn.addChild(this.rScore)
 
 
@@ -58,12 +59,12 @@ export class Game3v3 extends PIXI.Container {
             fontWeight: 'bold'
         }
 
-        this.lTeamName = new PIXI.Text('南方队', ts)
+        this.lTeamName = new PIXI.Text('', ts)
         this.lTeamName.x = 88
         this.lTeamName.y = 8
         ctn.addChild(this.lTeamName)
 
-        this.rTeamName = new PIXI.Text('包邮队', ts)
+        this.rTeamName = new PIXI.Text('', ts)
         this.rTeamName.x = 80
         this.rTeamName.y = 65
         ctn.addChild(this.rTeamName)
@@ -99,8 +100,19 @@ export class Game3v3 extends PIXI.Container {
         }
     }
 
+    resetTimer() {
+        this.timer.resetTimer()
+    }
 
-    setScore() {
+    setTimer(v) {
+        this.timer.setTimeBySec(v)
+    }
 
+    toggleTimer(v) {
+        this.timer.toggleTimer(v)
+    }
+    setScoreFoul(data) {
+        this.lScore.text = data.leftScore
+        this.rScore.text = data.rightScore
     }
 }

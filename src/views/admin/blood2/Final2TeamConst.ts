@@ -12,14 +12,33 @@ export class PlayerDoc2 {
     death: number
     assist: number
 }
+// Nemanja Rudan 内曼亚-鲁丹
+// Pavle Veljkovic 帕夫莱-维利科维奇
+// Bogdan Dragovic 博格丹-德拉戈维奇
+// Dragan Bjelica 德拉甘-别利察
+// Marko Dugosija 马尔科-杜戈西亚
+const nameMap = {
+    '19634': '鲁丹',
+    '8292': '帕夫莱',
+    '25306': '马尔科',
+    '25305': '德拉甘',
+    '25304': '博格丹',
+}
+//20375 张梓祎
+//11082 胡祥朕
+//15619 张帅康
+//19457 徐川傲
+//8066 徐长龙
+//1754 	孟亚东
+//7686 	张浩林
 
 export const finalData = {
     teamArr: [
-        { id: '1', name: '南方.', playerIdArr: [9931, 6874, 2660, 574, 2849] },
-        { id: '2', name: '中原.義', playerIdArr: [2525, 753, 1213, 11082, 20375] },
-        { id: '3', name: '明星.獒', playerIdArr: [160, 4, 16767, 9118, 16980] },
-        { id: '4', name: '包邮.勇', playerIdArr: [160, 4, 16767, 9118, 16980] },
-        { id: '5', name: '东北.忠', playerIdArr: [1163, 4257, 17109, 8066, 1754] },
+        { id: '1', hz: '信-', name: '南方队', playerIdArr: [9931, 6874, 2660, 574, 2849] },
+        { id: '2', hz: '義-', name: '中原队', playerIdArr: [2525, 753, 1213, 15619, 19457] },
+        { id: '3', hz: '獒-', name: '明星队', playerIdArr: [25306, 25304, 25305, 19634, 8292] },
+        { id: '4', hz: '勇-', name: '包邮区队', playerIdArr: [160, 4, 16767, 9118, 16980] },
+        { id: '5', hz: '忠-', name: '东北队', playerIdArr: [20375, 11082, 7686, 8066, 1754] },
     ]
 }
 
@@ -35,11 +54,17 @@ export const syncPlayerData = (playerDoc) => {
                 playerData.weight = d.data.weight
                 playerData.age = d.data.age
                 playerData.avatar = d.data.avatar
+                // playerData.avatar = d.data.avatar
                 playerData.name = d.data.name
                 teamInfo.playerArr.push(playerData)
                 playerData.player_id = d.data.player_id
+                if (nameMap[playerData.player_id])
+                    playerData.name = nameMap[playerData.player_id]
                 playerData.pid = 'p' + teamInfo.id + teamInfo.playerArr.length
 
+
+                //local avatar
+                playerData.avatar = '/img/player/final2/' + teamInfo.id + teamInfo.playerArr.length + '.jpg'
                 playerData.blood = 2
                 playerData.score = 0
                 playerData.kill = 0
