@@ -42,6 +42,13 @@ export const finalData = {
     ]
 }
 
+export function getTeamMap(doc) {
+    let m = {}
+    for (let t of doc.teamArr) {
+        m[t.id] = t
+    }
+    return m
+}
 
 export const syncPlayerData = (playerDoc) => {
     let finCount = 0;
@@ -53,7 +60,7 @@ export const syncPlayerData = (playerDoc) => {
                 playerData.height = d.data.height
                 playerData.weight = d.data.weight
                 playerData.age = d.data.age
-                playerData.avatar = d.data.avatar
+                playerData.avatarUrl = d.data.avatar
                 // playerData.avatar = d.data.avatar
                 playerData.name = d.data.name
                 teamInfo.playerArr.push(playerData)
@@ -65,6 +72,7 @@ export const syncPlayerData = (playerDoc) => {
 
                 //local avatar
                 playerData.avatar = '/img/player/final2/' + teamInfo.id + teamInfo.playerArr.length + '.jpg'
+
                 playerData.blood = 2
                 playerData.score = 0
                 playerData.kill = 0

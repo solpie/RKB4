@@ -44,10 +44,18 @@ app.get('/proxy', function(req, res) {
     };
     reqProxy.send();
 });
+///////////////post
+var requestify = require('requestify');
 app.post('/proxy', (req, res) => {
     let body = req.body;
     console.log('proxy body ', body);
-    res.send('ok')
+    requestify.post(body.url, body.data)
+        .then(function(response) {
+            console.log('proxy res', response.body);
+
+            res.send(response.body)
+        });
+    // res.send('ok')
 });
 app.post('/emit/:cmd', (req, res) => {
     let cmd = req.params.cmd;

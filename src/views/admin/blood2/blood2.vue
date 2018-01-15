@@ -173,9 +173,18 @@
                 <el-button @click='_("savePlayer")'>更新血量</el-button>
                 <el-button @click='_("syncPlayer")'>下载球员数据</el-button>
             </el-row>
+
+            <el-row>
+                <input type="file" id="files" name="files[]" hidden />
+                <el-button @click="onFile">game process</el-button>
+                <output id="list"></output>
+                <el-button @click='_("reloadFile")'>reload</el-button>
+            </el-row>
             <el-row>
                 <hr>
                 <a href="/panel.html?panel=f2"> /panel.html?panel=f2</a>
+                <br>
+                <a href="/panel.html?panel=f2&g3=1"> /panel.html?panel=f2&g3=1</a>
                 <br>
             </el-row>
             <el-row>
@@ -213,6 +222,7 @@ livedataView.appendProp(finalView);
 _data = finalView;
 
 let hasFileHandle = false;
+let filesInput;
 export default {
   data() {
     return _data;
@@ -226,6 +236,31 @@ export default {
     },
     rowClick(row, event, col) {
       this._("getGameInfo", row, event, col);
+    },
+    onFile() {
+      if (!hasFileHandle) {
+        hasFileHandle = true;
+        if (!filesInput) filesInput = document.getElementById("files");
+        filesInput.addEventListener(
+          "change",
+          evt => {
+            var files = evt.target.files; // FileList object
+            for (var i = 0, f; (f = files[i]); i++) {
+              //   console.log(filesInput.value,f.name);
+                livedataView.$vm.finalData = f;
+              var reader = new FileReader();
+              reader.addEventListener("load", function(event) {
+                console.log("EVENT_ON_FILE", event.target.result);
+                livedataView.emit("EVENT_ON_FILE", event.target.result);
+                filesInput.value = "";
+              });
+              reader.readAsText(f, "utf-8");
+            }
+          },
+          false
+        );
+      }
+      document.getElementById("files").click();
     }
   }
 };

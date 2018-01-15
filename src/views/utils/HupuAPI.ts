@@ -3,8 +3,7 @@ declare let $;
 export let getHupuWS = (callback) => {
     callback('tcp.lb.liangle.com:3081')
 }
-const _proxyJSON = (url) =>
-{ return proxy(url, 'json') }
+const _proxyJSON = (url) => { return proxy(url, 'json') }
 //开题延时
 export function setClientDelay(gameId, sec, callback) {
     let url = `http://pre.liangle.com/api/pbk/event/delay/` + gameId
@@ -62,6 +61,11 @@ export let getPlayerInfo = (playerId, callback) => {
     let url = 'http://api.liangle.com/api/passerbyking/player/info/' + playerId
     _get(_proxyJSON(url), callback)
 }
+export let postGameJson = (gameJson, callback) => {
+    let url = ' http://test.liangle.com/api/final_game/receive'
+    let data = { data: gameJson, url: url }
+    $post(_proxyJSON(url), data, callback)
+}
 
 export let getPlayerInfoArr = (playerIdArr, callback) => {
     let a = playerIdArr.concat()
@@ -72,7 +76,7 @@ export let getPlayerInfoArr = (playerIdArr, callback) => {
             if (a.length) {
                 _()
             }
-            else 
+            else
                 callback(resArr)
         })
     }

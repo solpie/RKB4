@@ -36,8 +36,9 @@ export class GambleView {
             this._initGmv(this.gmv, doc)
         }, true)
     }
-    
+
     startGamble(roomId, left, right) {
+        console.log('start gamble', left, right);
         $post('/autoGamble/start', { roomId: roomId, leftPlayer: left, rightPlayer: right }, (res) => {
             console.log('gamble start', res);
             if (res.code == 1) {

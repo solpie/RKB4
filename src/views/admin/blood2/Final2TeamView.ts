@@ -4,6 +4,7 @@ import { syncPlayerData, getPlayerArrByPlayerId, kdaBuilder, getTeamInfo } from 
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { getPlayerInfoArr } from '../../utils/HupuAPI';
+import { getGameProcess } from './Final2Process';
 
 let LVE = LiveDataView
 let dbIdx = '1.20'
@@ -35,14 +36,17 @@ export default class Final2TeamView extends BaseGameView {
 
     initFinal2() {
         let lv = this.liveDataView
+
         syncDoc(playerDocIdx, doc => {
             for (let team of doc.teamArr) {
                 for (let p of team.playerArr) {
                     this.playerMap[p.pid] = p
-                    console.log(p.pid, p.name,p.avatar);
+                    console.log(p.pid, p.name, p.avatar);
                 }
             }
             this.teamArr = doc.teamArr
+
+
             console.log('init player data', doc, this.playerMap);
 
             syncDoc(dbIdx, doc => {
@@ -51,7 +55,13 @@ export default class Final2TeamView extends BaseGameView {
             })
         })
 
+        lv.on(LVE.EVENT_ON_FILE, data => {
+            // console.log('game process', data);
+            syncDoc(playerDocIdx, doc => {
+                getGameProcess(doc, JSON.parse(data))
+            })
 
+        })
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
             this.emitGameInfo(data)

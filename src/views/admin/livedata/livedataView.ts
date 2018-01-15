@@ -7,6 +7,7 @@ import { $post } from "../../utils/WebJsFunc";
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { GameMonthView } from "./GameMonthView";
 import { dumpObj } from '../../utils/JsFunc';
+import { finalData } from '../blood2/Final2TeamConst';
 let gmv = new GameMonthView()
 
 let gamble = new GambleView()
@@ -358,5 +359,40 @@ export default class LiveDataView extends EventDispatcher {
         // $post('/ranking/add/' + season, { player: playerData }, (res) => {
         //     console.log('ranking update', res);
         // })
+    }
+    reader;
+    reloadFile() {
+        // this.$vm.finalData
+        let _ = (d) => {
+
+           return d.getMinutes()+'m'+d.getSeconds()+'s'
+        }
+        if (!this.reader) {
+            this.reader = new FileReader();
+            this.reader.addEventListener("load", (event) => {
+                console.log("EVENT_ON_FILE", event.target['result']);
+                this.emit("EVENT_ON_FILE", event.target['result']);
+
+
+                let f = this.$vm.finalData
+                var output = [];
+                output.push(
+                    "<li><strong>",
+                    f.name,
+                    "</strong>",
+                    "last modified: ",
+                    f.lastModifiedDate
+                        ? _(f.lastModifiedDate)
+                        : "n/a",
+                    "</li>"
+                );
+                document.getElementById("list").innerHTML =
+                    "<ul>" + output.join("") + "</ul>";
+                
+            });
+        }
+        this.reader.readAsText(this.$vm.finalData, "utf-8");
+
+
     }
 }
