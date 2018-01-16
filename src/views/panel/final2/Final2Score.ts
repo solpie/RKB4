@@ -151,7 +151,6 @@ export class Final2Score extends PIXI.Container {
         this.timer = t
         this.timer.setTimeBySec(0)
 
-
         let bs = {
             fontFamily: FontName.DigiLED,
             fontSize: '45px',
@@ -170,7 +169,6 @@ export class Final2Score extends PIXI.Container {
         rBns.y = lBns.y
         this.rBonus = rBns
         this.addChild(rBns)
-
 
         this.test()
     }
@@ -208,7 +206,6 @@ export class Final2Score extends PIXI.Container {
                 // this.lBar.setBlood(p.blood)
             }
         }
-
 
 
         i = 0

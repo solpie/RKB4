@@ -160,11 +160,15 @@ export function kdaBuilder(doc, gameIdx) {
                 , blood: -1
                 , scorePlayerMap: {}//damage by who
                 , killMap: {}//kill who
+                , player_id: pid
             }
         return playerMap[pid]
     }
 
     let lTeamId, rTeamId
+
+    let postRec = []
+    let teamGameIdx = 0
     for (let i = 0; i < gameIdx; i++) {
         console.log('gameIdx', gameIdx);
         let rec = doc.rec[i + 1];
@@ -175,8 +179,11 @@ export function kdaBuilder(doc, gameIdx) {
         let v = lTeamId + ' vs ' + rTeamId
         if (CurVsTeam != v) {
             CurVsTeam = v
+            teamGameIdx++
             playerMap = {}
+            postRec = []
         }
+        postRec.push(rec)
 
         let lScore = Number(rec.score[0])
         let rScore = Number(rec.score[1])
@@ -237,6 +244,9 @@ export function kdaBuilder(doc, gameIdx) {
     else {
         winTeamInfo = rTeamInfo
     }
+    //
+
+
     return {
         kda: playerMap
         , lTeamScore: lTeamScore
@@ -244,5 +254,18 @@ export function kdaBuilder(doc, gameIdx) {
         , lTeamInfo: lTeamInfo
         , rTeamInfo: rTeamInfo
         , winTeamInfo: winTeamInfo
+        , postRec: { idx: teamGameIdx, postRec: postRec }
     }
+}
+
+export function postGameArr(postRec, playerMap, teamGameIdx) {
+    let data = { idx: teamGameIdx, games: [] }
+    for (let rec of postRec) {
+        let lPid = rec.player[0]
+        let rPid = rec.player[1]
+        let lPlayer_id = playerMap[lPid].player_id
+        let rPlayer_id = playerMap[rPid].player_id
+        data.games.push({ player: [lPlayer_id, rPlayer_id], score: rec.score })
+    }
+    console.log('post game', data);
 }

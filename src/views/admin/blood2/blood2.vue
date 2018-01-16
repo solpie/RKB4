@@ -127,16 +127,16 @@
             </el-row>
             <el-row>
                 <hr>
-                <!-- <el-button @click='_("clearMaster",1)'>clear Master</el-button>
-                                                                                                                                                                                                    <el-button @click='_("clearMaster",0)'>clear All</el-button> -->
                 滚动文字：
                 <el-input v-model="inputRollText" style="width:250px"></el-input>
                 <el-button @click='_("showRollText",inputRollText)'>发送</el-button>
                 <el-button @click='_("showRollText",inputRollText,false)'>隐藏</el-button>
                 <br>
-                <el-button @click='_("showLastPlayerRoute",true)'>上一场球员下一场</el-button>
+                <el-button @click='_("showGameProcess",true,"day1",0)'>第一天1-5</el-button>
+                <el-button @click='_("showGameProcess",true,"day1",1)'>第一天6-10</el-button>
                 <br>
-                <el-button @click='_("showGameProcess",true,"lose2")'>败者组 2</el-button>
+                <el-button @click='_("showGameProcess",true,"day2.1")'>3v3</el-button>
+                <el-button @click='_("showGameProcess",true,"day2.2")'>双败</el-button>
                 <br>
                 <el-button @click='_("showImg",true,"bd1")'>媒体1</el-button>
                 <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
@@ -176,9 +176,9 @@
 
             <el-row>
                 <input type="file" id="files" name="files[]" hidden />
-                <el-button @click="onFile">game process</el-button>
+                <el-button @click="onFile">game config</el-button>
                 <output id="list"></output>
-                <el-button @click='_("reloadFile")'>reload</el-button>
+                <el-button id="reloadFile" @click='_("reloadFile")'>reload</el-button>
             </el-row>
             <el-row>
                 <hr>
@@ -246,15 +246,8 @@ export default {
           evt => {
             var files = evt.target.files; // FileList object
             for (var i = 0, f; (f = files[i]); i++) {
-              //   console.log(filesInput.value,f.name);
-                livedataView.$vm.finalData = f;
-              var reader = new FileReader();
-              reader.addEventListener("load", function(event) {
-                console.log("EVENT_ON_FILE", event.target.result);
-                livedataView.emit("EVENT_ON_FILE", event.target.result);
-                filesInput.value = "";
-              });
-              reader.readAsText(f, "utf-8");
+              livedataView.$vm.finalData = f;
+              document.getElementById("reloadFile").click();
             }
           },
           false

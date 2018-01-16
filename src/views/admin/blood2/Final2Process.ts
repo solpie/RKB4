@@ -45,7 +45,7 @@ function dumpVsScore(doc, scoreData) {
             let lTeamInfo = teamMap[rec[2][0]]
             let rTeamInfo = teamMap[rec[2][1]]
             if (lTeamInfo && rTeamInfo)
-                console.log(gameIdx, lTeamInfo.name,rec[0], 'vs',rec[1], rTeamInfo.name);
+                console.log(gameIdx, lTeamInfo.name, rec[0], 'vs', rec[1], rTeamInfo.name);
             else
                 console.log(gameIdx, '- vs -');
             gameIdx++
@@ -55,6 +55,24 @@ function dumpVsScore(doc, scoreData) {
     _(scoreData['day2.1'].scoreArr)
     _(scoreData['day2.2'].scoreArr)
 }
+export function getGameProcessTab(doc, scoreData, tab) {
+    console.log('game process tab ',doc,scoreData,tab);
+    let tabTextMap = {
+        'day1': '第一天积分赛'
+        , 'day2.1': '第二天3V3'
+        , 'day2.2': '第二天双败赛'
+    }
+    let teamMap = getTeamMap(doc)
+    let scoreArr = scoreData[tab].scoreArr
+    let gameArr = []
+    for (let rec of scoreArr) {
+        let lTeamInfo = teamMap[rec[2][0]]
+        let rTeamInfo = teamMap[rec[2][1]]
+        gameArr.push({ team: [lTeamInfo, rTeamInfo], score: [rec[0], rec[1]] })
+    }
+    return { title: tabTextMap[tab], gameArr: gameArr,tab:tab }
+}
+
 export function getGameProcess(doc, scoreData) {
     dumpVsScore(doc, scoreData)
     console.log('score data', scoreData);
@@ -98,6 +116,8 @@ export function getGameProcess(doc, scoreData) {
                 g.left_team.win = true
             if (winFlag == 2)
                 g.right_team.win = true
+            g.left_team.team_score = Math.floor(score[0])
+            g.right_team.team_score = Math.floor(score[1])
             gameJson.over.push(g)
         }
         else
@@ -145,6 +165,8 @@ function day2gameData(gameName, gameIdx, doc, scoreData) {
                     g.left_team.win = true
                 if (winFlag == 2)
                     g.right_team.win = true
+                g.left_team.team_score = Math.floor(rec[0])
+                g.right_team.team_score = Math.floor(rec[1])
                 delete g.vs
             }
             else {

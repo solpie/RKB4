@@ -1,10 +1,10 @@
 import { BaseGameView, syncDoc } from '../livedata/BaseGame';
 import LiveDataView from "../livedata/livedataView";
-import { syncPlayerData, getPlayerArrByPlayerId, kdaBuilder, getTeamInfo } from './Final2TeamConst';
+import { syncPlayerData, getPlayerArrByPlayerId, kdaBuilder, getTeamInfo, postGameArr } from './Final2TeamConst';
 import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { getPlayerInfoArr } from '../../utils/HupuAPI';
-import { getGameProcess } from './Final2Process';
+import { getGameProcess, getGameProcessTab } from './Final2Process';
 
 let LVE = LiveDataView
 let dbIdx = '1.20'
@@ -23,6 +23,7 @@ export default class Final2TeamView extends BaseGameView {
     rTimeOut = 0
     liveDataView
     teamArr = [{ playerArr: [] }]
+    scoreData: any
     constructor(liveDataView: LiveDataView) {
         super()
         this.dbIdx = dbIdx
@@ -45,10 +46,7 @@ export default class Final2TeamView extends BaseGameView {
                 }
             }
             this.teamArr = doc.teamArr
-
-
             console.log('init player data', doc, this.playerMap);
-
             syncDoc(dbIdx, doc => {
                 console.log('game db', doc);
                 this.initDocToView(doc)
@@ -56,11 +54,10 @@ export default class Final2TeamView extends BaseGameView {
         })
 
         lv.on(LVE.EVENT_ON_FILE, data => {
-            // console.log('game process', data);
             syncDoc(playerDocIdx, doc => {
-                getGameProcess(doc, JSON.parse(data))
+                this.scoreData = JSON.parse(data)
+                getGameProcess(doc, this.scoreData)
             })
-
         })
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
@@ -114,7 +111,9 @@ export default class Final2TeamView extends BaseGameView {
             console.log(this, 'EVENT_SET_GAME_INFO', gameIdx);
             this.setGameInfo(gameIdx)
         })
-
+        lv.on(LVE.EVENT_SHOW_PROCESS, data => {
+            this.emitGameProcess(data)
+        })
         lv.on(LVE.EVENT_INIT_BRACKET, _ => {
             this.initRecData()
         })
@@ -215,6 +214,17 @@ export default class Final2TeamView extends BaseGameView {
         }, true)
     }
 
+    emitGameProcess(data) {
+        syncDoc(playerDocIdx, doc => {
+            // console.log('game db', doc);
+            let d = getGameProcessTab(doc, this.scoreData, data.tab)
+            d['_'] = null
+            d['visible'] = data.visible
+            d['param'] = data.param
+            $post(`/emit/${WebDBCmd.cs_showGameProcess}`, d)
+        })
+    }
+
     emitVictory(data) {
         getPlayerArrByPlayerId(this.lPlayer, this.rPlayer, (lTeamInfo, rTeamInfo) => {
             // data.lPlayer = this.lPlayer
@@ -227,6 +237,8 @@ export default class Final2TeamView extends BaseGameView {
                 data.lTeamScore = ret.lTeamScore
                 data.rTeamScore = ret.rTeamScore
                 data.winTeamInfo = ret.winTeamInfo
+                let postRec = ret.postRec
+                postGameArr(postRec.postRec, this.playerMap, postRec.idx)
                 $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
             })
         })

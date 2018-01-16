@@ -252,10 +252,10 @@ export default class LiveDataView extends EventDispatcher {
         this.emit(LiveDataView.EVENT_ROLL_TEXT, { text: text, visible: visible })
     }
 
-    showGameProcess(visible, tab) {
+    showGameProcess(visible, tab, param) {
         let isShowRealName = this.$vm.inputRollText == '1'
         // console.log('isShowRealName',isShowRealName);
-        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab, isShowRealName: !isShowRealName })
+        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab, isShowRealName: !isShowRealName,param:param })
     }
 
     dumpPlayer(playerArrStr) {
@@ -364,15 +364,13 @@ export default class LiveDataView extends EventDispatcher {
     reloadFile() {
         // this.$vm.finalData
         let _ = (d) => {
-
-           return d.getMinutes()+'m'+d.getSeconds()+'s'
+            return d.getMinutes() + 'm' + d.getSeconds() + 's'
         }
         if (!this.reader) {
             this.reader = new FileReader();
             this.reader.addEventListener("load", (event) => {
                 console.log("EVENT_ON_FILE", event.target['result']);
                 this.emit("EVENT_ON_FILE", event.target['result']);
-
 
                 let f = this.$vm.finalData
                 var output = [];
@@ -388,11 +386,8 @@ export default class LiveDataView extends EventDispatcher {
                 );
                 document.getElementById("list").innerHTML =
                     "<ul>" + output.join("") + "</ul>";
-                
             });
         }
         this.reader.readAsText(this.$vm.finalData, "utf-8");
-
-
     }
 }

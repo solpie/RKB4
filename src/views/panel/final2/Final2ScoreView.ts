@@ -5,6 +5,7 @@ import { TweenEx } from '../../utils/TweenEx';
 import { TeamVictory } from './TeamVictory';
 import { Game3v3 } from './Game3v3';
 import { getUrlQuerys, $post } from '../../utils/WebJsFunc';
+import { FinalGameProcess } from './FinalGameProcess';
 declare let $;
 declare let io;
 export class Final2ScoreView {
@@ -14,6 +15,7 @@ export class Final2ScoreView {
     game3v3: Game3v3
     stage: any
     is3v3: Boolean = false
+    gameProcess: FinalGameProcess
     constructor(stage) {
         this.stage = stage
 
@@ -41,6 +43,8 @@ export class Final2ScoreView {
             this.stage.addChild(this.scorePanel)
             let teamVictory = new TeamVictory(this.stage)
             this.teamVictory = teamVictory
+            this.gameProcess = new FinalGameProcess(this.stage)
+
         }
 
     }
@@ -52,16 +56,16 @@ export class Final2ScoreView {
         t.alpha = 0
         return t
     }
-    isInit =false
+    isInit = false
     initLocalWs() {
         let localWs = io.connect(`/rkb`)
         localWs.on('connect', (msg) => {
             console.log('connect', window.location.host)
             if (!this.isInit) {
                 this.isInit = true
-                $post(`/emit/${WebDBCmd.cs_panelCreated}`, { _: null })
+                // $post(`/emit/${WebDBCmd.cs_panelCreated}`, { _: null })
             }
-        })    
+        })
             .on(`${WebDBCmd.sc_init}`, (data) => {
                 console.log('sc_init', data);
                 this.scorePanel.setInit(data)
@@ -98,7 +102,13 @@ export class Final2ScoreView {
             })
             .on(WebDBCmd.sc_timeOut, data => {
                 console.log('sc_timeOut', data);
-                this.scorePanel.setTimeOut(data)
+                if (!this.is3v3)
+                    this.scorePanel.setTimeOut(data)
+            })
+            .on(WebDBCmd.sc_showGameProcess, data => {
+                console.log('sc_showVictory', data);
+                if (!this.is3v3)
+                    this.gameProcess.show(data)
             })
             .on(WebDBCmd.sc_showVictory, data => {
                 console.log('sc_showVictory', data);
