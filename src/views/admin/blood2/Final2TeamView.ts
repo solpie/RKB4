@@ -299,7 +299,7 @@ export default class Final2TeamView extends BaseGameView {
             let p1 = "p" + a[0]
             let p2 = "p" + a[1]
             this.setPlayer(p1, p2)
-            this.lFoul = this.rFoul = 0
+            // this.lFoul = this.rFoul = 0
             this.lScore = this.rScore = 0
             let lPlayerData = this.getPlayerInfo(this.lPlayer)
             let rPlayerData = this.getPlayerInfo(this.rPlayer)
@@ -353,8 +353,8 @@ export default class Final2TeamView extends BaseGameView {
             this.rScore = Number(rec.score[1]) || 0
             this.lBlood = Number(rec.blood[0]) || 0
             this.rBlood = Number(rec.blood[1]) || 0
-            this.lFoul = Number(rec.bonus[0]) || 0
-            this.rFoul = Number(rec.bonus[1]) || 0
+            // this.lFoul = Number(rec.bonus[0]) || 0
+            // this.rFoul = Number(rec.bonus[1]) || 0
             this.lRealName = this.lHupuID = this.getRealName(this.lPlayer)
             this.rRealName = this.rHupuID = this.getRealName(this.rPlayer)
         })

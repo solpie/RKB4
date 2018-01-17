@@ -397,4 +397,24 @@ export default class LiveDataView extends EventDispatcher {
         }
         this.reader.readAsText(this.$vm.finalData, "utf-8");
     }
+
+    setPlayer(pid, vsStr) {
+        // let vsStr = gmv['inputScore']
+        let a = vsStr.split(' ')
+        pid = pid.replace('p', '')
+        console.log('set player', pid, vsStr);
+        if (a.length == 2) {
+            let a0;
+            for (let curPid of a) {
+                if (curPid.charAt(0) == pid.charAt(0)) {
+                    if (a0)
+                        this.$vm.inputVS = a0 + ' ' + pid
+                    else {
+                        this.$vm.inputVS = pid + ' ' + a[1]
+                    }
+                }
+                a0 = curPid
+            }
+        }
+    }
 }

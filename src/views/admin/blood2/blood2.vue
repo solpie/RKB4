@@ -167,8 +167,8 @@
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
                 <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
-                <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
-                <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
+                <el-button @click='_("newGame2",inputVS)'>------</el-button>
+                <el-button @click='_("newGame2",inputVS)'>------</el-button>
                 <el-button @click='_("set3V3",inputVS)'>3v3对阵</el-button>
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
@@ -179,7 +179,7 @@
                 <hr>
                        <li v-for='(team,idx) in teamArr' v-bind:key="idx">
                      <span v-for='(p,idx) in team.playerArr' v-bind:key="idx">
-                         {{p.name}} 
+                         <a @click='_("setPlayer",p.pid,inputVS)' href="#">{{p.name}}</a> 
                         <el-input v-model="p.blood" style="width:35px"></el-input>
                      </span>
                         </li>
