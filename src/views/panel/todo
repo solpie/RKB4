@@ -101,21 +101,21 @@ NOV  女神转场，直播间装修
 
 
 F2
+赛程和胜利  同时隐藏
 [ ]改血操作input
 [ ]比分面板显示队名
 [ ]赛程表
 [ ]final data initBlood 复位血量
-bd新背景 毒
 [ ]3v3 去掉 logo去掉 6个字队名。online bg
 [ ]/api/final_game/match_receive
 [ ] bonus 不满三次灰色
 [ ]即将开始倒计时
 改血只显示当前队伍血量
 已结束gamelist 过滤
-
 [ ]3x3 排版
 [ ]身高体重
 团队血条
+bd新背景 毒
 个人kda排行
 赛中团队信息，剩余人 血量 战绩 kda
 
