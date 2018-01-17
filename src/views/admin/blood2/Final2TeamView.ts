@@ -129,7 +129,6 @@ export default class Final2TeamView extends BaseGameView {
             this.emitVictory({})
         })
 
-
         lv.on(WebDBCmd.cs_commit, data => {
             console.log('cs_commit', data);
             this.commit(data)
@@ -221,11 +220,17 @@ export default class Final2TeamView extends BaseGameView {
             rec.score = [this.lScore, this.rScore]
             // rec.bonus = [thi]
             doc.gameIdx = this.gameIdx
+
+
             syncDoc(playerDocIdx, pdoc => {
                 let lPlayerData = this.getPlayerInfo(this.lPlayer)
                 let rPlayerData = this.getPlayerInfo(this.rPlayer)
                 lPlayerData.blood = this.lBlood - this.rScore
                 rPlayerData.blood = this.rBlood - this.lScore
+                if (lPlayerData.blood == 0)
+                    this.lFoul = 0
+                if (rPlayerData.blood == 0)
+                    this.rFoul = 0
                 pdoc.teamArr = this.teamArr
 
                 this.lScore = this.rScore = 0
@@ -260,6 +265,7 @@ export default class Final2TeamView extends BaseGameView {
                 let postRec = ret.postRec
                 postGameArr(postRec.postRec, this.playerMap, postRec.idx)
                 $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+                $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
             })
         })
 
@@ -283,8 +289,6 @@ export default class Final2TeamView extends BaseGameView {
                 $post(`/emit/${WebDBCmd.cs_init}`, data)
                 this.onEmitScore()
             })
-
-            // $post(`/emit/${WebDBCmd.cs_init}`, data)
         })
     }
 

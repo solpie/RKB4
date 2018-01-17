@@ -182,6 +182,8 @@ export function kdaBuilder(doc, gameIdx) {
             teamGameIdx++
             playerMap = {}
             postRec = []
+            lTeamScore = 0
+            rTeamScore = 0
         }
         postRec.push(rec)
 

@@ -147,12 +147,14 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     commit(isEnd = false) {
-        this.setTimer(0, 0)
-        this.setTimer(-1, 0)
         let data: any = { _: null, isEnd: isEnd }
         // this.gameView.commit()
         this.emit(WebDBCmd.cs_commit, data)
-        $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
+        this.setTimer(0, 0)
+        if (isEnd) {
+            this.setTimer(-1, 0)
+            $post(`/emit/${WebDBCmd.cs_setTimer}`, data)
+        }
     }
     ///game month
     initGameMonth(gameId) {
@@ -350,7 +352,7 @@ export default class LiveDataView extends EventDispatcher {
     testRandomGame(endGameIdx) {
         this.emit('testRandomGame', endGameIdx)
     }
-    
+
     resetPlayer() {
         this.emit(LiveDataView.EVENT_RESET_PLAYER)
     }
