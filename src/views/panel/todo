@@ -108,13 +108,13 @@ F2
 bd新背景 毒
 [ ]3v3 去掉 logo去掉 6个字队名。online bg
 [ ]/api/final_game/match_receive
- bonus 不满三次灰色
+[ ] bonus 不满三次灰色
+[ ]即将开始倒计时
 改血只显示当前队伍血量
 已结束gamelist 过滤
-即将开始倒计时
 
 [ ]3x3 排版
-身高体重
+[ ]身高体重
 团队血条
 个人kda排行
 赛中团队信息，剩余人 血量 战绩 kda

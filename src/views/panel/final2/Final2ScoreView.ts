@@ -105,6 +105,10 @@ export class Final2ScoreView {
                 if (!this.is3v3)
                     this.scorePanel.setTimeOut(data)
             })
+            .on(WebDBCmd.sc_setMinTimer, data => {
+                if (this.gameProcess)
+                    this.gameProcess.showTimer(data)
+            })
             .on(WebDBCmd.sc_showGameProcess, data => {
                 console.log('sc_showVictory', data);
                 if (!this.is3v3)

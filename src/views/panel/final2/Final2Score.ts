@@ -5,6 +5,7 @@ import { FontName } from '../const';
 import { TextTimer } from '../../utils/TextTimer';
 import { MateAvatar } from './MateAvatar';
 import { Fianl2Tips } from './Final2Tips';
+import { HeightWeightCtn } from './HeightWeightCtn';
 export class Final2Score extends PIXI.Container {
     lPlayerAvt: BaseAvatar
     rPlayerAvt: BaseAvatar
@@ -32,8 +33,26 @@ export class Final2Score extends PIXI.Container {
 
     lTimeOutText: PIXI.Text
     rTimeOutText: PIXI.Text
+
+    lHeightWeightCtn: HeightWeightCtn
+    rHeightWeightCtn: HeightWeightCtn
+
     constructor() {
         super()
+
+
+        let lHWC = new HeightWeightCtn(true)
+        lHWC.x = 228
+        lHWC.y = 917
+        this.lHeightWeightCtn = lHWC
+        this.addChild(lHWC)
+
+        let rHWC = new HeightWeightCtn(false)
+        rHWC.y = lHWC.y
+        rHWC.x = 1491
+        this.rHeightWeightCtn = rHWC
+        this.addChild(rHWC)
+
         this.tips = new Fianl2Tips()
         this.addChild(this.tips)
 
@@ -201,6 +220,7 @@ export class Final2Score extends PIXI.Container {
                 i++
             } else {
                 this.lPlayerName.text = p.name
+                this.lHeightWeightCtn.setData(p)
                 this.lPlayerAvt.load(p.avatar)
                 this.lPlayerRank.text = '实力榜:' + (data.lRanking || 'ss')
                 // this.lBar.setBlood(p.blood)
@@ -216,6 +236,7 @@ export class Final2Score extends PIXI.Container {
                 i++
             } else {
                 this.rPlayerName.text = p.name
+                this.rHeightWeightCtn.setData(p)
                 this.rPlayerAvt.load(p.avatar)
                 this.rPlayerRank.text = '实力榜:' + (data.rRanking || 'ss')
                 // this.rBar.setBlood(p.blood)

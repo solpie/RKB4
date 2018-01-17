@@ -46,6 +46,8 @@ export const WebDBCmd = {
     sc_startTimer: ``,
     cs_setTimer: ``,
     sc_setTimer: ``,
+    cs_setMinTimer: ``,
+    sc_setMinTimer: ``,
     cs_commit: ``,
     sc_commit: ``,
     cs_score: ``,

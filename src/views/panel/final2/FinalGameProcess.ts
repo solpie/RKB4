@@ -1,5 +1,6 @@
 import { newBitmap, alignScrCenter } from '../../utils/PixiEx';
-import { FontName, ViewConst } from '../const';
+import { FontName, ViewConst, TimerState } from '../const';
+import { TextTimer } from '../../utils/TextTimer';
 
 let i1 = 90
 let y1 = 275
@@ -53,6 +54,7 @@ export class FinalGameProcess extends PIXI.Container {
     day1TextArr = []
     day2TextArr = []
     titleText: PIXI.Text
+    comingCtn: PIXI.Container
     constructor(p) {
         super()
         let bg = newBitmap({ url: '/img/panel/final2/process/bg.png' })
@@ -71,8 +73,6 @@ export class FinalGameProcess extends PIXI.Container {
             fontWeight: 'bold'
         }
         for (let i = 0; i < 5; i++) {
-
-
             let lt = new PIXI.Text('', ts)
             lt.x = 560
             lt.y = 240 + i * 130
@@ -141,6 +141,24 @@ export class FinalGameProcess extends PIXI.Container {
         this.addChild(titleText)
         this.titleText = titleText
         titleTex.mask = this.titleText
+
+
+
+        //coming
+        this.comingCtn = new PIXI.Container()
+        this.addChild(this.comingCtn)
+
+        this.comingCtn.addChild(newBitmap({ url: '/img/panel/final2/process/coming.png' }))
+        tts.fontSize = '55px'
+        let comingTimer = new TextTimer('', tts)
+        comingTimer.isMin = true
+        comingTimer.x = 1640
+        comingTimer.y = 980
+        comingTimer.setTimeBySec(0)
+        comingTimer.toggleTimer(TimerState.RUNNING)
+        this.comingCtn.addChild(comingTimer)
+        this.comingCtn.visible = false
+        this.comingCtn['timer'] = comingTimer
 
 
         this.p = p
@@ -341,6 +359,13 @@ export class FinalGameProcess extends PIXI.Container {
     hide() {
         if (this.parent)
             this.parent.removeChild(this)
+    }
+
+    showTimer(data) {
+        this.comingCtn.visible = data.visible
+        if (data.visible) {
+            this.comingCtn['timer'].setTimeBySec(data.sec)
+        }
     }
 
 }

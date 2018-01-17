@@ -117,8 +117,16 @@ export default class LiveDataView extends EventDispatcher {
         this.emit(WebDBCmd.cs_init, param)
     }
 
-    setRoundEnd() {
-        this.emit(LiveDataView.EVENT_SET_ROUND_END)
+    setRoundEnd(sec, v) {
+        let data: any = { _: null, visible: v }
+        if (sec) {
+            if (sec.search('-') > -1) {
+                let a = sec.split('-')
+                sec = Number(a[0]) * 60 + Number(a[1])
+            }
+            data['sec'] = sec
+        }
+        $post(`/emit/${WebDBCmd.cs_setMinTimer}`, data)
     }
 
     emitScore() {

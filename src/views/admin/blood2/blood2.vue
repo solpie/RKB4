@@ -122,7 +122,8 @@
                     <el-button @click='_("setTimer",-2,timeInput)'>设置时间</el-button>
                     <!-- <el-button @click='_("commit")'>提交比赛</el-button> -->
                     <el-button @click='_("commit")'>提交比赛</el-button>
-                    <el-button @click='_("setRoundEnd")'>结算点</el-button>
+                    <el-button @click='_("setRoundEnd",timeInput,true)'>倒计时</el-button>
+                    <el-button @click='_("setRoundEnd",timeInput,false)'>隐藏</el-button>
                     <!-- <el-button @click='_("commit",true)'>提交比赛F</el-button> -->
                     <br>
                     <br>
@@ -150,10 +151,6 @@
                 <el-button @click='_("showGameProcess",true,"day2.1")'>3v3</el-button>
                 <el-button @click='_("showGameProcess",true,"day2.2")'>双败</el-button>
                 <el-button @click='_("showGameProcess",false,"day2.2")'>隐藏</el-button>
-                <br>
-                <el-button @click='_("showImg",true,"bd1")'>媒体1</el-button>
-                <el-button @click='_("showImg",true,"bd2")'>媒体2</el-button>
-                <el-button @click='_("showImg",false,"bd1")'>隐藏媒体1</el-button>
                 <hr>
                 <el-button @click='_("setGameInfo",3)'>setGameInfo 3</el-button>
                 <el-button @click='_("setGameInfo",5)'>setGameInfo 5</el-button>
