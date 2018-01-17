@@ -154,8 +154,8 @@ export class Final2Score extends PIXI.Container {
         let bs = {
             fontFamily: FontName.DigiLED,
             fontSize: '45px',
-            fill: '#ba2228',
-            fontWeight: 'bold'
+            fill: '#838383',
+            // fontWeight: 'bold'
         }
 
         let lBns = new PIXI.Text('0', bs)
@@ -242,6 +242,18 @@ export class Final2Score extends PIXI.Container {
         this.rBar.setBlood(data.rightBlood)
         this.lBonus.text = data.leftFoul
         this.rBonus.text = data.rightFoul
+        if (data.leftFoul > 3)
+            this.lBonus.style.fill = '#ba2228'
+        else
+            this.lBonus.style.fill = '#838383'
+
+        if (data.rightFoul > 3)
+            this.rBonus.style.fill = '#ba2228'
+        else
+            this.rBonus.style.fill = '#838383'
+
+        // fill: '#ba2228',
+        // 
     }
     setTimeOut(data) {
         this.lTimeOutText.text = data.lTimeOut

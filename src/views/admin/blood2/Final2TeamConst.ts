@@ -1,4 +1,4 @@
-import { getPlayerInfoArr } from "../../utils/HupuAPI";
+import { getPlayerInfoArr, postGameArrJson } from '../../utils/HupuAPI';
 import { syncDoc } from "../livedata/BaseGame";
 import { countMap } from '../../../ranking/com';
 
@@ -268,4 +268,7 @@ export function postGameArr(postRec, playerMap, teamGameIdx) {
         data.games.push({ player: [lPlayer_id, rPlayer_id], score: rec.score })
     }
     console.log('post game', data);
+    postGameArrJson(data, res => {
+        console.log('res', res);
+    })
 }

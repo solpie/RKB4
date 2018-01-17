@@ -1,5 +1,5 @@
 import { TextTimer } from "../../utils/TextTimer";
-import { FontName } from "../const";
+import { FontName, ViewConst } from "../const";
 import { newBitmap, setScale } from '../../utils/PixiEx';
 import { imgLoader } from '../../utils/ImgLoader';
 
@@ -13,12 +13,19 @@ export class Game3v3 extends PIXI.Container {
     timer: TextTimer
     lScore: PIXI.Text
     rScore: PIXI.Text
+    bgMask: PIXI.Graphics
     constructor() {
         super()
 
 
         let bg = newBitmap({ url: '/img/panel/final2/3v3/bg.png' })
         this.addChild(bg)
+
+        this.bgMask = new PIXI.Graphics()
+        this.bgMask.beginFill(0xffffff)
+            .drawRect(0, 0, ViewConst.STAGE_WIDTH, ViewConst.STAGE_HEIGHT)
+        this.addChild(this.bgMask)
+        bg.mask = this.bgMask
 
         let ctn = new PIXI.Container()
         this.addChild(ctn)
@@ -82,21 +89,36 @@ export class Game3v3 extends PIXI.Container {
 
     setTeamInfo(data?) {
         if (data) {
-            this.lTeamName.text = data.lTeamInfo.name
-            this.rTeamName.text = data.rTeamInfo.name
-            imgLoader.loadTex(
-                `/img/panel/final2/victory/team${data.lTeamInfo.id}.png`
-                , tex => {
-                    this.lTeamLogo.texture = tex
-                    setScale(this.lTeamLogo, 51 / tex.height)
-                })
-            imgLoader.loadTex(
-                `/img/panel/final2/victory/team${data.rTeamInfo.id}.png`
-                , tex => {
-                    this.rTeamLogo.texture = tex
-                    setScale(this.rTeamLogo, 51 / tex.height)
+            if (data.isCustom) {
+                this.lTeamName.text = data.leftTeam
+                this.rTeamName.text = data.rightTeam
+                this.lTeamName.x = 18
+                this.rTeamName.x = 10
+                this.bgMask.y = -148
+                this.timer.visible = false
+            }
+            else {
+                this.lTeamName.text = data.lTeamInfo.name
+                this.rTeamName.text = data.rTeamInfo.name
+                this.lTeamName.x = 88
+                this.rTeamName.x = 80
+                this.bgMask.y = 0
+                this.timer.visible = true
+                
+                imgLoader.loadTex(
+                    `/img/panel/final2/victory/team${data.lTeamInfo.id}.png`
+                    , tex => {
+                        this.lTeamLogo.texture = tex
+                        setScale(this.lTeamLogo, 51 / tex.height)
+                    })
+                imgLoader.loadTex(
+                    `/img/panel/final2/victory/team${data.rTeamInfo.id}.png`
+                    , tex => {
+                        this.rTeamLogo.texture = tex
+                        setScale(this.rTeamLogo, 51 / tex.height)
 
-                })
+                    })
+            }
         }
     }
 

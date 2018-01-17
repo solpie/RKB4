@@ -37,6 +37,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SHOW_FINAL4_REWARD = 'EVENT_SHOW_FINAL4_REWARD'
     static EVENT_SHOW_IMG = 'EVENT_SHOW_IMG'
     static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
+    static EVENT_RESET_PLAYER = 'EVENT_RESET_PLAYER'
     static EVENT_ON_FILE = 'EVENT_ON_FILE'
     gameView: IBaseGameView
     gmv: GameMonthView
@@ -255,7 +256,7 @@ export default class LiveDataView extends EventDispatcher {
     showGameProcess(visible, tab, param) {
         let isShowRealName = this.$vm.inputRollText == '1'
         // console.log('isShowRealName',isShowRealName);
-        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab, isShowRealName: !isShowRealName,param:param })
+        this.emit(LiveDataView.EVENT_SHOW_PROCESS, { visible: visible, tab: tab, isShowRealName: !isShowRealName, param: param })
     }
 
     dumpPlayer(playerArrStr) {
@@ -348,6 +349,10 @@ export default class LiveDataView extends EventDispatcher {
 
     testRandomGame(endGameIdx) {
         this.emit('testRandomGame', endGameIdx)
+    }
+    
+    resetPlayer() {
+        this.emit(LiveDataView.EVENT_RESET_PLAYER)
     }
 
     addPlayerRankData(p) {

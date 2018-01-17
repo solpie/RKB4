@@ -54,10 +54,7 @@ export default class Final2TeamView extends BaseGameView {
         })
 
         lv.on(LVE.EVENT_ON_FILE, data => {
-            syncDoc(playerDocIdx, doc => {
-                this.scoreData = JSON.parse(data)
-                getGameProcess(doc, this.scoreData)
-            })
+            this.loadConf(data)
         })
         lv.on(WebDBCmd.cs_init, data => {
             // console.log('DoubleElimination cs_init', data);
@@ -100,10 +97,16 @@ export default class Final2TeamView extends BaseGameView {
             console.log('sync player info');
             this.onSyncPlayer()
         })
+
         lv.on(LVE.EVENT_SAVE_PLAYER, _ => {
             console.log('EVENT_SAVE_PLAYER');
             this.onSavePlayer()
         })
+
+        lv.on(LVE.EVENT_RESET_PLAYER, _ => {
+            this.onResetPlayer()
+        })
+
         lv.on(LVE.EVENT_ROLL_TEXT, data => {
             this.sendRollText(data)
         })
@@ -126,6 +129,7 @@ export default class Final2TeamView extends BaseGameView {
             this.emitVictory({})
         })
 
+
         lv.on(WebDBCmd.cs_commit, data => {
             console.log('cs_commit', data);
             this.commit(data)
@@ -136,11 +140,20 @@ export default class Final2TeamView extends BaseGameView {
     on3v3(vsStr) {
         let a = vsStr.split(' ')
         if (a.length == 2) {
-            let lTeamInfo = getTeamInfo(a[0])
-            let rTeamInfo = getTeamInfo(a[1])
             let data: any = { _: null }
-            data.lTeamInfo = lTeamInfo
-            data.rTeamInfo = rTeamInfo
+            if (a[0] == '0') {
+                if (this.scoreData) {
+                    data.isCustom = true
+                    data.leftTeam = this.scoreData.day0.team[0]
+                    data.rightTeam = this.scoreData.day0.team[1]
+                }
+            }
+            else {
+                let lTeamInfo = getTeamInfo(a[0])
+                let rTeamInfo = getTeamInfo(a[1])
+                data.lTeamInfo = lTeamInfo
+                data.rTeamInfo = rTeamInfo
+            }
             $post(`/emit/${WebDBCmd.cs_3v3Init}`, data)
         }
     }
@@ -160,6 +173,13 @@ export default class Final2TeamView extends BaseGameView {
         })
     }
 
+    onResetPlayer() {
+        if (this.scoreData)
+            for (let pid in this.playerMap) {
+                let player = this.playerMap[pid]
+                player.blood = this.scoreData.initBlood
+            }
+    }
     onSavePlayer() {
         syncDoc(playerDocIdx, doc => {
             doc.teamArr = this.teamArr
@@ -363,6 +383,12 @@ export default class Final2TeamView extends BaseGameView {
         return ''
     }
 
+    loadConf(data) {
+        syncDoc(playerDocIdx, doc => {
+            this.scoreData = JSON.parse(data)
+            getGameProcess(doc, this.scoreData)
+        })
+    }
 
     initRecData() {
         syncDoc(dbIdx, doc => {
@@ -372,7 +398,7 @@ export default class Final2TeamView extends BaseGameView {
             else
                 for (let gameIdx in doc.rec) {
                     let r = doc.rec[gameIdx]
-                    r.blood = [2, 2]
+                    // r.blood = [2, 2]
                     r.score = [0, 0]
                     r.bonus = [0, 0]
                 }

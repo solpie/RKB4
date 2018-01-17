@@ -169,7 +169,7 @@
                      </span>
                         </li>
                 <el-button @click='_("savePlayer")'>更新血量</el-button>
-                <el-button @click='_("savePlayer")'>更新血量</el-button>
+                <el-button @click='_("resetPlayer")'>复位血量</el-button>
                 <el-button @click='_("savePlayer")'>更新血量</el-button>
                 <el-button @click='_("syncPlayer")'>下载球员数据</el-button>
             </el-row>

@@ -1,5 +1,5 @@
 import { finalData, getTeamMap } from './Final2TeamConst';
-import { postGameJson } from '../../utils/HupuAPI';
+import { postBracketJson } from '../../utils/HupuAPI';
 let a = ['1-2',
     '3-4',
     '1-5',
@@ -19,10 +19,12 @@ let isGameOver = (scoreArr) => {
         return 2
     return 0
 }
-let getPlayerArr = (teamInfo) => {
+let getPlayerArr = (playerArr) => {
     let a = []
-    for (let p of teamInfo) {
-        a.push({ name: p.name, header: p.avatarUrl })
+    for (let p of playerArr) {
+        a.push({
+            player_id: p.player_id
+        })
     }
     return a
 }
@@ -56,7 +58,7 @@ function dumpVsScore(doc, scoreData) {
     _(scoreData['day2.2'].scoreArr)
 }
 export function getGameProcessTab(doc, scoreData, tab) {
-    console.log('game process tab ',doc,scoreData,tab);
+    console.log('game process tab ', doc, scoreData, tab);
     let tabTextMap = {
         'day1': '第一天积分赛'
         , 'day2.1': '第二天3V3'
@@ -70,7 +72,7 @@ export function getGameProcessTab(doc, scoreData, tab) {
         let rTeamInfo = teamMap[rec[2][1]]
         gameArr.push({ team: [lTeamInfo, rTeamInfo], score: [rec[0], rec[1]] })
     }
-    return { title: tabTextMap[tab], gameArr: gameArr,tab:tab }
+    return { title: tabTextMap[tab], gameArr: gameArr, tab: tab }
 }
 
 export function getGameProcess(doc, scoreData) {
@@ -88,14 +90,14 @@ export function getGameProcess(doc, scoreData) {
         let lTeamInfo = teamMap[a2[0]]
         let rTeamInfo = teamMap[a2[1]]
         if (!gameD1ready)
-            gameD1ready = newGame('Day1_积分赛', lTeamInfo, rTeamInfo)
+            gameD1ready = newGame('第一天积分赛', lTeamInfo, rTeamInfo)
         else {
             let g = newGame('', lTeamInfo, rTeamInfo)
             gameD1ready.list = gameD1ready.list.concat(g.list)
         }
     }
     console.log('game d1', gameD1ready);
-    let gameJson = { ready: [], over: [] }
+    let BracketJson = { ready: [], over: [] }
 
 
     let gameD1Over = JSON.parse(JSON.stringify(gameD1ready))
@@ -118,32 +120,33 @@ export function getGameProcess(doc, scoreData) {
                 g.right_team.win = true
             g.left_team.team_score = Math.floor(score[0])
             g.right_team.team_score = Math.floor(score[1])
-            gameJson.over.push(g)
+            BracketJson.over.push(g)
         }
         else
-            gameJson.ready.push(g)
+            BracketJson.ready.push(g)
     }
-    gameD1ready.list = gameJson.ready
-    gameD1Over.list = gameJson.over
-    gameJson.ready = [gameD1ready]
-    gameJson.over = [gameD1Over]
+    gameD1ready.list = BracketJson.ready
+    gameD1Over.list = BracketJson.over
+    BracketJson.ready = [gameD1ready]
+    if (gameD1Over.list.length)
+        BracketJson.over = [gameD1Over]
 
     let day2_1 = day2game3v3(doc, scoreData)
     if (day2_1.over)
-        gameJson.over.push(day2_1.over)
+        BracketJson.over.push(day2_1.over)
     if (day2_1.ready)
-        gameJson.ready.push(day2_1.ready)
+        BracketJson.ready.push(day2_1.ready)
 
     let day2_2 = day2gameDouble(doc, scoreData)
     if (day2_2.over)
-        gameJson.over.push(day2_2.over)
+        BracketJson.over.push(day2_2.over)
     if (day2_2.ready)
-        gameJson.ready.push(day2_2.ready)
-    console.log('gameJson', gameJson);
-    postGameJson(gameJson, res => {
+        BracketJson.ready.push(day2_2.ready)
+    console.log('gameJson', BracketJson);
+    postBracketJson(BracketJson, res => {
         console.log('res');
     })
-    return gameJson
+    return BracketJson
 }
 function day2gameData(gameName, gameIdx, doc, scoreData) {
     let teamMap = getTeamMap(doc)
@@ -152,29 +155,31 @@ function day2gameData(gameName, gameIdx, doc, scoreData) {
         if (rec[2][0] != 0 && rec[2][1] != 0) {
             let lTeamInfo = teamMap[rec[2][0]]
             let rTeamInfo = teamMap[rec[2][1]]
-            let winFlag = isGameOver(rec)
-            if (winFlag > 0) {
-                if (!game3v3over)
-                    game3v3over = newGame(gameName, lTeamInfo, rTeamInfo)
-                else {
-                    let g = newGame('', lTeamInfo, rTeamInfo)
-                    game3v3over.list = game3v3over.list.concat(g.list)
+            if (lTeamInfo) {
+                let winFlag = isGameOver(rec)
+                if (winFlag > 0) {
+                    if (!game3v3over)
+                        game3v3over = newGame(gameName, lTeamInfo, rTeamInfo)
+                    else {
+                        let g = newGame('', lTeamInfo, rTeamInfo)
+                        game3v3over.list = game3v3over.list.concat(g.list)
+                    }
+                    let g = game3v3over.list[game3v3over.list.length - 1]
+                    if (winFlag == 1)
+                        g.left_team.win = true
+                    if (winFlag == 2)
+                        g.right_team.win = true
+                    g.left_team.team_score = Math.floor(rec[0])
+                    g.right_team.team_score = Math.floor(rec[1])
+                    delete g.vs
                 }
-                let g = game3v3over.list[game3v3over.list.length - 1]
-                if (winFlag == 1)
-                    g.left_team.win = true
-                if (winFlag == 2)
-                    g.right_team.win = true
-                g.left_team.team_score = Math.floor(rec[0])
-                g.right_team.team_score = Math.floor(rec[1])
-                delete g.vs
-            }
-            else {
-                if (!gameReady)
-                    gameReady = newGame(gameName, lTeamInfo, rTeamInfo)
                 else {
-                    let g = newGame('', lTeamInfo, rTeamInfo)
-                    gameReady.list = gameReady.list.concat(g.list)
+                    if (!gameReady)
+                        gameReady = newGame(gameName, lTeamInfo, rTeamInfo)
+                    else {
+                        let g = newGame('', lTeamInfo, rTeamInfo)
+                        gameReady.list = gameReady.list.concat(g.list)
+                    }
                 }
             }
         }
@@ -182,8 +187,8 @@ function day2gameData(gameName, gameIdx, doc, scoreData) {
     return { over: game3v3over, ready: gameReady }
 }
 function day2game3v3(doc, scoreData) {
-    return day2gameData('Day2_3v3', 'day2.1', doc, scoreData)
+    return day2gameData('第二天3V3', 'day2.1', doc, scoreData)
 }
 function day2gameDouble(doc, scoreData) {
-    return day2gameData('Day2_双败赛', 'day2.2', doc, scoreData)
+    return day2gameData('第二天双败赛', 'day2.2', doc, scoreData)
 }

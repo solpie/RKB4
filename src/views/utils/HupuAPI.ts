@@ -61,11 +61,18 @@ export let getPlayerInfo = (playerId, callback) => {
     let url = 'http://api.liangle.com/api/passerbyking/player/info/' + playerId
     _get(_proxyJSON(url), callback)
 }
-export let postGameJson = (gameJson, callback) => {
-    let url = ' http://test.liangle.com/api/final_game/receive'
+export let postBracketJson = (gameJson, callback) => {
+    let url = ' http://pre.liangle.com/api/final_game/receive'
     let data = { data: gameJson, url: url }
     $post(_proxyJSON(url), data, callback)
 }
+
+export let postGameArrJson = (gameJson, callback) => {
+    let url = ' http://pre.liangle.com/api/final_game/match_receive'
+    let data = { data: gameJson, url: url }
+    $post(_proxyJSON(url), data, callback)
+}
+
 
 export let getPlayerInfoArr = (playerIdArr, callback) => {
     let a = playerIdArr.concat()
