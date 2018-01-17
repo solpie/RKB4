@@ -162,8 +162,7 @@
                 <el-button @click='_("showGamePlayerInfo",true)'>队伍胜利 </el-button>
                 <el-button @click='_("showGamePlayerInfo",false)'>隐藏</el-button>
                 <br>
-                <el-button @click='_("initBracket")'>initBracket Data</el-button>
-                <br>
+           
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
                 <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
@@ -183,6 +182,8 @@
                         <el-input v-model="p.blood" style="width:35px"></el-input>
                      </span>
                         </li>
+                        <br>
+                        <br>
                 <el-button @click='_("savePlayer")'>更新血量</el-button>
                 <el-button @click='_("resetPlayer")'>复位血量</el-button>
                 <el-button @click='_("savePlayer")'>更新血量</el-button>
@@ -203,6 +204,8 @@
                 <br>
             </el-row>
             <el-row>
+                     <el-button @click='_("initBracket")'>initBracket Data</el-button>
+                <br>
                 <el-button @click='_("dumpPlayer",inputRollText)'>dump player</el-button>
             </el-row>
         </el-col>

@@ -30,6 +30,7 @@ let getPlayerArr = (playerArr) => {
 }
 let newGame = (gameName, l, r) => {
     return {
+        type:getType(gameName),
         game_name: gameName, list: [
             {
                 vs: l.id + '-' + r.id,
@@ -57,13 +58,14 @@ function dumpVsScore(doc, scoreData) {
     _(scoreData['day2.1'].scoreArr)
     _(scoreData['day2.2'].scoreArr)
 }
+let tabTextMap = {
+    'day1': '第一天积分赛'
+    , 'day2.1': '第二天3V3'
+    , 'day2.2': '第二天双败赛'
+}
 export function getGameProcessTab(doc, scoreData, tab) {
     console.log('game process tab ', doc, scoreData, tab);
-    let tabTextMap = {
-        'day1': '第一天积分赛'
-        , 'day2.1': '第二天3V3'
-        , 'day2.2': '第二天双败赛'
-    }
+
     let teamMap = getTeamMap(doc)
     let scoreArr = scoreData[tab].scoreArr
     let gameArr = []
@@ -90,7 +92,7 @@ export function getGameProcess(doc, scoreData) {
         let lTeamInfo = teamMap[a2[0]]
         let rTeamInfo = teamMap[a2[1]]
         if (!gameD1ready)
-            gameD1ready = newGame('第一天积分赛', lTeamInfo, rTeamInfo)
+            gameD1ready = newGame(typeTitle['1'], lTeamInfo, rTeamInfo)
         else {
             let g = newGame('', lTeamInfo, rTeamInfo)
             gameD1ready.list = gameD1ready.list.concat(g.list)
@@ -186,9 +188,16 @@ function day2gameData(gameName, gameIdx, doc, scoreData) {
     }
     return { over: game3v3over, ready: gameReady }
 }
+let typeTitle = { '1': "第一天积分赛", '2': "第二天3v3", '3': '第二天双败赛' }
+function getType(name) {
+    for (let idx in typeTitle) {
+        if (name == typeTitle[idx])
+            return Number(idx)
+    }
+}
 function day2game3v3(doc, scoreData) {
-    return day2gameData('第二天3V3', 'day2.1', doc, scoreData)
+    return day2gameData(typeTitle['2'], 'day2.1', doc, scoreData)
 }
 function day2gameDouble(doc, scoreData) {
-    return day2gameData('第二天双败赛', 'day2.2', doc, scoreData)
+    return day2gameData(typeTitle['3'], 'day2.2', doc, scoreData)
 }
