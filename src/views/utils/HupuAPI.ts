@@ -62,13 +62,13 @@ export let getPlayerInfo = (playerId, callback) => {
     _get(_proxyJSON(url), callback)
 }
 export let postBracketJson = (gameJson, callback) => {
-    let url = ' http://pre.liangle.com/api/final_game/receive'
+    let url = ' http://www.liangle.com/api/final_game/receive'
     let data = { data: gameJson, url: url }
     $post(_proxyJSON(url), data, callback)
 }
 
 export let postGameArrJson = (gameJson, callback) => {
-    let url = ' http://pre.liangle.com/api/final_game/match_receive'
+    let url = ' http://www.liangle.com/api/final_game/match_receive'
     let data = { data: gameJson, url: url }
     $post(_proxyJSON(url), data, callback)
 }

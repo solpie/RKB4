@@ -34,6 +34,7 @@
     "socket.io": "^2.0.2",
     "socket.io-client": "^2.0.2",
     "style-loader": "^0.18.2",
+    "ts-loader": "^3.2.0",
     "tween.js": "^16.6.0",
     "url-loader": "^0.5.8",
     "vis": "^4.20.1",
