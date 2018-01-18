@@ -51,7 +51,7 @@ export class CollectionView {
         return this.collectionModel
     }
     constructor() {
-        this.collectionModel = new RKPCollectionModel()
+        // this.collectionModel = new RKPCollectionModel()
         // $get('/ranking/game/' + 's3', res => {
         //     console.log('load rank ', res);
         //     let gameDataArr = res.doc.gameArr
@@ -128,9 +128,9 @@ export class CollectionView {
         return a
     }
     nextWeek() {
-        let d = new Date(this.curDate)
-        let nextDate = new Date(d.getTime() + 24 * 60 * 60 * 1000 * this.m.week)
-        let dateStr = DateFormat(nextDate, 'yyyy-MM-dd')
-        this.genBattle(dateStr, this.m.week, this.curRankArr)
+        // let d = new Date(this.curDate)
+        // let nextDate = new Date(d.getTime() + 24 * 60 * 60 * 1000 * this.m.week)
+        // let dateStr = DateFormat(nextDate, 'yyyy-MM-dd')
+        // this.genBattle(dateStr, this.m.week, this.curRankArr)
     }
 }

@@ -5,22 +5,15 @@
                 <el-collapse-item title="Player List" name="3">
                     L1 ~ L4
                     <br>
-                    <span v-for='(item,idx) in pokerPlayerArrG1' v-bind:key="idx">
-                        {{item.name}}
-                        <el-button @click='_("showPlayerProcess",true,item.name,item.poker)'>show</el-button>
-                        <!-- <el-button @click='_("addPlayerRankData",item.data)'>add</el-button> -->
-                        <!-- {{item.hupuID}} {{item.ranking}}    |   {{item.data.player_id}} -->
-                        <br>
-                    </span>
                     <hr> L5 ~ L10
                     <br>
-                    <span v-for='(item,idx) in pokerPlayerArrG2' v-bind:key="idx">
+                    <!--<span v-for='(item,idx) in pokerPlayerArrG2' v-bind:key="idx">
                         {{item.name}}
                         <el-input v-model='item.poker' style="width:50px"></el-input>
                         <el-button @click='_("showPoker",true,item.name,item.poker)'>show</el-button>
                         <el-button @click='_("showPoker",false,item.name,item.poker)'>hide</el-button> {{item.hupuID}}
                         <br>
-                    </span>
+                    </span>-->
                 </el-collapse-item>
                 <el-collapse-item title="Game List" name="1">
                     <el-table stripe :data="gameInfoTable" style="width: 100%;height:800px;overflow-y: scroll;" @row-click='rowClick'>
@@ -51,6 +44,7 @@
                     <br> L Bonus
                     <el-button @click='_("setLFoul",lFoul+1)'>+1</el-button>
                     <el-button @click='_("setLFoul",lFoul-1)'>-1</el-button>
+                    <el-button @click='_("setLFoul",lFoul-lFoul)'>0</el-button>
                     <br>
                     <br>
                     <br> TimeOut
@@ -89,6 +83,7 @@
                     <br> R Bonus
                     <el-button @click='_("setRFoul",rFoul+1)'>+1</el-button>
                     <el-button @click='_("setRFoul",rFoul-1)'>-1</el-button>
+                    <el-button @click='_("setRFoul",rFoul-rFoul)'>0</el-button>
                     <br>
                     <br>
                     <br> R Time
@@ -174,7 +169,7 @@
             <el-row>
                 <hr>
                        <li v-for='(team,idx) in teamArr' v-bind:key="idx">
-                     <span v-for='(p,idx) in team.playerArr' v-bind:key="idx">
+                     <span v-for='(p,idx2) in team.playerArr' v-bind:key="idx2">
                          <a @click='_("setPlayer",p.pid,inputVS)' href="#">{{p.name}}</a> 
                         <el-input v-model="p.blood" style="width:35px"></el-input>
                      </span>

@@ -29,12 +29,20 @@ export default class Final2TeamView extends BaseGameView {
         this.dbIdx = dbIdx
         this.liveDataView = liveDataView
         this.initFinal2()
+        this.initConsoleCMD()
     }
 
     onSyncPlayer() {
         syncPlayerData(playerDocIdx)
     }
-
+    initConsoleCMD(){
+        window['clearBracket'] = ()=>{
+            syncDoc(dbIdx,doc=>{
+                doc.rec = {}
+                doc.gameIdx = 0
+            },true)
+        }
+    }
     initFinal2() {
         let lv = this.liveDataView
 
@@ -227,10 +235,10 @@ export default class Final2TeamView extends BaseGameView {
                 let rPlayerData = this.getPlayerInfo(this.rPlayer)
                 lPlayerData.blood = this.lBlood - this.rScore
                 rPlayerData.blood = this.rBlood - this.lScore
-                if (lPlayerData.blood == 0)
-                    this.lFoul = 0
-                if (rPlayerData.blood == 0)
-                    this.rFoul = 0
+                // if (lPlayerData.blood == 0)
+                //     this.rFoul = 0
+                // if (rPlayerData.blood == 0)
+                //     this.rFoul = 0
                 pdoc.teamArr = this.teamArr
 
                 this.lScore = this.rScore = 0
