@@ -19,8 +19,8 @@ export default class Final2TeamView extends BaseGameView {
     rHupuID = ''
     lBlood = 2
     rBlood = 2
-    lTimeOut = 0
-    rTimeOut = 0
+    lTimeOut = 3
+    rTimeOut = 3
     liveDataView
     teamArr = [{ playerArr: [] }]
     scoreData: any

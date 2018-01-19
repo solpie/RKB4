@@ -96,8 +96,16 @@ export class Game3v3 extends PIXI.Container {
                 this.rTeamName.x = 10
                 this.bgMask.y = -148
                 this.timer.visible = false
+                this.lTeamName.style.fontSize = '30px'
+                this.rTeamName.style.fontSize = '30px'
+                this.lTeamName.y =14
+                this.rTeamName.y =71
             }
             else {
+                this.lTeamName.style.fontSize = '42px'
+                this.rTeamName.style.fontSize = '42px'
+                this.lTeamName.y =8
+                this.rTeamName.y =65
                 this.lTeamName.text = data.lTeamInfo.name
                 this.rTeamName.text = data.rTeamInfo.name
                 this.lTeamName.x = 88

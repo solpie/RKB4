@@ -56,7 +56,7 @@ export class HeightWeightCtn extends PIXI.Container {
         if (this.isLeft)
             this.heightText.x = 165 - this.heightText.width * .5
         else
-            this.heightText.x = -165 + 28 + this.heightText.width * .5
+            this.heightText.x = -165 + 20 + this.heightText.width * .5
 
         this.show()
     }
