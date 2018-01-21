@@ -21,15 +21,16 @@
 
 <body translate="no">
 
-    <div class="sh">Shanghai</div>
+    <div class="sh">即将开始</div>
     <div id="output" class="out"></div>
 
     <script>
         var d
+		var pd =function(d){if(d<10)return '0'+d;return d+""}
         setInterval(
             c = function() {
                 var d = new Date()
-                output.innerText = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+                output.innerText =pd(18-d.getHours())  + ":" + pd(30-(d.getMinutes())) + ":" + pd(60-(d.getSeconds()))
             }, 1000);
         c();
     </script>

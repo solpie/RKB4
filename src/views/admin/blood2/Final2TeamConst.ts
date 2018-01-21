@@ -229,7 +229,8 @@ export function kdaBuilder(doc, gameIdx) {
         if (playerData.blood == 0 && countKiller > 1) {
             console.log('kill by multi', pid, playerData.scorePlayerMap);
             for (let pid2 in playerData.scorePlayerMap) {
-                _playerData(pid2).a++
+                if (!_playerData(pid2).killMap[pid])
+                    _playerData(pid2).a++
             }
         }
 
