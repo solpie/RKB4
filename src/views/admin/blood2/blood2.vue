@@ -147,7 +147,7 @@
                 <el-button @click='_("showGameProcess",true,"day2.2")'>双败</el-button>
                 <el-button @click='_("showGameProcess",false,"day2.2")'>隐藏</el-button>
                 <hr>
-                <el-button @click='_("setGameInfo",3)'>setGameInfo 3</el-button>
+                <!-- <el-button @click='_("setGameInfo",3)'>setGameInfo 3</el-button> -->
                 <el-button @click='_("setGameInfo",5)'>setGameInfo 5</el-button>
                 <br>
                 <br>
@@ -158,7 +158,7 @@
                 <el-input v-model="inputVS" placeholder="a1 a2" style="width:90px"></el-input>
                 <el-button @click='_("setVS",inputVS)'>修改对阵</el-button>
                 <el-button @click='_("newGame",inputVS)'>创建比赛</el-button>
-                <el-button @click='_("newGame2",inputVS)'>------</el-button>
+                <el-button @click='_("vsOnly",inputVS)'>vsOnly</el-button>
                 <el-button @click='_("newGame2",inputVS)'>------</el-button>
                 <el-button @click='_("set3V3",inputVS)'>3v3对阵</el-button>
                 <br>
