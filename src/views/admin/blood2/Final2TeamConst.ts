@@ -143,14 +143,37 @@ export function getPlayerArrByPlayerId(lPlayerId: string, rPlayerId: string, cb)
     })
 }
 
+function mergPlayerKDA(playerMap, mergePlayerMap) {
+    for (let pid in playerMap) {
+        let player = playerMap[pid]
+        let mPlayer = mergePlayerMap[pid]
+        if (!mPlayer)
+            mergePlayerMap[pid] = playerMap[pid]
+        else {
+            mPlayer.score += player.score
+            mPlayer.k += player.k
+            mPlayer.d += player.d
+        }
+    }
+}
+
+// function merPlayerAssist(playerMap,mergePlayerMap){
+//     for (let pid in playerMap) {
+//         let player = playerMap[pid]
+//         let mPlayer = mergePlayerMap[pid]
+//         if (!mPlayer)
+//             mergePlayerMap[pid] = playerMap[pid]
+//         else {
+//             mPlayer.a += player.a
+//         }
+//     }
+// }
+
 export function kdaBuilder(doc, gameIdx) {
-    let lTeamPlayerNum = 5
-    let rTeamPlayerNum = 5
-    // let gameIdx = doc.gameIdx
     let CurVsTeam = ''
     let playerMap = {}
     let lTeamScore = 0, rTeamScore = 0
-
+    let mergePlayerMap = {}
     let _playerData = (pid) => {
         if (!playerMap[pid])
             playerMap[pid] = {
@@ -180,6 +203,9 @@ export function kdaBuilder(doc, gameIdx) {
         if (CurVsTeam != v) {
             CurVsTeam = v
             teamGameIdx++
+            if (countMap(playerMap) > 0) {
+                mergPlayerKDA(playerMap, mergePlayerMap)
+            }
             playerMap = {}
             postRec = []
             lTeamScore = 0
@@ -222,6 +248,9 @@ export function kdaBuilder(doc, gameIdx) {
             rPlayerData.d++
         }
     }
+
+    if (countMap(playerMap) > 0)
+        mergPlayerKDA(playerMap, mergePlayerMap)
     console.log('player round kda map', playerMap);
     for (let pid in playerMap) {
         let playerData = playerMap[pid]
@@ -229,8 +258,10 @@ export function kdaBuilder(doc, gameIdx) {
         if (playerData.blood == 0 && countKiller > 1) {
             console.log('kill by multi', pid, playerData.scorePlayerMap);
             for (let pid2 in playerData.scorePlayerMap) {
-                if (!_playerData(pid2).killMap[pid])
+                if (!_playerData(pid2).killMap[pid]) {
                     _playerData(pid2).a++
+                    mergePlayerMap[pid2].a++
+                }
             }
         }
 
@@ -258,7 +289,14 @@ export function kdaBuilder(doc, gameIdx) {
         , rTeamInfo: rTeamInfo
         , winTeamInfo: winTeamInfo
         , postRec: { idx: teamGameIdx, postRec: postRec }
+        , mergeKDA: mergePlayerMap
     }
+}
+
+export function getAllKDA(doc, gameIdx) {
+    let ret = kdaBuilder(doc, gameIdx)
+    ret.mergeKDA
+
 }
 
 export function postGameArr(postRec, playerMap, teamGameIdx) {

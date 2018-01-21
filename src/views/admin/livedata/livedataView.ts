@@ -224,10 +224,10 @@ export default class LiveDataView extends EventDispatcher {
         gmv.clearMaster(s)
     }
 
-    showGamePlayerInfo(v) {
-        let data: any = { visible: v, _: '' }
+    showGamePlayerInfo(v, isMergeKDA) {
+        let data: any = { visible: v, _: '', isMergeKDA: isMergeKDA }
         this.emit(WebDBCmd.cs_showVictory, data)
-        // $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
+        // $post(`/emit/${WebDBCmd.cs_showVictory}`, data)  
     }
 
     showPokerPanel(visible, pokerNum) {

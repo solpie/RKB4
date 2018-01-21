@@ -152,6 +152,7 @@
                 <br>
                 <br>
                 <el-button @click='_("showGamePlayerInfo",true)'>队伍胜利 </el-button>
+                <el-button @click='_("showGamePlayerInfo",true,true)'>总KDA </el-button>
                 <el-button @click='_("showGamePlayerInfo",false)'>隐藏</el-button>
                 <br>
            

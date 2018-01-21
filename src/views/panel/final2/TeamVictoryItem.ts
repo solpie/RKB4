@@ -78,8 +78,8 @@ class DamageBar extends PIXI.Container {
     }
     setData(data) {
         if (!data) {
-            this.txtDamage.text =''
-                this.txtK.text =
+            this.txtDamage.text = ''
+            this.txtK.text =
                 this.txtD.text =
                 this.txtA.text = '-'
             this.barMask.x = 280
@@ -126,14 +126,11 @@ export class TeamVictoryItem extends PIXI.Container {
         this.lBar = new DamageBar().create(true)
         this.lBar.x = 755
 
-
         this.rBar = new DamageBar().create(false)
         this.rBar.x = 1165
         this.rBar.y = this.lBar.y = lCtn.y + 63
         this.addChild(this.lBar)
         this.addChild(this.rBar)
-        // this.test()
-
 
         let ts = {
             fontFamily: FontName.MicrosoftYahei,
@@ -151,19 +148,16 @@ export class TeamVictoryItem extends PIXI.Container {
         this.rPlayerName.x = rCtn.x - this.rPlayerName.width - 30
         rpn.y = lpn.y = lCtn.y + 15
         this.addChild(rpn)
-
     }
 
     setData(lPlayerData, rPlayerData) {
         this.lAvt.load(lPlayerData.avatar)
         this.rAvt.load(rPlayerData.avatar)
         this.lPlayerName.text = lPlayerData.name
-        this.lPlayerName.x = 448-this.lPlayerName.width
+        this.lPlayerName.x = 448 - this.lPlayerName.width
         this.rPlayerName.text = rPlayerData.name
         this.lBar.setData(lPlayerData.kda)
         this.rBar.setData(rPlayerData.kda)
-        // this.lBar.txtK.text = lPlayerData.kda.k
-        // this.lBar.txtK = lPlayerData.kda.k
     }
 
     test() {

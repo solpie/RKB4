@@ -270,6 +270,7 @@ export default class Final2TeamView extends BaseGameView {
                 data.lTeamScore = ret.lTeamScore
                 data.rTeamScore = ret.rTeamScore
                 data.winTeamInfo = ret.winTeamInfo
+                data.mergeKDA = ret.mergeKDA
                 let postRec = ret.postRec
                 postGameArr(postRec.postRec, this.playerMap, postRec.idx)
                 $post(`/emit/${WebDBCmd.cs_showVictory}`, data)

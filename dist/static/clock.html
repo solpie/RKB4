@@ -30,7 +30,7 @@
         setInterval(
             c = function() {
                 var d = new Date()
-                output.innerText =pd(18-d.getHours())  + ":" + pd(30-(d.getMinutes())) + ":" + pd(60-(d.getSeconds()))
+                output.innerText =pd(18-d.getHours())  + ":" + pd(59-(d.getMinutes())) + ":" + pd(60-(d.getSeconds()))
             }, 1000);
         c();
     </script>

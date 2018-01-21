@@ -108,15 +108,38 @@ export class TeamVictory extends PIXI.Container {
             let avtArr = []
             let lPlayerArr = []
             let rPlayerArr = []
+            let kdaMap
+            let mergeLTeamScore = 0, mergeRTeamScore = 0
+            if (data.isMergeKDA) {
+                kdaMap = data.mergeKDA
+            }
+            else
+                kdaMap = data.kdaMap
             for (let player of data.lTeamInfo.playerArr) {
                 avtArr.push(player.avatar)
-                player.kda = data.kdaMap[player.pid]
+                player.kda = kdaMap[player.pid]
                 lPlayerArr.push(player)
+                if (player.kda)
+                    mergeLTeamScore += player.kda.score
+                console.log('merger', player)
             }
+
+
             for (let player of data.rTeamInfo.playerArr) {
                 avtArr.push(player.avatar)
-                player.kda = data.kdaMap[player.pid]
+                player.kda = kdaMap[player.pid]
                 rPlayerArr.push(player)
+                if (player.kda)
+                    mergeRTeamScore += player.kda.score
+            }
+
+            if (data.isMergeKDA) {
+                for (let player of data.lTeamInfo.playerArr) {
+                    player.kda.dmgPerc = Math.floor(100 * player.kda.score / mergeLTeamScore)
+                }
+                for (let player of data.rTeamInfo.playerArr) {
+                    player.kda.dmgPerc = Math.floor(100 * player.kda.score / mergeRTeamScore)
+                }
             }
             //win team name
             this.teamText.text = data.winTeamInfo.name + ' 获胜'
@@ -124,7 +147,10 @@ export class TeamVictory extends PIXI.Container {
             this.teamTextShadow.text = this.teamText.text
             this.teamTextShadow.x = this.teamText.x
             //score
-            this.scoreText.text = data.lTeamScore + " : " + data.rTeamScore
+            if (data.isMergeKDA)
+                this.scoreText.text = mergeLTeamScore + " : " + mergeRTeamScore
+            else
+                this.scoreText.text = data.lTeamScore + " : " + data.rTeamScore
             imgLoader.loadTex(`/img/panel/final2/victory/team${data.winTeamInfo.id}.png`, teamLogoTex => {
                 this.teamLogo.texture = teamLogoTex
             })
