@@ -116,8 +116,14 @@ export class BitmapText extends PIXI.Container {
     // }
 
     set text(v: string) {
+        if (Number(v) < 0)
+            return
         var digiIdx = 0
         var num = v.charAt(digiIdx)
+        for (let k in this.digis) {
+            let dg = this.digis[k]
+            dg.visible = false
+        }
         while (num != '') {
             let idx = this.animations[num]
             if (idx > -1) {
@@ -133,6 +139,7 @@ export class BitmapText extends PIXI.Container {
                 }
                 let digiFrame = this.digis[digiIdx]
                 digiFrame.x = digiIdx * this._frameWidth
+                digiFrame.visible = true
                 digiFrame['idx'] = digiIdx
                 digiFrame['sp'].x = - ofsX
                 digiFrame['sp'].y = - ofsY

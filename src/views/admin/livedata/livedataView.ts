@@ -38,6 +38,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SHOW_IMG = 'EVENT_SHOW_IMG'
     static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
     static EVENT_RESET_PLAYER = 'EVENT_RESET_PLAYER'
+    static EVENT_BO3_SCORE = 'EVENT_BO3_SCORE'
     static EVENT_ON_FILE = 'EVENT_ON_FILE'
     gameView: IBaseGameView
     gmv: GameMonthView
@@ -424,5 +425,10 @@ export default class LiveDataView extends EventDispatcher {
                 a0 = curPid
             }
         }
+    }
+
+    setBo3Score(inputStr) {
+        
+        this.emit(LiveDataView.EVENT_BO3_SCORE,inputStr)
     }
 }

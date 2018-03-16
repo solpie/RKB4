@@ -44,6 +44,10 @@ export default class CommonView extends BaseGameView {
             this.emitScoreFoul(data)
         })
 
+        lv.on(LVE.EVENT_BO3_SCORE, inputScore => {
+            this.emitBo3Score(inputScore)
+        })
+
         lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
             console.log('EVENT_SET_SCORE', scoreStr);
             this.setScore(scoreStr, doc => {
@@ -77,6 +81,14 @@ export default class CommonView extends BaseGameView {
         }, true)
     }
 
+    emitBo3Score(inputScore) {
+        let a = inputScore.split(' ')
+        if (a.length == 2) {
+            let data = { _: '', leftScore: a[0], rightScore: a[1] }
+            $post(`/emit/${WebDBCmd.cs_bo3Score}`, data)
+        }
+    }
+    
     setGameInfo(gameIdx) {
         syncDoc(dbIdx, doc => {
             let rec = doc['rec'][gameIdx]
@@ -109,10 +121,13 @@ export default class CommonView extends BaseGameView {
             gameTitle = '败者组'
             // gameIdxStr = gameIdxStr
         }
+        else if (this['inputRollText'] == 'bo3') {
+            winScore = 11
+            gameTitle = '精英赛'
+        }
         else if (this['inputRollText'] == 'w') {
             winScore = 3
             gameTitle = '胜者组'
-            // gameIdxStr = gameIdxStr
         }
         else if (this['inputRollText'] == '单淘') {
             winScore = 3
@@ -266,7 +281,7 @@ export default class CommonView extends BaseGameView {
             let data = {
                 _: null, visible: true, winner: winPlayer.data,
                 gameTitle: gameTitle.gameTitle,
-                panel:this.panelVersion,
+                panel: this.panelVersion,
                 rec: rec, gameIdx: this.gameIdx, reward: reward, isLeft: isLeft
             }
             $post(`/emit/${WebDBCmd.cs_showVictory}`, data)
@@ -288,7 +303,7 @@ export default class CommonView extends BaseGameView {
             doc.gameIdx = 0
         }, true)
     }
-    
+
     initView(doc) {
         let recMap = doc.rec
         let rowArr: any = []

@@ -29,6 +29,9 @@ export const WebDBCmd = {
     sc_showGameProcess: ``,
     cs_bracket24Init: ``,
     sc_bracket24Init: ``,
+    //bo3
+    cs_bo3Score: ``,
+    sc_bo3Score: ``,
     //
     cs_3v3Init: ``,
     sc_3v3Init: ``,

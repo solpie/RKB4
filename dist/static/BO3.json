@@ -1,0 +1,13 @@
+{
+    "date": "2018-03-17",
+    "dbIdx": "1021",
+    "panel": "BO3",
+    "gameTitle": "广州",
+    "avatarUrlBase": "http://127.0.0.1:8088/img/player/bo3/",
+    "playerArr": [
+        { "playerId": "p1", "age": 28, "rankType": 6, "rank": "", "realName": "黄鹏峰(斗鱼峰峰)", "name": "黄鹏峰(斗鱼峰峰)", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e", "height": 189, "weight": 85 },
+        { "playerId": "p2", "age": 21, "rankType": 6, "rank": "", "realName": "郑慧杰", "name": "郑慧杰", "avatar": "http://i1.hoopchina.com.cn/user/59/30635059/30635059-1502861927.jpg@194h_194w_2e", "height": 175, "weight": 64 },
+        { "playerId": "p3", "age": 25, "rankType": 1, "rank": "6", "realName": "Rudan", "name": "Rudan", "avatar": "http://i1.hoopchina.com.cn/user/59/30635059/30635059-1502861927.jpg@194h_194w_2e", "height": 200, "weight": 100 },
+        { "playerId": "p4", "age": 24, "rankType": 2, "rank": "30", "realName": "黄宇军", "name": "黄宇军", "avatar": "http://i1.hoopchina.com.cn/user/59/30635059/30635059-1502861927.jpg@194h_194w_2e", "height": 172, "weight": 68 }
+    ]
+}
