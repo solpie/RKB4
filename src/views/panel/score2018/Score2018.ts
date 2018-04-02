@@ -263,7 +263,6 @@ export class Score2018 {
         this.gameTitle.x = 960 - this.gameTitle.width * .5
 
 
-
         this.setScoreFoul(data)
         let lPlayer = data.leftPlayer
         let rPlayer = data.rightPlayer
