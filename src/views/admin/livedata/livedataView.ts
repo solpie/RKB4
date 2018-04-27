@@ -38,7 +38,7 @@ export default class LiveDataView extends EventDispatcher {
     static EVENT_SHOW_IMG = 'EVENT_SHOW_IMG'
     static EVENT_SYNC_PLAYER = 'EVENT_SYNC_PLAYER'
     static EVENT_RESET_PLAYER = 'EVENT_RESET_PLAYER'
-    static EVENT_BO3_SCORE = 'EVENT_BO3_SCORE'
+    static EVENT_5GROUP = 'EVENT_5GROUP'
     static EVENT_ON_FILE = 'EVENT_ON_FILE'
     gameView: IBaseGameView
     gmv: GameMonthView
@@ -387,7 +387,6 @@ export default class LiveDataView extends EventDispatcher {
             this.reader.addEventListener("load", (event) => {
                 console.log("EVENT_ON_FILE", event.target['result']);
                 this.emit("EVENT_ON_FILE", event.target['result']);
-
                 let f = this.$vm.finalData
                 var output = [];
                 output.push(
@@ -427,8 +426,7 @@ export default class LiveDataView extends EventDispatcher {
         }
     }
 
-    setBo3Score(inputStr) {
-        
-        this.emit(LiveDataView.EVENT_BO3_SCORE,inputStr)
+    show5Group(v) {
+        this.emit(LiveDataView.EVENT_5GROUP,v)
     }
 }

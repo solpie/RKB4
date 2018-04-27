@@ -11,8 +11,10 @@ class ImgLoader {
                 callback(this._texMap[url])
             }, isCrossOrigin);
         }
-        else
+        else {
+            console.log('loaded:', url);
             callback(this._texMap[url])
+        }
     }
 
     loadTexArr(urlArr, callback, isCrossOrigin = false) {
@@ -28,6 +30,7 @@ class ImgLoader {
     }
 
     getTex(url) {
+        console.log(this._texMap)
         return this._texMap[url]
     }
 }

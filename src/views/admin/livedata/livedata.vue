@@ -155,7 +155,8 @@
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
-                <el-button @click='_("setBo3Score",inputScore)'>Bo3比分</el-button>
+                <el-button @click='_("show5Group",true)'>Bo3 5 group</el-button>
+                <el-button @click='_("show5Group",false)'>Bo3 5 group</el-button>
             </el-row>
             <el-row>
                 <hr>
@@ -164,9 +165,17 @@
                 <el-button @click='_("testRandomGame",62)'>testRandomGame</el-button>
                 <el-button @click='_("testRandomGame",16)'>testRandomGame 16</el-button>
                 <el-button @click='_("testRandomGame",52)'>testRandomGame 52 八强</el-button>
-
             </el-row>
+        
             <el-row>
+                <input type="file" id="files" name="files[]" hidden />
+                <el-button @click="onFile">...</el-button>
+                <el-button id="reloadFile" @click='_("reloadFile")'>reload</el-button>
+                <output id="list"></output>
+
+                <el-button @click='_("dumpPlayer",inputRollText)'>dump player</el-button>
+            </el-row>
+                <el-row>
                 <hr>
                 <a href="/panel.html?panel=backend"> /panel.html?panel=backend</a>
                 <br>
@@ -176,13 +185,12 @@
                 <br>
                 <a href="/panel.html?panel=score&m=0">/panel.html?panel=score&m=0</a>
                 <br>
-            </el-row>
-            <el-row>
-                <input type="file" id="files" name="files[]" hidden />
-                <el-button @click="onFile">...</el-button>
-                <output id="list"></output>
-
-                <el-button @click='_("dumpPlayer",inputRollText)'>dump player</el-button>
+                <a href="/panel.html?panel=bo3&5g=0">/panel.html?panel=bo3&5g=0</a>
+                <br>
+                <a href="/panel.html?panel=bo3&5g=1">/panel.html?panel=bo3&5g=1</a>
+                <br>
+                <a href="/panel.html?panel=vote">/panel.html?panel=vote</a>
+                <br>
             </el-row>
         </el-col>
         <!--<iframe class='preview' id='panelPreview' src='/dev/panel.html'></iframe>-->
@@ -227,6 +235,7 @@ _data = commonView
 // _data = finalView
 
 let hasFileHandle = false;
+let filesInput;
 export default {
   data() {
     return _data;
@@ -241,45 +250,24 @@ export default {
     rowClick(row, event, col) {
       this._("getGameInfo", row, event, col);
     },
-    onFile() {
+     onFile() {
       if (!hasFileHandle) {
         hasFileHandle = true;
-        document.getElementById("files").addEventListener(
+        if (!filesInput) filesInput = document.getElementById("files");
+        filesInput.addEventListener(
           "change",
           evt => {
             var files = evt.target.files; // FileList object
-            // files is a FileList of File objects. List some properties.
-            var output = [];
             for (var i = 0, f; (f = files[i]); i++) {
-              var reader = new FileReader();
-              reader.addEventListener("load", function(event) {
-                console.log("EVENT_ON_FILE", event.target.result);
-                livedataView.emit("EVENT_ON_FILE", event.target.result);
-              });
-
-              reader.readAsText(f, "utf-8");
-              output.push(
-                "<li><strong>",
-                f.name,
-                "</strong> (",
-                f.type || "n/a",
-                ") - ",
-                f.size,
-                " bytes, last modified: ",
-                f.lastModifiedDate
-                  ? f.lastModifiedDate.toLocaleDateString()
-                  : "n/a",
-                "</li>"
-              );
+              livedataView.$vm.finalData = f;
+              document.getElementById("reloadFile").click();
             }
-            document.getElementById("list").innerHTML =
-              "<ul>" + output.join("") + "</ul>";
           },
           false
         );
       }
       document.getElementById("files").click();
-    }
+    },
   }
 };
 </script>

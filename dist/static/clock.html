@@ -12,7 +12,7 @@
         }
         
         .sh {
-            font-size: 150px;
+            font-size: 100px;
             font-family: "微软雅黑";
             color: #fff;
         }
@@ -20,20 +20,44 @@
 </head>
 
 <body translate="no">
-
     <div class="sh">即将开始</div>
     <div id="output" class="out"></div>
 
     <script>
-        var d
-		var pd =function(d){if(d<10)return '0'+d;return d+""}
-        setInterval(
-            c = function() {
-                var d = new Date()
-                output.innerText =pd(18-d.getHours())  + ":" + pd(59-(d.getMinutes())) + ":" + pd(60-(d.getSeconds()))
-            }, 1000);
-        c();
+        var pd = function(d) {
+            if (d < 10) return '0' + d;
+            return d + ""
+        }
+        var d = new Date()
+        var endTime = '19:30'
+        var end = new Date(pd(d.getMonth() + 1) + '/' + pd(d.getDate()) + "/" + d.getFullYear() + ' ' + endTime);
+        // var end = new Date('04/29/2018 19:30');
+
+        var _second = 1000;
+        var _minute = _second * 60;
+        var _hour = _minute * 60;
+        var _day = _hour * 24;
+        var timer;
+
+        function showRemaining() {
+            var now = new Date();
+            var distance = end - now;
+            if (distance < 0) {
+
+                clearInterval(timer);
+                document.getElementById('countdown').innerHTML = 'EXPIRED!';
+
+                return;
+            }
+            var days = Math.floor(distance / _day);
+            var hours = Math.floor((distance % _day) / _hour);
+            var minutes = Math.floor((distance % _hour) / _minute);
+            var seconds = Math.floor((distance % _minute) / _second);
+            output.innerText = pd(hours) + ":" + pd(minutes) + ":" + pd(seconds)
+        }
+        timer = setInterval(showRemaining, 1000);
     </script>
+    <div id="countdown"></div>
 </body>
 
 </html>

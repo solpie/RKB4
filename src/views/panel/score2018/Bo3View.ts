@@ -3,11 +3,13 @@ import { TimerState, FontName } from '../const';
 import { TweenEx } from '../../utils/TweenEx';
 import { getUrlQuerys, $post } from '../../utils/WebJsFunc';
 import { Score2018 } from './Score2018';
+import { Group5 } from './5Group';
 declare let $;
 declare let io;
 export class Bo3View {
     localWS
     scorePanel: Score2018
+    _5group: Group5
     stage: any
     is3v3: Boolean = false
     constructor(stage) {
@@ -25,9 +27,11 @@ export class Bo3View {
             this.initPanel()
             // stage.addChild(teamVictory)
         })
+
     }
     initPanel() {
-        this.scorePanel = new Score2018(this.stage)
+        if (getUrlQuerys('5g') != '1')
+            this.scorePanel = new Score2018(this.stage)
         // let teamVictory = new TeamVictory(this.stage)
         // this.teamVictory = teamVictory
     }
@@ -55,7 +59,14 @@ export class Bo3View {
             })
             .on(`${WebDBCmd.sc_bo3Score}`, (data) => {
                 console.log('sc_bo3Score', data);
-                this.scorePanel.setBo3Score(data)
+                if (this.scorePanel)
+                    this.scorePanel.setBo3Score(data)
+            })
+            .on(`${WebDBCmd.sc_bo3_5group}`, (data) => {
+                console.log('sc_bo3_5group', data);
+                if (getUrlQuerys('5g') == '1')
+                    this.show5Group(data)
+                // this.scorePanel.setBo3Score(data)
             })
             .on(`${WebDBCmd.sc_setTimer}`, (data) => {
                 console.log('webdbcmd', data);
@@ -76,6 +87,18 @@ export class Bo3View {
                     this.scorePanel.setTimer(data.sec)
                 }
             })
+    }
+    show5Group(data) {
+        if (data.visible) {
+            if (!this._5group) {
+                this._5group = new Group5(this.stage, data)
+            }
+            this._5group.show(data)
+        }
+        else {
+            if (this._5group)
+                this._5group.hide()
+        }
     }
     preLoadFont(fontName) {
         let t = new PIXI.Text('', {

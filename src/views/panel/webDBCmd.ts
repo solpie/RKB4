@@ -32,6 +32,8 @@ export const WebDBCmd = {
     //bo3
     cs_bo3Score: ``,
     sc_bo3Score: ``,
+    cs_bo3_5group: ``,
+    sc_bo3_5group: ``,
     //
     cs_3v3Init: ``,
     sc_3v3Init: ``,

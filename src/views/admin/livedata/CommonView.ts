@@ -4,9 +4,11 @@ import { WebDBCmd } from "../../panel/webDBCmd";
 import { $post } from "../../utils/WebJsFunc";
 import { PlayerInfo } from "./PlayerInfo";
 import { paddy } from "../../utils/JsFunc";
+import { Bo3BackView } from './Bo3';
 
 let LVE = LiveDataView
 let dbIdx;
+
 export default class CommonView extends BaseGameView {
     isLoadedCfg = false
     playerMap = {}
@@ -14,8 +16,10 @@ export default class CommonView extends BaseGameView {
     lHupuID = ''
     rHupuID = ''
     panelVersion = 'M4'
+    bo3BackView: Bo3BackView
     constructor(liveDataView: LiveDataView) {
         super()
+        this.bo3BackView = new Bo3BackView(liveDataView)
         liveDataView.on(LVE.EVENT_ON_FILE, data => {
             this.loadGameCfg(data)
             this.initCommonView(liveDataView)
@@ -42,10 +46,6 @@ export default class CommonView extends BaseGameView {
 
         lv.on(LVE.EVENT_UPDATE_SCORE, data => {
             this.emitScoreFoul(data)
-        })
-
-        lv.on(LVE.EVENT_BO3_SCORE, inputScore => {
-            this.emitBo3Score(inputScore)
         })
 
         lv.on(LVE.EVENT_SET_SCORE, scoreStr => {
@@ -81,14 +81,15 @@ export default class CommonView extends BaseGameView {
         }, true)
     }
 
-    emitBo3Score(inputScore) {
-        let a = inputScore.split(' ')
-        if (a.length == 2) {
-            let data = { _: '', leftScore: a[0], rightScore: a[1] }
-            $post(`/emit/${WebDBCmd.cs_bo3Score}`, data)
-        }
-    }
-    
+    // emitBo3Score(inputScore) {
+    //     let a = inputScore.split(' ')
+    //     if (a.length == 2) {
+    //         let data = { _: '', leftScore: a[0], rightScore: a[1] }
+    //         $post(`/emit/${WebDBCmd.cs_bo3Score}`, data)
+    //     }
+    // }
+
+
     setGameInfo(gameIdx) {
         syncDoc(dbIdx, doc => {
             let rec = doc['rec'][gameIdx]
@@ -197,6 +198,10 @@ export default class CommonView extends BaseGameView {
                 p.avatar = gameCfg.avatarUrlBase + p.playerId + '.png'
             let data = JSON.parse(JSON.stringify(p))
             p.data = data
+            p.realName = p.data.name
+            p.height = data.hwa[0]
+            p.weight = data.hwa[1]
+            p.age = data.hwa[2]
             // console.log(p.playerId.replace('p',""), p.name);
         }
         console.log('player count:', playerArr.length);
@@ -211,6 +216,7 @@ export default class CommonView extends BaseGameView {
             else
                 this.createDoc(dbIdx)
         })
+        this.bo3BackView.updateBo3Data(gameCfg, this.playerMap)
     }
 
     setPlayer(lPlayerId, rPlayerId) {
@@ -304,6 +310,8 @@ export default class CommonView extends BaseGameView {
         }, true)
     }
 
+
+    ////
     initView(doc) {
         let recMap = doc.rec
         let rowArr: any = []

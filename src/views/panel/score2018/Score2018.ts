@@ -132,13 +132,13 @@ export class Score2018 {
         lIcon.x = 517
         lIcon.y = 25
         this.lIcon = lIcon
-        ctn.addChild(lIcon)
+        // ctn.addChild(lIcon)
 
         let rIcon = new PIXI.Sprite()
         rIcon.x = 1365
         rIcon.y = lIcon.y
         this.rIcon = rIcon
-        ctn.addChild(rIcon)
+        // ctn.addChild(rIcon)
 
         setScale(lIcon, 0.40)
         setScale(rIcon, 0.40)
@@ -216,10 +216,10 @@ export class Score2018 {
         let bo3Score = new PIXI.Text('0 - 0', {
             fontFamily: FontName.Impact,
             // fontWeight: 'bold',
-            fontSize: '26px', fill: "#fff"
+            fontSize: '35px', fill: "#fff"
 
         })
-        bo3Score.y = 29
+        bo3Score.y = 22
         bo3Score.x = 960 - bo3Score.width * .5
         this.bo3Score = bo3Score
         ctn.addChild(bo3Score)
@@ -230,12 +230,12 @@ export class Score2018 {
         }
         let lRank = new PIXI.Text('', rs)
         this.lRank = lRank
-        ctn.addChild(lRank)
+        // ctn.addChild(lRank)
         lRank.y = 32
 
         let rRank = new PIXI.Text('', rs)
         this.rRank = rRank
-        ctn.addChild(rRank)
+        // ctn.addChild(rRank)
         rRank.x = 1410
         rRank.y = lRank.y
 
@@ -257,15 +257,17 @@ export class Score2018 {
     test() {
     }
 
-
+    lPlayer: string
+    rPlayer: string
     setInit(data) {
         this.gameTitle.text = data.gameTitle
         this.gameTitle.x = 960 - this.gameTitle.width * .5
 
-
         this.setScoreFoul(data)
         let lPlayer = data.leftPlayer
         let rPlayer = data.rightPlayer
+        this.lPlayer = lPlayer.playerId
+        this.rPlayer = rPlayer.playerId
         let lIconUrl = '/img/icon/' + lPlayer.rankType + '.png'
         let rIconUrl = '/img/icon/' + rPlayer.rankType + '.png'
         imgLoader.loadTex(lIconUrl, tex => {
@@ -274,20 +276,19 @@ export class Score2018 {
         imgLoader.loadTex(rIconUrl, tex => {
             this.rIcon.texture = tex
         })
-
         loadAvt(this.lAvt, lPlayer.avatar)
         loadAvt(this.rAvt, rPlayer.avatar)
 
-        this.lName.text = lPlayer.realName
-        fitWidth(this.lName,258,35)
+        this.lName.text = lPlayer.name
+        fitWidth(this.lName, 258, 35)
         this.lName.x = 718 - this.lName.width
-        this.rName.text = rPlayer.realName
-        fitWidth(this.rName,258,35)
+        this.rName.text = rPlayer.name
+        fitWidth(this.rName, 258, 35)
 
-        this.lHeightWeight.text = lPlayer.height + 'cm | ' + lPlayer.weight + 'kg'
+        this.lHeightWeight.text = lPlayer.hwa[0] + 'cm | ' + lPlayer.hwa[1] + 'kg'
         this.lHeightWeight.x = 713 - this.lHeightWeight.width
 
-        this.rHeightWeight.text = rPlayer.height + 'cm | ' + rPlayer.weight + 'kg'
+        this.rHeightWeight.text = rPlayer.hwa[0] + 'cm | ' + rPlayer.hwa[1] + 'kg'
 
         this.lRank.text = lPlayer.rank
         this.lRank.x = 510 - this.lRank.width
@@ -330,7 +331,12 @@ export class Score2018 {
     }
 
     setBo3Score(data) {
-        this.bo3Score.text = data.leftScore + ' - ' + data.rightScore
+        console.log('set bo3 score ', this.lPlayer, this.rPlayer);
+        for (let gs of data.groupScore) {
+            if (gs.player[0] == this.lPlayer && gs.player[1] == this.rPlayer) {
+                this.bo3Score.text = gs.score[0] + ' - ' + gs.score[1]
+            }
+        }
     }
 
     toggleTimer(v) {

@@ -24,6 +24,7 @@ import { Final2ScoreView } from './final2/Final2ScoreView';
 import { Bo3View } from './score2018/Bo3View';
 
 // import io from 'socket.io-client';
+import { Vote } from './score2018/Vote';
 // window['io'] = io
 // console.log('socket.io ', io);
 // document.getElementsByTagName('body')['style'].margin = 0
@@ -84,6 +85,10 @@ else if (panel == 'bo3') {
     s = window['stage'] = initPIXI()
     let scoreView = new Bo3View(s)
     localWS = scoreView.localWS
+}
+else if (panel == 'vote') {
+    s = window['stage'] = initPIXI()
+    let votePanel = new Vote(s)
 }
 else if (panel == 'poker') {
     s = window['stage'] = initPIXI()
