@@ -4,6 +4,7 @@ import { imgLoader } from '../../utils/ImgLoader';
 import { FontName } from '../const';
 import { TextTimer } from '../../utils/TextTimer';
 import { fitWidth } from '../bracket/BracketGroup';
+import { VsTitle } from './VsTitle';
 const skin = {
     bg: '/img/panel/score2018/bg2.png',
     score: '/img/panel/score2018/score.png',
@@ -48,6 +49,7 @@ export class Score2018 {
     gameTitle: PIXI.Text
 
     bo3Score: PIXI.Text
+    vsTitle: VsTitle
     constructor(stage) {
         this.p = stage
         let baseCtn = new PIXI.Container()
@@ -147,8 +149,8 @@ export class Score2018 {
         let fts = {
             fontFamily: FontName.Impact,
             fontSize: '30px', fill: "#c2c1d4",
-            fontWeight: 'bold'
         }
+
         let foulL = new PIXI.Text("0", fts)
         foulL.x = 716
         foulL.y = 115
@@ -251,6 +253,9 @@ export class Score2018 {
         gameTitle.y = 55
 
 
+
+        this.vsTitle = new VsTitle()
+        this.vsTitle.create(baseCtn)
         this.test()
     }
 
@@ -276,6 +281,10 @@ export class Score2018 {
         imgLoader.loadTex(rIconUrl, tex => {
             this.rIcon.texture = tex
         })
+        if (rPlayer.playerId == 'p11')
+            rPlayer.avatar = '/img/player/bo3/p11.png'
+        if (lPlayer.playerId == 'p11')
+            lPlayer.avatar = '/img/player/bo3/p11.png'
         loadAvt(this.lAvt, lPlayer.avatar)
         loadAvt(this.rAvt, rPlayer.avatar)
 
@@ -296,6 +305,8 @@ export class Score2018 {
 
         this.lIcon.visible = lPlayer.rank != ''
         this.rIcon.visible = rPlayer.rank != ''
+
+        this.vsTitle.show({ vs: lPlayer.title + ' ' + rPlayer.title })
     }
 
     setScoreFoul(data) {

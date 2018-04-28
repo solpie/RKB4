@@ -155,8 +155,8 @@
                 <br>
                 <el-input v-model="inputScore" placeholder="3 1" style="width:90px"></el-input>
                 <el-button @click='_("setScore",inputScore)'>修改比分</el-button>
-                <el-button @click='_("show5Group",true)'>Bo3 5 group</el-button>
-                <el-button @click='_("show5Group",false)'>Bo3 5 group</el-button>
+                <el-button @click='_("show5Group",true)'>5 group 更新</el-button>
+                <el-button @click='_("show5Group",false)'>5 group hide</el-button>
             </el-row>
             <el-row>
                 <hr>
@@ -170,7 +170,7 @@
             <el-row>
                 <input type="file" id="files" name="files[]" hidden />
                 <el-button @click="onFile">...</el-button>
-                <el-button id="reloadFile" @click='_("reloadFile")'>reload</el-button>
+                <el-button id="reloadFile" @click='_("reloadFile")'>reload</el-button>reload更新bo3 比分
                 <output id="list"></output>
 
                 <el-button @click='_("dumpPlayer",inputRollText)'>dump player</el-button>
@@ -224,10 +224,9 @@ import CommonView from "./CommonView";
 // livedataView.appendProp(doubleElimination24);
 // _data = doubleElimination24;
 
-
 let commonView = new CommonView(livedataView);
 livedataView.appendProp(commonView);
-_data = commonView
+_data = commonView;
 
 // import Final2TeamView from './Final2TeamView'
 // let finalView = new Final2TeamView(livedataView)
@@ -250,7 +249,7 @@ export default {
     rowClick(row, event, col) {
       this._("getGameInfo", row, event, col);
     },
-     onFile() {
+    onFile() {
       if (!hasFileHandle) {
         hasFileHandle = true;
         if (!filesInput) filesInput = document.getElementById("files");
@@ -267,7 +266,7 @@ export default {
         );
       }
       document.getElementById("files").click();
-    },
+    }
   }
 };
 </script>

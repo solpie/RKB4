@@ -73,6 +73,11 @@ export let postGameArrJson = (gameJson, callback) => {
     $post(_proxyJSON(url), data, callback)
 }
 
+export let getVoteData = ( callback) => {
+    let url = 'http://api.liangle.com/api/elitevote/players'
+    _get(_proxyJSON(url), callback)
+}
+
 
 export let getPlayerInfoArr = (playerIdArr, callback) => {
     let a = playerIdArr.concat()

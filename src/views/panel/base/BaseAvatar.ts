@@ -7,24 +7,55 @@ export class BaseAvatar extends PIXI.Container {
     avtWidth
     isLoaded = false
     isRemote = true
-    constructor(maskUrl, width) {
+    constructor(maskUrl?, width?, maskG?) {
         super()
         this.avtWidth = width
-        imgLoader.loadTex(maskUrl, tex => {
-            this.isLoaded = true
-            this.msk = new PIXI.Sprite(tex)
-            setScale(this.msk, this.avtWidth / tex.width)
-            this.addChild(this.msk)
+        if (maskUrl)
+            imgLoader.loadTex(maskUrl, tex => {
+                this.isLoaded = true
+                this.msk = new PIXI.Sprite(tex)
 
+                setScale(this.msk, this.avtWidth / tex.width)
+                this.addChild(this.msk)
+
+                this.avt = new PIXI.Sprite()
+                this.addChild(this.avt)
+                this.avt.mask = this.msk
+
+                if (this.waitUrl) {
+                    this.load(this.waitUrl)
+                    this.waitUrl = null
+                }
+            })
+        else if (maskG) {
+            this.isLoaded = true
+            this.msk = maskG
+
+            setScale(this.msk, this.avtWidth / maskG.width)
+            this.addChild(this.msk)
+    
             this.avt = new PIXI.Sprite()
             this.addChild(this.avt)
             this.avt.mask = this.msk
-
+    
             if (this.waitUrl) {
                 this.load(this.waitUrl)
                 this.waitUrl = null
             }
-        })
+        }
+    }
+    _setup() {
+        // setScale(this.msk, this.avtWidth / tex.width)
+        // this.addChild(this.msk)
+
+        // this.avt = new PIXI.Sprite()
+        // this.addChild(this.avt)
+        // this.avt.mask = this.msk
+
+        // if (this.waitUrl) {
+        //     this.load(this.waitUrl)
+        //     this.waitUrl = null
+        // }
     }
     waitUrl: string
     load(url) {

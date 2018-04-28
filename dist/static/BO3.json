@@ -3,25 +3,26 @@
     "dbIdx": "1021",
     "panel": "BO3",
     "gameTitle": "广州",
-    "avatarUrlBase": "http://127.0.0.1:8088/img/player/bo3/",
+    "avatarUrlBase": "",
     "groupScore": [
-        { "score": [1, 2], "player": ["p1", "p2"] },
+        { "score": [1, 3], "player": ["p1", "p2"] },
         { "score": [1, 3], "player": ["p3", "p4"] },
         { "score": [1, 0], "player": ["p5", "p6"] },
         { "score": [1, 0], "player": ["p7", "p8"] },
-        { "score": [1, 0], "player": ["p9", "p10"] }
+        { "score": [1, 2], "player": ["p9", "p10"] },
+        { "score": [1, 0], "player": ["p11", "p1"] }
     ],
     "playerArr": [
-        { "playerId": "p6", "name": "阿隆-史密斯", "hwa": [175, 65, 26], "title": "NCAA美式后卫", "rankType": 6, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p7", "name": "孟亚东", "hwa": [191, 88, 21], "title": "路人王新生代魔王", "rankType": 1, "rank": "2", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p5", "name": "方良超", "hwa": [174, 75, 26], "title": "路人王无畏大师", "rankType": 1, "rank": "43", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p3", "name": "伍志勋", "hwa": [192, 78, 26], "title": "国民校草 前CUBA云南财经大学队员", "rankType": 1, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p9", "name": "黄宇军", "hwa": [172, 68, 24], "title": "路人王明星球员", "rankType": 1, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p4", "name": "杨澍", "hwa": [184, 70, 26], "title": "青年演员 中国传媒大学篮球赛MVP", "rankType": 1, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p8", "name": "顾希欣", "hwa": [180, 70, 31], "title": "上海知名野球手", "rankType": 1, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p2", "name": "矫凯文", "hwa": [188, 90, 25], "title": "NBL总冠军成员", "rankType": 1, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p10", "name": "王嵘", "hwa": [183, 74, 25], "title": "CUBA总冠军北大女篮单挑王", "rankType": 1, "rank": "", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p1", "name": "申屠逸斐", "hwa": [188, 83, 22], "title": "前CBA山西队后卫", "rankType": 1, "rank": "20", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" },
-        { "playerId": "p11", "name": "乔伊-海伍德", "hwa": [185, 77, 33], "title": "上帝之手", "rankType": 1, "rank": "20", "avatar": "http://i4.hoopchina.com.cn/user/d5/9c/1e/d59c1e6c260173108808eb4ae4431dd3001.jpg@194h_194w_2e" }
+        { "playerId": "p6", "name": "Aaron Smith", "hwa": [175, 65, 26], "title": "NCAA美式后卫", "rankType": 6, "rank": "", "avatar": "http://w1.hoopchina.com.cn/62/bc/b0/62bcb0cb58b1b9d70aeff144e86e1d4a002.png@600w_600h_2e" },
+        { "playerId": "p7", "name": "孟亚东", "hwa": [191, 88, 21], "title": "路人王新生代魔王", "rankType": 1, "rank": "2", "avatar": "http://w3.hoopchina.com.cn/48/22/c6/4822c6046565b04074a7eaac2ad89889001.jpg@600w_600h_2e" },
+        { "playerId": "p5", "name": "方良超", "hwa": [174, 75, 26], "title": "路人王无畏大师", "rankType": 1, "rank": "43", "avatar": "http://w2.hoopchina.com.cn/b3/9b/49/b39b4930eaa8bde2d064e33a87116d9b002.png@600w_600h_2e" },
+        { "playerId": "p3", "name": "伍志勋", "hwa": [192, 78, 26], "title": "国民校草 前CUBA云南财经大学队员", "rankType": 1, "rank": "", "avatar": "http://w1.hoopchina.com.cn/df/13/ba/df13bae70e9f2fd17dd1f4a67e1e2bb1002.png@600w_600h_2e" },
+        { "playerId": "p9", "name": "黄宇军", "hwa": [172, 68, 24], "title": "路人王明星球员", "rankType": 1, "rank": "", "avatar": "http://w3.hoopchina.com.cn/73/d7/0d/73d70db4d0e9986e93323ab27ad27c73001.jpg@600w_600h_2e" },
+        { "playerId": "p4", "name": "杨澍", "hwa": [184, 70, 26], "title": "青年演员 中国传媒大学篮球赛MVP", "rankType": 1, "rank": "", "avatar": "http://w3.hoopchina.com.cn/2c/64/fb/2c64fb2633c5275e3e3c18db7cd18744002.png@600w_600h_2e" },
+        { "playerId": "p8", "name": "顾希欣", "hwa": [180, 70, 31], "title": "上海知名野球手", "rankType": 1, "rank": "", "avatar": "http://w1.hoopchina.com.cn/d6/f6/75/d6f675c155399ac60d89aeaf8deb774a002.png@600w_600h_2e" },
+        { "playerId": "p2", "name": "矫凯文", "hwa": [188, 90, 25], "title": "NBL总冠军成员", "rankType": 1, "rank": "", "avatar": "http://w1.hoopchina.com.cn/9a/53/c2/9a53c2f3334bb19715c7c84226e1daa3002.png@600w_600h_2e" },
+        { "playerId": "p10", "name": "王嵘", "hwa": [183, 74, 25], "title": "CUBA总冠军北大女篮单挑王", "rankType": 1, "rank": "", "avatar": "http://w1.hoopchina.com.cn/83/8c/a2/838ca239894831c36d2532401f75d7b8002.png@600w_600h_2e" },
+        { "playerId": "p1", "name": "申屠逸斐", "hwa": [188, 83, 22], "title": "前CBA山西队后卫", "rankType": 1, "rank": "20", "avatar": "http://w4.hoopchina.com.cn/7d/4f/13/7d4f136365a3c95a17f8c84dcc46defe002.png@600w_600h_2e" },
+        { "playerId": "p11", "name": "Joey Haywood", "hwa": [185, 77, 33], "title": "上帝之手", "rankType": 1, "rank": "20", "avatar": "" }
     ]
 }

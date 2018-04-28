@@ -277,3 +277,17 @@ export function showObj(obj) {
         obj.__parent.addChild(obj)
     }
 }
+
+export function gradientG(g: PIXI.Graphics, x, y, w, h, col1, col2) {
+    let c1 = [col1 >> 16, (col1 & 0x00ff00) >> 8, col1 & 0x0000ff]
+    let c2 = [col2 >> 16, (col2 & 0x00ff00) >> 8, col2 & 0x0000ff]
+    let colorR, colorG, colorB
+    for (let i = 0; i < h; i++) {
+        colorR = c1[0] - Math.floor((c1[0] - c2[0]) * i / h)
+        colorG = c1[1] - Math.floor((c1[1] - c2[1]) * i / h)
+        colorB = c1[2] - Math.floor((c1[2] - c2[2]) * i / h)
+        g.beginFill((colorR << 16) + (colorG << 8) + colorB)
+        g.drawRect(x, y + i, w, 1)
+    }
+    g.endFill()
+}
