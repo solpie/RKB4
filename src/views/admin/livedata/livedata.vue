@@ -39,12 +39,12 @@
             <el-row>
                 <el-col :span='4'>
                     L Score
-                    <el-button @click='_("setLScore",lScore+1)'>+1</el-button>
-                    <el-button @click='_("setLScore",lScore-1)'>-1</el-button>
+                    <el-button id='lScoreAdd' @click='_("setLScore",lScore+1)'>+1</el-button>
+                    <el-button id='lScoreMin' @click='_("setLScore",lScore-1)'>-1</el-button>
                     <br>
                     <br> L Foul
-                    <el-button @click='_("setLFoul",lFoul+1)'>+1</el-button>
-                    <el-button @click='_("setLFoul",lFoul-1)'>-1</el-button>
+                    <el-button id='lFoulAdd' @click='_("setLFoul",lFoul+1)'>+1</el-button>
+                    <el-button id='lFoulMin' @click='_("setLFoul",lFoul-1)'>-1</el-button>
                 </el-col>
                 <el-col :span='4'>
                     小组赛第{{gameIdx}}场
@@ -59,12 +59,12 @@
 
                 <el-col :span='4'>
                     R Score
-                    <el-button @click='_("setRScore",rScore+1)'>+1</el-button>
-                    <el-button @click='_("setRScore",rScore-1)'>-1</el-button>
+                    <el-button id='rScoreAdd' @click='_("setRScore",rScore+1)'>+1</el-button>
+                    <el-button id='rScoreMin' @click='_("setRScore",rScore-1)'>-1</el-button>
                     <br>
                     <br> R Foul
-                    <el-button @click='_("setRFoul",rFoul+1)'>+1</el-button>
-                    <el-button @click='_("setRFoul",rFoul-1)'>-1</el-button>
+                    <el-button id='rFoulAdd' @click='_("setRFoul",rFoul+1)'>+1</el-button>
+                    <el-button id='rFoulMin' @click='_("setRFoul",rFoul-1)'>-1</el-button>
                 </el-col>
                 <el-col :span='8'>
                     <el-input v-model='inputRoomId' style="width:100px"></el-input>
@@ -187,7 +187,8 @@
                 <br>
                 <a href="/panel.html?panel=bo3&5g=0">/panel.html?panel=bo3&5g=0</a>
                 <br>
-                <a href="/panel.html?panel=bo3&5g=1">/panel.html?panel=bo3&5g=1</a>
+                <a href="/panel.html?panel=bo3&5g=1">对阵1 /panel.html?panel=bo3&5g=1</a>
+                <a href="/panel.html?panel=bo3&5g=1&page2=1">对阵2 /panel.html?panel=bo3&5g=1&page2=1</a>
                 <br>
                 <a href="/panel.html?panel=vote">/panel.html?panel=vote</a>
                 <br>

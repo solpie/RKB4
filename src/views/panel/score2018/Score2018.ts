@@ -5,6 +5,7 @@ import { FontName } from '../const';
 import { TextTimer } from '../../utils/TextTimer';
 import { fitWidth } from '../bracket/BracketGroup';
 import { VsTitle } from './VsTitle';
+import { getUrlQuerys } from '../../utils/WebJsFunc';
 const skin = {
     bg: '/img/panel/score2018/bg2.png',
     score: '/img/panel/score2018/score.png',

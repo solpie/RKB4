@@ -1,6 +1,7 @@
 import { imgLoader } from '../../utils/ImgLoader';
 import { newBitmap, BitmapText, setScale } from '../../utils/PixiEx';
 import { FontName } from '../const';
+import { getUrlQuerys } from '../../utils/WebJsFunc';
 const loadAvt = (avtSp, url) => {
     imgLoader.loadTex(url, tex => {
         let s = 124 / tex.width
@@ -19,8 +20,8 @@ export class GroupItem extends PIXI.Container {
     rHwa: any
     lName: any
     rName: any
-    lTitle:PIXI.Text
-    rTitle:PIXI.Text
+    lTitle: PIXI.Text
+    rTitle: PIXI.Text
     constructor() {
         super()
         imgLoader.loadTex('/img/panel/score2018/score.png', tex => {
@@ -127,7 +128,7 @@ export class GroupItem extends PIXI.Container {
             this.lTitle = lTitle
             bg.addChild(lTitle)
 
-            let rTitle = new PIXI.Text('',ts)
+            let rTitle = new PIXI.Text('', ts)
             this.rTitle = rTitle
             bg.addChild(rTitle)
             lTitle.y = rTitle.y = 125
@@ -158,7 +159,6 @@ export class GroupItem extends PIXI.Container {
         this.lHwa.text = lPlayer.hwa[0] + 'cm | ' + lPlayer.hwa[1] + 'kg'
         this.lHwa.x = 692 - this.lHwa.width
         this.rHwa.text = rPlayer.hwa[0] + 'cm | ' + rPlayer.hwa[1] + 'kg'
-        
     }
 }
 export class Group5 extends PIXI.Container {
@@ -185,11 +185,23 @@ export class Group5 extends PIXI.Container {
     }
 
     show(data) {
-        if (this.itemArr.length)
+        if (this.itemArr.length) {
+            let start = 0
+            let isPage2 = getUrlQuerys('page2') == '1'
+            console.log('is page2', isPage2);
+            if (isPage2)
+                start = 5
             for (let i = 0; i < 5; i++) {
                 let item: GroupItem = this.itemArr[i]
-                item.setData(data.groupScore[i], data.playerMap)
+                if (data.groupScore[start + i]) {
+                    item.setData(data.groupScore[start + i], data.playerMap)
+                    item.visible = true
+                }
+                else
+                    item.visible = false
+
             }
+        }
         this.p.addChild(this)
     }
 

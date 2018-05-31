@@ -32,6 +32,7 @@ export class Bo3View {
     initPanel() {
         if (getUrlQuerys('5g') != '1')
             this.scorePanel = new Score2018(this.stage)
+        
         // let teamVictory = new TeamVictory(this.stage)
         // this.teamVictory = teamVictory
     }

@@ -47,6 +47,35 @@ export default class LiveDataView extends EventDispatcher {
         super()
         this.gameView = gmv
         this.gmv = gmv
+
+
+        window.onkeyup = (e) => {
+            console.log('key up', e.key, e.keyCode);
+            if (e.key == 'q' || e.keyCode == 81) {
+                document.getElementById("lScoreAdd").click();
+            }
+            else if (e.key == 'w' || e.keyCode == 87) {
+                document.getElementById("rScoreAdd").click();
+            }
+            else if (e.key == 'o' || e.keyCode == 79) {
+                document.getElementById("lScoreMin").click();
+            }
+            else if (e.key == 'p' || e.keyCode == 80) {
+                document.getElementById("rScoreMin").click();
+            }
+            else if (e.key == 'a' || e.keyCode == 65) {
+                document.getElementById("lFoulAdd").click();
+            }
+            else if (e.key == 's' || e.keyCode == 83) {
+                document.getElementById("rFoulAdd").click();
+            }
+            else if (e.key == 'k' || e.keyCode == 75) {
+                document.getElementById("lFoulMin").click();
+            }
+            else if (e.key == 'l' || e.keyCode == 76) {
+                document.getElementById("rFoulMin").click();
+            }
+        }
     }
 
     appendProp(gmv) {
@@ -427,6 +456,6 @@ export default class LiveDataView extends EventDispatcher {
     }
 
     show5Group(v) {
-        this.emit(LiveDataView.EVENT_5GROUP,v)
+        this.emit(LiveDataView.EVENT_5GROUP, v)
     }
 }
