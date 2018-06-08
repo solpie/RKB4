@@ -295,11 +295,18 @@ export class Score2018 {
         this.rName.text = rPlayer.name
         fitWidth(this.rName, 258, 35)
 
-        this.lHeightWeight.text = lPlayer.hwa[0] + 'cm | ' + lPlayer.hwa[1] + 'kg'
-        this.lHeightWeight.x = 713 - this.lHeightWeight.width
+        if (lPlayer.hwa[0]) {
+            this.lHeightWeight.text = lPlayer.hwa[0] + 'cm | ' + lPlayer.hwa[1] + 'kg'
+            this.lHeightWeight.x = 713 - this.lHeightWeight.width
+        }
+        else {
+            this.lHeightWeight.text = ''
+        }
 
-        this.rHeightWeight.text = rPlayer.hwa[0] + 'cm | ' + rPlayer.hwa[1] + 'kg'
-
+        if (rPlayer.hwa[0])
+            this.rHeightWeight.text = rPlayer.hwa[0] + 'cm | ' + rPlayer.hwa[1] + 'kg'
+        else
+            this.rHeightWeight.text = ''
         this.lRank.text = lPlayer.rank
         this.lRank.x = 510 - this.lRank.width
         this.rRank.text = rPlayer.rank

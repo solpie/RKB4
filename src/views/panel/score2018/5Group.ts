@@ -22,6 +22,9 @@ export class GroupItem extends PIXI.Container {
     rName: any
     lTitle: PIXI.Text
     rTitle: PIXI.Text
+
+    bg: PIXI.Sprite
+    bg2: PIXI.Sprite
     constructor() {
         super()
         imgLoader.loadTex('/img/panel/score2018/score.png', tex => {
@@ -47,6 +50,11 @@ export class GroupItem extends PIXI.Container {
 
             let bg = newBitmap({ url: '/img/panel/score2018/5group/itemBg.png' })
             this.addChild(bg)
+            this.bg = bg
+            let bg2 = newBitmap({ url: '/img/panel/score2018/5group/itemBg2.png' })
+            this.addChild(bg2)
+            this.bg2 = bg2
+            bg2.visible = false
 
             let lScoreNum = new BitmapText(sheet)
             bg.addChild(lScoreNum)
@@ -156,9 +164,35 @@ export class GroupItem extends PIXI.Container {
         this.rTitle.text = rPlayer.title
 
         this.rName.text = rPlayer.name
-        this.lHwa.text = lPlayer.hwa[0] + 'cm | ' + lPlayer.hwa[1] + 'kg'
-        this.lHwa.x = 692 - this.lHwa.width
-        this.rHwa.text = rPlayer.hwa[0] + 'cm | ' + rPlayer.hwa[1] + 'kg'
+        if (lPlayer.hwa[0]) {
+            this.lHwa.text = lPlayer.hwa[0] + 'cm | ' + lPlayer.hwa[1] + 'kg'
+            this.lHwa.x = 692 - this.lHwa.width
+            this.showBg1()
+        }
+        else {
+            this.lHwa.text = ''
+            this.showBg2()
+        }
+        if (rPlayer.hwa[0]) {
+
+            this.rHwa.text = rPlayer.hwa[0] + 'cm | ' + rPlayer.hwa[1] + 'kg'
+        }
+        else {
+            this.rHwa.text = ''
+        }
+    }
+
+    showBg2() {
+        this.bg.visible = false
+        this.bg2.visible = true
+        this.lScore.visible = false
+        this.rScore.visible = false
+    }
+    showBg1() {
+        this.lScore.visible = true
+        this.rScore.visible = true
+        this.bg.visible = true
+        this.bg2.visible = false
     }
 }
 export class Group5 extends PIXI.Container {
@@ -199,7 +233,6 @@ export class Group5 extends PIXI.Container {
                 }
                 else
                     item.visible = false
-
             }
         }
         this.p.addChild(this)

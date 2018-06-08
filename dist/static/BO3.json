@@ -5,30 +5,73 @@
     "gameTitle": "广州",
     "avatarUrlBase": "http://127.0.0.1:8088/img/player/bo3/",
     "groupScore": [
-        { "score": [0, 0], "player": ["p1", "p2"] },
-        { "score": [0, 0], "player": ["p3", "p4"] },
-        { "score": [0, 0], "player": ["p5", "p6"] },
-        { "score": [0, 0], "player": ["p7", "p8"] },
-        { "score": [0, 0], "player": ["p9", "p10"] },
         { "score": [0, 0], "player": ["p11", "p12"] },
-        { "score": [0, 0], "player": ["p13", "p14"] },
-        { "score": [0, 0], "player": ["p13", "p15"] }
+        { "score": [0, 0], "player": ["p11", "p12"] },
+        { "score": [0, 0], "player": ["p11", "p12"] },
+        { "score": [0, 0], "player": ["p11", "p12"] },
+        { "score": [0, 0], "player": ["p11", "p12"] }
     ],
-    "playerArr": [
-
-        { "name": "郑图腾", "hwa": [178, 80, 24], "title": "CUBA阳光组全国冠军", "playerId": "p1" },
-        { "name": "何昊天", "hwa": [185, 78, 21], "title": "CUBA高水平组浙大队长", "playerId": "p2" },
-        { "name": "马克", "hwa": [187, 93, 24], "title": "S4赛季东南区霸主", "playerId": "p3" },
-        { "name": "张智扬", "hwa": [190, 80, 24], "title": "S3赛季东南区霸主", "playerId": "p4" },
-        { "name": "矣进宏", "hwa": [178, 80, 25], "title": "云南滑翔机", "playerId": "p5" },
-        { "name": "韩曙光", "hwa": [179, 74, 25], "title": "武汉直升机", "playerId": "p6" },
-        { "name": "马塔尔", "hwa": [190, 86, 28], "title": "路人王第一铁闸", "playerId": "p7" },
-        { "name": "张梓祎", "hwa": [191, 85, 24], "title": "路人王顶级利刃", "playerId": "p8" },
-        { "name": "郭凌川", "hwa": [190, 90, 23], "title": "路人王怼派代言人", "playerId": "p9" },
-        { "name": "程南", "hwa": [192, 110, 31], "title": "路人王怼派新魔王", "playerId": "p10" },
-        { "name": "周锐", "hwa": [174, 73, 30], "title": "街球传奇人物", "playerId": "p11" },
-        { "name": "宋流轩", "hwa": [183, 75, 21], "title": "街球新锐势力", "playerId": "p12" },
-        { "name": "郝天佶", "hwa": [190, 100, 25], "title": "路人王初代大魔王", "playerId": "p13" },
-        { "name": "现场办卡粉丝", "hwa": [190, 100, 25], "title": "路人王神秘实力粉丝", "playerId": "p14" }
+    "playerArr": [{
+            "name": "徐长龙",
+            "hwa": [195, 95, 24],
+            "title": "路人王八冠王，山东赛区霸主",
+            "playerId": "p1"
+        },
+        {
+            "name": "李观洋",
+            "hwa": [193, 85, 24],
+            "title": "路人王最快第一步",
+            "playerId": "p2"
+        }, {
+            "name": "张帅康",
+            "hwa": [195, 90, 24],
+            "title": "路人王四冠王，郑州站霸主",
+            "playerId": "p3"
+        }, {
+            "name": "安云鹏",
+            "hwa": [189, 89, 24],
+            "title": "路人王29冠王，曾连续5天夺冠",
+            "playerId": "p4"
+        }, {
+            "name": "徐川傲",
+            "hwa": [193, 100, 24],
+            "title": "路人王怼派第一人",
+            "playerId": "p5"
+        }, {
+            "name": "冷振铎",
+            "hwa": [196, 85, 24],
+            "title": "CBA南京同曦暴力扣将",
+            "playerId": "p6"
+        }, {
+            "name": "朱近丹",
+            "hwa": [185, 80, 24],
+            "title": "前CUBA南京财经大学核心",
+            "playerId": "p7"
+        }, {
+            "name": "郭晓",
+            "hwa": [196, 96, 24],
+            "title": "路人王山东新王者，“济南乔丹”",
+            "playerId": "p8"
+        }, {
+            "name": "安康",
+            "hwa": [195, 90, 24],
+            "title": "前CUBA山西财经大学队长",
+            "playerId": "p9"
+        }, {
+            "name": "马克",
+            "hwa": [187, 93, 24],
+            "title": "S4赛季五站五冠，体能狂魔",
+            "playerId": "p10"
+        }, {
+            "name": "老派魔王",
+            "hwa": ["", "", 24],
+            "title": " ",
+            "playerId": "p11"
+        }, {
+            "name": "新晋魔王",
+            "hwa": ["", "", 24],
+            "title": " ",
+            "playerId": "p12"
+        }
     ]
 }
