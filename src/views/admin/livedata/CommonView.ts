@@ -253,6 +253,7 @@ export default class CommonView extends BaseGameView {
         syncDoc(dbIdx, doc => {
             console.log('commit', doc, 'gameIdx:', this.gameIdx);
             let rec = doc['rec'][this.gameIdx]
+            doc.gameIdx = this.gameIdx + 1
             rec.score = [this.lScore, this.rScore]
             rec.foul = [this.lFoul, this.rFoul]
             rec.player = [this.lPlayer, this.rPlayer]

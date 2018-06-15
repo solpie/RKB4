@@ -5,73 +5,12 @@
     "gameTitle": "广州",
     "avatarUrlBase": "http://127.0.0.1:8088/img/player/bo3/",
     "groupScore": [
-        { "score": [0, 0], "player": ["p11", "p12"] },
-        { "score": [0, 0], "player": ["p11", "p12"] },
-        { "score": [0, 0], "player": ["p11", "p12"] },
-        { "score": [0, 0], "player": ["p11", "p12"] },
-        { "score": [0, 0], "player": ["p11", "p12"] }
+        { "score": [0, 0], "player": ["p4", "p1"] },
+        { "score": [0, 0], "player": ["p7", "p2"] },
+        { "score": [0, 0], "player": ["p6", "p9"] },
+        { "score": [0, 0], "player": ["p3", "p8"] },
+        { "score": [0, 0], "player": ["p5", "p10"] }
     ],
-    "playerArr": [{
-            "name": "徐长龙",
-            "hwa": [195, 95, 24],
-            "title": "路人王八冠王，山东赛区霸主",
-            "playerId": "p1"
-        },
-        {
-            "name": "李观洋",
-            "hwa": [193, 85, 24],
-            "title": "路人王最快第一步",
-            "playerId": "p2"
-        }, {
-            "name": "张帅康",
-            "hwa": [195, 90, 24],
-            "title": "路人王四冠王，郑州站霸主",
-            "playerId": "p3"
-        }, {
-            "name": "安云鹏",
-            "hwa": [189, 89, 24],
-            "title": "路人王29冠王，曾连续5天夺冠",
-            "playerId": "p4"
-        }, {
-            "name": "徐川傲",
-            "hwa": [193, 100, 24],
-            "title": "路人王怼派第一人",
-            "playerId": "p5"
-        }, {
-            "name": "冷振铎",
-            "hwa": [196, 85, 24],
-            "title": "CBA南京同曦暴力扣将",
-            "playerId": "p6"
-        }, {
-            "name": "朱近丹",
-            "hwa": [185, 80, 24],
-            "title": "前CUBA南京财经大学核心",
-            "playerId": "p7"
-        }, {
-            "name": "郭晓",
-            "hwa": [196, 96, 24],
-            "title": "路人王山东新王者，“济南乔丹”",
-            "playerId": "p8"
-        }, {
-            "name": "安康",
-            "hwa": [195, 90, 24],
-            "title": "前CUBA山西财经大学队长",
-            "playerId": "p9"
-        }, {
-            "name": "马克",
-            "hwa": [187, 93, 24],
-            "title": "S4赛季五站五冠，体能狂魔",
-            "playerId": "p10"
-        }, {
-            "name": "老派魔王",
-            "hwa": ["", "", 24],
-            "title": " ",
-            "playerId": "p11"
-        }, {
-            "name": "新晋魔王",
-            "hwa": ["", "", 24],
-            "title": " ",
-            "playerId": "p12"
-        }
-    ]
+    "playerArr": [{ "name": "孙月敏", "hwa": [192, 77, 26], "title": "CUBA西北赛区单挑王", "playerId": "p1" }, { "name": "侯子宇", "hwa": [188, 90, 24], "title": "CUBA单场记录保持者 67分先生", "playerId": "p2" }, { "name": "赖益烨", "hwa": [187, 78, 22], "title": "CUBA全明星西安交大核心球员", "playerId": "p3" }, { "name": "黄瀚韬", "hwa": [200, 93, 18], "title": "CUBA上海交通大学球员", "playerId": "p4" }, { "name": "张宁", "hwa": [190, 85, 21], "title": "CUBA全国总冠军北京大学首发", "playerId": "p5" }, { "name": "李连杰", "hwa": [188, 95, 24], "title": "前CUBA河南理工大学队长", "playerId": "p6" }, { "name": "郭瀚宇", "hwa": [188, 93, 23], "title": "CUBA全明星赛MVP/浙大詹姆斯", "playerId": "p7" }, { "name": "李瑞", "hwa": [190, 85, 21], "title": "CUBA山西大学球员 面框第一人", "playerId": "p8" }, { "name": "张梓祎", "hwa": [191, 85, 24], "title": "前CUBA华北电力大学队长", "playerId": "p9" }, { "name": "孙振豪", "hwa": [190, 95, 23], "title": "前CUBA太原理工大学核心", "playerId": "p10" }]
+
 }
