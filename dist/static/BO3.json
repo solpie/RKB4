@@ -9,8 +9,9 @@
         { "score": [0, 0], "player": ["p7", "p2"] },
         { "score": [0, 0], "player": ["p6", "p9"] },
         { "score": [0, 0], "player": ["p3", "p8"] },
+        { "score": [0, 0], "player": ["p5", "p10"] },
         { "score": [0, 0], "player": ["p5", "p10"] }
     ],
-    "playerArr": [{ "name": "孙月敏", "hwa": [192, 77, 26], "title": "CUBA西北赛区单挑王", "playerId": "p1" }, { "name": "侯子宇", "hwa": [188, 90, 24], "title": "CUBA单场记录保持者 67分先生", "playerId": "p2" }, { "name": "赖益烨", "hwa": [187, 78, 22], "title": "CUBA全明星西安交大核心球员", "playerId": "p3" }, { "name": "黄瀚韬", "hwa": [200, 93, 18], "title": "CUBA上海交通大学球员", "playerId": "p4" }, { "name": "张宁", "hwa": [190, 85, 21], "title": "CUBA全国总冠军北京大学首发", "playerId": "p5" }, { "name": "李连杰", "hwa": [188, 95, 24], "title": "前CUBA河南理工大学队长", "playerId": "p6" }, { "name": "郭瀚宇", "hwa": [188, 93, 23], "title": "CUBA全明星赛MVP/浙大詹姆斯", "playerId": "p7" }, { "name": "李瑞", "hwa": [190, 85, 21], "title": "CUBA山西大学球员 面框第一人", "playerId": "p8" }, { "name": "张梓祎", "hwa": [191, 85, 24], "title": "前CUBA华北电力大学队长", "playerId": "p9" }, { "name": "孙振豪", "hwa": [190, 95, 23], "title": "前CUBA太原理工大学核心", "playerId": "p10" }]
+    "playerArr": [{ "name": "李豪", "hwa": [180, 82, 23], "title": "S4赛季成都站两连冠\n四川师范大学男篮队长", "playerId": "p1" }, { "name": "董康潮", "hwa": [172, 70, 23], "title": "库里中国行成都站MVP\n2017年11月冠军赛第十名", "playerId": "p2" }, { "name": "王佳委", "hwa": [181, 80, 20], "title": "六月月赛亚军\n年中决赛季军\n五次分站赛冠军", "playerId": "p3" }, { "name": "俞鑫敏", "hwa": [180, 80, 21], "title": "CUBA南京理工大学球员", "playerId": "p4" }, { "name": "方良超", "hwa": [174, 73, 26], "title": "上海站2冠王\n9月冠军赛亚军\n上海X-Battle街球队队员", "playerId": "p5" }, { "name": "杨雨", "hwa": [173, 70, 24], "title": "西安站冠军\n西安DLT街球队队员", "playerId": "p6" }, { "name": "柳杨杰", "hwa": [182, 70, 22], "title": "S2赛季上海站6冠王\nCUBA阳光组上海海事大学核心球员", "playerId": "p7" }, { "name": "韩曙光", "hwa": [179, 74, 25], "title": "路人王武汉站2冠王\n冠军赛选手", "playerId": "p8" }, { "name": "黄宇军", "hwa": [172, 68, 24], "title": "路人王7冠11亚\n路人王人气第一人", "playerId": "p9" }, { "name": "周锐", "hwa": [174, 73, 29], "title": "武汉313街球队队长\n厦门\n武汉站均全胜夺冠", "playerId": "p10" }]
 
 }

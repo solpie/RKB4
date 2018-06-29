@@ -208,9 +208,9 @@ export class Group5 extends PIXI.Container {
         imgArr.push('/img/panel/score2018/score.png')
         this.itemArr = []
         imgLoader.loadTexArr(imgArr, _ => {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 let item = new GroupItem()
-                item.y = i * 170
+                item.y = i * 156
                 this.addChild(item)
                 this.itemArr.push(item)
             }
@@ -225,7 +225,7 @@ export class Group5 extends PIXI.Container {
             console.log('is page2', isPage2);
             if (isPage2)
                 start = 5
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 let item: GroupItem = this.itemArr[i]
                 if (data.groupScore[start + i]) {
                     item.setData(data.groupScore[start + i], data.playerMap)
