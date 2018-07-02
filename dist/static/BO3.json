@@ -2,16 +2,20 @@
     "date": "2018-03-17",
     "dbIdx": "1021",
     "panel": "BO3",
-    "gameTitle": "广州",
+    "gameTitle": "哈登",
     "avatarUrlBase": "http://127.0.0.1:8088/img/player/bo3/",
     "groupScore": [
-        { "score": [0, 0], "player": ["p4", "p1"] },
-        { "score": [0, 0], "player": ["p7", "p2"] },
-        { "score": [0, 0], "player": ["p6", "p9"] },
-        { "score": [0, 0], "player": ["p3", "p8"] },
-        { "score": [0, 0], "player": ["p5", "p10"] },
-        { "score": [0, 0], "player": ["p5", "p10"] }
+        { "score": [0, 0], "player": ["p1", "p2"] },
+        { "score": [0, 0], "player": ["p3", "p4"] },
+        { "score": [0, 0], "player": ["p5", "p6"] },
+        { "score": [0, 0], "player": ["p7", "p8"] },
+        { "score": [0, 0], "player": ["p9", "p10"] },
+        { "score": [0, 0], "player": ["p11", "p12"] },
+        { "score": [0, 0], "player": ["p13", "p14"], "title": "分组3V3" },
+        { "score": [0, 0], "player": ["p15", "p16"], "title": "三分对决" },
+        { "score": [0, 0], "player": ["p17", "p18"], "title": "单挑对决" }
     ],
-    "playerArr": [{ "name": "李豪", "hwa": [180, 82, 23], "title": "S4赛季成都站两连冠\n四川师范大学男篮队长", "playerId": "p1" }, { "name": "董康潮", "hwa": [172, 70, 23], "title": "库里中国行成都站MVP\n2017年11月冠军赛第十名", "playerId": "p2" }, { "name": "王佳委", "hwa": [181, 80, 20], "title": "六月月赛亚军\n年中决赛季军\n五次分站赛冠军", "playerId": "p3" }, { "name": "俞鑫敏", "hwa": [180, 80, 21], "title": "CUBA南京理工大学球员", "playerId": "p4" }, { "name": "方良超", "hwa": [174, 73, 26], "title": "上海站2冠王\n9月冠军赛亚军\n上海X-Battle街球队队员", "playerId": "p5" }, { "name": "杨雨", "hwa": [173, 70, 24], "title": "西安站冠军\n西安DLT街球队队员", "playerId": "p6" }, { "name": "柳杨杰", "hwa": [182, 70, 22], "title": "S2赛季上海站6冠王\nCUBA阳光组上海海事大学核心球员", "playerId": "p7" }, { "name": "韩曙光", "hwa": [179, 74, 25], "title": "路人王武汉站2冠王\n冠军赛选手", "playerId": "p8" }, { "name": "黄宇军", "hwa": [172, 68, 24], "title": "路人王7冠11亚\n路人王人气第一人", "playerId": "p9" }, { "name": "周锐", "hwa": [174, 73, 29], "title": "武汉313街球队队长\n厦门\n武汉站均全胜夺冠", "playerId": "p10" }]
+    "playerArr": [{ "name": "陈佳贺", "hwa": [190, 100, 31], "title": "前CUBA华中师范大学队长", "playerId": "p1" }, { "name": "李峙锦", "hwa": [197, 100, 20], "title": "路人王西安站两冠王,西安浓眉哥", "playerId": "p2" }, { "name": "干吉石布", "hwa": [184, 85, 24], "title": "路人王成都站亚军", "playerId": "p3" }, { "name": "王佳委", "hwa": [181, 80, 20], "title": "路人王五冠王,三分神射手", "playerId": "p4" }, { "name": "项麒芸", "hwa": [190, 87, 30], "title": "路人王4冠王,最强特警", "playerId": "p5" }, { "name": "张梓祎", "hwa": [191, 85, 24], "title": "北京站7战7冠的霸主", "playerId": "p6" }, { "name": "张浩林", "hwa": [188, 85, 26], "title": "路人王鬼才“soma”", "playerId": "p7" }, { "name": "黄鹏峰", "hwa": [189, 85, 27], "title": "斗鱼超人气户外主播", "playerId": "p8" }, { "name": "赖益烨", "hwa": [187, 78, 22], "title": "CUBA全明星西安交大核心球员", "playerId": "p9" }, { "name": "张子昊", "hwa": [186, 86, 22], "title": "路人王最帅投篮手型", "playerId": "p10" }, { "name": "庄壮彬", "hwa": [183, 72, 26], "title": "路人王上海站冠军", "playerId": "p11" }, { "name": "黄宇军", "hwa": [172, 68, 24], "title": "路人王人气第一人,网红军哥", "playerId": "p12" }, { "name": "哈登队", "hwa": [0, 0, 0], "title": "明星教练,NBA新科MVP哈登", "playerId": "p13" }, { "name": "刘晓宇队", "hwa": [0, 0, 0], "title": "明星教练,CBA总冠军,明星后卫刘晓宇", "playerId": "p14" }, { "name": "哈登队", "hwa": [0, 0, 0], "title": "NBA常规赛MVP", "playerId": "p15" }, { "name": "刘晓宇队", "hwa": [0, 0, 0], "title": "CBA四届总冠军,明星后卫", "playerId": "p16" }, { "name": "哈登队", "hwa": [0, 0, 0], "title": "哈登队", "playerId": "p17" }, { "name": "刘晓宇队", "hwa": [0, 0, 0], "title": "刘晓宇队", "playerId": "p18" }]
+
 
 }

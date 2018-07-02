@@ -351,11 +351,18 @@ export class Score2018 {
 
     setBo3Score(data) {
         console.log('set bo3 score ', this.lPlayer, this.rPlayer);
+
         for (let gs of data.groupScore) {
             if (gs.player[0] == this.lPlayer && gs.player[1] == this.rPlayer) {
-                this.bo3Score.text = gs.score[0] + ' - ' + gs.score[1]
+                console.log('group info', gs);
+                if (gs.title) {
+                    this.bo3Score.text = ""
+                }
+                else
+                    this.bo3Score.text = gs.score[0] + ' - ' + gs.score[1]
             }
         }
+
     }
 
     toggleTimer(v) {
